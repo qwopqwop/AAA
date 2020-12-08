@@ -1,0 +1,666 @@
+#include "CSceneRace.h"
+//
+#include "CCamera.h"
+//
+#include "CText.h"
+//
+#include "CTaskManager.h"
+//
+#include "CCollisionManager.h"
+////
+#include "CRock.h"
+//
+#include "CObj.h"
+//
+#include "CItem.h"
+//
+#include "CKey.h"
+//
+#include "CBullet.h"
+
+extern CSound BGM;
+extern CSound SoundCountDown;
+extern CSound SoundStart;
+extern CSound SoundGoal;
+
+CSceneRace::~CSceneRace() {
+	CTaskManager::Get()->Disabled();
+	CTaskManager::Get()->Delete();
+}
+
+
+void CSceneRace::Init() {
+	//シーンの設定
+	mScene = ERACE1;
+
+	//的の残数の初期化
+	CItem::mTargetAmount = 0;
+
+	//テキストフォントの読み込みと設定
+	CText::mFont.Load("FontG.tga");
+	CText::mFont.SetRowCol(1, 4096 / 64);
+	//背景の読み込み
+	mSky.Load("sky.obj", "sky.mtl");
+	//岩の読み込み
+	mRock.Load("Rock1.obj", "Rock1.mtl");
+	//車の読み込み
+	mRover.Load("Rover1.obj", "Rover1.mtl");
+//	mRover.Load("sphere.obj", "sphere.mtl");
+	//立方体の読み込み
+	mCube.Load("cube.obj", "material\\cube.mtl");
+	//地面の読み込み
+	mPlane.Load("plane.obj", "plane.mtl");
+	//階段の読み込み
+	mStairs.Load("cube.obj", "material\\stairs.mtl");
+	//的の読み込み
+	mTarget.Load("Rock1.obj", "material\\target.mtl");
+	//ONブロック(？)の読み込み
+	mOnBlock.Load("cube.obj", "material\\on.mtl");
+
+	mItem.Load("Rock1.obj", "Rock1.mtl");
+	
+
+	mCube2.Load("cube.obj", "cube2.mtl");
+	mCube3.Load("cube.obj", "cube3.mtl");
+	//中間地点の読み込み(透明、ポリゴン1枚のみ)
+	mCheckPoint.Load("plane.obj", "cube2.mtl");
+
+	mWater.Load("cube.obj", "water_sumple.mtl");
+
+
+	//バネの読み込み
+	mSpringS.Load("ばね.obj", "cube.mtl");
+	mSpringL.Load("ばね伸び.obj", "cube.mtl");
+
+	//床タイルの読み込み
+	mTileBlack.Load("cube.obj", "material\\racing_mat\\tile_black.mtl");
+	mTileWhite.Load("cube.obj", "material\\racing_mat\\tile_white.mtl");
+	mRWTile.Load("material\\racing_mat\\NewNewR-W.obj", "material\\racing_mat\\NewNewR-W.mtl");
+	//コースの読み込み
+	//mCource01.Load("material\\racing_mat\\CourceNew01.obj", "material\\racing_mat\\CourceNew01.mtl");
+	mCource01.Load("material\\racing_mat\\CourceNew01.obj", "material\\racing_mat\\CourceNew01.mtl");
+	//芝生の読み込み
+	mGrass01.Load("material\\racing_mat\\GrassNew01.obj", "material\\racing_mat\\GrassNew01.mtl");
+	//柵(壁)の読み込み
+	mFence01.Load("material\\racing_mat\\Cource01Wall.obj", "material\\racing_mat\\Cource01Wall.mtl");
+	//柵の読み込み
+	mFenceTop.Load("material\\racing_mat\\FenceTopNew.obj", "material\\racing_mat\\FenceTopNew.mtl");
+	mFenceSide.Load("material\\racing_mat\\FenceSideNew.obj", "material\\racing_mat\\FenceSideNew.mtl");
+
+	mPole.Load("cube.obj", "material\\soil.mtl");
+
+	mDashBoard.Load("material\\racing_mat\\dashboard.obj", "material\\racing_mat\\dashboard.mtl");
+
+	mCarsol.Load("material\\racing_mat\\minicarsol.obj", "material\\racing_mat\\minicarsol.mtl");
+	mMiniGoal.Load("material\\racing_mat\\minigoal.obj", "material\\racing_mat\\minigoal.mtl");
+
+	CBullet::mBullet.Load("銃弾.obj", "銃弾.mtl");
+
+	//ステージ1BGMの読み込み
+	BGM.Load("BGM\\(音量調整版)Popsギター_No.01.wav");
+	SoundCountDown.Load("SE\\Countdown01-5.wav");
+	SoundStart.Load("SE\\Countdown01-6.wav");
+	SoundGoal.Load("SE\\tm2_whistle000.wav");
+
+	mSumple.Load("UnderGround\\passage2.obj", "UnderGround\\passage2.mtl");
+
+	//透明度の高い物から先に描画する
+
+	/*for (int i = 0; i < 12; i++){
+	new CObj(&mCube3, CVector(43.0f, 15.0f + i * 7.0f, 118.0f), CVector(0.0f, 0.0f, 0.0f), CVector(10.0f, 2.0f, 10.0f), 9);//謎タワー
+	}*/
+	//new CObj(&mCube3, CVector(-73.0f, 5.0f, 100.0f), CVector(0.0f, 0.0f, 0.0f), CVector(30.0f, 45.0f, 1.0f), 13);
+	//new CObj(&mCube3, CVector(10.0f, 23.0f, 100.0f), CVector(0.0f, 0.0f, 0.0f), CVector(40.0f, 3.0f, 10.5f), 9);//あそこのガラス
+
+	mPlayer = new CPlayer();
+	mPlayer->mpModel = &mRover;
+
+
+	//岩の生成　モデルmRock　位置|-20.0 0.0 20.0|
+	//回転|0.0 0.0 0.0|　拡大|5.0 5.0 5.0|
+	//	new CRock(&mRock, CVector(-20.0f, 0.0f, 20.0f), CVector(), CVector(5.0f, 5.0f, 5.0f));
+	//立方体の生成
+	//	new CObj(&mCube, CVector(0.0f, 0.0f, 60.0f), CVector(0.0f, 0.0f, 0.0f), CVector(10.0f, 10.0f, 1.0f), 1);
+	//地面の生成
+//	new CObj(&mPlane, CVector(0.0f, 0.0f, 0.0f), CVector(), CVector(100.0f, 1.0f, 100.0f), 1);
+	//坂？の生成
+	
+		
+	////旧コースの生成
+	//new CObj(&mCube, CVector(0.0f, -20.0f, 0.0f + 100.0f * 29), CVector(0.0f, 0.0f, 0.0f), CVector(100.0f, 10.0f, 100.0f * 29 + 100.0f), 1);
+	////ゴール地点の床タイル
+	//for (int i = 0; i < 10; i++){
+	//	if (i % 2 == 0){
+	//		new CObj(&mTileBlack, CVector(-90.0f + 20.0f*i, -2.0f + 0.1f, 5700.0f), CVector(0.0f, 0.0f, 0.0f), CVector(10.0f, 1.0f, 10.0f), 99);//黒タイル
+	//		new CObj(&mTileWhite, CVector(-90.0f + 20.0f*i, -2.0f + 0.1f, 5700.0f + 20.0f), CVector(0.0f, 0.0f, 0.0f), CVector(10.0f, 1.0f, 10.0f), 99);//白タイル
+	//	}
+	//	else{
+	//		new CObj(&mTileBlack, CVector(-90.0f + 20.0f*i, -2.0f + 0.1f, 5700.0f + 20.0f), CVector(0.0f, 0.0f, 0.0f), CVector(10.0f, 1.0f, 10.0f), 99);//黒タイル
+	//		new CObj(&mTileWhite, CVector(-90.0f + 20.0f*i, -2.0f+0.1f, 5700.0f), CVector(0.0f, 0.0f, 0.0f), CVector(10.0f, 1.0f, 10.0f), 99);//白タイル
+	//	}
+	//}
+	////ゴール(ゲート側)
+	//for (int i = 0; i < 10; i++){
+	//	if (i % 2 == 0){
+	//		new CObj(&mTileBlack, CVector(-90.0f + 20.0f*i, 110.0f, 5700.0f), CVector(90.0f, 0.0f, 0.0f), CVector(10.0f, 1.0f, 5.0f), 99);//黒タイル
+	//		new CObj(&mTileWhite, CVector(-90.0f + 20.0f*i, 110.0f + 10.0f, 5700.0f), CVector(90.0f, 0.0f, 0.0f), CVector(10.0f, 1.0f, 5.0f), 99);//白タイル
+	//	}
+	//	else{
+	//		new CObj(&mTileBlack, CVector(-90.0f + 20.0f*i, 110.0f + 10.0f, 5700.0f), CVector(90.0f, 0.0f, 0.0f), CVector(10.0f, 1.0f, 5.0f), 99);//黒タイル
+	//		new CObj(&mTileWhite, CVector(-90.0f + 20.0f*i, 110.0f, 5700.0f), CVector(90.0f, 0.0f, 0.0f), CVector(10.0f, 1.0f, 5.0f), 99);//白タイル
+	//	}
+	//}
+
+	// 1 2 3 4 5
+	//■□■□■
+	//□■□■□
+	//チェック柄を作りやすくするメソッド？
+	//CChecker(パターン1,パターン2,どこまで模様を繰り返すか,,,正方形のサイズ,厚み)
+	//CChecker(&mTileBlack ,&mTileWhite, 5, 10.0f, 0.5f)
+
+	//new CObj(&mCube, CVector(0.0f, -5.55f, 13.0f), CVector(-5.4f, 0.0f, 0.0f), CVector(10.0f, 4.0f, 28.0f), 1);//橋？
+	////for (int l = 0; l < 5; l++){
+	////	new CObj(&mStairs, CVector(0.0f, -1.0f, 43.0f + l * 6.0f), CVector(50.0f - 10.0f*l , 0.0f, 0.0f), CVector(10.0f, 3.0f + 3.0f*l, 3.0f), 1);//階段
+	////}
+	//for (int l = 0; l < 5; l++){
+	//	new CObj(&mStairs, CVector(-40.0f, -1.0f + l * 3.0f, 43.0f + l * 10.0f), CVector(-10.0f - 10.0f*l, 0.0f, 0.0f), CVector(10.0f, 3.0f, 3.0f + 3.0f*l), 1);//階段
+	//}
+	
+	//中間地点(順に通らないと1周したことにならないし、順番を飛ばしてもいけない)
+//	new CObj(&mCube3, CVector(0.0f, -30.0f, 2100.0f), CVector(0.0f, 0.0f, 0.0f), CVector(155.0f, 155.0f, 155.0f), 101);
+//	new CObj(&mCube3, CVector(-1650.0f, -30.0f, 0.0f), CVector(0.0f, 0.0f, 0.0f), CVector(155.0f, 155.0f, 155.0f), 102);
+//	new CObj(&mCube3, CVector(100.0f, -30.0f, -1700.0f), CVector(0.0f, 0.0f, 0.0f), CVector(155.0f, 155.0f, 155.0f), 103);
+
+	/*new CObj(&mPlane, CVector(0.0f, 0.0f, -220.0f), CVector(0.0f, 0.0f, 0.0f), CVector(55.0f, 1.0f, 55.0f), 1);
+	new CObj(&mCheckPoint, CVector(0.0f, 15.0f, -400.0f), CVector(0.0f, 0.0f, 0.0f), CVector(55.0f, 1.0f, 55.0f), 1);*/
+	new CObj(&mCheckPoint, CVector(50.0f, 15.0f, 2500.0f), CVector(-90.0f, 0.0f, -50.0f), CVector(777.0f, 1.0f, 255.0f), 101);
+	new CObj(&mCheckPoint, CVector(-1800.0f, 15.0f, 20.0f), CVector(-90.0f, 180.0f, 0.0f), CVector(750.0f, 1.0f, 255.0f), 102);
+	new CObj(&mCheckPoint, CVector(-1100.0f, 15.0f, -2000.0f), CVector(-90.0f, 0.0f, 110.0f), CVector(750.0f, 1.0f, 255.0f), 103);
+
+	//new CObj(&mCheckPoint, CVector(0.0f, 20.0f, 2100.0f), CVector(90.0f, 0.0f, 0.0f), CVector(255.0f, 1.0f, 255.0f), 25);
+
+	//ジャンプ台
+	new CObj(&mOnBlock, CVector(0.0f, 0.0f, 450.0f), CVector(-40.0f, 0.0f, 0.0f), CVector(60.0f, 5.0f, 40.0f), 1);
+
+	new CObj(&mOnBlock, CVector(0.0f, 0.0f, 550.0f), CVector(-40.0f, 90.0f, 0.0f), CVector(60.0f, 5.0f, 40.0f), 1);
+	new CObj(&mOnBlock, CVector(0.0f, 0.0f, 650.0f), CVector(-40.0f, 180.0f, 0.0f), CVector(60.0f, 5.0f, 40.0f), 1);
+	new CObj(&mOnBlock, CVector(0.0f, 0.0f, 750.0f), CVector(-40.0f, 270.0f, 0.0f), CVector(60.0f, 5.0f, 40.0f), 1);
+
+	
+
+//	new CObj(&mCarsol, CVector(0.0f, 4000.0f, 0.0f), CVector(0.0f, 0.0f, 0.0f), CVector(10.0f, 10.0f, 10.0f), 575);//ミニマップのカーソル
+
+	//ばね
+	new CItem(&mSpringL, CVector(0.0f, -5.0f, 80.0f), CVector(), CVector(11.0f, 11.0f, 11.0f), 2);//バネ
+
+	//new CItem(&mBoat, CVector(35.0f, 7.0f, 30.0f), CVector(), CVector(2.5f, 2.5f, 2.5f), 7);//ボート
+	//new CObj(&mOnBlock, CVector(37.5f, 0.0f, 30.0f), CVector(), CVector(23.0f, 12.0f, 13.0f), 10);//ボートを包む箱
+	//new CObj(&mCube, CVector(30.0f, 0.0f, 30.0f), CVector(0.0f, 0.0f, 0.0f), CVector(10.0f, 2.0f, 10.0f), 2);
+
+	//新・コースの生成
+	for (int i = 0; i < 1; i++){
+		//コースの生成//ここを床と壁で分割して処理を分ける予定
+		new CObj(&mCource01, CVector(-360.0f, 5.0f - 33.0f, 230.0f), CVector(), CVector(50.0f, 2.0f, 50.0f), 1);
+		//old CObj(&mCource01, CVector(-350.0f, 5.0f - 33.0f, 230.0f), CVector(), CVector(20.0f, 1.0f, 20.0f), 1);
+		mXXX = -360.0f; mYYY = 5.0f - 33.0f; mZZZ = 230.0f;
+
+		//芝生の生成(通行中は速度低下)
+		new CObj(&mGrass01, CVector(-360.0f, 5.0f - 33.0f, 230.0f), CVector(), CVector(50.0f, 2.0f, 50.0f), 112);
+		
+		//コースに柵の配置(壁扱い)
+	//	new CObj(&mFence01, CVector(-360.0f, 5.0f - 60.0f, 230.0f), CVector(), CVector(50.0f, 4.0f, 50.0f), 1);
+	//	new CObj(&mFence01, CVector(-360.0f, -50.0f, 230.0f), CVector(), CVector(50.0f, 3.5f, 50.0f), 200);
+
+		new CObj(&mFenceTop, CVector(-360.0f, -70.0f - 35.0f, 230.0f), CVector(), CVector(50.0f, 5.5f + 1.5f, 50.0f), 1);
+		new CObj(&mFenceSide, CVector(-360.0f, -70.0f - 35.0f, 230.0f), CVector(), CVector(50.0f, 5.5f + 1.5f, 50.0f), 200);
+
+		//道路と芝生の境目のタイルを生成(当たり判定無し)
+		new CObj(&mRWTile, CVector(-360.0f, 5.0f - 33.0f+0.05f, 230.0f), CVector(), CVector(50.0f, 2.0f, 50.0f), 99);
+	}
+	//白・黒タイルでゴール示唆
+	for (int i = 0; i < 40; i++){
+	//	mStartPoint[0] = 300.0f;  mStartPoint[1] = 63.0f;  mStartPoint[2] = -50.0f;
+		if (i % 2 == 0){
+			new CObj(&mTileBlack, CVector(170.0f + 20.0f*i, -13.1f + 0.5f, -20.0f), CVector(0.0f, 0.0f, 0.0f), CVector(10.0f, 1.0f, 10.0f), 99);//黒タイル
+			new CObj(&mTileWhite, CVector(170.0f + 20.0f*i, -13.1f + 0.5f, -20.0f + 20.0f), CVector(0.0f, 0.0f, 0.0f), CVector(10.0f, 1.0f, 10.0f), 99);//白タイル
+		}
+		else{
+			new CObj(&mTileBlack, CVector(170.0f + 20.0f*i, -13.1f + 0.5f, -20.0f + 20.0f), CVector(0.0f, 0.0f, 0.0f), CVector(10.0f, 1.0f, 10.0f), 99);//黒タイル
+			new CObj(&mTileWhite, CVector(170.0f + 20.0f*i, -13.1f + 0.5f, -20.0f), CVector(0.0f, 0.0f, 0.0f), CVector(10.0f, 1.0f, 10.0f), 99);//白タイル
+			//new CObj(&mTileWhite, CVector(300.0f + 20.0f*i, -2.0f + 0.1f, -20.0f), CVector(0.0f, 0.0f, 0.0f), CVector(10.0f, 1.0f, 10.0f), 99);//白タイル
+		}
+	}
+	////ゴール(ゲート側)
+	//for (int i = 0; i < 40; i++){
+	//	if (i % 2 == 0){
+	//		new CObj(&mTileBlack, CVector(170.0f + 20.0f*i + 5.0f, 110.0f + 74.0f * 2 * 2, -14.0f), CVector(90.0f, 0.0f, 0.0f), CVector(10.0f, 4.0f, 5.0f), 99);//黒タイル
+	//		new CObj(&mTileWhite, CVector(170.0f + 20.0f*i + 5.0f, 110.0f + 10.0f + 74.0f * 2 * 2, -14.0f), CVector(90.0f, 0.0f, 0.0f), CVector(10.0f, 4.0f, 5.0f), 99);//白タイル
+	//	}
+	//	else{
+	//		new CObj(&mTileBlack, CVector(170.0f + 20.0f*i + 5.0f, 110.0f + 10.0f + 74.0f * 2 * 2, -14.0f), CVector(90.0f, 0.0f, 0.0f), CVector(10.0f, 4.0f, 5.0f), 99);//黒タイル
+	//		new CObj(&mTileWhite, CVector(170.0f + 20.0f*i + 5.0f, 110.0f + 74.0f * 2 * 2, -14.0f), CVector(90.0f, 0.0f, 0.0f), CVector(10.0f, 4.0f, 5.0f), 99);//白タイル
+	//	}
+	//}
+	//ゴール(ゲート側)
+	for (int i = 0; i < 20; i++){
+		if (i % 2 == 0){
+			new CObj(&mTileBlack, CVector(170.0f + 40.0f*i + 5.0f + 10.0f, 110.0f + 200.0f - 5.0f - 10.0f - 20.0f - 10.0f, -14.0f), CVector(90.0f, 0.0f, 0.0f), CVector(20.0f, 4.9f, 20.0f), 99);//黒タイル
+			new CObj(&mTileWhite, CVector(170.0f + 40.0f*i + 5.0f + 10.0f, 110.0f + 10.0f + 200.0f - 5.0f - 10.0f, -14.0f), CVector(90.0f, 0.0f, 0.0f), CVector(20.0f, 4.9f, 20.0f), 99);//白タイル
+		}
+		else{
+			new CObj(&mTileBlack, CVector(170.0f + 40.0f*i + 5.0f + 10.0f, 110.0f + 10.0f + 200.0f - 5.0f - 10.0f, -14.0f), CVector(90.0f, 0.0f, 0.0f), CVector(20.0f, 4.9f, 20.0f), 99);//黒タイル
+			new CObj(&mTileWhite, CVector(170.0f + 40.0f*i + 5.0f + 10.0f, 110.0f + 200.0f - 5.0f - 10.0f - 20.0f - 10.0f, -14.0f), CVector(90.0f, 0.0f, 0.0f), CVector(20.0f, 4.9f, 20.0f), 99);//白タイル
+		}
+	}
+	//ポール
+	new CObj(&mTileWhite, CVector(170.0f + 20.0f * -1 + 5.0f + 5.0f, -13.1f - 10.0f, -10.0f), CVector(0.0f, 0.0f, 0.0f), CVector(10.0f, 174.0f, 10.0f), 1);//柱
+	new CObj(&mTileWhite, CVector(170.0f + 20.0f * 40 + 5.0f - 5.0f, -13.1f - 10.0f, -10.0f), CVector(0.0f, 0.0f, 0.0f), CVector(10.0f, 174.0, 10.0f), 1);//柱
+	
+
+	//加速床
+	new CObj(&mDashBoard, CVector(260.0f, -13.1f + 3.0f, 800.0f), CVector(0.0f, 180.0f, 0.0f), CVector(1.0f, 1.0f, 1.0f), 111);
+
+	new CObj(&mDashBoard, CVector(334.0f, -13.1f + 3.0f, 40.0f), CVector(0.0f, 180.0f, 0.0f), CVector(1.0f, 1.0f, 1.0f), 111);
+
+	new CObj(&mDashBoard, CVector(-1500.0f, -13.1f + 3.0f, -200.0f), CVector(0.0f, 0.0f, 0.0f), CVector(1.0f, 1.0f, 1.0f), 111);
+
+	new CObj(&mDashBoard, CVector(-500.0f, -13.1f + 3.0f, -1900.0f), CVector(0.0f, -90.0f, 0.0f), CVector(1.0f, 1.0f, 1.0f), 111);
+
+	new CObj(&mTileWhite, CVector(0.0f, -11.1f, 900.0f), CVector(0.0f, 0.0f, 0.0f), CVector(50.0f, 150.0f, 10.0f), 200);//壁
+
+
+//	new CObj(&mTileBlack, CVector(0.0f, -1010.0f, 0.0f), CVector(0.0f, 0.0f, 0.0f), CVector(50000.0f, 1.0f, 50000.0f), 99);//白タイル
+
+	//シェーダー無いとこんなん重すぎて死ぬ！
+	//new CObj(&mSumple, CVector(430.0f, 10.0f + 3123.0f, 0.0f), CVector(0.0f, 0.0f, 0.0f), CVector(50.0f, 50.0f, 50.0f), 99);
+	//当たり判定を作らなければ大丈夫
+
+	/*for (int i = 0; i < 16; i++){
+		new CObj(&mDashBoard, CVector(260.0f - 40.0f*i , 13.1f + 10.0f, 800.0f), CVector(0.0f, 270.0f, 0.0f), CVector(1.0f, 1.0f, 1.0f), 31);
+		new CObj(&mDashBoard, CVector(260.0f - 40.0f*i-20.0f, 13.1f + 10.0f, 800.0f), CVector(0.0f, 270.0f, 0.0f), CVector(0.9f, 0.9f, 0.9f), 31);
+	}*/
+	
+	mCamY = 0.0f;
+	mPutCol = false;
+
+	mFrame = 0;
+	mCountDown = 3+1;
+
+	//レースはカウントダウンが終わってから開始
+	isStartRace = false;
+	//時間のリセット
+	mTime = 0;
+	//ベストタイムの設定
+	mBestTime = 30000;
+	//ラップ数の初期化
+	mLap = 3;
+	//記録更新してない状態
+	isNewRecord = false;
+	
+	//カメラ視点
+	mCamPoV = 1;
+
+	//TaskManager.ChangePriority(&mPlayer, 15);
+	CTaskManager::Get()->ChangePriority(mPlayer, 15);
+
+	BGM.Repeat();
+}
+
+
+void CSceneRace::Update() {
+	//カメラのパラメータを作成する
+	CVector e, c, u;//視点、注視点、上方向
+	//視点を求める
+//	e = CVector(-2.0f, 17.0f, -40.0f) * CMatrix().RotateY(mCamY) * mPlayer->mMatrix   * mPlayer->mMatrixScale * mPlayer->mMatrixRotate * mPlayer->mMatrixTranslate;
+//	e = CVector(-2.0f, 17.0f, -40.0f) * CMatrix().RotateY(mCamY) * mPlayer->mMatrixScale * mPlayer->mMatrixRotate * mPlayer->mMatrixTranslate;
+	if (mCamPoV == 1){
+		e = CVector(0.0f, 17.0f, -40.0f) * CMatrix().RotateY(mCamY) * mPlayer->mMatrixScale
+			* CMatrix().RotateY(mPlayer->mRotation.mY)
+			* mPlayer->mMatrixTranslate
+			+ CVector(0.0f, 0.0f, 0.0f);
+		////注視点を求める
+		//c = mPlayer->mPosition + CVector(0.0f, 0.0f, 40.0f)*mPlayer->mMatrixRotate;
+		c = mPlayer->mPosition + CVector(0.0f, 0.0f, 40.0f)* mPlayer->mMatrixScale
+			* CMatrix().RotateY(mPlayer->mRotation.mY);
+			//* CMatrix().RotateZ(mPlayer->mRotation.mZ);
+	}
+	else if (mCamPoV == 2){
+		e = CVector(0.0f, 0.0f + 0.5f, -40.0f) * CMatrix().RotateY(mCamY) * mPlayer->mMatrixScale
+			* CMatrix().RotateY(mPlayer->mRotation.mY)
+			* mPlayer->mMatrixTranslate
+			+ CVector(0.0f, 0.0f, 0.0f);
+		////注視点を求める
+		//c = mPlayer->mPosition + CVector(0.0f, 0.0f, 40.0f)*mPlayer->mMatrixRotate;
+		c = mPlayer->mPosition + CVector(0.0f, 0.0f, 40.0f)* mPlayer->mMatrixScale
+			* CMatrix().RotateY(mPlayer->mRotation.mY);
+			//* CMatrix().RotateZ(mPlayer->mRotation.mZ);
+	}
+	else if (mCamPoV == 3){//後方を映す視点
+		e = CVector(0.0f, 17.0f, 40.0f) * CMatrix().RotateY(mCamY) * mPlayer->mMatrixScale
+			* CMatrix().RotateY(mPlayer->mRotation.mY)
+			* mPlayer->mMatrixTranslate
+			+ CVector(0.0f, 0.0f, 0.0f);
+		////注視点を求める
+		//c = mPlayer->mPosition + CVector(0.0f, 0.0f, 40.0f)*mPlayer->mMatrixRotate;
+		c = mPlayer->mPosition + CVector(0.0f, 0.0f, -40.0f)* mPlayer->mMatrixScale
+			* CMatrix().RotateY(mPlayer->mRotation.mY);
+			//* CMatrix().RotateZ(mPlayer->mRotation.mZ);
+	}
+
+	//CMatrix().RotateZ(mRotation.mZ) *CMatrix().RotateX(mRotation.mX) *CMatrix().RotateY(mRotation.mY);
+
+	//////注視点を求める
+	////c = mPlayer->mPosition + CVector(0.0f, 0.0f, 40.0f)*mPlayer->mMatrixRotate;
+	//c = mPlayer->mPosition + CVector(0.0f, 0.0f, 40.0f)
+	//	* CMatrix().RotateY(mPlayer->mRotation.mY)
+	//	* CMatrix().RotateZ(mPlayer->mRotation.mZ);
+	
+	//上方向を求める
+	u = CVector(0.0f, 1.0f, 0.0f);// *mPlayer->mMatrixRotate;
+	
+
+
+	//e = CVector(0.0f+mXXX, 5000.0f, mZZZ+0.0f);
+	//	/*CVector(0.0f, 3000.0f, 0.0f) * CMatrix().RotateY(mCamY) * mPlayer->mMatrixScale
+	//	* CMatrix().RotateY(mPlayer->mRotation.mY)
+	//	* mPlayer->mMatrixTranslate
+	//	+ CVector(0.0f, 0.0f, 0.0f);*/
+	////注視点を求める
+	//c = CVector(0.0f+mXXX, 0.0f, mZZZ+0.0001f);
+	//	//mPlayer->mPosition + CVector(0.0f, 0.0f, 0.01f)*mPlayer->mMatrixRotate;
+	////上方向を求める
+	//u = CVector(0.0f, 1.0f, 0.0f) * mPlayer->mMatrixRotate;
+
+	//カメラの設定
+	Camera3D(e.mX, e.mY, e.mZ, c.mX, c.mY, c.mZ, u.mX, u.mY, u.mZ);
+
+	////背景の描画
+	//mSky.Render();
+	////タスクマネージャの更新
+	//TaskManager.Update();
+	////タスクマネージャの描画
+	//TaskManager.Render();
+
+	//mPlayer->mpModel = &mRover;
+	mPlayer->mpModel = &mRover;
+	mPlayer->mScale = CVector(2.5f, 2.5f, 2.5f);
+
+	//タスクマネージャの更新・描画
+	CTaskManager::Get()->Update();
+	CTaskManager::Get()->Render();
+
+	////岩の描画
+	//mRock.Render(CMatrix().Scale(5.0f, 5.0f, 5.0f));
+	////車の描画
+	//mRover.Render(CMatrix().Translate(-20.0f, 0.0f, 10.0f));
+
+	//あ゛
+	//コリジョンマネージャの衝突処理
+	CollisionManager.Collision();
+	//TaskManager.Delete();
+	CTaskManager::Get()->Delete();
+
+	//デバッグ用
+#ifdef _DEBUG
+	if (CKey::Once('9')){
+		if (mPutCol){
+			mPutCol = false;
+		}
+		else{
+			mPutCol = true;
+		}
+	}
+	if (mPutCol){
+		//衝突判定の描画
+		CollisionManager.Render();
+	}
+#endif
+
+	if (CKey::Once('0')){
+		//mCamPoV = 1;
+		if (mCamPoV == 1){
+			mCamPoV = 2;
+		}
+		else if (mCamPoV == 2){
+			mCamPoV = 3;
+		}
+		else if (mCamPoV == 3){
+			mCamPoV = 1;
+		}
+	}
+
+
+	if (isStartRace){
+		//59:59:59が最大時間
+		if (mTime < 595959){
+			if (mTime % 10000 == 5959){
+				mTime += 1 + 40 + 4000;
+			}
+			else if (mTime % 100 == 59){
+				mTime += 1 + 40;
+			}
+			else{
+				mTime += 1;
+			}
+		}
+	}
+	
+	RenderMiniMap();
+	//2D描画開始
+	Start2D(0, 800, 0, 600);
+
+	CText::DrawString("COURCE 1", 20, 20, 10, 12);
+
+	//時間の表示
+	char mti[70];// :も含めた最大文字数の設定
+//	sprintf(mti, "%06d", mTime);
+	sprintf(mti, "TIME:%02d:%02d:%02d", mTime / 10000 % 100, mTime / 100 % 100, mTime % 100);
+	CText::DrawString(mti, 20, 530, 10, 12);
+	//ベストタイムの表示
+	char mbestti[70];// :も含めた最大文字数の設定
+	//	sprintf(mti, "%06d", mTime);
+	sprintf(mbestti, "BEST:%02d:%02d:%02d", mBestTime / 10000 % 100, mBestTime / 100 % 100, mBestTime % 100);
+	CText::DrawString(mbestti, 20, 580, 10, 12);
+	
+	//カウントダウン開始、GO!で操作の受付開始
+	if (mFrame < 60){
+		mFrame++;
+	}
+	else{
+		if (mCountDown >= 0){
+			mCountDown--;
+			if (mCountDown == 0){
+				isStartRace = true;
+				SoundStart.Play();
+			}
+			else if (mCountDown > 0){
+				SoundCountDown.Play();
+			}
+		}
+		mFrame = 0;
+	}
+	//カウントダウン表示
+	char mcountd[7];
+	//残り3秒までの時だけ表示
+	sprintf(mcountd, "%d", mCountDown);
+	if (mCountDown > 0 && mCountDown <= 3){
+		CText::DrawString(mcountd, 400, 300, 25, 30);
+	}
+	else if (mCountDown == 0){
+		CText::DrawString("GO!", 400-40, 300, 25, 30);
+		CPlayer::mpPlayer->CanMove = true;
+	}
+	/*SoundCountDown.Play();
+	SoundStart.Play();*/
+
+
+	if (isStartRace == false){
+		if (mCountDown > 0){
+			//カウントダウン中(ゴール以前に、スタートすらしてない)
+		}
+		else{
+			CText::DrawString("FINISH!", 400 - 25 * 6, 300, 25, 30);
+		}
+	}
+
+	char lap[19];
+	sprintf(lap, "LAP %d", mLap);
+	CText::DrawString(lap, 20, 500, 10, 12);
+
+	//ゴール後、継続して実行する処理
+	if (mLap == 3 && isStartRace == false){
+		//新記録をたたき出した時
+		if (isNewRecord){
+			//CText::DrawString("FINISH!", 400 - 20 * 6, 300, 20, 24);
+			CText::DrawString("NEW RECORD!", 55, 558, 8, 9);
+		}
+	}
+
+	//ミニマップ・現在地の表示
+//	CText::DrawString("+", -(CPlayer::mpPlayer->mPosition.mX / 50)+600, CPlayer::mpPlayer->mPosition.mZ / 50 + 100, 10, 10);
+
+	//2D描画終了
+	End2D();
+
+
+	//CText::DrawString("PONG", 110, 80, 100, 100);
+	//CText::DrawString("HEPPY", 110, 380, 70, 70);
+	//CText::DrawString("MEW", 250, 230, 70, 70);
+	//CText::DrawString("YEAH", 180, 80, 70, 70);
+
+
+	if (CKey::Push('Y')){//でば
+		mCamY += 1.0f;
+	}
+	if (CKey::Push('U')){//つぐ
+		mCamY += -1.0f;
+	}
+
+
+	if ((CPlayer::mpPlayer->mPosition.mX > 155.0f && CPlayer::mpPlayer->mPosition.mX < 975.0f)
+		&& (CPlayer::mpPlayer->mPosition.mZ > -3.1f - 5.0f && CPlayer::mpPlayer->mPosition.mZ < -3.1f + 5.0f)
+		&& (CPlayer::mpPlayer->mChecks == 3)
+		&& (isStartRace)){
+		//new CObj(&mCube, CVector(0.0f, 0.0f, 5700.0f), CVector(-90.0f, 0.0f, 0.0f), CVector(100.0f, 13.0f, 211.0f), 1);//ゴール
+		//new CObj(&mTileBlack, CVector(170.0f + 20.0f * -1 + 5.0f, -13.1f + 10.0f, -10.0f), CVector(0.0f, 0.0f, 0.0f), CVector(5.0f, 64.0f, 5.0f), 99);//柱
+		//new CObj(&mTileBlack, CVector(170.0f + 20.0f * 40 + 5.0f, -13.1f + 10.0f, -10.0f), CVector(0.0f, 0.0f, 0.0f), CVector(5.0f, 64.0f, 5.0f), 99);//柱
+
+		if (mLap == 3){
+			//ベストタイム更新時
+			if (mTime < mBestTime){
+				mBestTime = mTime;
+				isNewRecord = true;
+			}
+			isStartRace = false;
+			BGM.Stop();
+			SoundGoal.Play();
+			//CPlayer::mpPlayer->CanMove = false;//動きストップ
+			CPlayer::mpPlayer->mChecks = 0;
+		}
+		else{
+			mLap++;
+			CPlayer::mpPlayer->mChecks = 0;
+		}
+	}
+	
+
+	//	new CObj(&mWarpPoint, CVector(-143.0f, 0.0f, 94.0f), CVector(0.0f, 0.0f, 0.0f), CVector(6.0f, 20.0f, 6.0f), 20);
+	//特定の地点(光(のつもり)の範囲内)に行くとStage2へ移行
+	/*if ((CPlayer::mpPlayer->mPosition.mX > -149.0f && CPlayer::mpPlayer->mPosition.mX < -137.0f)
+		&& (CPlayer::mpPlayer->mPosition.mZ > 88.0f && CPlayer::mpPlayer->mPosition.mZ < 100.0f)
+		&& (CPlayer::mpPlayer->mHaveBoat)){
+		mScene = ESTAGE2;
+	}*/
+	////デバッグコマンド
+	//if (CKey::Once(VK_RETURN)){
+	//	mScene = ESTAGE2;
+	//}
+
+	if (CKey::Once('1')){
+		printf("%d\n", CItem::mTargetAmount);
+	}
+	if (CKey::Once('2')){//Playerの座標を出力する
+		printf("X:%f Y:%f Z:%f\n", CPlayer::mpPlayer->mPosition.mX, CPlayer::mpPlayer->mPosition.mY, CPlayer::mpPlayer->mPosition.mZ);
+	}
+	if (CKey::Once('3')){//強制的に的の残数を0にする(本来の的は消えない)
+		CItem::mTargetAmount = 0;
+	}
+	if (CKey::Once('4')){//余剰の計算時、割る数(右の数字)は正の値で計算される？
+		printf("%d\n", -13 % 5);//負%正=負
+		printf("%d\n", -12 % -5);//負%負=負
+		printf("%d\n", 14 % -5);//正%負=正
+	}
+	if (CKey::Push('5')){
+		printf("%f:%f:%f\n", CPlayer::mpPlayer->mRotation.mX, CPlayer::mpPlayer->mRotation.mY, CPlayer::mpPlayer->mRotation.mZ);
+	}
+	if (CKey::Once('6')){
+		printf("%d\n", CPlayer::mpPlayer->mChecks);
+	}
+	if (CKey::Once('7')){
+		if (CPlayer::mpPlayer->mFlyingMode){
+			CPlayer::mpPlayer->mFlyingMode = false;
+		}
+		else{
+			CPlayer::mpPlayer->mFlyingMode = true;
+		}
+	}
+	
+	if (CKey::Once('M')){
+		BGM.Stop();
+	}
+
+
+	return;
+}
+
+/* マップ上からの視点 */
+void CSceneRace::RenderMiniMap() {
+	glPushMatrix();
+	glViewport(600 + 20-30, 450 - 440, 200, 150); //画面の描画エリアの指定
+	glLoadIdentity();
+	gluLookAt(0, 4800, 0, 0, 0, 0, 0, 0, 1);
+	glDisable(GL_DEPTH_TEST);
+//	BackGround.Render(CMatrix());
+	//タスクマネージャの描画
+//	TaskManager.Render();
+
+//	mPlayer->mpModel = &mCarsol;
+//	mPlayer->mScale = CVector(10.0f, 1.0f, 10.0f);
+	CTaskManager::Get()->Render();
+	//ミニマップにゴールアイコンを描画
+	CMatrix matminig;
+	matminig = CMatrix().Scale(20.0f, 1.0f, 20.0f)
+		//* mPlayer->mMatrixRotate
+		* CMatrix().RotateX(0)
+		* CMatrix().RotateY(0)
+		* CMatrix().RotateZ(0)
+		* CMatrix().Translate(550.0f, 0.0f, -10.0f);
+	mMiniGoal.Render(matminig);
+	//ミニマップにカーソルを描画
+	CMatrix mat;
+	mat = CMatrix().Scale(35.0f, 1.0f, 35.0f) //* mPlayer->mMatrixScale
+		//* mPlayer->mMatrixRotate
+		* CMatrix().RotateX(0)
+		* CMatrix().RotateY(mPlayer->mRotation.mY)
+		* CMatrix().RotateZ(0)
+		* mPlayer->mMatrixTranslate;
+	mCarsol.Render(mat);
+	//mMatrix = mMatrixScale * mMatrixRotate * mMatrixTranslate;
+	
+
+
+	glPopMatrix();
+	glViewport(0, 0, 800, 600); //画面の描画エリアの指定
+	glEnable(GL_DEPTH_TEST);
+	
+	//Camera3D(e.mX, e.mY, e.mZ, c.mX, c.mY, c.mZ, u.mX, u.mY, u.mZ);
+
+	
+}
+
+
+//次のシーンの取得
+CScene::EScene CSceneRace::GetNextScene(){
+	return mScene;
+}
+
