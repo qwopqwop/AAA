@@ -268,10 +268,13 @@ void CSceneRace::Init() {
 
 	new CObj(&mTileWhite, CVector(0.0f, -11.1f, 900.0f), CVector(0.0f, 0.0f, 0.0f), CVector(50.0f, 150.0f, 10.0f), 200);//壁
 
+	//new CObj(&mTileWhite, CVector(230.0f, -11.1f, 1300.0f), CVector(0.0f, 0.0f, 0.0f), CVector(50.0f, 50.0f, 50.0f), 200);//壁
+
+	//new CObj(&mTileWhite, CVector(330.0f, -11.1f, 1110.0f), CVector(0.0f, 0.0f, 0.0f), CVector(50.0f, 1000.0f, 10.0f), 200);//壁
 
 //	new CObj(&mTileBlack, CVector(0.0f, -1010.0f, 0.0f), CVector(0.0f, 0.0f, 0.0f), CVector(50000.0f, 1.0f, 50000.0f), 99);//白タイル
 
-	//シェーダー無いとこんなん重すぎて死ぬ！
+	//シェーダー無いと激重
 	//new CObj(&mSumple, CVector(430.0f, 10.0f + 3123.0f, 0.0f), CVector(0.0f, 0.0f, 0.0f), CVector(50.0f, 50.0f, 50.0f), 99);
 	//当たり判定を作らなければ大丈夫
 

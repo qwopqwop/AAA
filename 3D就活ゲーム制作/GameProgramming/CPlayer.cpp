@@ -9,6 +9,8 @@ extern CSound SoundShot;
 extern CSound SoundItemGet;
 extern CSound SoundBoost;
 extern CSound SoundEngine;
+extern CSound SoundCollision;
+extern CSound SoundCollisionSmall;
 
 int CPlayer::RenderType;
 
@@ -96,7 +98,11 @@ CPlayer::CPlayer()
 	SoundShot.Load("SE\\shot1.wav");
 	SoundItemGet.Load("SE\\se_maoudamashii_system46.wav");	
 	SoundBoost.Load("SE\\Shortbridge31-3.wav");
-	SoundEngine.Load("SE\\SNES-Racing02-02.wav");
+	SoundEngine.Load("SE\\SNES-Racing01-02.wav");
+	SoundCollision.Load("SE\\bomb1.wav");
+	SoundCollisionSmall.Load("SE\\SNES-Racing01-10(Collision).wav");
+	
+
 
 	isSoundEngine = false;
 	//SoundEngine.Repeat();
@@ -577,7 +583,30 @@ void CPlayer::Collision(CCollider *mc, CCollider *yc){
 							CCharacter::Update();
 
 							if (yc->mpParent->mTag == CCharacter::EWALL){
-								//Õ“Ë‚µ‚½‚Ì‚ª•Ç‚¾‚Á‚½ê‡‚Í•Ç‚Éˆø‚Á‚©‚©‚ç‚¸‚É—Ž‰º
+								//Õ“Ë‚µ‚½‚Ì‚ª•Ç‚¾‚Á‚½ê‡‚Í•Ç‚É‚Íˆø‚Á‚©‚©‚ç‚¸—Ž‰º
+								//•Ç‚É‚Ô‚Â‚©‚é‚ÆÕ“Ë‰¹‚ª‚µAŽÔ‚ªŒ¸‘¬‚·‚é
+								//‘¬‚¢Žž‚ÉÕ“Ë‚ÅŒ¸‘¬A’x‚¢Žž‚ÌÕ“Ë‚Í“Á‚É•Ï‰»‚È‚µ
+								if (mCarSpeed > 4.5f){
+									mCarSpeed = -0.4f;
+									//mCarSpeed /= 2.0f;
+									SoundCollision.Play();
+									printf("ºÞÝ¯");
+								}
+								else if (mCarSpeed > 3.0f){
+									mCarSpeed = -0.4f;
+									//mCarSpeed /= 2.0f;
+									SoundCollisionSmall.Play();
+									printf("ºÞ½¯");
+								}
+								else{
+									//•Ç‚É‚±‚·‚è‚È‚ª‚ç‚ÌˆÚ“®ŽžA‘¬“x‚ª’x‚­‚È‚é
+									if (mCarSpeed > 2.0f){
+										mCarSpeed = 2.0f;
+									}
+								}
+								//mCarSpeed = -mCarSpeed * 1.0;
+								//mVelocityJump = 2.0f;
+								
 							}
 							else{
 								mVelocityJump = 0;
