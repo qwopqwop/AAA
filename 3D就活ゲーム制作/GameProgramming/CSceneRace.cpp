@@ -18,6 +18,9 @@
 //
 #include "CBullet.h"
 
+//スマートポインタの生成
+std::shared_ptr<CTexture> TextureExp(new CTexture());
+
 extern CSound BGM;
 extern CSound SoundCountDown;
 extern CSound SoundStart;
@@ -35,6 +38,9 @@ void CSceneRace::Init() {
 
 	//的の残数の初期化
 	CItem::mTargetAmount = 0;
+
+	//爆発テクスチャの読み込み
+	TextureExp->Load("exp.tga");
 
 	//テキストフォントの読み込みと設定
 	CText::mFont.Load("FontG.tga");
@@ -305,6 +311,7 @@ void CSceneRace::Init() {
 
 	//TaskManager.ChangePriority(&mPlayer, 15);
 	CTaskManager::Get()->ChangePriority(mPlayer, 15);
+	//CTaskManager::Get()->ChangePriority(, 15);
 
 	BGM.Repeat();
 }
@@ -376,6 +383,7 @@ void CSceneRace::Update() {
 
 	//カメラの設定
 	Camera3D(e.mX, e.mY, e.mZ, c.mX, c.mY, c.mZ, u.mX, u.mY, u.mZ);
+	Camera.mEye = e;
 
 	////背景の描画
 	//mSky.Render();
@@ -521,6 +529,10 @@ void CSceneRace::Update() {
 
 	//ミニマップ・現在地の表示
 //	CText::DrawString("+", -(CPlayer::mpPlayer->mPosition.mX / 50)+600, CPlayer::mpPlayer->mPosition.mZ / 50 + 100, 10, 10);
+
+	char carspeed[33];
+	sprintf(carspeed, "SPEED:%4.1f", CPlayer::mpPlayer->mCarSpeed);
+	CText::DrawString(carspeed, 20+560, 20, 10, 12);
 
 	//2D描画終了
 	End2D();

@@ -4,6 +4,11 @@
 #include "CItem.h"
 #include "CBullet.h"
 
+//衝突時のエフェクト追加
+#include "CEffect.h"
+extern std::shared_ptr<CTexture> TextureExp;
+#include "CTaskManager.h"
+
 extern CSound SoundJump;
 extern CSound SoundShot;
 extern CSound SoundItemGet;
@@ -54,7 +59,7 @@ CPlayer::CPlayer()
 {
 	mpPlayer = this;
 
-	mScale = CVector(2.0f, 2.0f, 2.0f);
+	mScale = CVector(2.5f, 2.5f, 2.5f);
 
 	mVelocityJump = 0.0f;
 	mJumpV0 = 1.1f;//バネ取得後は2.3fの予定
@@ -505,7 +510,7 @@ void CPlayer::Collision(CCollider *mc, CCollider *yc){
 					if (CCollider::CollisionTriangleSphere(yc, mc, &aiueo)){
 						//ブースト効果の方が優先される
 						if (isBoost == false){
-							printf("speed down…\n");
+							//printf("speed down…\n");
 							//一定速度までスピード低下
 							if (mCarSpeed > 3.0f){
 								if (mCarSpeed > 3.3f){
@@ -587,15 +592,19 @@ void CPlayer::Collision(CCollider *mc, CCollider *yc){
 								//壁にぶつかると衝突音がし、車が減速する
 								//速い時に衝突で減速、遅い時の衝突は特に変化なし
 								if (mCarSpeed > 4.5f){
-									mCarSpeed = -0.4f;
+									mCarSpeed = 2.0f;
 									//mCarSpeed /= 2.0f;
 									SoundCollision.Play();
+									//激突時、エフェクト発生
+									new CEffect(mPosition + CVector(0.0f,50.0f,0.0f), 50.0f, 50.0f, TextureExp, 4, 4, 1);
 									printf("ｺﾞﾝｯ");
 								}
 								else if (mCarSpeed > 3.0f){
-									mCarSpeed = -0.4f;
-									//mCarSpeed /= 2.0f;
+									mCarSpeed = 2.0f;
 									SoundCollisionSmall.Play();
+									//軽くぶつけた時もエフェクト発生
+								//	new CEffect(mPosition, 1.0f, 1.0f, TextureExp, 4, 4, 1);
+									new CEffect(mPosition + CVector(0.0f, 40.0f, 0.0f), 40.0f, 40.0f, TextureExp, 4, 4, 1);
 									printf("ｺﾞｽｯ");
 								}
 								else{
@@ -649,10 +658,13 @@ void CPlayer::Collision(CCollider *mc, CCollider *yc){
 					CVector aiueo;//とりまベクトル
 					if (CCollider::CollisionTriangleSphere(yc, mc, &aiueo)){
 						//mCarSpeed += 10.0f;
+						
+						if (isBoost == false){
+							printf("SPEED UP!\n");
+							SoundBoost.Play();
+						}
 						isBoost = true;
 						mBoostTime = 45;
-						printf("SPEED UP!\n");
-						SoundBoost.Play();
 					}
 				}
 			}

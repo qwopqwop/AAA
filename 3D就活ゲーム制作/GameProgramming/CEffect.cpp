@@ -1,10 +1,14 @@
 #include "CEffect.h"
+#include "CTaskManager.h"
 
 CEffect::CEffect(const CVector &pos, float w, float h, std::shared_ptr<CTexture> texture, int row, int col, int fps)
 : CBillBoard(pos, w, h), mRows(row), mCols(col), mFps(fps), mFrame(0)
 {
 	mMaterial.mpTexture = texture;
-//	ChangePriority(-1);
+	mPriority = 0;
+	CTaskManager::Get()->Remove(this);
+	CTaskManager::Get()->Add(this);
+	//	ChangePriority(-1);
 }
 
 void CEffect::Update() {
@@ -32,6 +36,6 @@ void CEffect::Update() {
 	CBillBoard::Update();
 	//I—¹”»’è
 	if (mFrame >= mFps * mRows * mCols) {
-//		mEnabled = false;
+		mEnabled = false;
 	}
 }

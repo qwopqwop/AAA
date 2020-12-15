@@ -38,6 +38,7 @@ CCharacter::CCharacter()
 , mTag(ENONE)
 , mScale(1.0f, 1.0f, 1.0f)
 {
+	mPriority = 1;
 	//タスクリストに追加
 	CTaskManager::Get()->Add(this);
 	//TaskManager.Add(this);
