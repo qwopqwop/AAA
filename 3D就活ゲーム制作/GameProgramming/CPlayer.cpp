@@ -7,6 +7,7 @@
 //衝突時のエフェクト追加
 #include "CEffect.h"
 extern std::shared_ptr<CTexture> TextureExp;
+extern std::shared_ptr<CTexture> TextureHit;
 #include "CTaskManager.h"
 
 extern CSound SoundJump;
@@ -597,14 +598,15 @@ void CPlayer::Collision(CCollider *mc, CCollider *yc){
 									SoundCollision.Play();
 									//激突時、エフェクト発生
 									new CEffect(mPosition + CVector(0.0f,50.0f,0.0f), 50.0f, 50.0f, TextureExp, 4, 4, 1);
+									//new CEffect(mPosition + CVector(0.0f, 390.0f/2, 0.0f), 390.0f, 390.0f, TextureExp, 4, 4, 111);
+
 									printf("ｺﾞﾝｯ");
 								}
 								else if (mCarSpeed > 3.0f){
 									mCarSpeed = 2.0f;
 									SoundCollisionSmall.Play();
 									//軽くぶつけた時もエフェクト発生
-								//	new CEffect(mPosition, 1.0f, 1.0f, TextureExp, 4, 4, 1);
-									new CEffect(mPosition + CVector(0.0f, 40.0f, 0.0f), 40.0f, 40.0f, TextureExp, 4, 4, 1);
+									new CEffect(mPosition + CVector(0.0f, 25.0f, 0.0f), 34.0f, 8.5f, TextureHit, 2, 8, 31);
 									printf("ｺﾞｽｯ");
 								}
 								else{

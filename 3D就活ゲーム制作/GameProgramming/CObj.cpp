@@ -1,6 +1,7 @@
 #include "CObj.h"
 #include "CItem.h"
 #include "CPlayer.h"
+#include "CTaskManager.h"
 
 #define DOOR_RANGEOFMOTION 90 //ドアの可動域
 #define DOOR_OPENSPEED 2 //ドアの開く速度
@@ -30,14 +31,26 @@ CObj::CObj(CModel *model, const CVector &position, const CVector &rotation, cons
 	if (mObjNumber == 101){
 		//チェックポイント
 		mTag = ECHECKPOINT;
+		//優先度変更
+		mPriority = 0;
+		CTaskManager::Get()->Remove(this);
+		CTaskManager::Get()->Add(this);
 	}
 	if (mObjNumber == 102){
 		//チェックポイント
 		mTag = ECHECKPOINT2;
+		//優先度変更
+		mPriority = 0;
+		CTaskManager::Get()->Remove(this);
+		CTaskManager::Get()->Add(this);
 	}
 	if (mObjNumber == 103){
 		//チェックポイント
 		mTag = ECHECKPOINT3;
+		//優先度変更
+		mPriority = 0;
+		CTaskManager::Get()->Remove(this);
+		CTaskManager::Get()->Add(this);
 	}
 	if (mObjNumber == 111){
 		//加速床
