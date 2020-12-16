@@ -22,6 +22,7 @@ public:
 	void Update();
 	//•`‰æ
 	void Render();
+	int mBlendType;
 };
 
 #endif

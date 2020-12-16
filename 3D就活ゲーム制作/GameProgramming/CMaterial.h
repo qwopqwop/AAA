@@ -21,8 +21,11 @@ public:
 
 	//デフォルトコンストラクタ
 	CMaterial();
-	//マテリアルを有効にする
+	//マテリアルを有効にする(アルファブレンド)
 	void Enabled();
+	//マテリアルを有効にする(加算ブレンド)
+	void Enabledplus();
+
 	//マテリアルを無効にする
 	void Disabled();
 };

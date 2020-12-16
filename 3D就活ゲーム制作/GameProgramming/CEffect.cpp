@@ -1,14 +1,25 @@
 #include "CEffect.h"
 #include "CTaskManager.h"
 
-CEffect::CEffect(const CVector &pos, float w, float h, std::shared_ptr<CTexture> texture, int row, int col, int fps)
+//CEffect::CEffect(const CVector &pos, float w, float h, std::shared_ptr<CTexture> texture, int row, int col, int fps)
+//: CBillBoard(pos, w, h), mRows(row), mCols(col), mFps(fps), mFrame(0)
+//{
+//	mMaterial.mpTexture = texture;
+//	mPriority = 0;
+//	CTaskManager::Get()->Remove(this);
+//	CTaskManager::Get()->Add(this);
+//	//	ChangePriority(-1);
+//}
+
+CEffect::CEffect(const CVector &pos, float w, float h, std::shared_ptr<CTexture> texture, int row, int col, int fps, int blendtype)
 : CBillBoard(pos, w, h), mRows(row), mCols(col), mFps(fps), mFrame(0)
 {
 	mMaterial.mpTexture = texture;
 	mPriority = 0;
 	CTaskManager::Get()->Remove(this);
 	CTaskManager::Get()->Add(this);
-	//	ChangePriority(-1);
+	//ChangePriority(-1);
+	CBillBoard::mBlendType = blendtype;
 }
 
 void CEffect::Update() {

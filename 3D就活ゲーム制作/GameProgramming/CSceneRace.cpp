@@ -43,7 +43,7 @@ void CSceneRace::Init() {
 	//爆発テクスチャの読み込み
 	TextureExp->Load("exp.tga");
 	//衝突テクスチャの読み込み
-	TextureHit->Load("effect\\[Attack]Spear01_panop.tga");
+	TextureHit->Load("effect\\[Attack]Hit01_panop.tga");
 
 	//テキストフォントの読み込みと設定
 	CText::mFont.Load("FontG.tga");

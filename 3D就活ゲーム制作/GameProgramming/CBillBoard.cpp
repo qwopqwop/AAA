@@ -46,8 +46,18 @@ void CBillBoard::Render() {
 	glDisable(GL_LIGHTING);
 	//描画色の設定
 	glColor4fv(mMaterial.mDiffuse);
+
 	//マテリアル適用
-	mMaterial.Enabled();
+	if (mBlendType == 1){
+		//加算ブレンド、真っ黒な所が透過される
+		mMaterial.Enabledplus();
+	}
+	else{
+		//アルファブレンド、透明度に応じて透過
+		mMaterial.Enabled();
+	}
+	//mMaterial.Enabled();
+
 	//三角形の描画
 	mT[0].Render();
 	mT[1].Render();

@@ -50,3 +50,24 @@ void CMaterial::Disabled() {
 		glDisable(GL_TEXTURE_2D);
 	}
 }
+
+//マテリアルを有効にする
+void CMaterial::Enabledplus() {
+	//アルファブレンドを有効にする
+	glEnable(GL_BLEND);
+	//ブレンド方法を指定(加算ブレンド)
+	glBlendFunc(GL_ONE, GL_ONE);
+
+	//拡散光の設定
+	glMaterialfv(GL_FRONT, GL_DIFFUSE, mDiffuse);
+	//テクスチャが無い時、戻る
+	if (mpTexture == 0)
+		return;
+	//テクスチャ有り
+	if (mpTexture->mId) {
+		//テクスチャを使用可能にする
+		glEnable(GL_TEXTURE_2D);
+		//テクスチャをバインドする
+		glBindTexture(GL_TEXTURE_2D, mpTexture->mId);
+	}
+}

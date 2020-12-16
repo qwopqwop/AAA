@@ -90,7 +90,7 @@ CPlayer::CPlayer()
 	mJumpPrio = 0;
 
 	//スタート地点の座標を設定;
-	mStartPoint[0] = 300.0f;  mStartPoint[1] = 63.0f;  mStartPoint[2] = -100.0f;
+	mStartPoint[0] = 300.0f;  mStartPoint[1] = -13.538f;  mStartPoint[2] = -100.0f;
 	
 	mPosition = CVector(mStartPoint[0], mStartPoint[1], mStartPoint[2]);
 	CCharacter::Update();
@@ -597,7 +597,7 @@ void CPlayer::Collision(CCollider *mc, CCollider *yc){
 									//mCarSpeed /= 2.0f;
 									SoundCollision.Play();
 									//激突時、エフェクト発生
-									new CEffect(mPosition + CVector(0.0f,50.0f,0.0f), 50.0f, 50.0f, TextureExp, 4, 4, 1);
+									new CEffect(mPosition + CVector(0.0f,50.0f,0.0f), 50.0f, 50.0f, TextureExp, 4, 4, 1, 0);
 									//new CEffect(mPosition + CVector(0.0f, 390.0f/2, 0.0f), 390.0f, 390.0f, TextureExp, 4, 4, 111);
 
 									printf("ｺﾞﾝｯ");
@@ -606,13 +606,15 @@ void CPlayer::Collision(CCollider *mc, CCollider *yc){
 									mCarSpeed = 2.0f;
 									SoundCollisionSmall.Play();
 									//軽くぶつけた時もエフェクト発生
-									new CEffect(mPosition + CVector(0.0f, 25.0f, 0.0f), 34.0f, 8.5f, TextureHit, 2, 8, 31);
+									new CEffect(mPosition + CVector(0.0f, 15.5f, 0.0f), 17.0f, 17.0f, TextureHit, 3, 8,	1, 1);
 									printf("ｺﾞｽｯ");
 								}
 								else{
 									//壁にこすりながらの移動時、速度が遅くなる
 									if (mCarSpeed > 2.0f){
 										mCarSpeed = 2.0f;
+										/*new CEffect(mPosition + CVector(0.0f, 20.0f, 0.0f), 68.0f + 12.0f, 17.0f + 3.0f, TextureHit, 1, 1, 1, 1);
+										new CEffect(mPosition + CVector(0.0f, 60.0f, 0.0f), 68.0f + 12.0f, 17.0f + 3.0f, TextureHit, 1, 1, 1, 0);*/
 									}
 								}
 								//mCarSpeed = -mCarSpeed * 1.0;
