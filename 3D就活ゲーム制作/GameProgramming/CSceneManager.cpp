@@ -2,6 +2,7 @@
 #include "CSceneGame.h"
 #include "CSceneGameStage2.h"
 #include "CSceneRace.h"
+#include "CSceneTitle.h"
 #include "CTaskManager.h"
 
 CSceneManager SceneManager;
@@ -24,21 +25,10 @@ CSceneManager::~CSceneManager() {
 }
 //初期化処理
 void CSceneManager::Init() {
-	////シーンの識別を設定する
-	//mScene = CScene::ESTAGE2;
-
-	////シーンを生成し、ポインタを設定する
-	//mpScene = new CSceneGameStage2();
-
-	////シーンの識別を設定する
-	//mScene = CScene::ESTAGE1;
-	////シーンを生成し、ポインタを設定する
-	//mpScene = new CSceneGame();
-
 	//シーンの識別を設定する
-	mScene = CScene::ERACE1;
+	mScene = CScene::ETITLE;
 	//シーンを生成し、ポインタを設定する
-	mpScene = new CSceneRace();
+	mpScene = new CSceneTitle();
 
 	//生成したクラスのメソッドが呼ばれる
 	mpScene->Init();
@@ -64,6 +54,10 @@ void CSceneManager::Update() {
 			break;
 		case CScene::ERACE1:
 			mpScene = new CSceneRace();
+			mpScene->Init();
+			break;
+		case CScene::ETITLE:
+			mpScene = new CSceneTitle();
 			mpScene->Init();
 			break;
 		}

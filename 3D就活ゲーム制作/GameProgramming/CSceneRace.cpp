@@ -627,6 +627,11 @@ void CSceneRace::Update() {
 		BGM.Stop();
 	}
 
+	if (CKey::Once(VK_RETURN)){
+		//Ÿ‚ÌƒV[ƒ“‚ÍƒQ[ƒ€
+		mScene = ETITLE;
+	}
+
 
 	return;
 }

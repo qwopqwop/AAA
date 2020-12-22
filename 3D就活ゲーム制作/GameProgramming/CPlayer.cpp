@@ -597,7 +597,7 @@ void CPlayer::Collision(CCollider *mc, CCollider *yc){
 									//mCarSpeed /= 2.0f;
 									SoundCollision.Play();
 									//激突時、エフェクト発生
-									new CEffect(mPosition + CVector(0.0f,50.0f,0.0f), 50.0f, 50.0f, TextureExp, 4, 4, 1, 0);
+									new CEffect(mPosition + CVector(0.0f,35.0f,0.0f), 50.0f, 50.0f, TextureExp, 4, 4, 1, 0);
 									//new CEffect(mPosition + CVector(0.0f, 390.0f/2, 0.0f), 390.0f, 390.0f, TextureExp, 4, 4, 111);
 
 									printf("ｺﾞﾝｯ");
