@@ -25,7 +25,10 @@ public:
 		mPrevVariable1 = mVariable1;
 		mVariable2 = 0;
 		mPrevVariable2 = mVariable2;
+		mStart = false;
+		mStartWaitTime = 0;
 		SoundMoveCarsol.Load("SE\\カーソル2.wav");
+		SoundDecide.Load("SE\\決定＿小決定（SF系）.wav");
 	}
 	//更新処理のオーバーライド
 	void Update() {
@@ -34,18 +37,68 @@ public:
 		//文字列の描画
 		CText::DrawString("3D-RACE", -278 + 400 + 68, 10 + 400, 36, 36);
 		CText::DrawString("Push Enter Key", 200, 150, 16, 16);
-		CText::DrawString("O", 150 + mVariable2 * 250, 300 + mVariable1 * 50, 10, 10);
+		
+		float c[] = { 1.0f, 1.0f, 1.0f, 1.0f };
+		if (mStartWaitTime > 20 || mStart == false){
+			c[0] = c[1] = c[2] = 1.0f;
+		}
+		else if(mStartWaitTime % 8 < 4){
+			c[0] = c[1] = c[2] = 0.5f;
+		}
+		glColor4fv(c);
+		CText::DrawString("O", 170 + mVariable2 * 250, 300 + mVariable1 * 50, 10, 10);
 
-		CText::DrawString("Start", 450, 300, 16, 16);
-		CText::DrawString("Start", 200, 300, 16, 16);
-		CText::DrawString("Start", 450, 250, 16, 16);
-		CText::DrawString("Start", 200, 250, 16, 16);
+
+		
+		if (mVariable1 == 0 && mVariable2 == 0){
+			c[0] = c[1] = c[2] = 1.0f; c[3] = 1.0f;
+		}
+		else{
+			c[0] = c[1] = c[2] = 0.5f; c[3] = 1.0f;
+		}
+		glColor4fv(c);
+		CText::DrawString("StartA", 200, 300, 16, 16);
+		if (mVariable1 == 0 && mVariable2 == 1){
+			c[0] = c[1] = c[2] = 1.0f; c[3] = 1.0f;
+		}
+		else{
+			c[0] = c[1] = c[2] = 0.5f; c[3] = 1.0f;
+		}
+		glColor4fv(c);
+		CText::DrawString("StartB", 450, 300, 16, 16);
+		if (mVariable1 == -1 && mVariable2 == 0){
+			c[0] = c[1] = c[2] = 1.0f; c[3] = 1.0f;
+		}
+		else{
+			c[0] = c[1] = c[2] = 0.5f; c[3] = 1.0f;
+		}
+		glColor4fv(c);
+		CText::DrawString("StartC", 200, 250, 16, 16);
+		if (mVariable1 == -1 && mVariable2 == 1){
+			c[0] = c[1] = c[2] = 1.0f; c[3] = 1.0f;
+		}
+		else{
+			c[0] = c[1] = c[2] = 0.5f; c[3] = 1.0f;
+		}
+		glColor4fv(c);
+		CText::DrawString("StartD", 450, 250, 16, 16);
+		c[0] = c[1] = c[2] = 1.0f; c[3] = 1.0f;
+		glColor4fv(c);
 		//2D描画終了
 		End2D();
 		
 		if (CKey::Once(VK_RETURN)){
-			//次のシーンはゲーム
-			mScene = ERACE1;
+			mStart = true;
+			SoundDecide.Play();
+		}
+		if (mStart){
+			if (mStartWaitTime < 60){
+				mStartWaitTime++;
+			}
+			else{
+				//次のシーンはゲーム
+				mScene = ERACE1;
+			}
 		}
 
 		if (CKey::Once(VK_UP)){
@@ -90,6 +143,10 @@ public:
 	int mVariable2;
 	int mPrevVariable2;
 	CSound SoundMoveCarsol;
+	CSound SoundDecide;
+	bool mStart;
+	int mStartWaitTime;
+	
 };
 
 #endif

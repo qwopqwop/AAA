@@ -3,6 +3,7 @@
 #include "CScene.h"
 #include "CModel.h"
 #include "CPlayer.h"
+#include "CEnemy.h"
 //CSound.hをインクルードしたら音の再生の動作が軽くなった？
 #include "CSound.h"
 #include "CSceneGame.h"
@@ -25,6 +26,8 @@ public:
 	CModel mSky;
 	CModel mRock;
 	CModel mRover;
+	CModel mCarRed;
+	CModel mCarBlue;
 	CModel mCube;
 	CModel mPlane;
 	CModel mStairs;//階段
@@ -63,6 +66,9 @@ public:
 	CModel mDashBoard;//加速する床
 
 	CPlayer *mPlayer;
+
+	CEnemy *mEnemy1;
+	CEnemy *mEnemy2;
 
 	CSound BGM;
 	CSound SoundCountDown;

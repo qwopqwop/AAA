@@ -54,6 +54,8 @@ void CSceneRace::Init() {
 	mRock.Load("Rock1.obj", "Rock1.mtl");
 	//車の読み込み
 	mRover.Load("Rover1.obj", "Rover1.mtl");
+	mCarRed.Load("Rover1.obj", "material\\racing_mat\\red.mtl");
+	mCarBlue.Load("Rover1.obj", "material\\racing_mat\\blue.mtl");
 //	mRover.Load("sphere.obj", "sphere.mtl");
 	//立方体の読み込み
 	mCube.Load("cube.obj", "material\\cube.mtl");
@@ -124,6 +126,15 @@ void CSceneRace::Init() {
 	mPlayer = new CPlayer();
 	mPlayer->mpModel = &mRover;
 
+	mEnemy1 = new CEnemy();
+	mEnemy1->mpModel = &mCarRed;
+	mEnemy1->mPosition = CVector(250.0f, -13.538f, -100.0f);
+	mEnemy1->CCharacter::Update();
+
+	mEnemy2 = new CEnemy();
+	mEnemy2->mpModel = &mCarBlue;
+	mEnemy2->mPosition = CVector(350.0f, -13.538f, -100.0f);
+	mEnemy2->CCharacter::Update();
 
 	//岩の生成　モデルmRock　位置|-20.0 0.0 20.0|
 	//回転|0.0 0.0 0.0|　拡大|5.0 5.0 5.0|
@@ -315,6 +326,8 @@ void CSceneRace::Init() {
 	//TaskManager.ChangePriority(&mPlayer, 15);
 	CTaskManager::Get()->ChangePriority(mPlayer, 15);
 	//CTaskManager::Get()->ChangePriority(, 15);
+	CTaskManager::Get()->ChangePriority(mEnemy1, 15);
+	CTaskManager::Get()->ChangePriority(mEnemy2, 15);
 
 	BGM.Repeat();
 }
@@ -503,6 +516,8 @@ void CSceneRace::Update() {
 	else if (mCountDown == 0){
 		CText::DrawString("GO!", 400-40, 300, 25, 30);
 		CPlayer::mpPlayer->CanMove = true;
+		mEnemy1->CanMove = true;
+		mEnemy2->CanMove = true;
 	}
 	/*SoundCountDown.Play();
 	SoundStart.Play();*/

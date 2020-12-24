@@ -108,6 +108,9 @@
     <ClCompile Include="CSceneTitle.cpp">
       <Filter>ソース ファイル\RaceGame</Filter>
     </ClCompile>
+    <ClCompile Include="CEnemy.cpp">
+      <Filter>ソース ファイル\RaceGame</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CSceneGame.h">
@@ -198,6 +201,9 @@
       <Filter>ソース ファイル\RaceGame</Filter>
     </ClInclude>
     <ClInclude Include="CSceneTitle.h">
+      <Filter>ソース ファイル\RaceGame</Filter>
+    </ClInclude>
+    <ClInclude Include="CEnemy.h">
       <Filter>ソース ファイル\RaceGame</Filter>
     </ClInclude>
   </ItemGroup>
