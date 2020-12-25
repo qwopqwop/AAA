@@ -62,8 +62,8 @@ void CItem::Collision(CCollider *m, CCollider *y){
 				//ƒvƒŒƒCƒ„[‚ª’e‚ðŒ‚‚Ä‚é‚æ‚¤‚É‚È‚é
 				//Player->mCanFire = true;
 
-			
 			if (y->mpParent->mTag == CCharacter::EPLAYER){
+				printf("Item Get!\n");
 				mEnabled = false;
 			}
 		}
@@ -141,4 +141,9 @@ void CItem::Update(){
 
 
 	CCharacter::Update();
+}
+
+void CItem::TaskCollision(){
+	mColBody.ChangePriority();
+	CollisionManager.Collision(&mColBody);
 }

@@ -66,7 +66,7 @@ CEnemy::CEnemy()
 	mBoostMaxSpeed = 0.0f;
 	mBoostTime = 0;
 
-	mTag = EPLAYER;
+	mTag = EENEMY;
 
 	//スタート地点の座標を設定;
 	mStartPoint[0] = 300.0f;  mStartPoint[1] = -13.538f;  mStartPoint[2] = -100.0f;
@@ -621,4 +621,12 @@ void CEnemy::Collision(CCollider *mc, CCollider *yc){
 	//	}
 	//}
 
+}
+
+void CEnemy::TaskCollision()
+{
+	mColBody.ChangePriority();
+	mColTire.ChangePriority();
+	CollisionManager.Collision(&mColBody);
+	CollisionManager.Collision(&mColTire);
 }

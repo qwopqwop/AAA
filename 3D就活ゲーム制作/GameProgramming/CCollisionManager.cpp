@@ -32,8 +32,8 @@ void CCollisionManager::Collision() {
 //コライダとの衝突処理を実行する
 void CCollisionManager::Collision(CCollider *collider)
 {
-	int sPri = collider->mPriority + 10; //開始位置（大）
-	int ePri = collider->mPriority - 10; //終了位置（小）
+	int sPri = collider->mPriority + 900; //開始位置（大）
+	int ePri = collider->mPriority - 900; //終了位置（小）
 	//現在位置を先頭にする
 	CCollider *pos = (CCollider*)mpHead->mpNext;
 	//開始位置まできたら終了する

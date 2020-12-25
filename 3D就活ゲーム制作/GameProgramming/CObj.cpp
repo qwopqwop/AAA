@@ -74,7 +74,7 @@ CObj::CObj(CModel *model, const CVector &position, const CVector &rotation, cons
 		//逆に当たり判定を増やさなければいいので、必要ない当たり判定はどんどんカットしていくよ。
 	}
 	else{
-
+		CCharacter::Update();
 		//モデルの三角形の数分、コライダの配列を作成します
 		mpCollider = new CCollider[model->mTriangles.size()];
 		for (int i = 0; i < model->mTriangles.size(); i++){
@@ -89,6 +89,7 @@ CObj::CObj(CModel *model, const CVector &position, const CVector &rotation, cons
 			//	model->mTriangles[i].mV[1] = model->mTriangles[i].mV[1] + CVector(0.0f, 5.0f, 0.0f);
 			//	model->mTriangles[i].mV[2] = model->mTriangles[i].mV[2] + CVector(0.0f, 5.0f, 0.0f);
 			//}
+			mpCollider[i].ChangePriority();
 		}
 	}
 

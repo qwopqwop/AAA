@@ -2,6 +2,7 @@
 #define CENEMY_H
 #include "CCharacter.h"
 #include "CCollider.h"
+#include "CCollisionManager.h"
 #include "CSound.h"
 
 class CEnemy :public CCharacter{
@@ -54,6 +55,9 @@ public:
 	bool CanMove;//プレイヤーが操作可能か否か(カウントダウン前・ゴール後などは否)
 
 	static int RenderType;//ゲーム画面の描画とミニマップの描画を分ける変数
+
+	//コライダの更新
+	void TaskCollision();
 };
 
 

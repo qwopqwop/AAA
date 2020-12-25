@@ -2,6 +2,7 @@
 #define CSPRING_H
 #include "CCharacter.h"
 #include "CCollider.h"
+#include "CCollisionManager.h"
 #include "CSound.h"
 
 class CItem : public CCharacter{
@@ -28,6 +29,8 @@ public:
 	float mADMoveX;
 	float mWSMoveZ;
 	static int mTargetAmount;//ìIÇÃécêî
+
+	void TaskCollision();
 };
 
 #endif
