@@ -725,3 +725,12 @@ void CPlayer::Collision(CCollider *mc, CCollider *yc){
 	//}
 
 }
+
+
+void CPlayer::TaskCollision()
+{
+	mColBody.ChangePriority();
+	mColTire.ChangePriority();
+	CollisionManager.Collision(&mColBody);
+	CollisionManager.Collision(&mColTire);
+}

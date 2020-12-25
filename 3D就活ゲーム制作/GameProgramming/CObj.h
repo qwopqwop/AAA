@@ -2,6 +2,8 @@
 #define COBJ_H
 #include "CCharacter.h"
 #include "CCollider.h"
+#include "CCollisionManager.h"
+
 class CObj :public CCharacter{
 public:
 	//コライダの追加
@@ -18,5 +20,14 @@ public:
 	void Update();
 
 	//bool mDeleteFlag;
+
+	////コライダの更新
+	//void TaskCollision();
+};
+
+class CObjection :public CObj{
+public:
+	//コライダの更新
+	void TaskCollision();
 };
 #endif

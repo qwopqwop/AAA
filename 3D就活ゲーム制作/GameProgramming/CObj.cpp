@@ -228,3 +228,13 @@ void CObj::Update(){
 		}
 	}
 }
+
+void CObjection::TaskCollision()
+{
+	/*mColBody.ChangePriority();
+	mColTire.ChangePriority();
+	CollisionManager.Collision(&mColBody);
+	CollisionManager.Collision(&mColTire);*/
+	//mpCollider.ChangePriority();
+	//CollisionManager.Collision(&mpCollider);
+}

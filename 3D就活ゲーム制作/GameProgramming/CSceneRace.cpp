@@ -421,9 +421,12 @@ void CSceneRace::Update() {
 	////車の描画
 	//mRover.Render(CMatrix().Translate(-20.0f, 0.0f, 10.0f));
 
-	//あ゛
-	//コリジョンマネージャの衝突処理
-	CollisionManager.Collision();
+	////あ゛
+	////コリジョンマネージャの衝突処理
+	//CollisionManager.Collision();
+	//TaskManager.TaskCollision();
+	CTaskManager::Get()->TaskCollision();
+
 	//TaskManager.Delete();
 	CTaskManager::Get()->Delete();
 
@@ -439,7 +442,7 @@ void CSceneRace::Update() {
 	}
 	if (mPutCol){
 		//衝突判定の描画
-		CollisionManager.Render();
+		CollisionManager.Render();	
 	}
 #endif
 

@@ -19,6 +19,8 @@ public:
 	virtual void Update() {}
 	//•`‰æ
 	virtual void Render() {}
+
+	virtual void TaskCollision() {}
 };
 
 #endif

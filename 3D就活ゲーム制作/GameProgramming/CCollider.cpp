@@ -18,6 +18,7 @@ CCollider::CCollider(CCharacter *parent, CVector position, CVector rotation, CVe
 	mRadius = radius;
 	//コリジョンリストに追加
 	CollisionManager.Add(this);
+	ChangePriority();
 }
 
 CCollider::~CCollider() {
@@ -132,6 +133,7 @@ void CCollider::SetTriangle(CCharacter *parent, const CVector &v0, const CVector
 	CTransform::Update();//行列更新
 	//コリジョンリストに追加
 	CollisionManager.Add(this);
+	ChangePriority();
 }
 
 //コンストラクタ（線分コライダ）
@@ -153,6 +155,7 @@ void CCollider::SetLine(CCharacter *parent, const CVector &v0, const CVector &v1
 	CTransform::Update();//行列更新
 	//コリジョンリストに追加
 	CollisionManager.Add(this);
+	ChangePriority();
 }
 
 //CollisionTriangleLine(三角コライダ, 線分コライダ, 調整値)
@@ -292,4 +295,47 @@ bool CCollider::CollisionTriangleSphere(CCollider *t, CCollider *s, CVector *a) 
 		*a = normal * -dote;
 	}
 	return true;
+}
+
+void CCollider::ChangePriority(){
+	CMatrix matrix = mMatrix;//コライダの行列退避
+	CVector position;//原点からの距離計算用
+
+	//mpCombinedMatrix
+	//if (mpCombinedMatrix){
+	//	//スキンメッシュの場合は合成行列も適用
+	//	matrix = matrix * *mpCombinedMatrix;
+	//}
+	//else{
+	if (mpParent){
+		//親がいれば親の合成行列も適用
+		matrix = matrix * mpParent->mMatrix;
+	}
+	/*}*/
+
+	switch (mType){
+	case ESPHERE://球コライダの時、球の中心座標を求める
+		position = CVector() * matrix;
+		break;
+	case ETRIANGLE://三角形の重心座標を求める
+		//三角形の頂点を移動させて合計
+		position = mV[0] * matrix + mV[1] * matrix + mV[2] * matrix;
+		position = position * (1.0 / 3.0f);//合計値の3分の1が重心
+		break;
+	case ELINE://線分の中心座標を求める
+		//始点と終点を移動させて合計
+		position = mV[0] * matrix + mV[1] * matrix;
+		position = position*(1.0 / 2.0f);//合計値の2分の1が中心
+		break;
+	}
+	mPriority = position.Length();//原点からの距離を優先度にする
+	CollisionManager.Remove(this);//リストから削除する
+	CollisionManager.Add(this);//リストに追加する
+}
+
+//ChangePriority(優先度)
+void CCollider::ChangePriority(int priority){
+	mPriority = priority; //優先度を設定する
+	CollisionManager.Remove(this); //リストから削除する
+	CollisionManager.Add(this); //リストに追加する
 }

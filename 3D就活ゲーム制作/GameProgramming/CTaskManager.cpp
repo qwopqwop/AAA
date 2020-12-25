@@ -1,7 +1,7 @@
 #include "CTaskManager.h"
 
-////タスクマネージャの外部変数
-//CTaskManager TaskManager;
+//タスクマネージャの外部変数
+CTaskManager TaskManager;
 
 //インスタンスのポインタ変数
 CTaskManager *CTaskManager::instance = 0;
@@ -177,3 +177,16 @@ void CTaskManager::Destroy(){
 		delete instance;
 	instance = 0;
 }
+
+void CTaskManager::TaskCollision()
+{
+	//先頭から最後まで繰り返し
+	CTask *pos = mpHead->mpNext;
+	while (pos) {
+		//衝突処理を呼ぶ
+		pos->TaskCollision();
+		//次へ
+		pos = pos->mpNext;
+	}
+}
+

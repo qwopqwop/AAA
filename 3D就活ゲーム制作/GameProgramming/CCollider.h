@@ -61,6 +61,11 @@ public:
 	//return:true(衝突している)false(衝突してない)
 	//調整値:衝突しない位置まで戻す値
 	static bool CollisionTriangleSphere(CCollider *triangle, CCollider *sphere, CVector *adjust);
+
+	////ボーンの合成行列のポインタ
+	//CMatrix *mpCombinedMatrix;//そういうこと？？
+	void ChangePriority();
+	void ChangePriority(int priority);
 };
 
 #endif

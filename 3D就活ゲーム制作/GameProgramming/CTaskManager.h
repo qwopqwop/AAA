@@ -41,9 +41,10 @@ public:
 
 	void Disabled();
 
+	void TaskCollision();
 };
 
-////タスクマネージャyの外部参照
-//extern CTaskManager TaskManager;
+//タスクマネージャyの外部参照
+extern CTaskManager TaskManager;
 
 #endif

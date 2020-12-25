@@ -27,3 +27,43 @@ void CCollisionManager::Collision() {
 		pos = (CCollider*)pos->mpNext;
 	}
 }
+
+//Collision(コライダ）
+//コライダとの衝突処理を実行する
+void CCollisionManager::Collision(CCollider *collider)
+{
+	int sPri = collider->mPriority + 10; //開始位置（大）
+	int ePri = collider->mPriority - 10; //終了位置（小）
+	//現在位置を先頭にする
+	CCollider *pos = (CCollider*)mpHead->mpNext;
+	//開始位置まできたら終了する
+	while (pos && pos->mPriority > sPri) {
+		//現在位置を次にする
+		pos = (CCollider*)pos->mpNext;
+	}
+	if (pos) {
+		//終了位置まで繰り返し
+		while (pos && pos->mPriority >= ePri) {
+			//親の衝突処理を呼び出す
+			collider->mpParent->Collision(collider, pos);
+			//次を求める
+			pos = (CCollider*)pos->mpNext;
+		}
+	}
+	//優先度0とは衝突判定させる
+	while (pos && pos->mPriority) {
+		//現在位置を次にする
+		pos = (CCollider*)pos->mpNext;
+	}
+	if (pos) {
+		//終了位置まで繰り返し
+		while (pos && pos->mPriority <= 0) {
+			//親の衝突処理を呼び出す
+			collider->mpParent->Collision(collider, pos);
+			//次を求める
+			pos = (CCollider*)pos->mpNext;
+		}
+	}
+}
+
+
