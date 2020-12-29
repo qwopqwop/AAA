@@ -15,6 +15,7 @@ extern CSound SoundShot;
 extern CSound SoundItemGet;
 extern CSound SoundBoost;
 extern CSound SoundEngine;
+extern CSound SoundHorn;
 extern CSound SoundCollision;
 extern CSound SoundCollisionSmall;
 
@@ -71,6 +72,8 @@ CPlayer::CPlayer()
 
 	//mRotation.mY = -90;
 
+	mBuzzerCount = 0;//ブザーを鳴らした回数、鳴らしすぎると…
+
 	mCanJump = false;
 	mCanSwim = false;
 	mCanFire = false;
@@ -105,11 +108,11 @@ CPlayer::CPlayer()
 	SoundItemGet.Load("SE\\se_maoudamashii_system46.wav");	
 	SoundBoost.Load("SE\\Shortbridge31-3.wav");
 	SoundEngine.Load("SE\\SNES-Racing01-02.wav");
+	SoundHorn.Load("SE\\car-horn1.wav");
+	ShutUp.Load("SE\\半沢「うるせぇぇぇ!!!」.wav");	
 	SoundCollision.Load("SE\\bomb1.wav");
 	SoundCollisionSmall.Load("SE\\SNES-Racing01-10(Collision).wav");
 	
-
-
 	isSoundEngine = false;
 	//SoundEngine.Repeat();
 }
@@ -140,6 +143,15 @@ void CPlayer::Update(){
 
 	if (CKey::Push('B')){//超急ブレーキ
 		mCarSpeed = 0.0f;
+	}
+
+	if (CKey::Once(' ')){//クラクションを鳴らす
+		SoundHorn.Play();
+		mBuzzerCount++;
+		if (mBuzzerCount > 0 && mBuzzerCount % 6 == 0){
+			ShutUp.Play();
+			mBuzzerCount = 0;
+		}
 	}
 
 	////Aキー、Dキーが同時に入力されているか
@@ -706,76 +718,21 @@ void CPlayer::Collision(CCollider *mc, CCollider *yc){
 					mMoveSpeed = 0.85f;
 				}
 
-				if (yc->mpParent->mTag == CCharacter::EENEMY){
-					CVector adjust;//調整用ベクトル
-					//		//三角形と球の衝突判定
-					//		CCollider::CollisionTriangleSphere(yc, mc, &adjust);
-					if (CCollider::CollisionTriangleSphere(yc, mc, &adjust)){
-						//位置の更新
-						mPosition = mPosition - adjust * -1;
-						//行列の更新
-						CCharacter::Update();
 
-						//if (yc->mpParent->mTag == CCharacter::EWALL){
-						//	//衝突したのが壁だった場合は壁には引っかからず落下
-						//	//壁にぶつかると衝突音がし、車が減速する
-						//	//速い時に衝突で減速、遅い時の衝突は特に変化なし
-						//	if (mCarSpeed > 4.5f){
-						//		mCarSpeed = 2.0f;
-						//		//mCarSpeed /= 2.0f;
-						//		SoundCollision.Play();
-						//		//激突時、エフェクト発生
-						//		new CEffect(mPosition + CVector(0.0f, 35.0f, 0.0f), 50.0f, 50.0f, TextureExp, 4, 4, 1, 0);
-						//		//new CEffect(mPosition + CVector(0.0f, 390.0f/2, 0.0f), 390.0f, 390.0f, TextureExp, 4, 4, 111);
-						//		printf("ｺﾞﾝｯ");
-						//	}
-						//	else if (mCarSpeed > 3.0f){
-						//		mCarSpeed = 2.0f;
-						//		SoundCollisionSmall.Play();
-						//		//軽くぶつけた時もエフェクト発生
-						//		new CEffect(mPosition + CVector(0.0f, 15.5f, 0.0f), 17.0f, 17.0f, TextureHit, 3, 8, 1, 1);
-						//		printf("ｺﾞｽｯ");
-						//	}
-						//	else{
-						//		//壁にこすりながらの移動時、速度が遅くなる
-						//		if (mCarSpeed > 2.0f){
-						//			mCarSpeed = 2.0f;
-						//			/*new CEffect(mPosition + CVector(0.0f, 20.0f, 0.0f), 68.0f + 12.0f, 17.0f + 3.0f, TextureHit, 1, 1, 1, 1);
-						//			new CEffect(mPosition + CVector(0.0f, 60.0f, 0.0f), 68.0f + 12.0f, 17.0f + 3.0f, TextureHit, 1, 1, 1, 0);*/
-						//		}
-						//	}
-						//	//mCarSpeed = -mCarSpeed * 1.0;
-						//	//mVelocityJump = 2.0f;
-						//}
-						//else{
-						//	mVelocityJump = 0;
-						//	mCanJump = true;
-						//	/*if (mRotation.mX < yc->mpParent->mRotation.mX){
-						//	mRotation.mX++;
-						//	}
-						//	else if (mRotation.mX > yc->mpParent->mRotation.mX){
-						//	mRotation.mX--;
-						//	}*/
-						//	int rotateofycmx = yc->mpParent->mRotation.mX;
-						//	rotateofycmx %= 360; //-360度から360度までの数値に変換
-						//	//-235=125 300=-60 -180度未満か、180度以上の角度は
-						//	if (rotateofycmx < -180){
-						//		rotateofycmx += 360;
-						//	}
-						//	else if (rotateofycmx >= 180){
-						//		rotateofycmx -= 360;
-						//	}
-						//	mRotation.mX = rotateofycmx;
-						//	//if (mRotation.mX < yc->mpParent->mRotation.mX){
-						//	//	mRotation.mX = yc->mpParent->mRotation.mX;
-						//	//}
-						//	//else if (mRotation.mX > yc->mpParent->mRotation.mX){
-						//	//	mRotation.mX = yc->mpParent->mRotation.mX;
-						//	//}
-						//	//mRotation = yc->mpParent->mRotation;
-						//}
+				if (mc->mTag == CCollider::EBODY){
+					if (yc->mpParent->mTag == CCharacter::EENEMY){
+						CVector adjust;//調整用ベクトル
+						////		//球同士の衝突判定
+						if (CCollider::Collision(mc, yc, &adjust)){
+							//位置の更新
+							mPosition = mPosition - adjust * -1;
+							//行列の更新
+							CCharacter::Update();
+							printf("お");
+						}
 					}
 				}
+				
 			}
 		}
 

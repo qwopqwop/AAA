@@ -51,6 +51,9 @@ public:
 	CSound SoundBoost;
 	CSound SoundEngine;//ˆê”Ô‚Ì“ï‘è
 	bool isSoundEngine;
+	CSound SoundHorn;
+	CSound ShutUp;
+	int mBuzzerCount;
 	CSound SoundCollision;
 	CSound SoundCollisionSmall;
 

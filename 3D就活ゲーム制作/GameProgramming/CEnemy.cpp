@@ -24,7 +24,7 @@ CEnemy *CEnemy::mpEnemy = 0;
 
 #define MAXSPEED 4.5f+3.0f //車の最高速度
 #define MAXSPEED_BACK 1.0f*2 //車の後退する最大速度
-#define CAR_POWER 0.05f*2 //1フレーム辺りの車の加速していく量
+#define CAR_POWER 0.05f*2-0.01 //1フレーム辺りの車の加速していく量
 #define CAR_BREAK_POWER 0.025f*2 //前進中のブレーキの強さ
 
 #define DECELERATE 0.05f*2 //車の減速する量
