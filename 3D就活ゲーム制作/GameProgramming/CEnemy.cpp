@@ -615,12 +615,9 @@ void CEnemy::Collision(CCollider *mc, CCollider *yc){
 							printf("Ç¢");
 						}
 					}
-					else if (yc->mpParent->mTag == CCharacter::EENEMY
-						//&& yc->mpParent->mTag!=CCollider::ESEARCH
-						//&& mColTire
-						/*&& yc->mpParent->mTag == CCollider::EBODY
-						&&yc->mTag == CCollider::EBODY*/
-						){
+					
+					if (yc->mpParent->mTag == CCharacter::EENEMY
+						&& yc->mTag == CCollider::EBODY){
 						if (mc == yc){
 							return;
 						}
@@ -631,8 +628,7 @@ void CEnemy::Collision(CCollider *mc, CCollider *yc){
 							mPosition = mPosition - adjust * -1;
 							//çsóÒÇÃçXêV
 							CCharacter::Update();
-							printf("X:%f Y:%f Z:%f",mPosition.mX,mPosition.mY,mPosition.mZ);
-							printf("Ç¢");
+							//printf("X:%f Y:%f Z:%f",mPosition.mX,mPosition.mY,mPosition.mZ);
 						}
 					}
 				}
