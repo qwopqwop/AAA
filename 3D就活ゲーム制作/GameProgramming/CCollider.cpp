@@ -353,7 +353,8 @@ bool CCollider::Collision(CCollider *m, CCollider *y ,CVector *a) {
 	mpos = mpos - ypos;
 	//’†S‚Ì‹——£‚ª”¼Œa‚Ì‡Œv‚æ‚è¬‚³‚¢‚ÆÕ“Ë
 	if (m->mRadius + y->mRadius > mpos.Length()) {
-		*a = mpos;
+		*a = mpos.Normalize() * (m->mRadius + y->mRadius - mpos.Length());
+		//mpos.Length() 
 		//Õ“Ë‚µ‚Ä‚¢‚é
 		return  true;		
 	}

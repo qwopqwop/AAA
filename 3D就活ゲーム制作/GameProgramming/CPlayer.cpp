@@ -56,7 +56,7 @@ CPlayer::CPlayer()
 
 //車体のY座標は0.0fにしたいんだけど・・・
 //0.0fにしたら車体が浮いてるように見えてしまう
-:mColBody(this, CVector(0.0f, 4.0f + 1.0f, 0.5f), CVector(0.0f, 0.0f, 0.0f), CVector(1.0f, 1.0f, 1.0f), 10.0f)
+:mColBody(this, CVector(0.0f, 4.0f + 1.0f, 0.5f), CVector(0.0f, 0.0f, 0.0f), CVector(1.0f, 1.0f, 1.0f), 30.0f)
 , mColTire(this, CVector(0.0f, -16.0f+15.0f+1.0f, 0.5f), CVector(0.0f, 0.0f, 0.0f), CVector(1.0f, 1.0f, 1.0f), 10.0f)
 {
 	mpPlayer = this;
