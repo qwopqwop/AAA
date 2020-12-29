@@ -24,7 +24,7 @@ CEnemy *CEnemy::mpEnemy = 0;
 
 #define MAXSPEED 4.5f+3.0f //車の最高速度
 #define MAXSPEED_BACK 1.0f*2 //車の後退する最大速度
-#define CAR_POWER 0.05f*2-0.01 //1フレーム辺りの車の加速していく量
+#define CAR_POWER 0.05f*2-0.1 //1フレーム辺りの車の加速していく量
 #define CAR_BREAK_POWER 0.025f*2 //前進中のブレーキの強さ
 
 #define DECELERATE 0.05f*2 //車の減速する量
@@ -41,7 +41,7 @@ CEnemy *CEnemy::mpEnemy = 0;
 CEnemy::CEnemy()
 //車体のY座標は0.0fにしたいんだけど・・・
 //0.0fにしたら車体が浮いてるように見えてしまう
-:mColBody(this, CVector(0.0f, 4.0f + 1.0f, 0.5f), CVector(0.0f, 0.0f, 0.0f), CVector(1.0f, 1.0f, 1.0f), 30.0f)
+:mColBody(this, CVector(0.0f, 4.0f + 1.0f, 0.5f), CVector(0.0f, 0.0f, 0.0f), CVector(1.0f, 1.0f, 1.0f), 10.0f)
 , mColTire(this, CVector(0.0f, -16.0f + 15.0f + 1.0f, 0.5f), CVector(0.0f, 0.0f, 0.0f), CVector(1.0f, 1.0f, 1.0f), 10.0f)
 {
 	mpEnemy = this;
@@ -602,8 +602,43 @@ void CEnemy::Collision(CCollider *mc, CCollider *yc){
 		if (yc->mType == CCollider::ESPHERE){
 			if (CCollider::Collision(mc, yc)){
 				//
+				if (mc->mTag == CCollider::EBODY){
+					if (yc->mpParent->mTag == CCharacter::EPLAYER){
+						CVector adjust;//調整用ベクトル
+						////		//球同士の衝突判定
+						if (CCollider::Collision(mc, yc, &adjust)){
+							//位置の更新
+							mPosition = mPosition - adjust * -1;
+							//行列の更新
+							CCharacter::Update();
+							//printf("X:%f Y:%f Z:%f",mPosition.mX,mPosition.mY,mPosition.mZ);
+							printf("い");
+						}
+					}
+					else if (yc->mpParent->mTag == CCharacter::EENEMY
+						//&& yc->mpParent->mTag!=CCollider::ESEARCH
+						//&& mColTire
+						/*&& yc->mpParent->mTag == CCollider::EBODY
+						&&yc->mTag == CCollider::EBODY*/
+						){
+						if (mc == yc){
+							return;
+						}
+						CVector adjust;//調整用ベクトル
+						////		//球同士の衝突判定
+						if (CCollider::Collision(mc, yc, &adjust)){
+							//位置の更新
+							mPosition = mPosition - adjust * -1;
+							//行列の更新
+							CCharacter::Update();
+							printf("X:%f Y:%f Z:%f",mPosition.mX,mPosition.mY,mPosition.mZ);
+							printf("い");
+						}
+					}
+				}
 			}
 		}
+
 
 		break;
 	}
