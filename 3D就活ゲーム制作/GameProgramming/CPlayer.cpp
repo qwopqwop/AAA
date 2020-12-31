@@ -728,7 +728,8 @@ void CPlayer::Collision(CCollider *mc, CCollider *yc){
 							mPosition = mPosition - adjust * -1;
 							//s—ñ‚ÌXV
 							CCharacter::Update();
-							printf("‚¨");
+							//printf("©•ª‚ÌÕ“Ëˆ—");
+							//SoundCollisionSmall.Play();
 						}
 					}
 				}

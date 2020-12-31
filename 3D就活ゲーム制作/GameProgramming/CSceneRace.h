@@ -28,6 +28,12 @@ public:
 	CModel mRover;
 	CModel mCarRed;
 	CModel mCarBlue;
+	CModel mCarGreen;
+	CModel mCarYellow;
+	CModel mCarPink;
+	CModel mCarCyan;
+	CModel mCarWhite;
+	CModel mCarBlack;//もはやシルエット
 	CModel mCube;
 	CModel mPlane;
 	CModel mStairs;//階段
@@ -69,6 +75,7 @@ public:
 
 	CEnemy *mEnemy1;
 	CEnemy *mEnemy2;
+	CEnemy *mEnemys[5];
 
 	CSound BGM;
 	CSound SoundCountDown;
@@ -89,7 +96,7 @@ public:
 	int mCountDown;
 	bool isStartRace;
 	int mTime;
-	int mBestTime;
+	static int mBestTime;
 	int mLap;
 	bool isNewRecord;
 

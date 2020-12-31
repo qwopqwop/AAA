@@ -97,40 +97,59 @@ public:
 			}
 			else{
 				//次のシーンはゲーム
+				if (mVariable1 == 0 && mVariable2 == 0){
+					mMode = 1;
+				}
+				else if (mVariable1 == 0 && mVariable2 == 1){
+					mMode = 2;
+				}
+				else if (mVariable1 == -1 && mVariable2 == 0){
+					mMode = 3;
+				}
+				else if (mVariable1 == -1 && mVariable2 == 1){
+					mMode = 4;
+				}
+				printf("MODE:%d\n", mMode);
 				mScene = ERACE1;
 			}
 		}
 
-		if (CKey::Once(VK_UP)){
-			//次のシーンはゲーム
-			if (mVariable1 < 0){
-				mVariable1 += 1;
+		//まだ選択してない時
+		if (mStart == false){
+			//矢印キー
+			if (CKey::Once(VK_UP)){
+				//次のシーンはゲーム
+				if (mVariable1 < 0){
+					mVariable1 += 1;
+				}
 			}
-		}
-		if (CKey::Once(VK_DOWN)){
-			//次のシーンはゲーム
-			if (mVariable1 > -1){
-				mVariable1 -= 1;
+			if (CKey::Once(VK_DOWN)){
+				//次のシーンはゲーム
+				if (mVariable1 > -1){
+					mVariable1 -= 1;
+				}
 			}
-		}
-		if (CKey::Once(VK_LEFT)){
-			//次のシーンはゲーム
-			if (mVariable2 > 0){
-				mVariable2 -= 1;
+			if (CKey::Once(VK_LEFT)){
+				//次のシーンはゲーム
+				if (mVariable2 > 0){
+					mVariable2 -= 1;
+				}
 			}
-		}
-		if (CKey::Once(VK_RIGHT)){
-			//次のシーンはゲーム
-			if (mVariable2 < 1){
-				mVariable2 += 1;
-			}
+			if (CKey::Once(VK_RIGHT)){
+				//次のシーンはゲーム
+				if (mVariable2 < 1){
+					mVariable2 += 1;
+				}
+			}			
 		}
 
+		//カーソルの場所が1f前と変わった瞬間
 		if (mPrevVariable1 != mVariable1 || mPrevVariable2 != mVariable2){
 			SoundMoveCarsol.Play();
 			mPrevVariable1 = mVariable1;
 			mPrevVariable2 = mVariable2;
 		}
+
 	}
 	//描画処理絶対君主
 	void Render();
@@ -146,6 +165,7 @@ public:
 	CSound SoundDecide;
 	bool mStart;
 	int mStartWaitTime;
+	static int mMode;
 	
 };
 

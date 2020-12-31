@@ -1,5 +1,7 @@
 #include "CSceneRace.h"
 //
+#include "CSceneTitle.h"
+//
 #include "CCamera.h"
 //
 #include "CText.h"
@@ -26,6 +28,9 @@ extern CSound BGM;
 extern CSound SoundCountDown;
 extern CSound SoundStart;
 extern CSound SoundGoal;
+
+//ベストタイムの初期記録は2分00秒00
+int CSceneRace::mBestTime = 20000;
 
 CSceneRace::~CSceneRace() {
 	CTaskManager::Get()->Disabled();
@@ -54,8 +59,14 @@ void CSceneRace::Init() {
 	mRock.Load("Rock1.obj", "Rock1.mtl");
 	//車の読み込み
 	mRover.Load("Rover1.obj", "Rover1.mtl");
-	mCarRed.Load("Rover1.obj", "material\\racing_mat\\red.mtl");
-	mCarBlue.Load("Rover1.obj", "material\\racing_mat\\blue.mtl");
+	mCarRed.Load("Rover1.obj", "material\\racing_mat\\single_color\\red.mtl");
+	mCarBlue.Load("Rover1.obj", "material\\racing_mat\\single_color\\blue.mtl");
+	mCarGreen.Load("Rover1.obj", "material\\racing_mat\\single_color\\green.mtl");
+	mCarYellow.Load("Rover1.obj", "material\\racing_mat\\single_color\\yellow.mtl");
+	mCarPink.Load("Rover1.obj", "material\\racing_mat\\single_color\\pink.mtl");
+	mCarCyan.Load("Rover1.obj", "material\\racing_mat\\single_color\\cyan.mtl");
+	mCarWhite.Load("Rover1.obj", "material\\racing_mat\\single_color\\white.mtl");
+	mCarBlack.Load("Rover1.obj", "material\\racing_mat\\single_color\\black.mtl");
 //	mRover.Load("sphere.obj", "sphere.mtl");
 	//立方体の読み込み
 	mCube.Load("cube.obj", "material\\cube.mtl");
@@ -108,7 +119,19 @@ void CSceneRace::Init() {
 	CBullet::mBullet.Load("銃弾.obj", "銃弾.mtl");
 
 	//ステージ1BGMの読み込み
-	BGM.Load("BGM\\(音量調整版)Popsギター_No.01.wav");
+	if (CSceneTitle::mMode == 1){
+		BGM.Load("BGM\\(音量調整版)Popsギター_No.01.wav");
+	}
+	else if (CSceneTitle::mMode == 2){
+		BGM.Load("BGM\\(調整後)bgm_maoudamashii_neorock33.wav");
+	}
+	else if (CSceneTitle::mMode == 3){
+		BGM.Load("BGM\\Crazy_Machine.wav");
+	}
+	else if (CSceneTitle::mMode == 4){
+		BGM.Load("BGM\\game_maoudamashii_1_battle34.wav");
+	}	
+	//効果音の読み込み
 	SoundCountDown.Load("SE\\Countdown01-5.wav");
 	SoundStart.Load("SE\\Countdown01-6.wav");
 	SoundGoal.Load("SE\\tm2_whistle000.wav");
@@ -127,14 +150,39 @@ void CSceneRace::Init() {
 	mPlayer->mpModel = &mRover;
 
 	mEnemy1 = new CEnemy();
-	mEnemy1->mpModel = &mCarRed;
+	mEnemy1->mpModel = &mCarBlack;
 	mEnemy1->mPosition = CVector(250.0f, -13.538f, -100.0f);
 	mEnemy1->CCharacter::Update();
 
 	mEnemy2 = new CEnemy();
-	mEnemy2->mpModel = &mCarBlue;
+	mEnemy2->mpModel = &mCarWhite;
 	mEnemy2->mPosition = CVector(350.0f, -13.538f, -100.0f);
 	mEnemy2->CCharacter::Update();
+
+	for (int i = 0; i < 5; i++){
+		mEnemys[i] = new CEnemy();
+		if (i % 5 == 0){
+			mEnemys[i]->mpModel = &mCarBlue;
+		}
+		else if (i % 5 == 1){
+			mEnemys[i]->mpModel = &mCarPink;
+		}		
+		else if (i % 5 == 2){
+			mEnemys[i]->mpModel = &mCarRed;
+		}
+		else if (i % 5 == 3){
+			mEnemys[i]->mpModel = &mCarGreen;
+		}
+		else if (i % 5 == 4){
+			mEnemys[i]->mpModel = &mCarYellow;
+		}
+		//初期の配置座標を設定する
+		mEnemys[i]->mPosition = CVector(350.0f - 25.0f*i, -13.538f, -140.0f);
+		if (i % 2 == 1){
+			mEnemys[i]->mPosition.mZ -= 7.0f;
+		}
+		mEnemys[i]->CCharacter::Update();
+	}
 
 	//岩の生成　モデルmRock　位置|-20.0 0.0 20.0|
 	//回転|0.0 0.0 0.0|　拡大|5.0 5.0 5.0|
@@ -313,8 +361,7 @@ void CSceneRace::Init() {
 	isStartRace = false;
 	//時間のリセット
 	mTime = 0;
-	//ベストタイムの設定
-	mBestTime = 30000;
+		
 	//ラップ数の初期化
 	mLap = 3;
 	//記録更新してない状態
@@ -328,6 +375,9 @@ void CSceneRace::Init() {
 	//CTaskManager::Get()->ChangePriority(, 15);
 	CTaskManager::Get()->ChangePriority(mEnemy1, 15);
 	CTaskManager::Get()->ChangePriority(mEnemy2, 15);
+	for (int i = 0; i < 5; i++){
+		CTaskManager::Get()->ChangePriority(mEnemys[i], 15);
+	}
 
 	BGM.Repeat();
 }
@@ -521,6 +571,9 @@ void CSceneRace::Update() {
 		CPlayer::mpPlayer->CanMove = true;
 		mEnemy1->CanMove = true;
 		mEnemy2->CanMove = true;
+		for (int i = 0; i < 5; i++){
+			mEnemys[i]->CanMove = true;
+		}
 	}
 	/*SoundCountDown.Play();
 	SoundStart.Play();*/
@@ -614,6 +667,7 @@ void CSceneRace::Update() {
 
 	if (CKey::Once('1')){
 		printf("%d\n", CItem::mTargetAmount);
+		printf("ベストタイム:%d\n", mBestTime);
 	}
 	if (CKey::Once('2')){//Playerの座標を出力する
 		printf("X:%f Y:%f Z:%f\n", CPlayer::mpPlayer->mPosition.mX, CPlayer::mpPlayer->mPosition.mY, CPlayer::mpPlayer->mPosition.mZ);

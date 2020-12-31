@@ -22,9 +22,9 @@ CEnemy *CEnemy::mpEnemy = 0;
 #define G (9.8f / 120.0f)//重力加速度//60.0f
 #define JUMPV0 (4.0f*4.0f)//ジャンプ初速//4.0f
 
-#define MAXSPEED 4.5f+3.0f //車の最高速度
+#define MAXSPEED 4.5f+3.0f -0.5f //車の最高速度
 #define MAXSPEED_BACK 1.0f*2 //車の後退する最大速度
-#define CAR_POWER 0.05f*2-0.1 //1フレーム辺りの車の加速していく量
+#define CAR_POWER 0.05f*2//1フレーム辺りの車の加速していく量
 #define CAR_BREAK_POWER 0.025f*2 //前進中のブレーキの強さ
 
 #define DECELERATE 0.05f*2 //車の減速する量
@@ -612,7 +612,7 @@ void CEnemy::Collision(CCollider *mc, CCollider *yc){
 							//行列の更新
 							CCharacter::Update();
 							//printf("X:%f Y:%f Z:%f",mPosition.mX,mPosition.mY,mPosition.mZ);
-							printf("い");
+							//printf("敵の衝突処理");
 						}
 					}
 					
