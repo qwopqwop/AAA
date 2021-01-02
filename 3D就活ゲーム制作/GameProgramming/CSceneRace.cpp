@@ -31,6 +31,10 @@ extern CSound SoundGoal;
 
 //ベストタイムの初期記録は2分00秒00
 int CSceneRace::mBestTime = 20000;
+int CSceneRace::mRecord_A = 10000;
+int CSceneRace::mRecord_B = 13000;
+int CSceneRace::mRecord_C = 20000;
+int CSceneRace::mRecord_D = 30000;
 
 CSceneRace::~CSceneRace() {
 	CTaskManager::Get()->Disabled();
@@ -53,6 +57,10 @@ void CSceneRace::Init() {
 	//テキストフォントの読み込みと設定
 	CText::mFont.Load("FontG.tga");
 	CText::mFont.SetRowCol(1, 4096 / 64);
+	CText::mFont2.Load("font2nd.tga");
+	CText::mFont2.SetRowCol(8, 256 / 16);
+	//mFont3:最後にmFont3に設定したシーンでのフォント(≒Title画面の時)
+
 	//背景の読み込み
 	mSky.Load("sky.obj", "sky.mtl");
 	//岩の読み込み
@@ -121,16 +129,25 @@ void CSceneRace::Init() {
 	//ステージ1BGMの読み込み
 	if (CSceneTitle::mMode == 1){
 		BGM.Load("BGM\\(音量調整版)Popsギター_No.01.wav");
+		mMaxLap = 1;
+		mBestTime = mRecord_A;
 	}
 	else if (CSceneTitle::mMode == 2){
-		BGM.Load("BGM\\(調整後)bgm_maoudamashii_neorock33.wav");
+		BGM.Load("BGM\\game_maoudamashii_1_battle34.wav");
+		mMaxLap = 2;
+		mBestTime = mRecord_B;
 	}
 	else if (CSceneTitle::mMode == 3){
 		BGM.Load("BGM\\Crazy_Machine.wav");
+		mMaxLap = 3;
+		mBestTime = mRecord_C;
 	}
 	else if (CSceneTitle::mMode == 4){
-		BGM.Load("BGM\\game_maoudamashii_1_battle34.wav");
-	}	
+		BGM.Load("BGM\\(調整後)bgm_maoudamashii_neorock33.wav");
+		mMaxLap = 5;
+		mBestTime = mRecord_D;
+	}
+
 	//効果音の読み込み
 	SoundCountDown.Load("SE\\Countdown01-5.wav");
 	SoundStart.Load("SE\\Countdown01-6.wav");
@@ -363,7 +380,7 @@ void CSceneRace::Init() {
 	mTime = 0;
 		
 	//ラップ数の初期化
-	mLap = 3;
+	mLap = 1;
 	//記録更新してない状態
 	isNewRecord = false;
 	
@@ -589,15 +606,15 @@ void CSceneRace::Update() {
 	}
 
 	char lap[19];
-	sprintf(lap, "LAP %d", mLap);
-	CText::DrawString(lap, 20, 500, 10, 12);
+	sprintf(lap, "LAP%d/%d", mLap, mMaxLap);
+	CText::DrawString(lap, 20, 500, 10, 12, 2);
 
 	//ゴール後、継続して実行する処理
-	if (mLap == 3 && isStartRace == false){
+	if (mLap == mMaxLap && isStartRace == false){
 		//新記録をたたき出した時
 		if (isNewRecord){
 			//CText::DrawString("FINISH!", 400 - 20 * 6, 300, 20, 24);
-			CText::DrawString("NEW RECORD!", 55, 558, 8, 9);
+			CText::DrawString("NEW RECORD!", 55, 551, 8, 9, 2);
 		}
 	}
 
@@ -634,11 +651,24 @@ void CSceneRace::Update() {
 		//new CObj(&mTileBlack, CVector(170.0f + 20.0f * -1 + 5.0f, -13.1f + 10.0f, -10.0f), CVector(0.0f, 0.0f, 0.0f), CVector(5.0f, 64.0f, 5.0f), 99);//柱
 		//new CObj(&mTileBlack, CVector(170.0f + 20.0f * 40 + 5.0f, -13.1f + 10.0f, -10.0f), CVector(0.0f, 0.0f, 0.0f), CVector(5.0f, 64.0f, 5.0f), 99);//柱
 
-		if (mLap == 3){
+		if (mLap == mMaxLap){
 			//ベストタイム更新時
 			if (mTime < mBestTime){
 				mBestTime = mTime;
 				isNewRecord = true;
+				//コースによって新しく記録する
+				if (CSceneTitle::mMode == 1){
+					mRecord_A = mBestTime;
+				}
+				else if (CSceneTitle::mMode == 2){				
+					mRecord_B = mBestTime;
+				}
+				else if (CSceneTitle::mMode == 3){					
+					mRecord_C = mBestTime;
+				}
+				else if (CSceneTitle::mMode == 4){					
+					mRecord_D = mBestTime;
+				}
 			}
 			isStartRace = false;
 			BGM.Stop();

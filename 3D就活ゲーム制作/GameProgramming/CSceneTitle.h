@@ -12,11 +12,12 @@ public:
 	void Init() {
 		//テクスチャファイルを読み込む
 		//フォントの設定
-		/*CText::mFont.Load("FontG.tga");
-		CText::mFont.SetRowCol(1, 4096 / 64);*/
-
 		CText::mFont.Load("font2nd.tga");
 		CText::mFont.SetRowCol(8, 256 / 16);
+		CText::mFont2.Load("FontG.tga");
+		CText::mFont2.SetRowCol(1, 4096 / 64);
+		CText::mFont3.Load("font.tga");//画像の都合で
+		CText::mFont3.SetRowCol(8, 256 / 16);//表示が変
 
 		//シーンの設定
 		mScene = ETITLE;
@@ -35,7 +36,8 @@ public:
 		//2D描画開始
 		Start2D(0, 800, 0, 600);
 		//文字列の描画
-		CText::DrawString("3D-RACE", -278 + 400 + 68, 10 + 400, 36, 36);
+		CText::DrawString("3D-RACE", -278 + 400 + 68, 430, 36, 36);
+		CText::DrawString("EXTREME", -278 + 400 + 68+96-24 +6*5, 370, 18, 18, 2);
 		CText::DrawString("Push Enter Key", 200, 150, 16, 16);
 		
 		float c[] = { 1.0f, 1.0f, 1.0f, 1.0f };

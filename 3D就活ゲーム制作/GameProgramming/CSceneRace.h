@@ -97,8 +97,9 @@ public:
 	bool isStartRace;
 	int mTime;
 	static int mBestTime;
-	int mLap;
+	int mLap, mMaxLap;
 	bool isNewRecord;
+	static int mRecord_A, mRecord_B, mRecord_C, mRecord_D;
 
 	float mXXX, mYYY, mZZZ;
 	float mXX0, mZZ0;
