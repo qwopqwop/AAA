@@ -107,6 +107,9 @@ public:
 	CModel mSumple;
 
 	int mCamPoV;
+
+	//コース2のマテリアル
+	CModel msumple2;
 };
 
 #endif

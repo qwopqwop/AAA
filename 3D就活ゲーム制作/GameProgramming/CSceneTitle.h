@@ -5,6 +5,8 @@
 #include "CKey.h"
 #include <Windows.h>
 #include "CSound.h"
+//・・・
+#include "CSceneRace.h"
 
 class CSceneTitle : public CScene {
 public:
@@ -85,9 +87,33 @@ public:
 		glColor4fv(c);
 		CText::DrawString("StartD", 450, 250, 16, 16);
 		c[0] = c[1] = c[2] = 1.0f; c[3] = 1.0f;
-		glColor4fv(c);
+		glColor4fv(c);	
+		
+		char mrecord[70];// :も含めた最大文字数の設定
+		if (mMode == 1){
+			sprintf(mrecord, "BEST:%02d:%02d:%02d", CSceneRace::mRecord_A / 10000 % 100, CSceneRace::mRecord_A / 100 % 100, CSceneRace::mRecord_A % 100);
+			CText::DrawString(mrecord, 20, 580, 10, 12);
+		}
+		else if (mMode == 2){
+			sprintf(mrecord, "BEST:%02d:%02d:%02d", CSceneRace::mRecord_B / 10000 % 100, CSceneRace::mRecord_B / 100 % 100, CSceneRace::mRecord_B % 100);
+			CText::DrawString(mrecord, 20, 580, 10, 12);
+		}
+		else if (mMode == 3){
+			sprintf(mrecord, "BEST:%02d:%02d:%02d", CSceneRace::mRecord_C / 10000 % 100, CSceneRace::mRecord_C / 100 % 100, CSceneRace::mRecord_C % 100);
+			CText::DrawString(mrecord, 20, 580, 10, 12);
+		}
+		else if (mMode == 4){
+			sprintf(mrecord, "BEST:%02d:%02d:%02d", CSceneRace::mRecord_D / 10000 % 100, CSceneRace::mRecord_D / 100 % 100, CSceneRace::mRecord_D % 100);
+			CText::DrawString(mrecord, 20, 580, 10, 12);
+		}
 		//2D描画終了
 		End2D();
+
+		////2D描画開始
+		//Start2D(0, 800, 0, 600);
+
+		////2D描画終了
+		//End2D();
 		
 		if (CKey::Once(VK_RETURN)){
 			mStart = true;
@@ -98,19 +124,7 @@ public:
 				mStartWaitTime++;
 			}
 			else{
-				//次のシーンはゲーム
-				if (mVariable1 == 0 && mVariable2 == 0){
-					mMode = 1;
-				}
-				else if (mVariable1 == 0 && mVariable2 == 1){
-					mMode = 2;
-				}
-				else if (mVariable1 == -1 && mVariable2 == 0){
-					mMode = 3;
-				}
-				else if (mVariable1 == -1 && mVariable2 == 1){
-					mMode = 4;
-				}
+				//次のシーンはレース画面
 				printf("MODE:%d\n", mMode);
 				mScene = ERACE1;
 			}
@@ -143,6 +157,18 @@ public:
 					mVariable2 += 1;
 				}
 			}			
+		}
+		if (mVariable1 == 0 && mVariable2 == 0){
+			mMode = 1;
+		}
+		else if (mVariable1 == 0 && mVariable2 == 1){
+			mMode = 2;
+		}
+		else if (mVariable1 == -1 && mVariable2 == 0){
+			mMode = 3;
+		}
+		else if (mVariable1 == -1 && mVariable2 == 1){
+			mMode = 4;
 		}
 
 		//カーソルの場所が1f前と変わった瞬間

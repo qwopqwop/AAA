@@ -155,6 +155,8 @@ void CSceneRace::Init() {
 
 	mSumple.Load("UnderGround\\passage2.obj", "UnderGround\\passage2.mtl");
 
+	msumple2.Load("material\\racing_mat\\stage2\\tekitou.obj", "material\\racing_mat\\stage2\\tekitou.mtl");
+
 	//透明度の高い物から先に描画する
 
 	/*for (int i = 0; i < 12; i++){
@@ -367,6 +369,10 @@ void CSceneRace::Init() {
 		new CObj(&mDashBoard, CVector(260.0f - 40.0f*i , 13.1f + 10.0f, 800.0f), CVector(0.0f, 270.0f, 0.0f), CVector(1.0f, 1.0f, 1.0f), 31);
 		new CObj(&mDashBoard, CVector(260.0f - 40.0f*i-20.0f, 13.1f + 10.0f, 800.0f), CVector(0.0f, 270.0f, 0.0f), CVector(0.9f, 0.9f, 0.9f), 31);
 	}*/
+
+	//ステージ2のマテリアル
+	new CObj(&msumple2, CVector(120.0f, -48.0f, 450.0f), CVector(0.0f, 180.0f, 0.0f), CVector(3.0f, 2.0f, 2.0f), 1);
+
 	
 	mCamY = 0.0f;
 	mPutCol = false;
