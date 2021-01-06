@@ -45,6 +45,20 @@ CSceneRace::~CSceneRace() {
 void CSceneRace::Init() {
 	//シーンの設定
 	mScene = ERACE1;
+	
+
+	//ポイントの設定
+	CEnemy::mPointSize = 3;//ポイント数の設定
+	CEnemy::mPoint = new CPoint[CEnemy::mPointSize];
+
+	/*CEnemy::mPoint[0].Set(CVector(35.0f, 25.0f, 100.0f), 10.0f);
+	CEnemy::mPoint[1].Set(CVector(35.0f, 5.0f, 0.0f), 10.0f);
+	CEnemy::mPoint[2].Set(CVector(-35.0f, 45.0f, 50.0f), 10.0f);*/
+
+	CEnemy::mPoint[0].Set(CVector(135.0f, 30.0f, 200.0f), 40.0f);
+	CEnemy::mPoint[1].Set(CVector(435.0f, 30.0f, 200.0f), 40.0f);
+	CEnemy::mPoint[2].Set(CVector(300.0f, 30.0f, 500.0f), 40.0f);
+
 
 	//的の残数の初期化
 	CItem::mTargetAmount = 0;
@@ -370,8 +384,11 @@ void CSceneRace::Init() {
 		new CObj(&mDashBoard, CVector(260.0f - 40.0f*i-20.0f, 13.1f + 10.0f, 800.0f), CVector(0.0f, 270.0f, 0.0f), CVector(0.9f, 0.9f, 0.9f), 31);
 	}*/
 
+
 	//ステージ2のマテリアル
-	new CObj(&msumple2, CVector(120.0f, -48.0f, 450.0f), CVector(0.0f, 180.0f, 0.0f), CVector(3.0f, 2.0f, 2.0f), 1);
+	if (CSceneTitle::mMode == 2){
+		new CObj(&msumple2, CVector(120.0f, -48.0f, 450.0f), CVector(0.0f, 180.0f, 0.0f), CVector(3.0f, 2.0f, 2.0f), 1);
+	}
 
 	
 	mCamY = 0.0f;
@@ -401,6 +418,8 @@ void CSceneRace::Init() {
 	for (int i = 0; i < 5; i++){
 		CTaskManager::Get()->ChangePriority(mEnemys[i], 15);
 	}
+
+	
 
 	BGM.Repeat();
 }

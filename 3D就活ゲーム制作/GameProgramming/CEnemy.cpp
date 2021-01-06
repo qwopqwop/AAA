@@ -22,7 +22,7 @@ CEnemy *CEnemy::mpEnemy = 0;
 #define G (9.8f / 120.0f)//重力加速度//60.0f
 #define JUMPV0 (4.0f*4.0f)//ジャンプ初速//4.0f
 
-#define MAXSPEED 4.5f+3.0f -0.5f //車の最高速度
+#define MAXSPEED 4.5f+3.0f -0.5f -1.0f //車の最高速度
 #define MAXSPEED_BACK 1.0f*2 //車の後退する最大速度
 #define CAR_POWER 0.05f*2//1フレーム辺りの車の加速していく量
 #define CAR_BREAK_POWER 0.025f*2 //前進中のブレーキの強さ
@@ -43,6 +43,7 @@ CEnemy::CEnemy()
 //0.0fにしたら車体が浮いてるように見えてしまう
 :mColBody(this, CVector(0.0f, 4.0f + 1.0f, 0.5f), CVector(0.0f, 0.0f, 0.0f), CVector(1.0f, 1.0f, 1.0f), 10.0f)
 , mColTire(this, CVector(0.0f, -16.0f + 15.0f + 1.0f, 0.5f), CVector(0.0f, 0.0f, 0.0f), CVector(1.0f, 1.0f, 1.0f), 10.0f)
+, mSearch(this, CVector(0.0f, 15.0f, 0.0f), CVector(0.0f, 0.0f, 0.0f), CVector(1.0f, 1.0f, 1.0f), 10.0f)
 {
 	mpEnemy = this;
 
@@ -85,9 +86,13 @@ CEnemy::CEnemy()
 	SoundCollisionSmall.Load("SE\\SNES-Racing01-10(Collision).wav");
 
 
-
 	isSoundEngine = false;
 	//SoundEngine.Repeat();
+
+
+	mSearch.mTag = CCollider::ESEARCH;
+	mPointCnt = 0;//最初のポイントを設定
+	mpPoint = &mPoint[mPointCnt];//目指すポイントのポインタを設定
 }
 
 void CEnemy::Update(){
@@ -180,7 +185,7 @@ void CEnemy::Update(){
 	}
 
 
-	if (CKey::Push(VK_UP) && CanMove){
+	if (CKey::Push(VK_UP) && CanMove || mChecks >= 0 && CanMove){
 		if (mCarSpeed < MAXSPEED + mBoostMaxSpeed){
 			mCarSpeed += CAR_POWER;
 		}
@@ -251,43 +256,43 @@ void CEnemy::Update(){
 		}
 	}
 
-	if (CKey::Push(VK_LEFT) && CanMove){ //ハンドルを左に！
-		//mRotation.mY++;
-		if (mTurnSpeed >= 0.0f&&mTurnSpeed<0.5f){
-			mTurnSpeed = 0.5f;
-		}
-		if (mTurnSpeed < 0.0f){
-			mTurnSpeed += 0.11f;
-		}
-		mTurnSpeed += 0.04f;
-	}
-	else if (CKey::Push(VK_RIGHT) && CanMove){//ハンドルを右に！
-		//mRotation.mY--;
-		if (mTurnSpeed <= 0.0f&&mTurnSpeed>-0.5f){
-			mTurnSpeed = -0.5f;
-		}
-		if (mTurnSpeed > 0.0f){
-			mTurnSpeed -= 0.11f;
-		}
-		mTurnSpeed -= 0.04f;
-	}
-	else{
-		if (mTurnSpeed > 0.0f){
-			mTurnSpeed -= 0.05f;
-		}
-		else if (mTurnSpeed < 0.0f){
-			mTurnSpeed += 0.05f;
-		}
-		if (mTurnSpeed<0.04f && mTurnSpeed>-0.04f){
-			mTurnSpeed = 0.0f;
-		}
-	}
-	if (mTurnSpeed > 1.0f){
-		mTurnSpeed = 1.0f;
-	}
-	else if (mTurnSpeed < -1.0f){
-		mTurnSpeed = -1.0f;
-	}
+	//if (CKey::Push(VK_LEFT) && CanMove){ //ハンドルを左に！
+	//	//mRotation.mY++;
+	//	if (mTurnSpeed >= 0.0f&&mTurnSpeed<0.5f){
+	//		mTurnSpeed = 0.5f;
+	//	}
+	//	if (mTurnSpeed < 0.0f){
+	//		mTurnSpeed += 0.11f;
+	//	}
+	//	mTurnSpeed += 0.04f;
+	//}
+	//else if (CKey::Push(VK_RIGHT) && CanMove){//ハンドルを右に！
+	//	//mRotation.mY--;
+	//	if (mTurnSpeed <= 0.0f&&mTurnSpeed>-0.5f){
+	//		mTurnSpeed = -0.5f;
+	//	}
+	//	if (mTurnSpeed > 0.0f){
+	//		mTurnSpeed -= 0.11f;
+	//	}
+	//	mTurnSpeed -= 0.04f;
+	//}
+	//else{
+	//	if (mTurnSpeed > 0.0f){
+	//		mTurnSpeed -= 0.05f;
+	//	}
+	//	else if (mTurnSpeed < 0.0f){
+	//		mTurnSpeed += 0.05f;
+	//	}
+	//	if (mTurnSpeed<0.04f && mTurnSpeed>-0.04f){
+	//		mTurnSpeed = 0.0f;
+	//	}
+	//}
+	//if (mTurnSpeed > 1.0f){
+	//	mTurnSpeed = 1.0f;
+	//}
+	//else if (mTurnSpeed < -1.0f){
+	//	mTurnSpeed = -1.0f;
+	//}
 	mRotation.mY += mTurnSpeed;
 
 
@@ -351,8 +356,22 @@ void CEnemy::Update(){
 		*mMatrixTranslate;//できてる？
 	//mMatrix = mMatrixScale * mMatrixRotate * mMatrixTranslate;
 
+
+	//ポイントへのベクトルを求める
+	CVector dir = mpPoint->mPosition - mPosition;
+	//左方向へのベクトルを求める
+	CVector left = CVector(1.0f, 0.0f, 0.0f) * CMatrix().RotateY(mRotation.mY);
+	//左右の回転処理(Y軸)
+	if (left.Dot(dir) > 0.0f){
+		mRotation.mY += 0.3f *10;
+	}
+	else if (left.Dot(dir) < 0.0f){
+		mRotation.mY -= 0.3f * 10;
+	}
+
+
 	//コースアウトした時
-	if (mPosition.mY < -150000.0f){
+	if (mPosition.mY < -150.0f){
 		//落下の勢いを0にする
 		mVelocityJump = 0.0f;
 		//車の速度を0に
@@ -382,6 +401,8 @@ void CEnemy::Update(){
 
 	//重力の影響を反映する
 	mVelocityJump -= G;
+
+
 	
 }
 
@@ -438,6 +459,15 @@ void CEnemy::Collision(CCollider *mc, CCollider *yc){
 								}
 							}
 						}
+						
+						/*if (mTurnSpeed <= 0.0f&&mTurnSpeed>-0.5f){
+							mTurnSpeed = -0.5f;
+						}
+						if (mTurnSpeed > 0.0f){
+							mTurnSpeed -= 0.11f;
+						}
+						mTurnSpeed -= 0.04f;*/
+
 					}
 				}
 				if (yc->mpParent->mTag == CCharacter::ECHECKPOINT){//中間地点1
@@ -455,6 +485,7 @@ void CEnemy::Collision(CCollider *mc, CCollider *yc){
 						CVector aiu;//数合わせのためだけのベクトル
 						if (CCollider::CollisionTriangleSphere(yc, mc, &aiu)){
 							mChecks = 2;
+							//mChecks = 0;
 						}
 					}
 				}
@@ -630,8 +661,43 @@ void CEnemy::Collision(CCollider *mc, CCollider *yc){
 							CCharacter::Update();
 							//printf("X:%f Y:%f Z:%f",mPosition.mX,mPosition.mY,mPosition.mZ);
 						}
+					}					
+				}
+
+				if (mc->mTag == CCollider::ESEARCH){
+					//ポインタからポインタに向けて移動する
+					if (yc->mpParent->mTag == CCharacter::EPOINT){
+						CVector adjust;//調整用ベクトル
+						////		//球同士の衝突判定
+						if (CCollider::Collision(mc, yc, &adjust)){
+							//衝突したポインタと目指しているポインタが同じ時
+							if (yc->mpParent == mpPoint){
+								mPointCnt++;//次のポイントにする
+								//最後だったら最初にする
+								mPointCnt %= mPointSize;
+								//次のポイントのポインタを設定
+								mpPoint = &mPoint[mPointCnt];
+							}
+						}
+					}
+
+					switch (yc->mpParent->mTag){
+					case EPOINT://ポイントの時
+						//衝突したポインタと目指しているポインタが同じ時
+						if (yc->mpParent == mpPoint){
+							mPointCnt++;//次のポイントにする
+							//最後だったら最初にする
+							mPointCnt %= mPointSize;
+							//次のポイントのポインタを設定
+							mpPoint = &mPoint[mPointCnt];
+							printf("a");
+						}
+						break;
+					default:
+						;
 					}
 				}
+
 			}
 		}
 
@@ -661,3 +727,8 @@ void CEnemy::TaskCollision()
 	CollisionManager.Collision(&mColBody);
 	CollisionManager.Collision(&mColTire);
 }
+
+//誘導ポイント
+CPoint *CEnemy::mPoint;
+
+int CEnemy::mPointSize = 0;

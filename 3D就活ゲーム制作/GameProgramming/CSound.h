@@ -29,6 +29,8 @@ public:
 
 	CSound()
 		: mpSourceVoice(0)
+		, g_hmmio(0)
+		, buf(0)
 	{
 		file[0] = 0;
 		if (mNum == 0) {
@@ -110,7 +112,7 @@ public:
 			readlen = mmioRead(g_hmmio, (HPSTR)ptr, buflen);
 			if (readlen <= 0) return false;
 			memset(&mBufinfo, 0x00, sizeof(mBufinfo));
-//			mBufinfo.Flags = ((UINT32)readlen >= buflen) ? 0 : XAUDIO2_END_OF_STREAM;
+			//			mBufinfo.Flags = ((UINT32)readlen >= buflen) ? 0 : XAUDIO2_END_OF_STREAM;
 			mBufinfo.Flags = XAUDIO2_END_OF_STREAM;
 			mBufinfo.AudioBytes = readlen;
 			mBufinfo.pAudioData = ptr;

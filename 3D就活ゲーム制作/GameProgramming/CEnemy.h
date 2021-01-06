@@ -4,6 +4,7 @@
 #include "CCollider.h"
 #include "CCollisionManager.h"
 #include "CSound.h"
+#include "CPoint.h"
 
 class CEnemy :public CCharacter{
 public:
@@ -58,6 +59,18 @@ public:
 
 	//コライダの更新
 	void TaskCollision();
+
+
+
+	//誘導ポイント
+	static CPoint *mPoint;
+
+	static int mPointSize;//ポイントの数
+	CPoint *mpPoint;//目指すポイント
+	int mPointCnt;//ポイントのカウンタ
+
+	//コライダ
+	CCollider mSearch;
 };
 
 

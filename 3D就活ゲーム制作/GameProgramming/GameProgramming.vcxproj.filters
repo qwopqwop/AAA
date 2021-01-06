@@ -19,6 +19,9 @@
     <Filter Include="ソース ファイル\RaceGame">
       <UniqueIdentifier>{e737a8f8-86e4-4dd4-a3d4-839df992c13f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\RaceGame\ちょっと別フォルダで">
+      <UniqueIdentifier>{f9f00719-0209-4630-9464-3be405b239b6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -110,6 +113,9 @@
     </ClCompile>
     <ClCompile Include="CEnemy.cpp">
       <Filter>ソース ファイル\RaceGame</Filter>
+    </ClCompile>
+    <ClCompile Include="CPoint.cpp">
+      <Filter>ソース ファイル\RaceGame\ちょっと別フォルダで</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -205,6 +211,9 @@
     </ClInclude>
     <ClInclude Include="CEnemy.h">
       <Filter>ソース ファイル\RaceGame</Filter>
+    </ClInclude>
+    <ClInclude Include="CPoint.h">
+      <Filter>ソース ファイル\RaceGame\ちょっと別フォルダで</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

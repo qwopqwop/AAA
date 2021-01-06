@@ -96,6 +96,7 @@
     <ClCompile Include="CModel.cpp" />
     <ClCompile Include="CObj.cpp" />
     <ClCompile Include="CPlayer.cpp" />
+    <ClCompile Include="CPoint.cpp" />
     <ClCompile Include="CRock.cpp" />
     <ClCompile Include="CScene.cpp" />
     <ClCompile Include="CSceneGame.cpp" />
@@ -128,6 +129,7 @@
     <ClInclude Include="CModel.h" />
     <ClInclude Include="CObj.h" />
     <ClInclude Include="CPlayer.h" />
+    <ClInclude Include="CPoint.h" />
     <ClInclude Include="CRock.h" />
     <ClInclude Include="CScene.h" />
     <ClInclude Include="CSceneGame.h" />
