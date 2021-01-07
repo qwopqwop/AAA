@@ -115,7 +115,7 @@
       <Filter>ソース ファイル\RaceGame</Filter>
     </ClCompile>
     <ClCompile Include="CPoint.cpp">
-      <Filter>ソース ファイル\RaceGame\ちょっと別フォルダで</Filter>
+      <Filter>ソース ファイル\RaceGame</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -213,7 +213,7 @@
       <Filter>ソース ファイル\RaceGame</Filter>
     </ClInclude>
     <ClInclude Include="CPoint.h">
-      <Filter>ソース ファイル\RaceGame\ちょっと別フォルダで</Filter>
+      <Filter>ソース ファイル\RaceGame</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

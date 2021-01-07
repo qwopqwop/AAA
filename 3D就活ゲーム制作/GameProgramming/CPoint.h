@@ -14,5 +14,8 @@ public:
 	//ê›íË
 	//Set(à íu, îºåa)
 	void Set(const CVector &pos, float r);
+
+	CPoint(const CVector &pos, float r, int pointnumber);
+
 };
 #endif

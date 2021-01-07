@@ -110,6 +110,8 @@ public:
 
 	//コース2のマテリアル
 	CModel msumple2;
+
+	int mTextBlinkTime;
 };
 
 #endif

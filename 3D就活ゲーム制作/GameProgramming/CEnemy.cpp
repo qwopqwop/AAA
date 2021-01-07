@@ -22,7 +22,7 @@ CEnemy *CEnemy::mpEnemy = 0;
 #define G (9.8f / 120.0f)//重力加速度//60.0f
 #define JUMPV0 (4.0f*4.0f)//ジャンプ初速//4.0f
 
-#define MAXSPEED 4.5f+3.0f -0.5f -1.0f //車の最高速度
+#define MAXSPEED 4.5f+3.0f -0.5f//車の最高速度
 #define MAXSPEED_BACK 1.0f*2 //車の後退する最大速度
 #define CAR_POWER 0.05f*2//1フレーム辺りの車の加速していく量
 #define CAR_BREAK_POWER 0.025f*2 //前進中のブレーキの強さ
@@ -363,10 +363,10 @@ void CEnemy::Update(){
 	CVector left = CVector(1.0f, 0.0f, 0.0f) * CMatrix().RotateY(mRotation.mY);
 	//左右の回転処理(Y軸)
 	if (left.Dot(dir) > 0.0f){
-		mRotation.mY += 0.3f *10;
+		mRotation.mY += 0.3f *100;
 	}
 	else if (left.Dot(dir) < 0.0f){
-		mRotation.mY -= 0.3f * 10;
+		mRotation.mY -= 0.3f * 100;
 	}
 
 
@@ -668,7 +668,7 @@ void CEnemy::Collision(CCollider *mc, CCollider *yc){
 					//ポインタからポインタに向けて移動する
 					if (yc->mpParent->mTag == CCharacter::EPOINT){
 						CVector adjust;//調整用ベクトル
-						////		//球同士の衝突判定
+						//		//球同士の衝突判定
 						if (CCollider::Collision(mc, yc, &adjust)){
 							//衝突したポインタと目指しているポインタが同じ時
 							if (yc->mpParent == mpPoint){
@@ -681,21 +681,21 @@ void CEnemy::Collision(CCollider *mc, CCollider *yc){
 						}
 					}
 
-					switch (yc->mpParent->mTag){
-					case EPOINT://ポイントの時
-						//衝突したポインタと目指しているポインタが同じ時
-						if (yc->mpParent == mpPoint){
-							mPointCnt++;//次のポイントにする
-							//最後だったら最初にする
-							mPointCnt %= mPointSize;
-							//次のポイントのポインタを設定
-							mpPoint = &mPoint[mPointCnt];
-							printf("a");
-						}
-						break;
-					default:
-						;
-					}
+					//switch (yc->mpParent->mTag){
+					//case EPOINT://ポイントの時
+					//	//衝突したポインタと目指しているポインタが同じ時
+					//	if (yc->mpParent == mpPoint){
+					//		mPointCnt++;//次のポイントにする
+					//		//最後だったら最初にする
+					//		mPointCnt %= mPointSize;
+					//		//次のポイントのポインタを設定
+					//		mpPoint = &mPoint[mPointCnt];
+					//		printf("a");
+					//	}
+					//	break;
+					//default:
+					//	;
+					//}
 				}
 
 			}
@@ -724,8 +724,10 @@ void CEnemy::TaskCollision()
 {
 	mColBody.ChangePriority();
 	mColTire.ChangePriority();
+	mSearch.ChangePriority();
 	CollisionManager.Collision(&mColBody);
 	CollisionManager.Collision(&mColTire);
+	CollisionManager.Collision(&mSearch);
 }
 
 //誘導ポイント

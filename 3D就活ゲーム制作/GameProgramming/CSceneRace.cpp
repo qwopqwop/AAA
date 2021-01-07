@@ -47,17 +47,41 @@ void CSceneRace::Init() {
 	mScene = ERACE1;
 	
 
-	//ポイントの設定
-	CEnemy::mPointSize = 3;//ポイント数の設定
-	CEnemy::mPoint = new CPoint[CEnemy::mPointSize];
+	////ポイントの設定
+	//CEnemy::mPointSize = 5;//ポイント数の設定
+	//CEnemy::mPoint = new CPoint[CEnemy::mPointSize];
+	//
+	//CEnemy::mPoint[0].Set(CVector(135.0f, 30.0f, 200.0f), 40.0f,0);
+	//CEnemy::mPoint[1].Set(CVector(735.0f, 30.0f, 200.0f), 40.0f,1);
+	//CEnemy::mPoint[2].Set(CVector(435.0f, 30.0f, 500.0f), 40.0f,2);
+	//CEnemy::mPoint[3].Set(CVector(435.0f, 30.0f, -100.0f), 40.0f,3);
+	//CEnemy::mPoint[4].Set(CVector(435.0f, 30.0f, 200.0f), 40.0f,4);//0から3の中心
+
+
+	CEnemy::mPointSize = 5;//ポイント数の設定
+	CEnemy::mPoint = new CPoint(CVector(135.0f, 30.0f, 200.0f), 40.0f, 0);
+	CEnemy::mPoint = new CPoint(CVector(735.0f, 30.0f, 200.0f), 40.0f, 1);
+	CEnemy::mPoint = new CPoint(CVector(435.0f, 30.0f, 500.0f), 40.0f, 2);
+	CEnemy::mPoint = new CPoint(CVector(435.0f, 30.0f, -100.0f), 40.0f, 3);
+	CEnemy::mPoint = new CPoint(CVector(435.0f, 30.0f, 200.0f), 40.0f,4);
+
+
+	/*for (int i = 0; i < CEnemy::mPointSize; i++){
+		CEnemy::mPoint.Set
+	}*/
+
+	/*new CPoint(CVector(135.0f, 30.0f, 200.0f), 40.0f, 1);
+	new CPoint(CVector(135.0f, 30.0f, 200.0f), 40.0f, 1);
+	new CPoint(CVector(135.0f, 30.0f, 200.0f), 40.0f, 1);
+	new CPoint(CVector(135.0f, 30.0f, 200.0f), 40.0f, 1);*/
 
 	/*CEnemy::mPoint[0].Set(CVector(35.0f, 25.0f, 100.0f), 10.0f);
 	CEnemy::mPoint[1].Set(CVector(35.0f, 5.0f, 0.0f), 10.0f);
 	CEnemy::mPoint[2].Set(CVector(-35.0f, 45.0f, 50.0f), 10.0f);*/
 
-	CEnemy::mPoint[0].Set(CVector(135.0f, 30.0f, 200.0f), 40.0f);
-	CEnemy::mPoint[1].Set(CVector(435.0f, 30.0f, 200.0f), 40.0f);
-	CEnemy::mPoint[2].Set(CVector(300.0f, 30.0f, 500.0f), 40.0f);
+	
+
+	//new CObj(&mOnBlock, CVector(0.0f, 0.0f, 750.0f), CVector(-40.0f, 270.0f, 0.0f), CVector(60.0f, 5.0f, 40.0f), 1);
 
 
 	//的の残数の初期化
@@ -394,6 +418,8 @@ void CSceneRace::Init() {
 	mCamY = 0.0f;
 	mPutCol = false;
 
+	mTextBlinkTime = 0;
+
 	mFrame = 0;
 	mCountDown = 3+1;
 
@@ -650,15 +676,19 @@ void CSceneRace::Update() {
 	sprintf(carspeed, "SPEED:%4.1f", CPlayer::mpPlayer->mCarSpeed);
 	CText::DrawString(carspeed, 20+560, 20, 10, 12);
 
+	
+	if (mTextBlinkTime < 60){
+		mTextBlinkTime++;
+	}
+	else{
+		mTextBlinkTime = 0;
+	}
+
+	if (mTextBlinkTime < 30){
+		CText::DrawString("Press Enter to Title", 222, 77, 10, 12, 2);
+	}
 	//2D描画終了
 	End2D();
-
-
-	//CText::DrawString("PONG", 110, 80, 100, 100);
-	//CText::DrawString("HEPPY", 110, 380, 70, 70);
-	//CText::DrawString("MEW", 250, 230, 70, 70);
-	//CText::DrawString("YEAH", 180, 80, 70, 70);
-
 
 	if (CKey::Push('Y')){//でば
 		mCamY += 1.0f;
