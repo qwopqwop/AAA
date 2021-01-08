@@ -64,6 +64,11 @@ public:
 
 	//誘導ポイント
 	static CPoint *mPoint;
+	static CPoint *mPoint2;
+	static CPoint *mPoint3;
+	static CPoint *mPoint4;
+	static CPoint *mPoint5;
+	static CPoint *mPoint6;
 
 	static int mPointSize;//ポイントの数
 	CPoint *mpPoint;//目指すポイント

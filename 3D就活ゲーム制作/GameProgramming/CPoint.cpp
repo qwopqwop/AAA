@@ -15,7 +15,7 @@ void CPoint::Set(const CVector &pos, float r){
 	CCharacter::Update();
 }
 
-CPoint::CPoint(const CVector &pos, float r, int pointnumber)
+CPoint::CPoint(const CVector &pos, float r)
 : mCollider(this, CVector(), CVector(), CVector(1.0f, 1.0f, 1.0f), 1.0f)
 {
 	mPosition = pos;

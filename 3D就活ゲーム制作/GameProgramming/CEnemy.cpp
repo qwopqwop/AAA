@@ -22,7 +22,7 @@ CEnemy *CEnemy::mpEnemy = 0;
 #define G (9.8f / 120.0f)//重力加速度//60.0f
 #define JUMPV0 (4.0f*4.0f)//ジャンプ初速//4.0f
 
-#define MAXSPEED 4.5f+3.0f -0.5f//車の最高速度
+#define MAXSPEED 4.5f+3.0f -0.5f//車の最高速度 //一応プレイヤーが追いつける程度に最高速は少し低め
 #define MAXSPEED_BACK 1.0f*2 //車の後退する最大速度
 #define CAR_POWER 0.05f*2//1フレーム辺りの車の加速していく量
 #define CAR_BREAK_POWER 0.025f*2 //前進中のブレーキの強さ
@@ -92,7 +92,8 @@ CEnemy::CEnemy()
 
 	mSearch.mTag = CCollider::ESEARCH;
 	mPointCnt = 0;//最初のポイントを設定
-	mpPoint = &mPoint[mPointCnt];//目指すポイントのポインタを設定
+	//mpPoint = &mPoint[mPointCnt];//目指すポイントのポインタを設定
+	mpPoint = mPoint;
 }
 
 void CEnemy::Update(){
@@ -122,6 +123,7 @@ void CEnemy::Update(){
 	if (CKey::Push('B')){//超急ブレーキ
 		mCarSpeed = 0.0f;
 	}
+
 
 	////Aキー、Dキーが同時に入力されているか
 	//if (CKey::Push('A') && CKey::Push('D')){
@@ -256,43 +258,57 @@ void CEnemy::Update(){
 		}
 	}
 
-	//if (CKey::Push(VK_LEFT) && CanMove){ //ハンドルを左に！
-	//	//mRotation.mY++;
-	//	if (mTurnSpeed >= 0.0f&&mTurnSpeed<0.5f){
-	//		mTurnSpeed = 0.5f;
-	//	}
-	//	if (mTurnSpeed < 0.0f){
-	//		mTurnSpeed += 0.11f;
-	//	}
-	//	mTurnSpeed += 0.04f;
+	//ポイントへのベクトルを求める
+	CVector dir = mpPoint->mPosition - mPosition;
+	//左方向へのベクトルを求める
+	CVector left = CVector(1.0f, 0.0f, 0.0f) * CMatrix().RotateY(mRotation.mY);
+	////左右の回転処理(Y軸)
+	//if (left.Dot(dir) > 0.0f){
+	//	mRotation.mY += 0.3f * 100;
 	//}
-	//else if (CKey::Push(VK_RIGHT) && CanMove){//ハンドルを右に！
-	//	//mRotation.mY--;
-	//	if (mTurnSpeed <= 0.0f&&mTurnSpeed>-0.5f){
-	//		mTurnSpeed = -0.5f;
-	//	}
-	//	if (mTurnSpeed > 0.0f){
-	//		mTurnSpeed -= 0.11f;
-	//	}
-	//	mTurnSpeed -= 0.04f;
+	//else if (left.Dot(dir) < 0.0f){
+	//	mRotation.mY -= 0.3f * 100;
 	//}
-	//else{
-	//	if (mTurnSpeed > 0.0f){
-	//		mTurnSpeed -= 0.05f;
-	//	}
-	//	else if (mTurnSpeed < 0.0f){
-	//		mTurnSpeed += 0.05f;
-	//	}
-	//	if (mTurnSpeed<0.04f && mTurnSpeed>-0.04f){
-	//		mTurnSpeed = 0.0f;
-	//	}
-	//}
-	//if (mTurnSpeed > 1.0f){
-	//	mTurnSpeed = 1.0f;
-	//}
-	//else if (mTurnSpeed < -1.0f){
-	//	mTurnSpeed = -1.0f;
-	//}
+
+	//目的地が左側にあり、操作可能な時
+	if (left.Dot(dir) > 0.0f && CanMove){ //ハンドルを左に！
+		//mRotation.mY++;
+		if (mTurnSpeed >= 0.0f&&mTurnSpeed<0.5f){
+			mTurnSpeed = 0.5f;
+		}
+		if (mTurnSpeed < 0.0f){
+			mTurnSpeed += 0.11f;
+		}
+		mTurnSpeed += 0.04f;
+	}
+	//あるいは目的地が右方面で、操作可能な時
+	else if (left.Dot(dir) < 0.0f && CanMove){//ハンドルを右に！
+		//mRotation.mY--;
+		if (mTurnSpeed <= 0.0f&&mTurnSpeed>-0.5f){
+			mTurnSpeed = -0.5f;
+		}
+		if (mTurnSpeed > 0.0f){
+			mTurnSpeed -= 0.11f;
+		}
+		mTurnSpeed -= 0.04f;
+	}
+	else{
+		if (mTurnSpeed > 0.0f){
+			mTurnSpeed -= 0.05f;
+		}
+		else if (mTurnSpeed < 0.0f){
+			mTurnSpeed += 0.05f;
+		}
+		if (mTurnSpeed<0.04f && mTurnSpeed>-0.04f){
+			mTurnSpeed = 0.0f;
+		}
+	}
+	if (mTurnSpeed > 1.0f){
+		mTurnSpeed = 1.0f;
+	}
+	else if (mTurnSpeed < -1.0f){
+		mTurnSpeed = -1.0f;
+	}
 	mRotation.mY += mTurnSpeed;
 
 
@@ -357,17 +373,7 @@ void CEnemy::Update(){
 	//mMatrix = mMatrixScale * mMatrixRotate * mMatrixTranslate;
 
 
-	//ポイントへのベクトルを求める
-	CVector dir = mpPoint->mPosition - mPosition;
-	//左方向へのベクトルを求める
-	CVector left = CVector(1.0f, 0.0f, 0.0f) * CMatrix().RotateY(mRotation.mY);
-	//左右の回転処理(Y軸)
-	if (left.Dot(dir) > 0.0f){
-		mRotation.mY += 0.3f *100;
-	}
-	else if (left.Dot(dir) < 0.0f){
-		mRotation.mY -= 0.3f * 100;
-	}
+	
 
 
 	//コースアウトした時
@@ -672,14 +678,38 @@ void CEnemy::Collision(CCollider *mc, CCollider *yc){
 						if (CCollider::Collision(mc, yc, &adjust)){
 							//衝突したポインタと目指しているポインタが同じ時
 							if (yc->mpParent == mpPoint){
-								mPointCnt++;//次のポイントにする
-								//最後だったら最初にする
-								mPointCnt %= mPointSize;
+								
+								//mPointCnt++;//次のポイントにする
+								////最後だったら最初にする
+								//mPointCnt %= mPointSize;
+								//mpPoint = &mPoint[mPointCnt];
+
 								//次のポイントのポインタを設定
-								mpPoint = &mPoint[mPointCnt];
+								if (mpPoint == mPoint){
+									mpPoint = mPoint2;
+								}
+								else if(mpPoint==mPoint2){
+									mpPoint = mPoint3;
+								}
+								else if (mpPoint == mPoint3){
+									mpPoint = mPoint4;
+								}
+								else if (mpPoint == mPoint4){
+									mpPoint = mPoint5;
+								}
+								else if (mpPoint == mPoint5){
+									mpPoint = mPoint6;
+								}
+								else if (mpPoint == mPoint6){
+									mpPoint = mPoint;
+								}
+
+								//printf("次の目的地…X:%.1f Y:%.1f Z:%.1f\n", mpPoint->mPosition.mX, mpPoint->mPosition.mY, mpPoint->mPosition.mZ);
 							}
 						}
 					}
+
+					//mPoint->mPointNumber
 
 					//switch (yc->mpParent->mTag){
 					//case EPOINT://ポイントの時
@@ -732,5 +762,10 @@ void CEnemy::TaskCollision()
 
 //誘導ポイント
 CPoint *CEnemy::mPoint;
+CPoint *CEnemy::mPoint2;
+CPoint *CEnemy::mPoint3;
+CPoint *CEnemy::mPoint4;
+CPoint *CEnemy::mPoint5;
+CPoint *CEnemy::mPoint6;
 
 int CEnemy::mPointSize = 0;

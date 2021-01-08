@@ -48,23 +48,32 @@ void CSceneRace::Init() {
 	
 
 	////ポイントの設定
-	//CEnemy::mPointSize = 5;//ポイント数の設定
+	//CEnemy::mPointSize = 6;//ポイント数の設定
 	//CEnemy::mPoint = new CPoint[CEnemy::mPointSize];
+
 	//
-	//CEnemy::mPoint[0].Set(CVector(135.0f, 30.0f, 200.0f), 40.0f,0);
-	//CEnemy::mPoint[1].Set(CVector(735.0f, 30.0f, 200.0f), 40.0f,1);
-	//CEnemy::mPoint[2].Set(CVector(435.0f, 30.0f, 500.0f), 40.0f,2);
-	//CEnemy::mPoint[3].Set(CVector(435.0f, 30.0f, -100.0f), 40.0f,3);
-	//CEnemy::mPoint[4].Set(CVector(435.0f, 30.0f, 200.0f), 40.0f,4);//0から3の中心
+	//CEnemy::mPoint[0].Set(CVector(413.0f, 30.0f, 1700.0f), 40.0f);
+	//CEnemy::mPoint[1].Set(CVector(-958.0f, 30.0f, 2600.0f), 40.0f);
+	//CEnemy::mPoint[2].Set(CVector(-1350.0f, 30.0f, 1700.0f), 40.0f);
+	//CEnemy::mPoint[3].Set(CVector(-1601.0f, 30.0f, -1702.0f), 40.0f);
+	//CEnemy::mPoint[4].Set(CVector(-500.0f, 30.0f, -2000.0f), 40.0f);
+	//CEnemy::mPoint[5].Set(CVector(340.0f, 30.0f, -1182.0f), 40.0f);
+	
+
+	//CEnemy::mPoint[0].Set(CVector(135.0f, 30.0f, 200.0f), 40.0f);
+	//CEnemy::mPoint[1].Set(CVector(735.0f, 30.0f, 200.0f), 40.0f);
+	//CEnemy::mPoint[2].Set(CVector(435.0f, 30.0f, 500.0f), 40.0f);
+	//CEnemy::mPoint[3].Set(CVector(435.0f, 30.0f, -100.0f), 40.0f);
+	//CEnemy::mPoint[4].Set(CVector(435.0f, 30.0f, 200.0f), 40.0f);//0から3の中心
 
 
-	CEnemy::mPointSize = 5;//ポイント数の設定
-	CEnemy::mPoint = new CPoint(CVector(135.0f, 30.0f, 200.0f), 40.0f, 0);
-	CEnemy::mPoint = new CPoint(CVector(735.0f, 30.0f, 200.0f), 40.0f, 1);
-	CEnemy::mPoint = new CPoint(CVector(435.0f, 30.0f, 500.0f), 40.0f, 2);
-	CEnemy::mPoint = new CPoint(CVector(435.0f, 30.0f, -100.0f), 40.0f, 3);
-	CEnemy::mPoint = new CPoint(CVector(435.0f, 30.0f, 200.0f), 40.0f,4);
-
+	CEnemy::mPointSize = 6;//ポイント数の設定
+	CEnemy::mPoint = new CPoint(CVector(413.0f, 30.0f, 1700.0f), 40.0f);
+	CEnemy::mPoint2 = new CPoint(CVector(-958.0f, 30.0f, 2600.0f), 40.0f);
+	CEnemy::mPoint3 = new CPoint(CVector(-1350.0f, 30.0f, 1700.0f), 40.0f);
+	CEnemy::mPoint4 = new CPoint(CVector(-1601.0f, 30.0f, -1702.0f), 40.0f);
+	CEnemy::mPoint5 = new CPoint(CVector(-500.0f, 30.0f, -2000.0f), 40.0f);
+	CEnemy::mPoint6 = new CPoint(CVector(340.0f, 30.0f, -1182.0f), 40.0f);
 
 	/*for (int i = 0; i < CEnemy::mPointSize; i++){
 		CEnemy::mPoint.Set
@@ -411,7 +420,7 @@ void CSceneRace::Init() {
 
 	//ステージ2のマテリアル
 	if (CSceneTitle::mMode == 2){
-		new CObj(&msumple2, CVector(120.0f, -48.0f, 450.0f), CVector(0.0f, 180.0f, 0.0f), CVector(3.0f, 2.0f, 2.0f), 1);
+		new CObj(&msumple2, CVector(320.0f, -58.0f, 450.0f), CVector(0.0f, 180.0f, 0.0f), CVector(4.0f, 3.0f, 3.0f), 1);
 	}
 
 	
@@ -825,7 +834,34 @@ void CSceneRace::RenderMiniMap() {
 		* CMatrix().RotateZ(0)
 		* mPlayer->mMatrixTranslate;
 	mCarsol.Render(mat);
-	//mMatrix = mMatrixScale * mMatrixRotate * mMatrixTranslate;
+	//敵たちのカーソル
+	CMatrix matenemy;
+	matenemy = CMatrix().Scale(35.0f, 1.0f, 35.0f) //* mPlayer->mMatrixScale
+		* CMatrix().RotateX(0)
+		* CMatrix().RotateY(mEnemy1->mRotation.mY)
+		* CMatrix().RotateZ(0)
+		* mEnemy1->mMatrixTranslate;
+	mCarsol.Render(matenemy);
+
+	CMatrix matenemy2;
+	matenemy2 = CMatrix().Scale(35.0f, 1.0f, 35.0f) //* mPlayer->mMatrixScale
+		* CMatrix().RotateX(0)
+		* CMatrix().RotateY(mEnemy2->mRotation.mY)
+		* CMatrix().RotateZ(0)
+		* mEnemy2->mMatrixTranslate;
+	mCarsol.Render(matenemy);
+
+	CMatrix matenemys[5];
+	for (int i = 0; i < 5; i++){		
+		matenemys[i] = CMatrix().Scale(35.0f, 1.0f, 35.0f) //* mPlayer->mMatrixScale
+			* CMatrix().RotateX(0)
+			* CMatrix().RotateY(mEnemys[i]->mRotation.mY)
+			* CMatrix().RotateZ(0)
+			* mEnemys[i]->mMatrixTranslate;
+		mCarsol.Render(matenemys[i]);
+	}
+
+	//mMatrix = mMatrixScale * mMatrixRotate * mMatrixTranslate;//参考
 	
 
 
