@@ -24,6 +24,8 @@ public:
 		//シーンの設定
 		mScene = ETITLE;
 
+		mSelectScene_Level = 1;
+		mPrevDifficulty = mDifficulty;
 		mVariable1 = 0;
 		mPrevVariable1 = mVariable1;
 		mVariable2 = 0;
@@ -32,6 +34,7 @@ public:
 		mStartWaitTime = 0;
 		SoundMoveCarsol.Load("SE\\カーソル2.wav");
 		SoundDecide.Load("SE\\決定＿小決定（SF系）.wav");
+		SoundCancel.Load("SE\\キャンセル2.wav");
 	}
 	//更新処理のオーバーライド
 	void Update() {
@@ -40,7 +43,7 @@ public:
 		//文字列の描画
 		CText::DrawString("3D-RACE", -278 + 400 + 68, 430, 36, 36);
 		CText::DrawString("EXTREME", -278 + 400 + 68+96-24 +6*5, 370, 18, 18, 2);
-		CText::DrawString("Push Enter Key", 200, 150, 16, 16);
+		CText::DrawString("Push Enter Key", 200, 177, 16, 16);
 		
 		float c[] = { 1.0f, 1.0f, 1.0f, 1.0f };
 		if (mStartWaitTime > 20 || mStart == false){
@@ -50,10 +53,51 @@ public:
 			c[0] = c[1] = c[2] = 0.5f;
 		}
 		glColor4fv(c);
-		CText::DrawString("O", 170 + mVariable2 * 250, 300 + mVariable1 * 50, 10, 10);
 
+		//モード選択と難易度選択でカーソルの基点も違う
+		if (mSelectScene_Level == 1){
+			CText::DrawString("O", 170 + mVariable2 * 250, 300 + mVariable1 * 50, 10, 10);
+		}
+		else if (mSelectScene_Level == 2){
+			if (mDifficulty == 1){
+				CText::DrawString("O", 175, 100, 10, 10);
+			}
+			if (mDifficulty == 2){
+				CText::DrawString("O", 323, 100, 10, 10);
+			}
+			if (mDifficulty == 3){
+				CText::DrawString("O", 519, 100, 10, 10);
+			}
+			//CText::DrawString("O", -80 + mDifficulty * 250, 100, 10, 10);
+		}
 
-		
+		/*難易度選択(敵AIの強さ)*/
+		if (mDifficulty == 1 && mSelectScene_Level == 2){//難易度:EASY
+			c[0] = c[1] = c[2] = 1.0f; c[3] = 1.0f;
+		}
+		else{
+			c[0] = c[1] = c[2] = 0.5f; c[3] = 1.0f;
+		}
+		glColor4fv(c);
+		CText::DrawString("EASY", 200, 100, 12, 12);
+		if (mDifficulty == 2 && mSelectScene_Level == 2){//難易度:NORMAL
+			c[0] = c[1] = c[2] = 1.0f; c[3] = 1.0f;
+		}
+		else{
+			c[0] = c[1] = c[2] = 0.5f; c[3] = 1.0f;
+		}
+		glColor4fv(c);
+		CText::DrawString("NORMAL", 347, 100, 12, 12);
+		if (mDifficulty == 3 && mSelectScene_Level == 2){//難易度:HARD
+			c[0] = c[1] = c[2] = 1.0f; c[3] = 1.0f;
+		}
+		else{
+			c[0] = c[1] = c[2] = 0.5f; c[3] = 1.0f;
+		}
+		glColor4fv(c);
+		CText::DrawString("HARD", 543, 100, 12, 12);
+
+		/*モード選択(ステージ選択)の項目*/
 		if (mVariable1 == 0 && mVariable2 == 0){
 			c[0] = c[1] = c[2] = 1.0f; c[3] = 1.0f;
 		}
@@ -116,8 +160,18 @@ public:
 		//End2D();
 		
 		if (CKey::Once(VK_RETURN)){
-			mStart = true;
-			SoundDecide.Play();
+			//開始フラグが建ったら連打しようが音は鳴らない
+			if (mStart == false){
+				SoundDecide.Play();
+			}
+			if (mSelectScene_Level < 2){
+				//次に選ぶ項目へ
+				mSelectScene_Level++;
+			}
+			else{
+				//選び終えたらゲーム開始
+				mStart = true;
+			}
 		}
 		if (mStart){
 			if (mStartWaitTime < 60){
@@ -132,31 +186,75 @@ public:
 
 		//まだ選択してない時
 		if (mStart == false){
-			//矢印キー
-			if (CKey::Once(VK_UP)){
-				//次のシーンはゲーム
-				if (mVariable1 < 0){
-					mVariable1 += 1;
+			//矢印キーで選択
+			//選択画面1:モードの選択
+			if (mSelectScene_Level == 1){
+				if (CKey::Once(VK_UP)){
+					//次のシーンはゲーム
+					if (mVariable1 < 0){
+						mVariable1 += 1;
+					}
+				}
+				if (CKey::Once(VK_DOWN)){
+					//次のシーンはゲーム
+					if (mVariable1 > -1){
+						mVariable1 -= 1;
+					}
+				}
+				if (CKey::Once(VK_LEFT)){
+					//次のシーンはゲーム
+					if (mVariable2 > 0){
+						mVariable2 -= 1;
+					}
+				}
+				if (CKey::Once(VK_RIGHT)){
+					//次のシーンはゲーム
+					if (mVariable2 < 1){
+						mVariable2 += 1;
+					}
 				}
 			}
-			if (CKey::Once(VK_DOWN)){
-				//次のシーンはゲーム
-				if (mVariable1 > -1){
-					mVariable1 -= 1;
+			//選択画面2：敵AIの強さの設定
+			else if (mSelectScene_Level == 2){
+				if (CKey::Once(VK_LEFT)){
+					if (mDifficulty > 1){
+						mDifficulty--;
+					}
+					else{
+						mDifficulty = 3;
+					}
+				}
+				if (CKey::Once(VK_RIGHT)){
+					if (mDifficulty < 3){
+						mDifficulty++;
+					}
+					else{
+						mDifficulty = 1;
+					}
+				}
+				//Escキーか、BackSpaceキーで、前の選択画面に戻る
+				if (CKey::Once(VK_BACK) || CKey::Once(VK_ESCAPE)){
+					mSelectScene_Level--;
+					SoundCancel.Play();
 				}
 			}
-			if (CKey::Once(VK_LEFT)){
-				//次のシーンはゲーム
-				if (mVariable2 > 0){
-					mVariable2 -= 1;
-				}
-			}
-			if (CKey::Once(VK_RIGHT)){
-				//次のシーンはゲーム
-				if (mVariable2 < 1){
-					mVariable2 += 1;
-				}
-			}			
+			////難易度変更コマンド
+			//if (CKey::Once('Z')){
+			//	if (mDifficulty > 1){
+			//		mDifficulty--;
+			//	}
+			//	else{
+			//		mDifficulty = 3;
+			//	}
+			//}
+			//if (CKey::Once('X')){
+			//	if (mDifficulty < 3){
+			//		mDifficulty++;
+			//	}
+			//	else{
+			//		mDifficulty = 1;
+			//	}
+			//}
 		}
 		if (mVariable1 == 0 && mVariable2 == 0){
 			mMode = 1;
@@ -172,10 +270,11 @@ public:
 		}
 
 		//カーソルの場所が1f前と変わった瞬間
-		if (mPrevVariable1 != mVariable1 || mPrevVariable2 != mVariable2){
+		if (mPrevVariable1 != mVariable1 || mPrevVariable2 != mVariable2 || mPrevDifficulty != mDifficulty){
 			SoundMoveCarsol.Play();
 			mPrevVariable1 = mVariable1;
 			mPrevVariable2 = mVariable2;
+			mPrevDifficulty = mDifficulty;
 		}
 
 	}
@@ -191,10 +290,13 @@ public:
 	int mPrevVariable2;
 	CSound SoundMoveCarsol;
 	CSound SoundDecide;
+	CSound SoundCancel;
 	bool mStart;
 	int mStartWaitTime;
 	static int mMode;
-	
+	static int mDifficulty;
+	int mPrevDifficulty;
+	int mSelectScene_Level;//選択画面の何段階目か
 };
 
 #endif

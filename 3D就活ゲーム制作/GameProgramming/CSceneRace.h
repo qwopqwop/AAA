@@ -94,7 +94,7 @@ public:
 
 	int mFrame;
 	int mCountDown;
-	bool isStartRace;
+	bool isStartRace, isGoal;
 	int mTime;
 	static int mBestTime;
 	int mLap, mMaxLap;

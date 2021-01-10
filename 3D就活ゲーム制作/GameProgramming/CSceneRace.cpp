@@ -433,7 +433,7 @@ void CSceneRace::Init() {
 	mCountDown = 3+1;
 
 	//レースはカウントダウンが終わってから開始
-	isStartRace = false;
+	isStartRace = isGoal = false;
 	//時間のリセット
 	mTime = 0;
 		
@@ -670,11 +670,24 @@ void CSceneRace::Update() {
 	CText::DrawString(lap, 20, 500, 10, 12, 2);
 
 	//ゴール後、継続して実行する処理
-	if (mLap == mMaxLap && isStartRace == false){
+	if (mLap == mMaxLap && isStartRace == false && isGoal){
+		//60fで一巡
+		if (mTextBlinkTime < 60){
+			mTextBlinkTime++;
+		}
+		else{
+			mTextBlinkTime = 0;
+		}
+		//Enterキー入力でタイトル画面に戻れることを伝えるテキスト
+		if (mTextBlinkTime < 30){
+			CText::DrawString("Press Enter to Title", 222, 77, 10, 12, 2);
+		}
 		//新記録をたたき出した時
 		if (isNewRecord){
 			//CText::DrawString("FINISH!", 400 - 20 * 6, 300, 20, 24);
-			CText::DrawString("NEW RECORD!", 55, 551, 8, 9, 2);
+			if (mTextBlinkTime < 15 || mTextBlinkTime >= 30 && mTextBlinkTime < 45){
+				CText::DrawString("NEW RECORD!", 55, 551, 8, 9, 2);
+			}
 		}
 	}
 
@@ -686,16 +699,7 @@ void CSceneRace::Update() {
 	CText::DrawString(carspeed, 20+560, 20, 10, 12);
 
 	
-	if (mTextBlinkTime < 60){
-		mTextBlinkTime++;
-	}
-	else{
-		mTextBlinkTime = 0;
-	}
-
-	if (mTextBlinkTime < 30){
-		CText::DrawString("Press Enter to Title", 222, 77, 10, 12, 2);
-	}
+	
 	//2D描画終了
 	End2D();
 
@@ -735,6 +739,7 @@ void CSceneRace::Update() {
 				}
 			}
 			isStartRace = false;
+			isGoal = true;
 			BGM.Stop();
 			SoundGoal.Play();
 			//CPlayer::mpPlayer->CanMove = false;//動きストップ
