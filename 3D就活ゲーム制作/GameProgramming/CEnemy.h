@@ -69,6 +69,12 @@ public:
 	static CPoint *mPoint4;
 	static CPoint *mPoint5;
 	static CPoint *mPoint6;
+	static CPoint *mPoint7;
+	static CPoint *mPoint8;
+	static CPoint *mPoint9;
+	static CPoint *mPoint10;
+	static CPoint *mPoint11;
+	static CPoint *mPoint12;
 
 	static int mPointSize;//ポイントの数
 	CPoint *mpPoint;//目指すポイント
@@ -76,6 +82,8 @@ public:
 
 	//コライダ
 	CCollider mSearch;
+
+	int mRangeX, mRangeZ;
 };
 
 

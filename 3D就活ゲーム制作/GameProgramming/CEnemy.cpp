@@ -3,6 +3,12 @@
 
 #include "CItem.h"
 #include "CBullet.h"
+#include "CSceneTitle.h"
+
+//乱数を実装するインクルード群
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
 
 //衝突時のエフェクト追加
 #include "CEffect.h"
@@ -94,6 +100,8 @@ CEnemy::CEnemy()
 	mPointCnt = 0;//最初のポイントを設定
 	//mpPoint = &mPoint[mPointCnt];//目指すポイントのポインタを設定
 	mpPoint = mPoint;
+
+	srand(time(NULL));
 }
 
 void CEnemy::Update(){
@@ -124,6 +132,10 @@ void CEnemy::Update(){
 		mCarSpeed = 0.0f;
 	}
 
+
+	if (CKey::Once('T')){
+		printf("%d\n", rand(), rand());
+	}
 
 	////Aキー、Dキーが同時に入力されているか
 	//if (CKey::Push('A') && CKey::Push('D')){
@@ -408,6 +420,11 @@ void CEnemy::Update(){
 	//重力の影響を反映する
 	mVelocityJump -= G;
 
+	/*mRangeX = rand() % 101 - 50;
+	mRangeZ = rand() % 101 - 50;
+	mpPoint->mPosition.mX += mRangeX;
+	mpPoint->mPosition.mZ += mRangeZ;*/
+
 
 	
 }
@@ -684,9 +701,33 @@ void CEnemy::Collision(CCollider *mc, CCollider *yc){
 								//mPointCnt %= mPointSize;
 								//mpPoint = &mPoint[mPointCnt];
 
+								//敵AIのLvにより分散値も変わってくる予定
+								/*if (CSceneTitle::mDifficulty > 0){
+									mpPoint = mPoint6 + rangeofpoint;
+								}*/
+								//敵ごとにやや目的地座標にブレを出す
+								int gap = rand() % 101 - 50;
+
 								//次のポイントのポインタを設定
 								if (mpPoint == mPoint){
 									mpPoint = mPoint2;
+									/*
+									mpPoint->mPosition
+									mPoint->mPosition
+									の違いは・・・？
+									*/
+									/*printf("正確な目的地…X:%.1f Y:%.1f Z:%.1f\n", mpPoint->mPosition.mX, mpPoint->mPosition.mY, mpPoint->mPosition.mZ);
+									mpPoint->mPosition = mpPoint->mPosition + CVector(gap, 0.0f, gap);
+									printf("分散の目的地…X:%.1f Y:%.1f Z:%.1f\n", mpPoint->mPosition.mX, mpPoint->mPosition.mY, mpPoint->mPosition.mZ);*/
+									
+									/*printf("目的地…X:%.1f Y:%.1f Z:%.1f\n", mpPoint->mPosition.mX, mpPoint->mPosition.mY, mpPoint->mPosition.mZ);
+									printf("目的地…X:%.1f Y:%.1f Z:%.1f\n", mPoint2->mPosition.mX, mPoint2->mPosition.mY, mPoint2->mPosition.mZ);
+									mPoint2->mPosition.mX += rand() % 100;
+									mPoint2->mPosition.mZ += rand() % 100;
+									printf("目的地…X:%.1f Y:%.1f Z:%.1f\n", mpPoint->mPosition.mX, mpPoint->mPosition.mY, mpPoint->mPosition.mZ);
+									printf("目的地…X:%.1f Y:%.1f Z:%.1f\n", mPoint2->mPosition.mX, mPoint2->mPosition.mY, mPoint2->mPosition.mZ);*/
+									
+									
 								}
 								else if(mpPoint==mPoint2){
 									mpPoint = mPoint3;
@@ -701,8 +742,34 @@ void CEnemy::Collision(CCollider *mc, CCollider *yc){
 									mpPoint = mPoint6;
 								}
 								else if (mpPoint == mPoint6){
+									//難易度HARD以上ではさらに細かくポイントが設定されている
+									if (CSceneTitle::mDifficulty == 3){
+										mpPoint = mPoint7;
+									}
+									else{
+										mpPoint = mPoint;
+									}
+								}
+								//敵AIがHARD以上での挙動
+								else if (mpPoint == mPoint7){
+									mpPoint = mPoint8;
+								}
+								else if (mpPoint == mPoint8){
+									mpPoint = mPoint9;
+								}
+								else if (mpPoint == mPoint9){
+									mpPoint = mPoint10;
+								}
+								else if (mpPoint == mPoint10){
+									mpPoint = mPoint11;
+								}
+								else if (mpPoint == mPoint11){
+									mpPoint = mPoint12;
+								}
+								else if (mpPoint == mPoint12){
 									mpPoint = mPoint;
 								}
+								
 
 								//printf("次の目的地…X:%.1f Y:%.1f Z:%.1f\n", mpPoint->mPosition.mX, mpPoint->mPosition.mY, mpPoint->mPosition.mZ);
 							}
@@ -767,5 +834,11 @@ CPoint *CEnemy::mPoint3;
 CPoint *CEnemy::mPoint4;
 CPoint *CEnemy::mPoint5;
 CPoint *CEnemy::mPoint6;
+CPoint *CEnemy::mPoint7;
+CPoint *CEnemy::mPoint8;
+CPoint *CEnemy::mPoint9;
+CPoint *CEnemy::mPoint10;
+CPoint *CEnemy::mPoint11;
+CPoint *CEnemy::mPoint12;
 
 int CEnemy::mPointSize = 0;

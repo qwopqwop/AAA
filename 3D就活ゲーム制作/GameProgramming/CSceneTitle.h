@@ -8,6 +8,9 @@
 //・・・
 #include "CSceneRace.h"
 
+#define WAITTIME_STARTLOAD 60 //選択を決めてから次のシーンに移行するまでの時間
+#define WAITTIME_NOWLOADING  WAITTIME_STARTLOAD - 10 //「NOW LOADING」が表示されるまでの時間
+
 class CSceneTitle : public CScene {
 public:
 	//初期化処理のオーバーライド
@@ -150,6 +153,10 @@ public:
 			sprintf(mrecord, "BEST:%02d:%02d:%02d", CSceneRace::mRecord_D / 10000 % 100, CSceneRace::mRecord_D / 100 % 100, CSceneRace::mRecord_D % 100);
 			CText::DrawString(mrecord, 20, 580, 10, 12);
 		}
+		//シーンが移行する直前で表示
+		if (mStartWaitTime > WAITTIME_NOWLOADING){
+			CText::DrawString("Please Wait...", 555, 14, 9, 11);
+		}
 		//2D描画終了
 		End2D();
 
@@ -174,14 +181,14 @@ public:
 			}
 		}
 		if (mStart){
-			if (mStartWaitTime < 60){
+			if (mStartWaitTime < WAITTIME_STARTLOAD){
 				mStartWaitTime++;
 			}
 			else{
 				//次のシーンはレース画面
 				printf("MODE:%d\n", mMode);
 				mScene = ERACE1;
-			}
+			}			
 		}
 
 		//まだ選択してない時
