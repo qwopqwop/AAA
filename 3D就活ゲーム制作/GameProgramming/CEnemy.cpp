@@ -51,6 +51,8 @@ CEnemy::CEnemy()
 , mColTire(this, CVector(0.0f, -16.0f + 15.0f + 1.0f, 0.5f), CVector(0.0f, 0.0f, 0.0f), CVector(1.0f, 1.0f, 1.0f), 10.0f)
 , mSearch(this, CVector(0.0f, 15.0f, 0.0f), CVector(0.0f, 0.0f, 0.0f), CVector(1.0f, 1.0f, 1.0f), 10.0f)
 {
+	srand(time(NULL));
+
 	mpEnemy = this;
 
 	mScale = CVector(2.5f, 2.5f, 2.5f);
@@ -99,9 +101,27 @@ CEnemy::CEnemy()
 	mSearch.mTag = CCollider::ESEARCH;
 	mPointCnt = 0;//最初のポイントを設定
 	//mpPoint = &mPoint[mPointCnt];//目指すポイントのポインタを設定
-	mpPoint = mPoint;
 
-	srand(time(NULL));
+	//mPointRand
+	mPointRand = mPoint;
+	mPointRand2 = mPoint2;
+	mPointRand3 = mPoint3;
+	mPointRand4 = mPoint4;
+	mPointRand5 = mPoint5;
+	mPointRand6 = mPoint6;
+	mPointRand7 = mPoint7;
+	mPointRand8 = mPoint8;
+	mPointRand9 = mPoint9;
+	mPointRand10 = mPoint10;
+	mPointRand11 = mPoint11;
+	mPointRand12 = mPoint12;
+	mPointRand->mPosition.mX += rand() % 101 - 50;
+	mPointRand->mPosition.mZ += rand() % 101 - 50;
+
+	mpPoint = mPointRand;
+
+	//mpPoint = mPoint;
+
 }
 
 void CEnemy::Update(){
@@ -128,8 +148,11 @@ void CEnemy::Update(){
 		mRotation.mY--;
 	}
 
-	if (CKey::Push('B')){//超急ブレーキ
-		mCarSpeed = 0.0f;
+	if (CKey::Once('B')){//超急ブレーキ
+		//mCarSpeed = 0.0f;
+		printf("mPoint…X:%.1f Y:%.1f Z:%.1f\n", mPoint->mPosition.mX, mPoint->mPosition.mY, mPoint->mPosition.mZ);
+		printf("mPointRand…X:%.1f Y:%.1f Z:%.1f\n", mPointRand->mPosition.mX, mPointRand->mPosition.mY, mPointRand->mPosition.mZ);
+		printf("mpPoint…X:%.1f Y:%.1f Z:%.1f\n", mpPoint->mPosition.mX, mpPoint->mPosition.mY, mpPoint->mPosition.mZ);
 	}
 
 
@@ -420,10 +443,20 @@ void CEnemy::Update(){
 	//重力の影響を反映する
 	mVelocityJump -= G;
 
-	/*mRangeX = rand() % 101 - 50;
-	mRangeZ = rand() % 101 - 50;
-	mpPoint->mPosition.mX += mRangeX;
-	mpPoint->mPosition.mZ += mRangeZ;*/
+	/*float sposX = mpPoint->mPosition.mX;
+	float sposZ = mpPoint->mPosition.mZ;*/
+	if (CKey::Push('N')){
+		mRangeX = rand() % 111 - 55;
+		mRangeZ = rand() % 111 - 55;
+		mpPoint->mPosition.mX += mRangeX;
+		mpPoint->mPosition.mZ += mRangeZ;
+	}
+	if (CKey::Push('I')){
+		mpPoint->mRotation.mY++;
+	}
+
+	/*mpPoint->mPosition.mX = sposX;
+	mpPoint->mPosition.mZ = sposZ;*/
 
 
 	
@@ -709,28 +742,38 @@ void CEnemy::Collision(CCollider *mc, CCollider *yc){
 								int gap = rand() % 101 - 50;
 
 								//次のポイントのポインタを設定
-								if (mpPoint == mPoint){
-									mpPoint = mPoint2;
-									/*
-									mpPoint->mPosition
-									mPoint->mPosition
-									の違いは・・・？
-									*/
-									/*printf("正確な目的地…X:%.1f Y:%.1f Z:%.1f\n", mpPoint->mPosition.mX, mpPoint->mPosition.mY, mpPoint->mPosition.mZ);
-									mpPoint->mPosition = mpPoint->mPosition + CVector(gap, 0.0f, gap);
-									printf("分散の目的地…X:%.1f Y:%.1f Z:%.1f\n", mpPoint->mPosition.mX, mpPoint->mPosition.mY, mpPoint->mPosition.mZ);*/
+								if (mpPoint == mPointRand){
+									//mpPoint = mPoint2;
+									///*
+									//mpPoint->mPosition
+									//mPoint->mPosition
+									//の違いは・・・？
+									//*/
+									///*printf("正確な目的地…X:%.1f Y:%.1f Z:%.1f\n", mpPoint->mPosition.mX, mpPoint->mPosition.mY, mpPoint->mPosition.mZ);
+									//mpPoint->mPosition = mpPoint->mPosition + CVector(gap, 0.0f, gap);
+									//printf("分散の目的地…X:%.1f Y:%.1f Z:%.1f\n", mpPoint->mPosition.mX, mpPoint->mPosition.mY, mpPoint->mPosition.mZ);*/
+									//
+									///*printf("目的地…X:%.1f Y:%.1f Z:%.1f\n", mpPoint->mPosition.mX, mpPoint->mPosition.mY, mpPoint->mPosition.mZ);
+									//printf("目的地…X:%.1f Y:%.1f Z:%.1f\n", mPoint2->mPosition.mX, mPoint2->mPosition.mY, mPoint2->mPosition.mZ);
+									//mPoint2->mPosition.mX += rand() % 100;
+									//mPoint2->mPosition.mZ += rand() % 100;
+									//printf("目的地…X:%.1f Y:%.1f Z:%.1f\n", mpPoint->mPosition.mX, mpPoint->mPosition.mY, mpPoint->mPosition.mZ);
+									//printf("目的地…X:%.1f Y:%.1f Z:%.1f\n", mPoint2->mPosition.mX, mPoint2->mPosition.mY, mPoint2->mPosition.mZ);*/
 									
-									/*printf("目的地…X:%.1f Y:%.1f Z:%.1f\n", mpPoint->mPosition.mX, mpPoint->mPosition.mY, mpPoint->mPosition.mZ);
-									printf("目的地…X:%.1f Y:%.1f Z:%.1f\n", mPoint2->mPosition.mX, mPoint2->mPosition.mY, mPoint2->mPosition.mZ);
-									mPoint2->mPosition.mX += rand() % 100;
-									mPoint2->mPosition.mZ += rand() % 100;
-									printf("目的地…X:%.1f Y:%.1f Z:%.1f\n", mpPoint->mPosition.mX, mpPoint->mPosition.mY, mpPoint->mPosition.mZ);
-									printf("目的地…X:%.1f Y:%.1f Z:%.1f\n", mPoint2->mPosition.mX, mPoint2->mPosition.mY, mPoint2->mPosition.mZ);*/
-									
-									
+									//mPoint2 = *mpPoint2 + CVector(0.0f, 0.0f, 0.0f);
+									mPointRand2 = mPoint2;
+									mPointRand2->mPosition.mX += rand() % 101 - 50;
+									mPointRand2->mPosition.mZ += rand() % 101 - 50;
+
+									mpPoint = mPointRand2;
+									printf("次の目標：p2\n");
 								}
 								else if(mpPoint==mPoint2){
-									mpPoint = mPoint3;
+									mPointRand3 = mPoint3;
+									mPointRand3->mPosition.mX += rand() % 101 - 50;
+									mPointRand3->mPosition.mZ += rand() % 101 - 50;
+
+									mpPoint = mPointRand3;
 								}
 								else if (mpPoint == mPoint3){
 									mpPoint = mPoint4;

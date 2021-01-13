@@ -57,6 +57,7 @@ public:
 	CModel mTileWhite;//白い床
 
 	CModel mCarsol;//矢印(ミニマップ)
+	CModel mCarsol_Enemy;//敵の矢印(ミニマップ)
 	CModel mMiniGoal;//ゴールIcon(ミニマップ)
 
 	CModel mCource01;//コース01

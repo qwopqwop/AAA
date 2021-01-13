@@ -89,8 +89,8 @@ void CSceneRace::Init() {
 		CEnemy::mPoint7 = new CPoint(CVector(-1511.0f, 30.0f, -317.0f), 40.0f);
 		CEnemy::mPoint8 = new CPoint(CVector(-1400.0f, 30.0f, -1079.0f), 40.0f);
 		CEnemy::mPoint9 = new CPoint(CVector(-913.0f, 30.0f, -1637.0f), 40.0f);
-		CEnemy::mPoint10 = new CPoint(CVector(-500.0f, 30.0f, -1700.0f), 40.0f);
-		CEnemy::mPoint11 = new CPoint(CVector(-160.0f, 30.0f, -1600.0f), 40.0f);
+		CEnemy::mPoint10 = new CPoint(CVector(-500.0f, 30.0f, -1700.0f), 60.0f);
+		CEnemy::mPoint11 = new CPoint(CVector(-160.0f, 30.0f, -1600.0f), 60.0f);
 		CEnemy::mPoint12 = new CPoint(CVector(193.0f, 30.0f, -1182.0f), 50.0f);
 	}
 	else{
@@ -190,7 +190,9 @@ void CSceneRace::Init() {
 
 	mDashBoard.Load("material\\racing_mat\\dashboard.obj", "material\\racing_mat\\dashboard.mtl");
 
-	mCarsol.Load("material\\racing_mat\\minicarsol.obj", "material\\racing_mat\\minicarsol.mtl");
+	//ミニマップ上でのプレイヤー・敵のカーソルの読み込み
+	mCarsol.Load("material\\racing_mat\\minicarsol.obj", "material\\racing_mat\\minicarsol.mtl");//プレイヤー
+	mCarsol_Enemy.Load("material\\racing_mat\\minicarsol.obj", "material\\racing_mat\\minicarsol_enemy.mtl");//敵
 	mMiniGoal.Load("material\\racing_mat\\minigoal.obj", "material\\racing_mat\\minigoal.mtl");
 
 	CBullet::mBullet.Load("銃弾.obj", "銃弾.mtl");
@@ -467,6 +469,11 @@ void CSceneRace::Init() {
 	//カメラ視点
 	mCamPoV = 1;
 
+
+	//検証のための処理
+	mEnemy2->mPointRand->mPosition = CVector(900.0f, 30.0f, -500.0f);
+
+
 	//TaskManager.ChangePriority(&mPlayer, 15);
 	CTaskManager::Get()->ChangePriority(mPlayer, 15);
 	//CTaskManager::Get()->ChangePriority(, 15);
@@ -733,8 +740,8 @@ void CSceneRace::Update() {
 	}
 
 
-	if ((CPlayer::mpPlayer->mPosition.mX > 155.0f && CPlayer::mpPlayer->mPosition.mX < 975.0f)
-		&& (CPlayer::mpPlayer->mPosition.mZ > -3.1f - 5.0f && CPlayer::mpPlayer->mPosition.mZ < -3.1f + 5.0f)
+	if ((CPlayer::mpPlayer->mPosition.mX > -55.0f && CPlayer::mpPlayer->mPosition.mX < 1400.0f)
+		&& (CPlayer::mpPlayer->mPosition.mZ > -3.1f - 5.0f && CPlayer::mpPlayer->mPosition.mZ < -3.1f + 5.0f + 20.0f)
 		&& (CPlayer::mpPlayer->mChecks == 3)
 		&& (isStartRace)){
 		//new CObj(&mCube, CVector(0.0f, 0.0f, 5700.0f), CVector(-90.0f, 0.0f, 0.0f), CVector(100.0f, 13.0f, 211.0f), 1);//ゴール
@@ -843,57 +850,14 @@ void CSceneRace::RenderMiniMap() {
 //	mPlayer->mpModel = &mCarsol;
 //	mPlayer->mScale = CVector(10.0f, 1.0f, 10.0f);
 	CTaskManager::Get()->Render();
-	//ミニマップにゴールアイコンを描画
-	CMatrix matminig;
-	matminig = CMatrix().Scale(20.0f, 1.0f, 20.0f)
-		//* mPlayer->mMatrixRotate
-		* CMatrix().RotateX(0)
-		* CMatrix().RotateY(0)
-		* CMatrix().RotateZ(0)
-		* CMatrix().Translate(550.0f, 0.0f, -10.0f);
-	mMiniGoal.Render(matminig);
-	//ミニマップにカーソルを描画
-	CMatrix mat;
-	mat = CMatrix().Scale(35.0f, 1.0f, 35.0f) //* mPlayer->mMatrixScale
-		//* mPlayer->mMatrixRotate
-		* CMatrix().RotateX(0)
-		* CMatrix().RotateY(mPlayer->mRotation.mY)
-		* CMatrix().RotateZ(0)
-		* mPlayer->mMatrixTranslate;
-	mCarsol.Render(mat);
-	//敵たちのカーソル
-	CMatrix matenemy;
-	matenemy = CMatrix().Scale(35.0f, 1.0f, 35.0f) //* mPlayer->mMatrixScale
-		* CMatrix().RotateX(0)
-		* CMatrix().RotateY(mEnemy1->mRotation.mY)
-		* CMatrix().RotateZ(0)
-		* mEnemy1->mMatrixTranslate;
-	mCarsol.Render(matenemy);
-
-	CMatrix matenemy2;
-	matenemy2 = CMatrix().Scale(35.0f, 1.0f, 35.0f) //* mPlayer->mMatrixScale
-		* CMatrix().RotateX(0)
-		* CMatrix().RotateY(mEnemy2->mRotation.mY)
-		* CMatrix().RotateZ(0)
-		* mEnemy2->mMatrixTranslate;
-	mCarsol.Render(matenemy);
-
-	CMatrix matenemys[5];
-	for (int i = 0; i < 5; i++){		
-		matenemys[i] = CMatrix().Scale(35.0f, 1.0f, 35.0f) //* mPlayer->mMatrixScale
-			* CMatrix().RotateX(0)
-			* CMatrix().RotateY(mEnemys[i]->mRotation.mY)
-			* CMatrix().RotateZ(0)
-			* mEnemys[i]->mMatrixTranslate;
-		mCarsol.Render(matenemys[i]);
-	}
 
 	/*デバッグ用*/
+	//設定した敵の目標地点すべてをミニマップ上に描画する
 	CMatrix point;
 	for (int i = 1; i <= 12; i++){//ポイントの数だけ処理実行
 		point = CMatrix().Scale(111.0f, 1.0f, 111.0f)
 			* CMatrix().RotateY(45);
-			//* CEnemy::mPoint->mMatrixTranslate;
+		//* CEnemy::mPoint->mMatrixTranslate;
 		//1より小さい時は即やめ
 		if (i < 1){
 			break;
@@ -901,7 +865,7 @@ void CSceneRace::RenderMiniMap() {
 		if (i == 1){
 			point = point * CEnemy::mPoint->mMatrixTranslate;
 		}
-		else if(i == 2){
+		else if (i == 2){
 			point = point * CEnemy::mPoint2->mMatrixTranslate;
 		}
 		else if (i == 3){
@@ -915,7 +879,7 @@ void CSceneRace::RenderMiniMap() {
 		}
 		else if (i == 6){
 			point = point * CEnemy::mPoint6->mMatrixTranslate;
-		}		
+		}
 		//ハードモードではさらに目標地点が細かく設定される
 		else if (CSceneTitle::mDifficulty == 3){
 			if (i == 7){
@@ -943,6 +907,62 @@ void CSceneRace::RenderMiniMap() {
 		}
 		mTileWhite.Render(point);
 	}
+
+	//ミニマップにゴールアイコンを描画
+	CMatrix matminig;
+	matminig = CMatrix().Scale(20.0f, 1.0f, 20.0f)
+		//* mPlayer->mMatrixRotate
+		* CMatrix().RotateX(0)
+		* CMatrix().RotateY(0)
+		* CMatrix().RotateZ(0)
+		* CMatrix().Translate(550.0f, 0.0f, -10.0f);
+	mMiniGoal.Render(matminig);
+	
+	//敵たちのカーソル
+	CMatrix matenemy;
+	matenemy = CMatrix().Scale(35.0f, 1.0f, 35.0f) //* mPlayer->mMatrixScale
+		* CMatrix().RotateX(0)
+		* CMatrix().RotateY(mEnemy1->mRotation.mY)
+		* CMatrix().RotateZ(0)
+		* mEnemy1->mMatrixTranslate;
+	mCarsol_Enemy.Render(matenemy);
+
+	CMatrix matenemy2;
+	matenemy2 = CMatrix().Scale(35.0f, 1.0f, 35.0f) //* mPlayer->mMatrixScale
+		* CMatrix().RotateX(0)
+		* CMatrix().RotateY(mEnemy2->mRotation.mY)
+		* CMatrix().RotateZ(0)
+		* mEnemy2->mMatrixTranslate;
+	mCarsol_Enemy.Render(matenemy);
+
+	CMatrix matenemys[5];
+	for (int i = 0; i < 5; i++){		
+		matenemys[i] = CMatrix().Scale(35.0f, 1.0f, 35.0f) //* mPlayer->mMatrixScale
+			* CMatrix().RotateX(0)
+			* CMatrix().RotateY(mEnemys[i]->mRotation.mY)
+			* CMatrix().RotateZ(0)
+			* mEnemys[i]->mMatrixTranslate;
+		mCarsol_Enemy.Render(matenemys[i]);
+	}
+
+
+	CMatrix sump;
+	sump = CMatrix().Scale(35.0f, 1.0f, 35.0f) //* mPlayer->mMatrixScale
+		* CMatrix().RotateX(0)
+		* CMatrix().RotateY(mEnemy2->mRotation.mY)
+		* CMatrix().RotateZ(0)
+		*mEnemy2->mPointRand->mMatrixTranslate;
+	mCarsol.Render(sump);
+
+	//ミニマップ状にプレイヤーを示すカーソルを描画
+	CMatrix matplayer;
+	matplayer = CMatrix().Scale(35.0f, 1.0f, 35.0f) //* mPlayer->mMatrixScale
+		//* mPlayer->mMatrixRotate
+		* CMatrix().RotateX(0)
+		* CMatrix().RotateY(mPlayer->mRotation.mY)
+		* CMatrix().RotateZ(0)
+		* mPlayer->mMatrixTranslate;
+	mCarsol.Render(matplayer);
 
 	//point = CMatrix().Scale(95.0f, 1.0f, 95.0f) //* mPlayer->mMatrixScale
 	//	* CMatrix().RotateX(0)
