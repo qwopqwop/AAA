@@ -120,7 +120,24 @@ CEnemy::CEnemy()
 	//mPointRand->mPosition.mZ += rand() % 101 - 50;[
 
 	//mPoint = &Point1;//逆ですね。
-	mpPoint = mPoint;
+	Point1 = *mPoint;
+	Point2 = *mPoint2;
+	Point3 = *mPoint3;
+	Point4 = *mPoint4;
+	Point5 = *mPoint5;
+	Point6 = *mPoint6;
+	//敵AIがHARD以上ならポイントの数を拡張する
+	if (CSceneTitle::mDifficulty == 3){
+		Point7 = *mPoint7;
+		Point8 = *mPoint8;
+		Point9 = *mPoint9;
+		Point10 = *mPoint10;
+		Point11 = *mPoint11;
+		Point12 = *mPoint12;
+	}
+	mpPoint = &Point1;
+
+	//mpPoint = mPoint;
 
 }
 
@@ -408,7 +425,12 @@ void CEnemy::Update(){
 
 
 	
-
+	if (left.Dot(dir) < 0.0f){
+		mRotation.mY -= 11;
+	}
+	else if (left.Dot(dir) > 0.0f){
+		mRotation.mY += 11;
+	}
 
 	//コースアウトした時
 	if (mPosition.mY < -150.0f){
@@ -742,9 +764,10 @@ void CEnemy::Collision(CCollider *mc, CCollider *yc){
 								int gap = rand() % 101 - 50;
 
 								//次のポイントのポインタを設定
-								if (mpPoint == mPoint){
-									mpPoint = mPoint2;
+								if (mpPoint == &Point1){
+									mpPoint = &Point2;
 
+									//mpPoint = mPoint2;
 									///*
 									//mpPoint->mPosition
 									//mPoint->mPosition
