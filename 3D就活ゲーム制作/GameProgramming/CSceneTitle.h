@@ -21,8 +21,8 @@ public:
 		CText::mFont.SetRowCol(8, 256 / 16);
 		CText::mFont2.Load("FontG.tga");
 		CText::mFont2.SetRowCol(1, 4096 / 64);
-		CText::mFont3.Load("font.tga");//画像の都合で
-		CText::mFont3.SetRowCol(8, 256 / 16);//表示が変
+		CText::mFont3.Load("FontDIY.tga");//自作フォント
+		CText::mFont3.SetRowCol(8, 176 / 11);//表示が変
 
 		//シーンの設定
 		mScene = ETITLE;
@@ -46,6 +46,7 @@ public:
 		//文字列の描画
 		CText::DrawString("3D-RACE", -278 + 400 + 68, 430, 36, 36);
 		CText::DrawString("EXTREME", -278 + 400 + 68+96-24 +6*5, 370, 18, 18, 2);
+		CText::DrawString("Demo Ver0.0", -278 + 400 + 68 + 96 - 24 + 6 * 5, 333, 11, 11, 3);
 		CText::DrawString("Push Enter Key", 200, 177, 16, 16);
 		
 		float c[] = { 1.0f, 1.0f, 1.0f, 1.0f };

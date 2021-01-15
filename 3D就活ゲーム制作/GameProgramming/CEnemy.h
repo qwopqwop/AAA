@@ -62,6 +62,7 @@ public:
 
 
 
+
 	//誘導ポイント//中心、全エネミー共通のポイント
 	static CPoint *mPoint;
 	static CPoint *mPoint2;
@@ -75,19 +76,23 @@ public:
 	static CPoint *mPoint10;
 	static CPoint *mPoint11;
 	static CPoint *mPoint12;
-	//乱数でのブレを含む誘導ポイント
-	CPoint *mPointRand;
-	CPoint *mPointRand2;
-	CPoint *mPointRand3;
-	CPoint *mPointRand4;
-	CPoint *mPointRand5;
-	CPoint *mPointRand6;
-	CPoint *mPointRand7;
-	CPoint *mPointRand8;
-	CPoint *mPointRand9;
-	CPoint *mPointRand10;
-	CPoint *mPointRand11;
-	CPoint *mPointRand12;
+	////乱数でのブレを含む誘導ポイント
+	//CPoint *mPointRand;
+	//CPoint *mPointRand2;
+	//CPoint *mPointRand3;
+	//CPoint *mPointRand4;
+	//CPoint *mPointRand5;
+	//CPoint *mPointRand6;
+	//CPoint *mPointRand7;
+	//CPoint *mPointRand8;
+	//CPoint *mPointRand9;
+	//CPoint *mPointRand10;
+	//CPoint *mPointRand11;
+	//CPoint *mPointRand12;
+
+	// *は使わない方がいい？
+	CPoint Point1;
+	CPoint Point2;
 
 	static int mPointSize;//ポイントの数
 	CPoint *mpPoint;//目指すポイント
