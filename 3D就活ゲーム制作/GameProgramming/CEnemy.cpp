@@ -126,6 +126,12 @@ CEnemy::CEnemy()
 	Point4 = *mPoint4;
 	Point5 = *mPoint5;
 	Point6 = *mPoint6;
+	Point1.mTag = EPOINT;
+	Point2.mTag = EPOINT;
+	Point3.mTag = EPOINT;
+	Point4.mTag = EPOINT;
+	Point5.mTag = EPOINT;
+	Point6.mTag = EPOINT;
 	//敵AIがHARD以上ならポイントの数を拡張する
 	if (CSceneTitle::mDifficulty == 3){
 		Point7 = *mPoint7;
@@ -134,10 +140,19 @@ CEnemy::CEnemy()
 		Point10 = *mPoint10;
 		Point11 = *mPoint11;
 		Point12 = *mPoint12;
+		Point7.mTag = EPOINT;
+		Point8.mTag = EPOINT;
+		Point9.mTag = EPOINT;
+		Point10.mTag = EPOINT;
+		Point11.mTag = EPOINT;
+		Point12.mTag = EPOINT;
 	}
-	mpPoint = &Point1;
+	////Point1.mPosition = Point1.mPosition + CVector(1.0f *(rand() % 100 - 50), 1.0f *(rand() % 100 - 50), 1.0f *(rand() % 100 - 50));
+	//mpPoint = &Point1;
 
-	//mpPoint = mPoint;
+	mpPoint = mPoint;
+
+	mVPoint = mpPoint->mPosition;
 
 }
 
@@ -158,11 +173,18 @@ void CEnemy::Update(){
 	mPosition = CVector(0.0f, mVelocityJump, 0.0f) * mMatrix;
 	}*/
 
+	//if (CKey::Push('Q')){//でば
+	//	mRotation.mY++;
+	//}
+	//if (CKey::Push('E')){//つぐ
+	//	mRotation.mY--;
+	//}
+
 	if (CKey::Push('Q')){//でば
-		mRotation.mY++;
+		printf("%f %f %f\n", Point1.mPosition.mX, Point1.mPosition.mY, Point1.mPosition.mZ);
 	}
 	if (CKey::Push('E')){//つぐ
-		mRotation.mY--;
+		printf("%f %f %f\n", Point1.mScale.mX, Point1.mScale.mY, Point1.mScale.mZ);
 	}
 
 	if (CKey::Once('B')){//超急ブレーキ
@@ -310,7 +332,8 @@ void CEnemy::Update(){
 	}
 
 	//ポイントへのベクトルを求める
-	CVector dir = mpPoint->mPosition - mPosition;
+	//CVector dir = mpPoint->mPosition - mPosition;
+	CVector dir = mVPoint - mPosition;
 	//左方向へのベクトルを求める
 	CVector left = CVector(1.0f, 0.0f, 0.0f) * CMatrix().RotateY(mRotation.mY);
 	////左右の回転処理(Y軸)
@@ -425,12 +448,12 @@ void CEnemy::Update(){
 
 
 	
-	if (left.Dot(dir) < 0.0f){
+	/*if (left.Dot(dir) < 0.0f){
 		mRotation.mY -= 11;
 	}
 	else if (left.Dot(dir) > 0.0f){
 		mRotation.mY += 11;
-	}
+	}*/
 
 	//コースアウトした時
 	if (mPosition.mY < -150.0f){
@@ -749,92 +772,86 @@ void CEnemy::Collision(CCollider *mc, CCollider *yc){
 						if (CCollider::Collision(mc, yc, &adjust)){
 							//衝突したポインタと目指しているポインタが同じ時
 							if (yc->mpParent == mpPoint){
-								
 								//mPointCnt++;//次のポイントにする
 								////最後だったら最初にする
 								//mPointCnt %= mPointSize;
 								//mpPoint = &mPoint[mPointCnt];
+								
+								
 
-
+								int r = (mc->mRadius + yc->mRadius) * 0.8f;
+								int gap = (rand() % (r * 2) - r);
 								//敵AIのLvにより分散値も変更される予定
-								/*if (CSceneTitle::mDifficulty > 0){
-									mpPoint = mPoint6 + rangeofpoint;
-								}*/
-								//敵ごとにやや目的地座標にブレを出す
-								int gap = rand() % 101 - 50;
+								if (CSceneTitle::mDifficulty == 1){
+									int r = (mc->mRadius + yc->mRadius) * 0.8f;
+									int gap = (rand() % (r * 2) - r);
+								}
+								else if (CSceneTitle::mDifficulty == 2){
+									int r = (mc->mRadius + yc->mRadius) * 0.8f;
+									int gap = (rand() % (r * 2) - r);
+								}
+								else if (CSceneTitle::mDifficulty == 3){
+									int r = (mc->mRadius + yc->mRadius) * 0.8f;
+									int gap = (rand() % (r * 2) - r);
+								}
 
 								//次のポイントのポインタを設定
-								if (mpPoint == &Point1){
-									mpPoint = &Point2;
-
-									//mpPoint = mPoint2;
-									///*
-									//mpPoint->mPosition
-									//mPoint->mPosition
-									//の違いは・・・？
-									//*/
-									///*printf("正確な目的地…X:%.1f Y:%.1f Z:%.1f\n", mpPoint->mPosition.mX, mpPoint->mPosition.mY, mpPoint->mPosition.mZ);
-									//mpPoint->mPosition = mpPoint->mPosition + CVector(gap, 0.0f, gap);
-									//printf("分散の目的地…X:%.1f Y:%.1f Z:%.1f\n", mpPoint->mPosition.mX, mpPoint->mPosition.mY, mpPoint->mPosition.mZ);*/
-									//
-									///*printf("目的地…X:%.1f Y:%.1f Z:%.1f\n", mpPoint->mPosition.mX, mpPoint->mPosition.mY, mpPoint->mPosition.mZ);
-									//printf("目的地…X:%.1f Y:%.1f Z:%.1f\n", mPoint2->mPosition.mX, mPoint2->mPosition.mY, mPoint2->mPosition.mZ);
-									//mPoint2->mPosition.mX += rand() % 100;
-									//mPoint2->mPosition.mZ += rand() % 100;
-									//printf("目的地…X:%.1f Y:%.1f Z:%.1f\n", mpPoint->mPosition.mX, mpPoint->mPosition.mY, mpPoint->mPosition.mZ);
-									//printf("目的地…X:%.1f Y:%.1f Z:%.1f\n", mPoint2->mPosition.mX, mPoint2->mPosition.mY, mPoint2->mPosition.mZ);*/
-									
-									////mPoint2 = *mpPoint2 + CVector(0.0f, 0.0f, 0.0f);
-									//mPointRand2 = mPoint2;
-									//mPointRand2->mPosition.mX += rand() % 101 - 50;
-									//mPointRand2->mPosition.mZ += rand() % 101 - 50;									
-									//mpPoint = mPointRand2;
-
+								if (mpPoint == mPoint){
+									mVPoint = mPoint2->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
+									mpPoint = mPoint2;
+																		
 									printf("次の目的地：X:%f,Y:%f,Z%f:\n", mpPoint->mPosition.mX, mpPoint->mPosition.mY, mpPoint->mPosition.mZ);
 								}
 								else if(mpPoint==mPoint2){
-									/*mPointRand3 = mPoint3;
-									mPointRand3->mPosition.mX += rand() % 101 - 50;
-									mPointRand3->mPosition.mZ += rand() % 101 - 50;
-									mpPoint = mPointRand3;*/
-
+									mVPoint = mPoint3->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
 									mpPoint = mPoint3;
 								}
 								else if (mpPoint == mPoint3){
+									mVPoint = mPoint4->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
 									mpPoint = mPoint4;
 								}
 								else if (mpPoint == mPoint4){
+									mVPoint = mPoint5->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
 									mpPoint = mPoint5;
 								}
 								else if (mpPoint == mPoint5){
+									mVPoint = mPoint6->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
 									mpPoint = mPoint6;
 								}
 								else if (mpPoint == mPoint6){
 									//難易度HARD以上ではさらに細かくポイントが設定されている
 									if (CSceneTitle::mDifficulty == 3){
+										mVPoint = mPoint7->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
 										mpPoint = mPoint7;
 									}
 									else{
+										mVPoint = mPoint->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
 										mpPoint = mPoint;
 									}
 								}
 								//敵AIがHARD以上での挙動
 								else if (mpPoint == mPoint7){
+									mVPoint = mPoint8->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
 									mpPoint = mPoint8;
 								}
 								else if (mpPoint == mPoint8){
+									mVPoint = mPoint9->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
 									mpPoint = mPoint9;
 								}
 								else if (mpPoint == mPoint9){
+									mVPoint = mPoint10->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
 									mpPoint = mPoint10;
 								}
 								else if (mpPoint == mPoint10){
+									mVPoint = mPoint11->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
 									mpPoint = mPoint11;
 								}
 								else if (mpPoint == mPoint11){
+									mVPoint = mPoint12->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
 									mpPoint = mPoint12;
 								}
 								else if (mpPoint == mPoint12){
+									mVPoint = mPoint->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
 									mpPoint = mPoint;
 								}
 								
@@ -843,9 +860,6 @@ void CEnemy::Collision(CCollider *mc, CCollider *yc){
 							}
 						}
 					}
-
-					//mPoint->mPointNumber
-
 					//switch (yc->mpParent->mTag){
 					//case EPOINT://ポイントの時
 					//	//衝突したポインタと目指しているポインタが同じ時
@@ -862,6 +876,85 @@ void CEnemy::Collision(CCollider *mc, CCollider *yc){
 					//	;
 					//}
 				}
+
+				/*Point1,Point2...を使う方式*/
+				//if (mc->mTag == CCollider::ESEARCH){
+				//	//ポインタからポインタに向けて移動する
+				//	if (yc->mpParent->mTag == CCharacter::EPOINT){
+				//		CVector adjust;//調整用ベクトル
+				//		//		//球同士の衝突判定
+				//		if (CCollider::Collision(mc, yc, &adjust)){
+				//			//衝突したポインタと目指しているポインタが同じ"じゃない"時
+				//			//何とぶつかってるの？？
+				//			if (yc->mpParent != mpPoint){
+				//				printf("源三「クソがッ！」");
+				//				//次のポイントのポインタを設定
+				//				if (mpPoint == &Point1){
+				//					mpPoint = &Point2;
+				//					printf("次の目的地：X:%f,Y:%f,Z%f:\n", mpPoint->mPosition.mX, mpPoint->mPosition.mY, mpPoint->mPosition.mZ);
+				//				}
+				//				else if (mpPoint == &Point2){
+				//					mpPoint = &Point3;
+				//				}
+				//				else if (mpPoint == &Point3){
+				//					mpPoint = &Point4;
+				//				}
+				//				else if (mpPoint == &Point4){
+				//					mpPoint = &Point5;
+				//				}
+				//				else if (mpPoint == &Point5){
+				//					mpPoint = &Point6;
+				//				}
+				//				else if (mpPoint == &Point6){
+				//					//難易度HARD以上ではさらに細かくポイントが設定されている
+				//					if (CSceneTitle::mDifficulty == 3){
+				//						mpPoint = &Point7;
+				//					}
+				//					else{
+				//						mpPoint = &Point1;
+				//					}
+				//				}
+				//				//敵AIがHARD以上での挙動
+				//				else if (mpPoint == &Point7){
+				//					mpPoint = &Point8;
+				//				}
+				//				else if (mpPoint == &Point8){
+				//					mpPoint = &Point9;
+				//				}
+				//				else if (mpPoint == &Point9){
+				//					mpPoint = &Point10;
+				//				}
+				//				else if (mpPoint == &Point10){
+				//					mpPoint = &Point11;
+				//				}
+				//				else if (mpPoint == &Point11){
+				//					mpPoint = &Point12;
+				//				}
+				//				else if (mpPoint == &Point12){
+				//					mpPoint = &Point1;
+				//				}
+				//				//printf("次の目的地…X:%.1f Y:%.1f Z:%.1f\n", mpPoint->mPosition.mX, mpPoint->mPosition.mY, mpPoint->mPosition.mZ);
+				//			}
+				//		}
+				//	}
+				//	//mPoint->mPointNumber
+				//	//switch (yc->mpParent->mTag){
+				//	//case EPOINT://ポイントの時
+				//	//	//衝突したポインタと目指しているポインタが同じ時
+				//	//	if (yc->mpParent == mpPoint){
+				//	//		mPointCnt++;//次のポイントにする
+				//	//		//最後だったら最初にする
+				//	//		mPointCnt %= mPointSize;
+				//	//		//次のポイントのポインタを設定
+				//	//		mpPoint = &mPoint[mPointCnt];
+				//	//		printf("a");
+				//	//	}
+				//	//	break;
+				//	//default:
+				//	//	;
+				//	//}
+				//}
+
 
 			}
 		}

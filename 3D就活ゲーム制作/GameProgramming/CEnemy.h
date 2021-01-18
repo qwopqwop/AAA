@@ -114,6 +114,7 @@ public:
 	int mRangeX, mRangeZ;
 
 	CPoint *mpPoint2;
+	CVector mVPoint;
 };
 
 
