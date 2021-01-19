@@ -73,10 +73,7 @@ public:
 	CModel mDashBoard;//â¡ë¨Ç∑ÇÈè∞
 
 	CPlayer *mPlayer;
-
-	CEnemy *mEnemy1;
-	CEnemy *mEnemy2;
-	CEnemy *mEnemys[5];
+	CEnemy *mEnemys[7];
 
 	CSound BGM;
 	CSound SoundCountDown;

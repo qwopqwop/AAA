@@ -90,19 +90,19 @@ public:
 	//CPoint *mPointRand11;
 	//CPoint *mPointRand12;
 
-	// *は使わない方がいい？
-	CPoint Point1;
-	CPoint Point2;
-	CPoint Point3;
-	CPoint Point4;
-	CPoint Point5;
-	CPoint Point6;
-	CPoint Point7;
-	CPoint Point8;
-	CPoint Point9;
-	CPoint Point10;
-	CPoint Point11;
-	CPoint Point12;
+	//// *は使わない方がいい？
+	//CPoint Point1;
+	//CPoint Point2;
+	//CPoint Point3;
+	//CPoint Point4;
+	//CPoint Point5;
+	//CPoint Point6;
+	//CPoint Point7;
+	//CPoint Point8;
+	//CPoint Point9;
+	//CPoint Point10;
+	//CPoint Point11;
+	//CPoint Point12;
 
 	static int mPointSize;//ポイントの数
 	CPoint *mpPoint;//目指すポイント
@@ -110,8 +110,6 @@ public:
 
 	//コライダ
 	CCollider mSearch;
-
-	int mRangeX, mRangeZ;
 
 	CPoint *mpPoint2;
 	CVector mVPoint;
