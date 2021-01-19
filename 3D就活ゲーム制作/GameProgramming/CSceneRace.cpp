@@ -76,18 +76,18 @@ void CSceneRace::Init() {
 		CEnemy::mPoint5 = new CPoint(CVector(-500.0f, 30.0f, -2000.0f), 40.0f * 2);
 		CEnemy::mPoint6 = new CPoint(CVector(340.0f, 30.0f, -1182.0f), 40.0f * 2);*/
 
-		CEnemy::mPoint = new CPoint(CVector(260.0f + 0.0f, 30.0f, 777.0f + 100.0f), 100.0f);
-		CEnemy::mPoint2 = new CPoint(CVector(259.0f + 0.0f, 30.0f, 1300.0f + 200.0f), 100.0f);
+		CEnemy::mPoint = new CPoint(CVector(260.0f + 60.0f, 30.0f, 777.0f + 100.0f), 200.0f);
+		CEnemy::mPoint2 = new CPoint(CVector(259.0f + 60.0f, 30.0f, 1300.0f + 200.0f), 200.0f);
 		CEnemy::mPoint3 = new CPoint(CVector(-150.0f + 0.0f, 30.0f, 2058.0f + 200.0f), 200.0f);
 		CEnemy::mPoint4 = new CPoint(CVector(-555.0f - 150.0f, 30.0f, 2111.0f + 300.0f), 200.0f);
 		CEnemy::mPoint5 = new CPoint(CVector(-1039.0f - 150.0f, 30.0f, 2062.0f + 200.0f), 200.0f);
 		CEnemy::mPoint6 = new CPoint(CVector(-1400.0f - 150.0f, 30.0f, 1700.0f + 200.0f), 200.0f);
 		CEnemy::mPoint7 = new CPoint(CVector(-1511.0f, 30.0f, -317.0f - 200.0f), 120.0f);
-		CEnemy::mPoint8 = new CPoint(CVector(-1400.0f, 30.0f, -1079.0f - 200.0f), 200.0f);
-		CEnemy::mPoint9 = new CPoint(CVector(-1000.0f, 30.0f, -1500.0f - 200.0f), 200.0f);
-		CEnemy::mPoint10 = new CPoint(CVector(-550.0f, 30.0f, -1700.0f - 200.0f), 200.0f);
-		CEnemy::mPoint11 = new CPoint(CVector(-100.0f, 30.0f, -1600.0f - 200.0f), 200.0f);
-		CEnemy::mPoint12 = new CPoint(CVector(303.0f, 30.0f, -1182.0f - 200.0f), 200.0f);
+		CEnemy::mPoint8 = new CPoint(CVector(-1400.0f, 30.0f, -1079.0f - 300.0f), 200.0f);
+		CEnemy::mPoint9 = new CPoint(CVector(-1000.0f, 30.0f, -1500.0f - 300.0f), 200.0f);
+		CEnemy::mPoint10 = new CPoint(CVector(-550.0f, 30.0f, -1700.0f - 300.0f), 200.0f);
+		CEnemy::mPoint11 = new CPoint(CVector(-100.0f, 30.0f, -1600.0f - 325.0f), 300.0f);
+		CEnemy::mPoint12 = new CPoint(CVector(420.0f, 30.0f, -1182.0f - 300.0f), 350.0f);
 	}
 	else if (CSceneTitle::mDifficulty == 3){//難易度：HARD
 		CEnemy::mPointSize = 12;//ポイント数の設定
@@ -484,6 +484,12 @@ void CSceneRace::Init() {
 	//カメラ視点
 	mCamPoV = 1;
 
+	//初期の状態では敵の目標地点を描画しない
+	isRendPoint = false;
+
+	//初期状態ではポーズ状態無効
+	isPause = false;
+
 
 	//検証のための処理
 	//mEnemy1->mPointRand->mPosition = CVector(789.0f, 30.0f, 100.0f);
@@ -581,7 +587,9 @@ void CSceneRace::Update() {
 	mPlayer->mScale = CVector(2.5f, 2.5f, 2.5f);
 
 	//タスクマネージャの更新・描画
-	CTaskManager::Get()->Update();
+	if (isPause == false){
+		CTaskManager::Get()->Update();
+	}
 	CTaskManager::Get()->Render();
 
 	////岩の描画
@@ -614,6 +622,7 @@ void CSceneRace::Update() {
 	}
 #endif
 
+	//カメラ視点の切り替え
 	if (CKey::Once('0')){
 		//mCamPoV = 1;
 		if (mCamPoV == 1){
@@ -627,18 +636,20 @@ void CSceneRace::Update() {
 		}
 	}
 
-
-	if (isStartRace){
-		//59:59:59が最大時間
-		if (mTime < 595959){
-			if (mTime % 10000 == 5959){
-				mTime += 1 + 40 + 4000;
-			}
-			else if (mTime % 100 == 59){
-				mTime += 1 + 40;
-			}
-			else{
-				mTime += 1;
+	//ポーズ画面に入っていない時
+	if (isPause == false){
+		if (isStartRace){
+			//59:59:59が最大時間
+			if (mTime < 595959){
+				if (mTime % 10000 == 5959){
+					mTime += 1 + 40 + 4000;
+				}
+				else if (mTime % 100 == 59){
+					mTime += 1 + 40;
+				}
+				else{
+					mTime += 1;
+				}
 			}
 		}
 	}
@@ -679,7 +690,7 @@ void CSceneRace::Update() {
 	}
 	//カウントダウン表示
 	char mcountd[7];
-	//残り3秒までの時だけ表示
+	//残り3秒までの間、表示
 	sprintf(mcountd, "%d", mCountDown);
 	if (mCountDown > 0 && mCountDown <= 3){
 		CText::DrawString(mcountd, 400, 300, 25, 30);
@@ -729,25 +740,26 @@ void CSceneRace::Update() {
 			}
 		}
 	}
-
-	//ミニマップ・現在地の表示
-//	CText::DrawString("+", -(CPlayer::mpPlayer->mPosition.mX / 50)+600, CPlayer::mpPlayer->mPosition.mZ / 50 + 100, 10, 10);
-
 	char carspeed[33];
 	sprintf(carspeed, "SPEED:%4.1f", CPlayer::mpPlayer->mCarSpeed);
 	CText::DrawString(carspeed, 20+560, 20, 10, 12);
 
-	
+	//ポーズ時に表示される文字
+	if (isPause){
+		CText::DrawString("PAUSE", 280, 300, 10*3, 12*3, 3);		
+		CText::DrawString("P - Resume", 290, 200, 10, 12, 2);
+		CText::DrawString("Esc - Back to Title", 250, 170, 10, 12, 2);
+	}
 	
 	//2D描画終了
 	End2D();
 
-	if (CKey::Push('Y')){//でば
-		mCamY += 1.0f;
-	}
-	if (CKey::Push('U')){//つぐ
-		mCamY += -1.0f;
-	}
+	//if (CKey::Push('Y')){//でば
+	//	mCamY += 1.0f;
+	//}
+	//if (CKey::Push('U')){//つぐ
+	//	mCamY += -1.0f;
+	//}
 
 
 	if ((CPlayer::mpPlayer->mPosition.mX > -55.0f && CPlayer::mpPlayer->mPosition.mX < 1400.0f)
@@ -833,13 +845,50 @@ void CSceneRace::Update() {
 		}
 	}
 	
+
+	if (CKey::Once('O')){
+		//敵の中継地点の表示ON・OFF切り替え
+		if (isRendPoint){
+			isRendPoint = false;
+		}
+		else{
+			isRendPoint = true;
+		}
+	}
+	if (CKey::Once('P')){
+		//カウントダウン終了後、ポーズの切り替えが可能になる。
+		if (mCountDown < 0){
+			//ゴール後は切り替え不可
+			if (isGoal)return;
+
+			//ポーズのON・OFF切り替え
+			if (isPause){
+				isPause = false;
+			}
+			else{
+				isPause = true;
+			}
+		}		
+	}
+	//BGMを停止する
 	if (CKey::Once('M')){
 		BGM.Stop();
 	}
 
-	if (CKey::Once(VK_RETURN)){
-		//次のシーンはゲーム
-		mScene = ETITLE;
+	/*シーン切り替え系の処理*/
+	//ゴール後Enterキー押下→タイトル画面移行
+	if (isGoal){
+		if (CKey::Once(VK_RETURN)){
+			//次のシーンはゲーム
+			mScene = ETITLE;
+		}
+	}
+	//ポーズ中Escキー押下→タイトル画面移行
+	if (isPause){
+		if (CKey::Once(VK_ESCAPE)){
+			//次のシーンはゲーム
+			mScene = ETITLE;
+		}
 	}
 
 
@@ -861,63 +910,64 @@ void CSceneRace::RenderMiniMap() {
 //	mPlayer->mScale = CVector(10.0f, 1.0f, 10.0f);
 	CTaskManager::Get()->Render();
 
-	/*デバッグ用*/
-	//設定した敵の目標地点すべてをミニマップ上に描画する
-	CMatrix point;
-	for (int i = 1; i <= 12; i++){//ポイントの数だけ処理実行
-		point = CMatrix().Scale(111.0f, 1.0f, 111.0f)
-			* CMatrix().RotateY(45);
-		//* CEnemy::mPoint->mMatrixTranslate;
-		//1より小さい時は即やめ
-		if (i < 1){
-			break;
-		}
-		if (i == 1){
-			point = point * CEnemy::mPoint->mMatrixTranslate;
-		}
-		else if (i == 2){
-			point = point * CEnemy::mPoint2->mMatrixTranslate;
-		}
-		else if (i == 3){
-			point = point * CEnemy::mPoint3->mMatrixTranslate;
-		}
-		else if (i == 4){
-			point = point * CEnemy::mPoint4->mMatrixTranslate;
-		}
-		else if (i == 5){
-			point = point * CEnemy::mPoint5->mMatrixTranslate;
-		}
-		else if (i == 6){
-			point = point * CEnemy::mPoint6->mMatrixTranslate;
-		}
-		//ハードモードではさらに目標地点が細かく設定される
-		else if (CSceneTitle::mDifficulty == 2 || CSceneTitle::mDifficulty == 3){
-			if (i == 7){
-				point = point * CEnemy::mPoint7->mMatrixTranslate;
-			}
-			else if (i == 8){
-				point = point * CEnemy::mPoint8->mMatrixTranslate;
-			}
-			else if (i == 9){
-				point = point * CEnemy::mPoint9->mMatrixTranslate;
-			}
-			else if (i == 10){
-				point = point * CEnemy::mPoint10->mMatrixTranslate;
-			}
-			else if (i == 11){
-				point = point * CEnemy::mPoint11->mMatrixTranslate;
-			}
-			else if (i == 12){
-				point = point * CEnemy::mPoint12->mMatrixTranslate;
-			}
-			//mTileWhite.Render(point);
-		}
-		else{
-			break;
-		}
-		mTileWhite.Render(point);
-	}
 
+	if (isRendPoint == true){
+		/*デバッグ用*/
+		//設定した敵の目標地点すべてをミニマップ上に描画する
+		CMatrix point;
+		for (int i = 1; i <= 12; i++){//ポイントの数だけ処理実行
+			point = CMatrix().Scale(111.0f, 1.0f, 111.0f)
+				* CMatrix().RotateY(45);
+			//* CEnemy::mPoint->mMatrixTranslate;
+			//1より小さい時は即やめ
+			if (i < 1){
+				break;
+			}
+			if (i == 1){
+				point = point * CEnemy::mPoint->mMatrixTranslate;
+			}
+			else if (i == 2){
+				point = point * CEnemy::mPoint2->mMatrixTranslate;
+			}
+			else if (i == 3){
+				point = point * CEnemy::mPoint3->mMatrixTranslate;
+			}
+			else if (i == 4){
+				point = point * CEnemy::mPoint4->mMatrixTranslate;
+			}
+			else if (i == 5){
+				point = point * CEnemy::mPoint5->mMatrixTranslate;
+			}
+			else if (i == 6){
+				point = point * CEnemy::mPoint6->mMatrixTranslate;
+			}
+			//ハードモードではさらに目標地点が細かく設定される
+			else if (CSceneTitle::mDifficulty == 2 || CSceneTitle::mDifficulty == 3){
+				if (i == 7){
+					point = point * CEnemy::mPoint7->mMatrixTranslate;
+				}
+				else if (i == 8){
+					point = point * CEnemy::mPoint8->mMatrixTranslate;
+				}
+				else if (i == 9){
+					point = point * CEnemy::mPoint9->mMatrixTranslate;
+				}
+				else if (i == 10){
+					point = point * CEnemy::mPoint10->mMatrixTranslate;
+				}
+				else if (i == 11){
+					point = point * CEnemy::mPoint11->mMatrixTranslate;
+				}
+				else if (i == 12){
+					point = point * CEnemy::mPoint12->mMatrixTranslate;
+				}
+			}
+			else{
+				break;
+			}
+			mTileWhite.Render(point);
+		}
+	}
 	//ミニマップにゴールアイコンを描画
 	CMatrix matminig;
 	matminig = CMatrix().Scale(20.0f, 1.0f, 20.0f)
@@ -948,42 +998,6 @@ void CSceneRace::RenderMiniMap() {
 		* mPlayer->mMatrixTranslate;
 	mCarsol.Render(matplayer);
 
-	//point = CMatrix().Scale(95.0f, 1.0f, 95.0f) //* mPlayer->mMatrixScale
-	//	* CMatrix().RotateX(0)
-	//	* CMatrix().RotateY(CEnemy::mPoint->mRotation.mY)
-	//	* CMatrix().RotateZ(0)
-	//	* CEnemy::mPoint->mMatrixTranslate;
-	//mTileWhite.Render(point);	
-	//point = CMatrix().Scale(95.0f, 1.0f, 95.0f) //* mPlayer->mMatrixScale
-	//	* CMatrix().RotateX(0)
-	//	* CMatrix().RotateY(CEnemy::mPoint2->mRotation.mY)
-	//	* CMatrix().RotateZ(0)
-	//	* CEnemy::mPoint2->mMatrixTranslate;
-	//mTileWhite.Render(point);
-	//point = CMatrix().Scale(95.0f, 1.0f, 95.0f) //* mPlayer->mMatrixScale
-	//	* CMatrix().RotateX(0)
-	//	* CMatrix().RotateY(CEnemy::mPoint3->mRotation.mY)
-	//	* CMatrix().RotateZ(0)
-	//	* CEnemy::mPoint3->mMatrixTranslate;
-	//mTileWhite.Render(point);
-	//point = CMatrix().Scale(95.0f, 1.0f, 95.0f) //* mPlayer->mMatrixScale
-	//	* CMatrix().RotateX(0)
-	//	* CMatrix().RotateY(CEnemy::mPoint4->mRotation.mY)
-	//	* CMatrix().RotateZ(0)
-	//	* CEnemy::mPoint4->mMatrixTranslate;
-	//mTileWhite.Render(point);
-	//point = CMatrix().Scale(95.0f, 1.0f, 95.0f) //* mPlayer->mMatrixScale
-	//	* CMatrix().RotateX(0)
-	//	* CMatrix().RotateY(CEnemy::mPoint5->mRotation.mY)
-	//	* CMatrix().RotateZ(0)
-	//	* CEnemy::mPoint5->mMatrixTranslate;
-	//mTileWhite.Render(point);
-	//point = CMatrix().Scale(95.0f, 1.0f, 95.0f) //* mPlayer->mMatrixScale
-	//	* CMatrix().RotateX(0)
-	//	* CMatrix().RotateY(CEnemy::mPoint6->mRotation.mY)
-	//	* CMatrix().RotateZ(0)
-	//	* CEnemy::mPoint6->mMatrixTranslate;
-	//mTileWhite.Render(point);
 
 	//mMatrix = mMatrixScale * mMatrixRotate * mMatrixTranslate;//参考
 	

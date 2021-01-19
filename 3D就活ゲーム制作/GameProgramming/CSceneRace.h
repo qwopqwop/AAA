@@ -110,6 +110,9 @@ public:
 	CModel msumple2;
 
 	int mTextBlinkTime;
+	bool isRendPoint;
+	
+	bool isPause;
 };
 
 #endif

@@ -766,14 +766,13 @@ void CEnemy::Collision(CCollider *mc, CCollider *yc){
 
 								int r = (mc->mRadius + yc->mRadius) * 0.8f;
 								int gap = (rand() % (r * 2) - r);
-								gap = 0;
 								//“GAI‚ÌLv‚É‚æ‚è•ªŽU’l‚à•ÏX‚³‚ê‚é—\’è
 								if (CSceneTitle::mDifficulty == 1){
 									r = (mc->mRadius + yc->mRadius) * 0.8f;
 									gap = (rand() % (r * 2) - r);
 								}
 								else if (CSceneTitle::mDifficulty == 2){
-									r = (mc->mRadius + yc->mRadius) * 0.5f;
+									r = (mc->mRadius + yc->mRadius) * 0.4f;
 									gap = (rand() % (r * 2) - r);
 								}
 								else if (CSceneTitle::mDifficulty == 3){

@@ -53,7 +53,7 @@ public:
 	bool isSoundEngine;
 	CSound SoundHorn;
 	CSound ShutUp;
-	int mBuzzerCount;
+	int mBuzzerCount;//ƒNƒ‰ƒNƒVƒ‡ƒ“‚ğ–Â‚ç‚µ‚½‰ñ”
 	CSound SoundCollision;
 	CSound SoundCollisionSmall;
 

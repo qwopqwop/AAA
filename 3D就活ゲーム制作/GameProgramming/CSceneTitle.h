@@ -48,10 +48,10 @@ public:
 
 		//•¶Žš—ñ‚Ì•`‰æ
 		CText::DrawString("3D-RACE", -278 + 400 + 68, 430, 36, 36);
-		CText::DrawString("EXTREME", -278 + 400 + 68+96-24 +6*5, 370, 18, 18, 2);
+		CText::DrawString("EXTREME", -278 + 400 + 68+96-24 +6*5, 377, 18, 18, 2);
 		c[0] = c[1] = c[2] = 0.0f;
 		glColor4fv(c);
-		CText::DrawString("Demo Ver0.0", -278 + 400 + 68 + 96 - 24 + 6 * 5, 333, 11, 11, 3);
+		CText::DrawString("Demo Ver0.0", -278 + 400 + 68 + 131, 345, 8, 8, 3);
 		c[0] = c[1] = c[2] = 1.0f;
 		glColor4fv(c);
 		CText::DrawString("Push Enter Key", 200, 177, 16, 16);

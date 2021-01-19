@@ -148,7 +148,7 @@ void CPlayer::Update(){
 	if (CKey::Once(' ')){//ƒNƒ‰ƒNƒVƒ‡ƒ“‚ð–Â‚ç‚·
 		SoundHorn.Play();
 		mBuzzerCount++;
-		if (mBuzzerCount > 0 && mBuzzerCount % 6 == 0){
+		if (mBuzzerCount > 0 && mBuzzerCount % 7 == 0){
 			ShutUp.Play();
 			mBuzzerCount = 0;
 		}
