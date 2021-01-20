@@ -331,13 +331,6 @@ void CSceneRace::Init() {
 	//CChecker(パターン1,パターン2,どこまで模様を繰り返すか,,,正方形のサイズ,厚み)
 	//CChecker(&mTileBlack ,&mTileWhite, 5, 10.0f, 0.5f)
 
-	//new CObj(&mCube, CVector(0.0f, -5.55f, 13.0f), CVector(-5.4f, 0.0f, 0.0f), CVector(10.0f, 4.0f, 28.0f), 1);//橋？
-	////for (int l = 0; l < 5; l++){
-	////	new CObj(&mStairs, CVector(0.0f, -1.0f, 43.0f + l * 6.0f), CVector(50.0f - 10.0f*l , 0.0f, 0.0f), CVector(10.0f, 3.0f + 3.0f*l, 3.0f), 1);//階段
-	////}
-	//for (int l = 0; l < 5; l++){
-	//	new CObj(&mStairs, CVector(-40.0f, -1.0f + l * 3.0f, 43.0f + l * 10.0f), CVector(-10.0f - 10.0f*l, 0.0f, 0.0f), CVector(10.0f, 3.0f, 3.0f + 3.0f*l), 1);//階段
-	//}
 	
 	//中間地点(順に通らないと1周したことにならないし、順番を飛ばしてもいけない)
 //	new CObj(&mCube3, CVector(0.0f, -30.0f, 2100.0f), CVector(0.0f, 0.0f, 0.0f), CVector(155.0f, 155.0f, 155.0f), 101);
@@ -349,12 +342,14 @@ void CSceneRace::Init() {
 	new CObj(&mCheckPoint, CVector(50.0f, 15.0f, 2500.0f), CVector(-90.0f, 0.0f, -50.0f), CVector(777.0f, 1.0f, 255.0f), 101);
 	new CObj(&mCheckPoint, CVector(-1800.0f, 15.0f, 20.0f), CVector(-90.0f, 180.0f, 0.0f), CVector(750.0f, 1.0f, 255.0f), 102);
 	new CObj(&mCheckPoint, CVector(-1100.0f, 15.0f, -2000.0f), CVector(-90.0f, 0.0f, 110.0f), CVector(750.0f, 1.0f, 255.0f), 103);
+//	new CObj(&mCheckPoint, CVector(600.0f, 15.0f, 6.9f), CVector(-90.0f, -180.0f, 0.0f), CVector(750.0f, 1.0f, 255.0f), 109);//ゴール地点
+	/*CPlayer::mpPlayer->mPosition.mX > -55.0f && CPlayer::mpPlayer->mPosition.mX < 1400.0f)
+		&& (CPlayer::mpPlayer->mPosition.mZ > -3.1f - 5.0f && CPlayer::mpPlayer->mPosition.mZ < -3.1f + 5.0f + 20.0f)*/ // -8.1 21.9f   6.9f
 
 	//new CObj(&mCheckPoint, CVector(0.0f, 20.0f, 2100.0f), CVector(90.0f, 0.0f, 0.0f), CVector(255.0f, 1.0f, 255.0f), 25);
 
 	//ジャンプ台
 	new CObj(&mOnBlock, CVector(0.0f, 0.0f, 450.0f), CVector(-40.0f, 0.0f, 0.0f), CVector(60.0f, 5.0f, 40.0f), 1);
-
 	new CObj(&mOnBlock, CVector(0.0f, 0.0f, 550.0f), CVector(-40.0f, 90.0f, 0.0f), CVector(60.0f, 5.0f, 40.0f), 1);
 	new CObj(&mOnBlock, CVector(0.0f, 0.0f, 650.0f), CVector(-40.0f, 180.0f, 0.0f), CVector(60.0f, 5.0f, 40.0f), 1);
 	new CObj(&mOnBlock, CVector(0.0f, 0.0f, 750.0f), CVector(-40.0f, 270.0f, 0.0f), CVector(60.0f, 5.0f, 40.0f), 1);
@@ -447,15 +442,16 @@ void CSceneRace::Init() {
 
 //	new CObj(&mTileBlack, CVector(0.0f, -1010.0f, 0.0f), CVector(0.0f, 0.0f, 0.0f), CVector(50000.0f, 1.0f, 50000.0f), 99);//白タイル
 
-	//シェーダー無いと激重
-	//new CObj(&mSumple, CVector(430.0f, 10.0f + 3123.0f, 0.0f), CVector(0.0f, 0.0f, 0.0f), CVector(50.0f, 50.0f, 50.0f), 99);
-	//当たり判定を作らなければ大丈夫
+	////当たり判定有りで生成してもさほど動作は重くならなくなった
+	//new CObj(&mSumple, CVector(430.0f, 10.0f + 1123.0f, 0.0f), CVector(0.0f, 0.0f, 0.0f), CVector(50.0f, 50.0f, 50.0f), 999);
 
 	/*for (int i = 0; i < 16; i++){
 		new CObj(&mDashBoard, CVector(260.0f - 40.0f*i , 13.1f + 10.0f, 800.0f), CVector(0.0f, 270.0f, 0.0f), CVector(1.0f, 1.0f, 1.0f), 31);
 		new CObj(&mDashBoard, CVector(260.0f - 40.0f*i-20.0f, 13.1f + 10.0f, 800.0f), CVector(0.0f, 270.0f, 0.0f), CVector(0.9f, 0.9f, 0.9f), 31);
 	}*/
 
+	////空を描画しない
+	//new CObj(&mSky, CVector(-360.0f, 5.0f - 33.0f, 230.0f), CVector(0.0f, 0.0f, 0.0f), CVector(22.0f, 22.0f, 22.0f), 26);
 
 	//ステージ2のマテリアル
 	if (CSceneTitle::mMode == 2){
@@ -481,19 +477,16 @@ void CSceneRace::Init() {
 	//記録更新してない状態
 	isNewRecord = false;
 	
+	//順位は…
+	mRanking = 1;
+	
 	//カメラ視点
 	mCamPoV = 1;
 
-	//初期の状態では敵の目標地点を描画しない
+	//初期状態では敵の目標地点は描画しない
 	isRendPoint = false;
-
 	//初期状態ではポーズ状態無効
 	isPause = false;
-
-
-	//検証のための処理
-	//mEnemy1->mPointRand->mPosition = CVector(789.0f, 30.0f, 100.0f);
-	//mEnemy2->mPointRand->mPosition = CVector(900.0f, 30.0f, -500.0f);
 
 	//優先度変更
 	CTaskManager::Get()->ChangePriority(mPlayer, 15);
@@ -512,7 +505,6 @@ void CSceneRace::Update() {
 	CVector e, c, u;//視点、注視点、上方向
 	//視点を求める
 //	e = CVector(-2.0f, 17.0f, -40.0f) * CMatrix().RotateY(mCamY) * mPlayer->mMatrix   * mPlayer->mMatrixScale * mPlayer->mMatrixRotate * mPlayer->mMatrixTranslate;
-//	e = CVector(-2.0f, 17.0f, -40.0f) * CMatrix().RotateY(mCamY) * mPlayer->mMatrixScale * mPlayer->mMatrixRotate * mPlayer->mMatrixTranslate;
 	if (mCamPoV == 1){
 		e = CVector(0.0f, 17.0f, -40.0f) * CMatrix().RotateY(mCamY) * mPlayer->mMatrixScale
 			* CMatrix().RotateY(mPlayer->mRotation.mY)
@@ -575,8 +567,6 @@ void CSceneRace::Update() {
 	Camera3D(e.mX, e.mY, e.mZ, c.mX, c.mY, c.mZ, u.mX, u.mY, u.mZ);
 	Camera.mEye = e;
 
-	////背景の描画
-	//mSky.Render();
 	////タスクマネージャの更新
 	//TaskManager.Update();
 	////タスクマネージャの描画
@@ -608,6 +598,42 @@ void CSceneRace::Update() {
 
 	//デバッグ用
 #ifdef _DEBUG
+	if (CKey::Once('1')){
+		printf("%d\n", CItem::mTargetAmount);
+		printf("ベストタイム:%d\n", mBestTime);
+	}
+	if (CKey::Once('2')){//Playerの座標を出力する
+		printf("X:%f Y:%f Z:%f\n", CPlayer::mpPlayer->mPosition.mX, CPlayer::mpPlayer->mPosition.mY, CPlayer::mpPlayer->mPosition.mZ);
+	}
+	if (CKey::Once('3')){//強制的に的の残数を0にする(本来の的は消えない)
+		CItem::mTargetAmount = 0;
+	}
+	if (CKey::Once('4')){//余剰の計算時、割る数(右の数字)は正の値で計算される？
+		printf("%d\n", -13 % 5);//負%正=負
+		printf("%d\n", -12 % -5);//負%負=負
+		printf("%d\n", 14 % -5);//正%負=正
+	}
+	if (CKey::Push('5')){
+		printf("%f:%f:%f\n", CPlayer::mpPlayer->mRotation.mX, CPlayer::mpPlayer->mRotation.mY, CPlayer::mpPlayer->mRotation.mZ);
+	}
+	if (CKey::Once('6')){
+		printf("%d\n", CPlayer::mpPlayer->mChecks);
+	}
+	if (CKey::Once('7')){
+		if (CPlayer::mpPlayer->mFlyingMode){
+			CPlayer::mpPlayer->mFlyingMode = false;
+		}
+		else{
+			CPlayer::mpPlayer->mFlyingMode = true;
+		}
+	}
+	if (CKey::Once('8')){
+		//敵車すべてのmVPointの値を出力
+		for (int i = 0; i < 7; i++){
+			//printf("mEnemys[%d]->mVPoint…X:%.1f Y:%.1f Z:%.1f\n", i, mEnemys[i]->mVPoint.mX, mEnemys[i]->mVPoint.mX, mEnemys[i]->mVPoint.mZ);
+			printf("mEnemys[%d]の中間地点…%d\n", i, mEnemys[i]->mChecks);
+		}
+	}
 	if (CKey::Once('9')){
 		if (mPutCol){
 			mPutCol = false;
@@ -618,22 +644,47 @@ void CSceneRace::Update() {
 	}
 	if (mPutCol){
 		//衝突判定の描画
-		CollisionManager.Render();	
+		CollisionManager.Render();
 	}
+
+	//敵の中継地点の表示ON・OFF切り替え
+	if (CKey::Once('O')){		
+		/*if (isRendPoint){
+			isRendPoint = false;
+		}
+		else{
+			isRendPoint = true;
+		}*/
+		//もっと簡潔に切り替える方法
+		isRendPoint = !isRendPoint;
+	}
+	//BGMを停止する
+	if (CKey::Once('M')){
+		BGM.Stop();
+	}
+	////カメラ視点の切り替え
+	//if (CKey::Once('0')){
+	//	//mCamPoV = 1;
+	//	if (mCamPoV == 1){
+	//		mCamPoV = 2;
+	//	}
+	//	else if (mCamPoV == 2){
+	//		mCamPoV = 3;
+	//	}
+	//	else if (mCamPoV == 3){
+	//		mCamPoV = 1;
+	//	}
+	//}
+	
 #endif
 
-	//カメラ視点の切り替え
-	if (CKey::Once('0')){
-		//mCamPoV = 1;
-		if (mCamPoV == 1){
-			mCamPoV = 2;
-		}
-		else if (mCamPoV == 2){
-			mCamPoV = 3;
-		}
-		else if (mCamPoV == 3){
-			mCamPoV = 1;
-		}
+
+	//Bキーを押している間は後方視点になる
+	if (CKey::Push('B')){
+		mCamPoV = 3;
+	}
+	else{
+		mCamPoV = 1;
 	}
 
 	//ポーズ画面に入っていない時
@@ -702,9 +753,6 @@ void CSceneRace::Update() {
 			mEnemys[i]->CanMove = true;
 		}
 	}
-	/*SoundCountDown.Play();
-	SoundStart.Play();*/
-
 
 	if (isStartRace == false){
 		if (mCountDown > 0){
@@ -743,6 +791,31 @@ void CSceneRace::Update() {
 	char carspeed[33];
 	sprintf(carspeed, "SPEED:%4.1f", CPlayer::mpPlayer->mCarSpeed);
 	CText::DrawString(carspeed, 20+560, 20, 10, 12);
+
+	//順位の描画
+	float color[] = { 1.0f, 1.0f, 1.0f, 1.0f };
+	if (isGoal == false){
+		//mRanking = rand() % 99999 + 1;
+	}
+	char rank[8];
+	if (mRanking == 1){      //1st
+		sprintf(rank, "%dst", mRanking);
+	}
+	else if (mRanking == 2){ //2nd
+		sprintf(rank, "%dnd", mRanking);
+	}
+	else if (mRanking == 3){ //3rd
+		sprintf(rank, "%drd", mRanking);
+	}
+	else{ //4th,5th,...
+		sprintf(rank, "%dth", mRanking);
+	}
+	color[0] = color[1] = color[2] = 0.0f;
+	glColor4fv(color);
+	CText::DrawString(rank, 220, 500, 10, 12, 3);
+	color[0] = color[1] = color[2] = 1.0f;
+	glColor4fv(color);
+	
 
 	//ポーズ時に表示される文字
 	if (isPause){
@@ -803,58 +876,6 @@ void CSceneRace::Update() {
 	}
 	
 
-	//	new CObj(&mWarpPoint, CVector(-143.0f, 0.0f, 94.0f), CVector(0.0f, 0.0f, 0.0f), CVector(6.0f, 20.0f, 6.0f), 20);
-	//特定の地点(光(のつもり)の範囲内)に行くとStage2へ移行
-	/*if ((CPlayer::mpPlayer->mPosition.mX > -149.0f && CPlayer::mpPlayer->mPosition.mX < -137.0f)
-		&& (CPlayer::mpPlayer->mPosition.mZ > 88.0f && CPlayer::mpPlayer->mPosition.mZ < 100.0f)
-		&& (CPlayer::mpPlayer->mHaveBoat)){
-		mScene = ESTAGE2;
-	}*/
-	////デバッグコマンド
-	//if (CKey::Once(VK_RETURN)){
-	//	mScene = ESTAGE2;
-	//}
-
-	if (CKey::Once('1')){
-		printf("%d\n", CItem::mTargetAmount);
-		printf("ベストタイム:%d\n", mBestTime);
-	}
-	if (CKey::Once('2')){//Playerの座標を出力する
-		printf("X:%f Y:%f Z:%f\n", CPlayer::mpPlayer->mPosition.mX, CPlayer::mpPlayer->mPosition.mY, CPlayer::mpPlayer->mPosition.mZ);
-	}
-	if (CKey::Once('3')){//強制的に的の残数を0にする(本来の的は消えない)
-		CItem::mTargetAmount = 0;
-	}
-	if (CKey::Once('4')){//余剰の計算時、割る数(右の数字)は正の値で計算される？
-		printf("%d\n", -13 % 5);//負%正=負
-		printf("%d\n", -12 % -5);//負%負=負
-		printf("%d\n", 14 % -5);//正%負=正
-	}
-	if (CKey::Push('5')){
-		printf("%f:%f:%f\n", CPlayer::mpPlayer->mRotation.mX, CPlayer::mpPlayer->mRotation.mY, CPlayer::mpPlayer->mRotation.mZ);
-	}
-	if (CKey::Once('6')){
-		printf("%d\n", CPlayer::mpPlayer->mChecks);
-	}
-	if (CKey::Once('7')){
-		if (CPlayer::mpPlayer->mFlyingMode){
-			CPlayer::mpPlayer->mFlyingMode = false;
-		}
-		else{
-			CPlayer::mpPlayer->mFlyingMode = true;
-		}
-	}
-	
-
-	if (CKey::Once('O')){
-		//敵の中継地点の表示ON・OFF切り替え
-		if (isRendPoint){
-			isRendPoint = false;
-		}
-		else{
-			isRendPoint = true;
-		}
-	}
 	if (CKey::Once('P')){
 		//カウントダウン終了後、ポーズの切り替えが可能になる。
 		if (mCountDown < 0){
@@ -862,17 +883,8 @@ void CSceneRace::Update() {
 			if (isGoal)return;
 
 			//ポーズのON・OFF切り替え
-			if (isPause){
-				isPause = false;
-			}
-			else{
-				isPause = true;
-			}
+			isPause = !isPause;
 		}		
-	}
-	//BGMを停止する
-	if (CKey::Once('M')){
-		BGM.Stop();
 	}
 
 	/*シーン切り替え系の処理*/

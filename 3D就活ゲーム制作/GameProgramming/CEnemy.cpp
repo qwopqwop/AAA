@@ -150,9 +150,7 @@ CEnemy::CEnemy()
 	//mpPoint = &Point1;
 
 	mpPoint = mPoint;
-
-	mVPoint = mpPoint->mPosition;
-
+	mVPoint = mpPoint->mPosition;//一番最初は分散無し
 }
 
 void CEnemy::Update(){
@@ -178,16 +176,10 @@ void CEnemy::Update(){
 	//if (CKey::Push('E')){//つぐ
 	//	mRotation.mY--;
 	//}
-
-	if (CKey::Once('B')){//超急ブレーキ
-		//mCarSpeed = 0.0f;
-		printf("mPoint…X:%.1f Y:%.1f Z:%.1f\n", mPoint->mPosition.mX, mPoint->mPosition.mY, mPoint->mPosition.mZ);
-		printf("mpPoint…X:%.1f Y:%.1f Z:%.1f\n", mpPoint->mPosition.mX, mpPoint->mPosition.mY, mpPoint->mPosition.mZ);
-	}
-
-
+	
 	if (CKey::Once('T')){
 		printf("%d\n", rand(), rand());
+		//printf("mVPoint…X:%.1f Y:%.1f Z:%.1f\n", mVPoint.mX, mVPoint.mY, mVPoint.mZ);
 	}
 
 	////Aキー、Dキーが同時に入力されているか
@@ -766,7 +758,7 @@ void CEnemy::Collision(CCollider *mc, CCollider *yc){
 
 								int r = (mc->mRadius + yc->mRadius) * 0.8f;
 								int gap = (rand() % (r * 2) - r);
-								//敵AIのLvにより分散値も変更される予定
+								//敵AIのLvにより分散値も変化
 								if (CSceneTitle::mDifficulty == 1){
 									r = (mc->mRadius + yc->mRadius) * 0.8f;
 									gap = (rand() % (r * 2) - r);
@@ -784,8 +776,6 @@ void CEnemy::Collision(CCollider *mc, CCollider *yc){
 								if (mpPoint == mPoint){
 									mVPoint = mPoint2->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
 									mpPoint = mPoint2;
-																		
-									//printf("次の目的地：X:%f,Y:%f,Z%f:\n", mpPoint->mPosition.mX, mpPoint->mPosition.mY, mpPoint->mPosition.mZ);
 								}
 								else if(mpPoint==mPoint2){
 									mVPoint = mPoint3->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
@@ -804,7 +794,7 @@ void CEnemy::Collision(CCollider *mc, CCollider *yc){
 									mpPoint = mPoint6;
 								}
 								else if (mpPoint == mPoint6){
-									//難易度HARD以上ではさらに細かくポイントが設定されている
+									//難易度Normal以上ではさらに細かくポイントが設定されている
 									if (CSceneTitle::mDifficulty == 2 || CSceneTitle::mDifficulty == 3){
 										mVPoint = mPoint7->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
 										mpPoint = mPoint7;
@@ -840,8 +830,7 @@ void CEnemy::Collision(CCollider *mc, CCollider *yc){
 									mpPoint = mPoint;
 								}
 								
-
-								//printf("次の目的地…X:%.1f Y:%.1f Z:%.1f\n", mpPoint->mPosition.mX, mpPoint->mPosition.mY, mpPoint->mPosition.mZ);
+								//printf("mpPoint…X:%.1f Y:%.1f Z:%.1f\n", mpPoint->mPosition.mX, mpPoint->mPosition.mY, mpPoint->mPosition.mZ);
 							}
 						}
 					}

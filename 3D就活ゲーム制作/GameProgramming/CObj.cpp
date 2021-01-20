@@ -52,6 +52,14 @@ CObj::CObj(CModel *model, const CVector &position, const CVector &rotation, cons
 		CTaskManager::Get()->Remove(this);
 		CTaskManager::Get()->Add(this);
 	}
+	if (mObjNumber == 109){
+		//ゴールポイント(1周したと扱われる地点)
+		mTag = EGOALPOINT;
+		//優先度変更
+		mPriority = 0;
+		CTaskManager::Get()->Remove(this);
+		CTaskManager::Get()->Add(this);
+	}
 	if (mObjNumber == 111){
 		//加速床
 		mTag = EDASHBOARD;
@@ -172,6 +180,9 @@ void CObj::Update(){
 	}
 	if (mObjNumber == 25){//回レ回レ
 		mRotation.mX += ROLLINGSPEED;
+	}
+	if (mObjNumber == 26){//ゆっっっくりY軸回転
+		mRotation.mY += 0.01f;
 	}
 
 	if (mObjNumber == 31){//仮の番号

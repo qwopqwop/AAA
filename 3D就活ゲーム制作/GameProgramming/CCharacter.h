@@ -36,6 +36,7 @@ public:
 		ECHECKPOINT,//中間地点1
 		ECHECKPOINT2,//中間地点2
 		ECHECKPOINT3,//中間地点3
+		EGOALPOINT,//ゴール地点
 		EDASHBOARD,//加速床
 		EGRASS, //芝生
 		EWALL, //壁

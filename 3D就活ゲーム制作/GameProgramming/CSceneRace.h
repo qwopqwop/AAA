@@ -113,6 +113,8 @@ public:
 	bool isRendPoint;
 	
 	bool isPause;
+
+	int mRanking;
 };
 
 #endif

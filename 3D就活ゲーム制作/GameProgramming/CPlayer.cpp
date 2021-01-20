@@ -141,10 +141,6 @@ void CPlayer::Update(){
 		mRotation.mY--;
 	}
 
-	if (CKey::Push('B')){//超急ブレーキ
-		mCarSpeed = 0.0f;
-	}
-
 	if (CKey::Once(' ')){//クラクションを鳴らす
 		SoundHorn.Play();
 		mBuzzerCount++;
