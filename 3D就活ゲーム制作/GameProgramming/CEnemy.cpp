@@ -151,6 +151,9 @@ CEnemy::CEnemy()
 
 	mpPoint = mPoint;
 	mVPoint = mpPoint->mPosition;//ˆê”ÔÅ‰‚Í•ªU–³‚µ
+
+	mEnemyLap = 1;//“G‚Ìƒ‰ƒbƒv”‚ğ‚Pü–Ú‚Éİ’è‚·‚é
+	isEnemyGoaled = false;//‚Ü‚¾ƒS[ƒ‹‚µ‚Ä‚È‚¢ó‘Ô‚É‚·‚é
 }
 
 void CEnemy::Update(){

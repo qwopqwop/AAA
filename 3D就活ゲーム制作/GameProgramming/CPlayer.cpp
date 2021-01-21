@@ -670,9 +670,9 @@ void CPlayer::Collision(CCollider *mc, CCollider *yc){
 					CVector aiueo;//‚Æ‚è‚ÜƒxƒNƒgƒ‹
 					if (CCollider::CollisionTriangleSphere(yc, mc, &aiueo)){
 						//mCarSpeed += 10.0f;
-						
+						//mCarSpeed = MAXSPEED+10.0f;						
 						if (isBoost == false){
-							printf("SPEED UP!\n");
+							//printf("SPEED UP!\n");
 							SoundBoost.Play();
 						}
 						isBoost = true;

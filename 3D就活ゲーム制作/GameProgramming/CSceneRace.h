@@ -115,6 +115,7 @@ public:
 	bool isPause;
 
 	int mRanking;
+	int mAfterGoalTime;
 };
 
 #endif

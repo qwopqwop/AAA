@@ -22,7 +22,10 @@ public:
 		CText::mFont2.Load("FontG.tga");
 		CText::mFont2.SetRowCol(1, 4096 / 64);
 		CText::mFont3.Load("FontDIY.tga");//自作フォント
-		CText::mFont3.SetRowCol(8, 176 / 11);//表示が変
+		CText::mFont3.SetRowCol(8, 176 / 11);
+		//CText::mFont3.Load("FontDIYx5.tga");//自作フォント
+		//CText::mFont3.SetRowCol(8, 880 / 55);//サイズ5倍(没)
+		
 
 		//シーンの設定
 		mScene = ETITLE;

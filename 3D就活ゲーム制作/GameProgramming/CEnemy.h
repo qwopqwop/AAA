@@ -113,6 +113,9 @@ public:
 
 	CPoint *mpPoint2;
 	CVector mVPoint;
+
+	int mEnemyLap;
+	bool isEnemyGoaled;
 };
 
 
