@@ -7,6 +7,8 @@
 //CSound.hをインクルードしたら音の再生の動作が軽くなった？
 #include "CSound.h"
 #include "CSceneGame.h"
+
+#define ENEMYS_AMOUNT 8 //0以下はNG
 /*
 ゲームのシーン
 */
@@ -73,7 +75,8 @@ public:
 	CModel mDashBoard;//加速する床
 
 	CPlayer *mPlayer;
-	CEnemy *mEnemys[7];
+	CEnemy *mEnemys[ENEMYS_AMOUNT];
+	
 
 	CSound BGM;
 	CSound SoundCountDown;
@@ -99,11 +102,7 @@ public:
 	bool isNewRecord;
 	static int mRecord_A, mRecord_B, mRecord_C, mRecord_D;
 
-	float mXXX, mYYY, mZZZ;
-	float mXX0, mZZ0;
-
 	CModel mSumple;
-
 	int mCamPoV;
 
 	//コース2のマテリアル
