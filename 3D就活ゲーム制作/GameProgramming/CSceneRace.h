@@ -8,7 +8,7 @@
 #include "CSound.h"
 #include "CSceneGame.h"
 
-#define ENEMYS_AMOUNT 8 //0以下はNG
+#define ENEMYS_AMOUNT 8 //0以下には設定できない
 /*
 ゲームのシーン
 */
@@ -24,6 +24,8 @@ public:
 	void Update();
 	//ミニマップ関連の処理
 	void RenderMiniMap();
+	//バックミラーの描画
+	void RenderBackMirror();
 	
 	CModel mSky;
 	CModel mRock;

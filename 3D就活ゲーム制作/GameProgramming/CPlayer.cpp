@@ -144,10 +144,10 @@ void CPlayer::Update(){
 	if (CKey::Once(' ')){//クラクションを鳴らす
 		SoundHorn.Play();
 		mBuzzerCount++;
-		if (mBuzzerCount > 0 && mBuzzerCount % 7 == 0){
+		/*if (mBuzzerCount > 0 && mBuzzerCount % 7 == 0){
 			ShutUp.Play();
 			mBuzzerCount = 0;
-		}
+		}*/
 	}
 
 	////Aキー、Dキーが同時に入力されているか
@@ -456,21 +456,21 @@ void CPlayer::Update(){
 	
 	//重力の影響を反映する
 	mVelocityJump -= G;
-	if (CKey::Once('K')){
-		if (mCanJump){
-			//ボート乗船時はジャンプ不可
-			if (mHaveBoat){
-			}
-			else{
-				mCanJump = false;
-				mVelocityJump = mJumpV0;
-				mJumpPrio = 2;
+	//if (CKey::Once('K')){
+	//	if (mCanJump){
+	//		//ボート乗船時はジャンプ不可
+	//		if (mHaveBoat){
+	//		}
+	//		else{
+	//			mCanJump = false;
+	//			mVelocityJump = mJumpV0;
+	//			mJumpPrio = 2;
 
-				////ジャンプ音再生
-				SoundJump.Play();
-			}
-		}
-	}
+	//			////ジャンプ音再生
+	//			SoundJump.Play();
+	//		}
+	//	}
+	//}
 	if (mJumpPrio > 0){
 		mJumpPrio--;
 	}

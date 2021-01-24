@@ -194,12 +194,12 @@ void CSceneRace::Init() {
 		mBestTime = mRecord_A;
 	}
 	else if (CSceneTitle::mMode == 2){
-		BGM.Load("BGM\\game_maoudamashii_1_battle34.wav");
+		BGM.Load("BGM\\調整後game_maoudamashii_1_battle34.wav");
 		mMaxLap = 2;
 		mBestTime = mRecord_B;
 	}
 	else if (CSceneTitle::mMode == 3){
-		BGM.Load("BGM\\Crazy_Machine.wav");
+		BGM.Load("BGM\\調整後Crazy_Machine.wav");
 		mMaxLap = 3;
 		mBestTime = mRecord_C;
 	}
@@ -395,10 +395,10 @@ void CSceneRace::Init() {
 	////空を描画しない
 	//new CObj(&mSky, CVector(-360.0f, 5.0f - 33.0f, 230.0f), CVector(0.0f, 0.0f, 0.0f), CVector(22.0f, 22.0f, 22.0f), 26);
 
-	//ステージ2のマテリアル
-	if (CSceneTitle::mMode == 2){
-		new CObj(&msumple2, CVector(320.0f, -58.0f, 450.0f), CVector(0.0f, 180.0f, 0.0f), CVector(4.0f, 3.0f, 3.0f), 1);
-	}
+	////ステージ2のマテリアル
+	//if (CSceneTitle::mMode == 2){
+	//	new CObj(&msumple2, CVector(320.0f, -58.0f, 450.0f), CVector(0.0f, 180.0f, 0.0f), CVector(4.0f, 3.0f, 3.0f), 1);
+	//}
 
 	//カメラ視点のY座標
 	mCamY = 0.0f;
@@ -527,7 +527,7 @@ void CSceneRace::Update() {
 		CTaskManager::Get()->Update();
 	}
 	CTaskManager::Get()->Render();
-
+	
 	////岩の描画
 	//mRock.Render(CMatrix().Scale(5.0f, 5.0f, 5.0f));
 	////車の描画
@@ -652,6 +652,8 @@ void CSceneRace::Update() {
 	}
 	
 	RenderMiniMap();
+	//RenderBackMirror();
+
 	//2D描画開始
 	Start2D(0, 800, 0, 600);
 
@@ -912,7 +914,7 @@ void CSceneRace::Update() {
 	}
 	//ポーズ中Escキー押下→タイトル画面移行
 	if (isPause){
-		if (CKey::Once(VK_ESCAPE)){
+		if (CKey::Once(VK_BACK) || CKey::Once(VK_ESCAPE)){
 			//次のシーンはゲーム
 			mScene = ETITLE;
 		}
@@ -1038,7 +1040,36 @@ void CSceneRace::RenderMiniMap() {
 
 	
 }
-
+//バックミラーを表示
+void CSceneRace::RenderBackMirror(){
+	glViewport(600 + 20 - 30 - 300, 450 - 7, 200, 150); //バックミラーの描画エリアの指定
+	////カメラのパラメータを作成する
+	//CVector be, bc, bu;//視点、注視点、上方向
+	////視点を求める
+	//be = CVector(0.0f, 17.0f, 40.0f) * CMatrix().RotateY(mCamY) * mPlayer->mMatrixScale
+	//	* CMatrix().RotateY(mPlayer->mRotation.mY)
+	//	* mPlayer->mMatrixTranslate
+	//	+ CVector(0.0f, 0.0f, 0.0f);
+	//////注視点を求める
+	////c = mPlayer->mPosition + CVector(0.0f, 0.0f, 40.0f)*mPlayer->mMatrixRotate;
+	//bc = mPlayer->mPosition + CVector(0.0f, 0.0f, -40.0f)* mPlayer->mMatrixScale
+	//	* CMatrix().RotateY(mPlayer->mRotation.mY);
+	//bu = CVector(0.0f, 1.0f, 0.0f);
+	//be = CVector(0.0f, 17.0f, 40.0f) * CMatrix().RotateY(mCamY) * mPlayer->mMatrixScale
+	//	* CMatrix().RotateY(mPlayer->mRotation.mY)
+	//	* mPlayer->mMatrixTranslate
+	//	+ CVector(0.0f, 0.0f, 0.0f);
+	//////注視点を求める
+	////c = mPlayer->mPosition + CVector(0.0f, 0.0f, 40.0f)*mPlayer->mMatrixRotate;
+	//bc = mPlayer->mPosition + CVector(0.0f, 0.0f, -40.0f)* mPlayer->mMatrixScale
+	//	* CMatrix().RotateY(mPlayer->mRotation.mY);
+	////* CMatrix().RotateZ(mPlayer->mRotation.mZ);
+	////カメラの設定
+	//Camera3D(be.mX, be.mY, be.mZ, bc.mX, bc.mY, bc.mZ, bu.mX, bu.mY, bu.mZ);
+	//Camera.mEye = be;
+	CTaskManager::Get()->Render();
+	glViewport(0, 0, 800, 600); //画面の描画エリアをメインの画面に戻す
+}
 
 //次のシーンの取得
 CScene::EScene CSceneRace::GetNextScene(){

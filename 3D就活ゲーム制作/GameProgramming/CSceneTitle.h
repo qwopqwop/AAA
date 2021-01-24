@@ -51,15 +51,34 @@ public:
 
 		//文字列の描画
 		CText::DrawString("3D-RACE", -278 + 400 + 68, 430, 36, 36);
-		CText::DrawString("EXTREME", -278 + 400 + 68+96-24 +6*5, 377, 18, 18, 2);
+		//CText::DrawString("EXTREME", -278 + 400 + 68+96-24 +6*5, 377, 18, 18, 2);
 		c[0] = c[1] = c[2] = 0.0f;
 		glColor4fv(c);
-		CText::DrawString("Demo Ver0.0", -278 + 400 + 68 + 131, 345, 8, 8, 3);
+		CText::DrawString("Demo Ver0.0", -278 + 400 + 68 + 131, 345+32, 8, 8, 3);
 		c[0] = c[1] = c[2] = 1.0f;
 		glColor4fv(c);
 		CText::DrawString("Push Enter Key", 200, 177, 16, 16);
+		//
+		if (mSelectScene_Level == 1){
+			CText::DrawString("[", 186 + mVariable2 * 250, 300 + mVariable1 * 50, 20, 30, 2);
+			CText::DrawString("]", 370 + mVariable2 * 250-30, 300 + mVariable1 * 50, 20, 30, 2);
+		}
+		if (mSelectScene_Level == 2 && mStart == false){
+			if (mDifficulty == 1){
+				CText::DrawString("[", 190, 102, 16, 24, 2);
+				CText::DrawString("]", 278, 102, 16, 24, 2);
+			}
+			if (mDifficulty == 2){
+				CText::DrawString("[", 338, 102, 16, 24, 2);
+				CText::DrawString("]", 474, 102, 16, 24, 2);
+			}
+			if (mDifficulty == 3){
+				CText::DrawString("[", 534, 102, 16, 24, 2);
+				CText::DrawString("]", 622, 102, 16, 24, 2);
+			}
+		}
 		
-		
+		//ここより前は選択時に点滅しない
 		if (mStartWaitTime > 20 || mStart == false){
 			c[0] = c[1] = c[2] = 1.0f;
 		}
@@ -67,23 +86,31 @@ public:
 			c[0] = c[1] = c[2] = 0.5f;
 		}
 		glColor4fv(c);
+		//ここから先は選択時に点滅させることが可能
 
-		//モード選択と難易度選択でカーソルの基点も違う
-		if (mSelectScene_Level == 1){
-			CText::DrawString("O", 170 + mVariable2 * 250, 300 + mVariable1 * 50, 10, 10);
-		}
-		else if (mSelectScene_Level == 2){
-			if (mDifficulty == 1){
-				CText::DrawString("O", 175, 100, 10, 10);
-			}
-			if (mDifficulty == 2){
-				CText::DrawString("O", 323, 100, 10, 10);
-			}
-			if (mDifficulty == 3){
-				CText::DrawString("O", 519, 100, 10, 10);
-			}
-			//CText::DrawString("O", -80 + mDifficulty * 250, 100, 10, 10);
-		}
+		////モード選択と難易度選択でカーソルの基点も違う
+		//if (mSelectScene_Level == 1){
+		//	//CText::DrawString("O", 170 + mVariable2 * 250, 300 + mVariable1 * 50, 10, 10);
+		//}
+		////else if (mSelectScene_Level == 2){
+		////	//if (mDifficulty == 1){
+		////	//	//CText::DrawString("O", 175, 100, 10, 10);
+		////	//	CText::DrawString("[", 190, 102, 16, 24, 2);
+		////	//	CText::DrawString("]", 278, 102, 16, 24, 2);
+		////	//}
+		////	//if (mDifficulty == 2){
+		////	//	//CText::DrawString("O", 323, 100, 10, 10);
+		////	//	CText::DrawString("[", 338, 102, 16, 24, 2);
+		////	//	CText::DrawString("]", 474, 102, 16, 24, 2);
+		////	//}
+		////	//if (mDifficulty == 3){
+		////	//	//CText::DrawString("O", 519, 100, 10, 10);
+		////	//	CText::DrawString("[", 534, 102, 16, 24, 2);
+		////	//	CText::DrawString("]", 622, 102, 16, 24, 2);
+		////	//}
+		////	//CText::DrawString("O", -80 + mDifficulty * 250, 100, 10, 10);
+		////}
+
 
 		/*難易度選択(敵AIの強さ)*/
 		if (mDifficulty == 1 && mSelectScene_Level == 2){//難易度:EASY
@@ -92,21 +119,50 @@ public:
 		else{
 			c[0] = c[1] = c[2] = 0.5f; c[3] = 1.0f;
 		}
+		//選択時に点滅する
+		if (mStart && mDifficulty == 1){
+			if (mStartWaitTime > 20){
+				c[0] = c[1] = c[2] = 1.0f;
+			}
+			else if (mStartWaitTime % 8 < 4){
+				c[0] = c[1] = c[2] = 0.5f;
+			}
+		}
 		glColor4fv(c);
 		CText::DrawString("EASY", 200, 100, 12, 12);
+
 		if (mDifficulty == 2 && mSelectScene_Level == 2){//難易度:NORMAL
 			c[0] = c[1] = c[2] = 1.0f; c[3] = 1.0f;
 		}
 		else{
 			c[0] = c[1] = c[2] = 0.5f; c[3] = 1.0f;
 		}
+		//選択時に点滅する
+		if (mStart && mDifficulty == 2){
+			if (mStartWaitTime > 20){
+				c[0] = c[1] = c[2] = 1.0f;
+			}
+			else if (mStartWaitTime % 8 < 4){
+				c[0] = c[1] = c[2] = 0.5f;
+			}
+		}
 		glColor4fv(c);
 		CText::DrawString("NORMAL", 347, 100, 12, 12);
+
 		if (mDifficulty == 3 && mSelectScene_Level == 2){//難易度:HARD
 			c[0] = c[1] = c[2] = 1.0f; c[3] = 1.0f;
 		}
 		else{
 			c[0] = c[1] = c[2] = 0.5f; c[3] = 1.0f;
+		}
+		//選択時に点滅する
+		if (mStart && mDifficulty == 3){
+			if (mStartWaitTime > 20){
+				c[0] = c[1] = c[2] = 1.0f;
+			}
+			else if (mStartWaitTime % 8 < 4){
+				c[0] = c[1] = c[2] = 0.5f;
+			}
 		}
 		glColor4fv(c);
 		CText::DrawString("HARD", 543, 100, 12, 12);
@@ -118,32 +174,71 @@ public:
 		else{
 			c[0] = c[1] = c[2] = 0.5f; c[3] = 1.0f;
 		}
+		//選択時に点滅する
+		if (mStart && mVariable1 == 0 && mVariable2 == 0){
+			if (mStartWaitTime > 20){
+				c[0] = c[1] = c[2] = 1.0f;
+			}
+			else if (mStartWaitTime % 8 < 4){
+				c[0] = c[1] = c[2] = 0.5f;
+			}
+		}
 		glColor4fv(c);
-		CText::DrawString("StartA", 200, 300, 16, 16);
+		CText::DrawString("1-LAP", 200, 300, 16, 16);
+
 		if (mVariable1 == 0 && mVariable2 == 1){
 			c[0] = c[1] = c[2] = 1.0f; c[3] = 1.0f;
 		}
 		else{
 			c[0] = c[1] = c[2] = 0.5f; c[3] = 1.0f;
 		}
+		//選択時に点滅する
+		if (mStart && mVariable1 == 0 && mVariable2 == 1){
+			if (mStartWaitTime > 20){
+				c[0] = c[1] = c[2] = 1.0f;
+			}
+			else if (mStartWaitTime % 8 < 4){
+				c[0] = c[1] = c[2] = 0.5f;
+			}
+		}
 		glColor4fv(c);
-		CText::DrawString("StartB", 450, 300, 16, 16);
+		CText::DrawString("2-LAP", 450, 300, 16, 16);
+
 		if (mVariable1 == -1 && mVariable2 == 0){
 			c[0] = c[1] = c[2] = 1.0f; c[3] = 1.0f;
 		}
 		else{
 			c[0] = c[1] = c[2] = 0.5f; c[3] = 1.0f;
 		}
+		//選択時に点滅する
+		if (mStart && mVariable1 == -1 && mVariable2 == 0){
+			if (mStartWaitTime > 20){
+				c[0] = c[1] = c[2] = 1.0f;
+			}
+			else if (mStartWaitTime % 8 < 4){
+				c[0] = c[1] = c[2] = 0.5f;
+			}
+		}
 		glColor4fv(c);
-		CText::DrawString("StartC", 200, 250, 16, 16);
+		CText::DrawString("3-LAP", 200, 250, 16, 16);
+
 		if (mVariable1 == -1 && mVariable2 == 1){
 			c[0] = c[1] = c[2] = 1.0f; c[3] = 1.0f;
 		}
 		else{
 			c[0] = c[1] = c[2] = 0.5f; c[3] = 1.0f;
 		}
+		//選択時に点滅する
+		if (mStart && mVariable1 == -1 && mVariable2 == 1){
+			if (mStartWaitTime > 20){
+				c[0] = c[1] = c[2] = 1.0f;
+			}
+			else if (mStartWaitTime % 8 < 4){
+				c[0] = c[1] = c[2] = 0.5f;
+			}
+		}
 		glColor4fv(c);
-		CText::DrawString("StartD", 450, 250, 16, 16);
+		CText::DrawString("5-LAP", 450, 250, 16, 16);
 		c[0] = c[1] = c[2] = 1.0f; c[3] = 1.0f;
 		glColor4fv(c);	
 		
