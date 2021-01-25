@@ -25,6 +25,7 @@
 //スマートポインタの生成
 std::shared_ptr<CTexture> TextureExp(new CTexture());
 std::shared_ptr<CTexture> TextureHit(new CTexture());
+std::shared_ptr<CTexture> TextureBoost(new CTexture());
 
 extern CSound BGM;
 extern CSound SoundCountDown;
@@ -112,6 +113,9 @@ void CSceneRace::Init() {
 	TextureExp->Load("exp.tga");
 	//衝突テクスチャの読み込み
 	TextureHit->Load("effect\\[Attack]Hit01_panop.tga");
+	//加速テクスチャの読み込み
+	TextureBoost->Load("effect\\boost01.tga");
+	////TextureBoost->Load("effect\\[Magic]SonicWave01_panop.tga");
 
 	//テキストフォントの読み込みと設定
 	CText::mFont.Load("FontG.tga");
