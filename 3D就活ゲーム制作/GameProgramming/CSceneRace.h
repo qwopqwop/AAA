@@ -4,6 +4,7 @@
 #include "CModel.h"
 #include "CPlayer.h"
 #include "CEnemy.h"
+#include "CRigidObj.h"
 //CSound.hをインクルードしたら音の再生の動作が軽くなった？
 #include "CSound.h"
 #include "CSceneGame.h"
@@ -117,6 +118,8 @@ public:
 
 	int mRanking;
 	int mAfterGoalTime;
+
+	bool isRender_BackMirror;
 };
 
 #endif

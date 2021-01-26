@@ -14,6 +14,7 @@
 #include "CEffect.h"
 extern std::shared_ptr<CTexture> TextureExp;
 extern std::shared_ptr<CTexture> TextureHit;
+extern std::shared_ptr<CTexture> TextureBoost;
 #include "CTaskManager.h"
 
 extern CSound SoundBoost;
@@ -691,8 +692,9 @@ void CEnemy::Collision(CCollider *mc, CCollider *yc){
 						//mCarSpeed += 10.0f;
 
 						if (isBoost == false){
-							printf("SPEED UP!\n");
+							//printf("SPEED UP!\n");
 							//SoundBoost.Play();
+							new CEffect(mPosition + CVector(0.0f, 15.5f, 0.0f), 17.0f, 17.0f, TextureBoost, 3, 5, 1, 1);
 						}
 						isBoost = true;
 						mBoostTime = 45;

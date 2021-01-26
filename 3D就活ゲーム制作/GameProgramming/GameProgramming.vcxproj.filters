@@ -117,6 +117,9 @@
     <ClCompile Include="CPoint.cpp">
       <Filter>ソース ファイル\RaceGame</Filter>
     </ClCompile>
+    <ClCompile Include="CRigidObj.cpp">
+      <Filter>ソース ファイル\RaceGame\ちょっと別フォルダで</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CSceneGame.h">
@@ -214,6 +217,9 @@
     </ClInclude>
     <ClInclude Include="CPoint.h">
       <Filter>ソース ファイル\RaceGame</Filter>
+    </ClInclude>
+    <ClInclude Include="CRigidObj.h">
+      <Filter>ソース ファイル\RaceGame\ちょっと別フォルダで</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

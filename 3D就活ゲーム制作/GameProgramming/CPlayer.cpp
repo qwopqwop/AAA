@@ -675,7 +675,7 @@ void CPlayer::Collision(CCollider *mc, CCollider *yc){
 						if (isBoost == false){
 							//printf("SPEED UP!\n");
 							SoundBoost.Play();
-							new CEffect(mPosition + CVector(0.0f, 15.5f, 0.0f), 17.0f, 17.0f, TextureBoost, 3, 8, 1, 1);
+							new CEffect(mPosition + CVector(0.0f, 15.5f, 0.0f), 17.0f, 17.0f, TextureBoost, 3, 5, 1, 1);
 						}
 						isBoost = true;
 						mBoostTime = 45;

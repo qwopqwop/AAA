@@ -62,6 +62,8 @@ public:
 	virtual void Collision(CCollider *mycol, CCollider *youcol) {}
 	//
 	//void ChangePriority(int priority);
+	//•`‰æˆ—‚Ì—L–³
+	bool isRender;
 };
 
 #endif

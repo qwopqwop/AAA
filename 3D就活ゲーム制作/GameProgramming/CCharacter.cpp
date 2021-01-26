@@ -23,10 +23,12 @@ void CCharacter::Update() {
 }
 //•`‰æˆ—
 void CCharacter::Render() {
-	//?
-	if (mpModel) {
-		//ƒ‚ƒfƒ‹‚Ì•`‰æ
-		mpModel->Render(mMatrix);
+	//?	
+	if (isRender){
+		if (mpModel) {
+			//ƒ‚ƒfƒ‹‚Ì•`‰æ
+			mpModel->Render(mMatrix);
+		}
 	}
 }
 

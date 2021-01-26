@@ -61,19 +61,32 @@ void CSceneRace::Init() {
 		CEnemy::mPoint6 = new CPoint(CVector(340.0f, 30.0f, -1182.0f), 100.0f);
 	}
 	else if (CSceneTitle::mDifficulty == 2){//難易度：NORMAL
+		//CEnemy::mPointSize = 12;//ポイント数の設定
+		//CEnemy::mPoint = new CPoint(CVector(260.0f + 60.0f, 30.0f, 777.0f + 100.0f), 200.0f);
+		//CEnemy::mPoint2 = new CPoint(CVector(259.0f + 60.0f, 30.0f, 1300.0f + 200.0f), 200.0f);
+		//CEnemy::mPoint3 = new CPoint(CVector(-150.0f + 0.0f, 30.0f, 2058.0f + 200.0f), 200.0f);
+		//CEnemy::mPoint4 = new CPoint(CVector(-555.0f - 150.0f, 30.0f, 2111.0f + 300.0f), 200.0f);
+		//CEnemy::mPoint5 = new CPoint(CVector(-1039.0f - 150.0f, 30.0f, 2062.0f + 200.0f), 200.0f);
+		//CEnemy::mPoint6 = new CPoint(CVector(-1400.0f - 150.0f, 30.0f, 1700.0f + 200.0f), 200.0f);
+		//CEnemy::mPoint7 = new CPoint(CVector(-1511.0f, 30.0f, -317.0f - 200.0f), 120.0f);
+		//CEnemy::mPoint8 = new CPoint(CVector(-1400.0f, 30.0f, -1079.0f - 300.0f), 200.0f);
+		//CEnemy::mPoint9 = new CPoint(CVector(-1000.0f, 30.0f, -1500.0f - 300.0f), 200.0f);
+		//CEnemy::mPoint10 = new CPoint(CVector(-550.0f, 30.0f, -1700.0f - 300.0f), 200.0f);
+		//CEnemy::mPoint11 = new CPoint(CVector(-100.0f, 30.0f, -1600.0f - 325.0f), 300.0f);
+		//CEnemy::mPoint12 = new CPoint(CVector(420.0f, 30.0f, -1182.0f - 300.0f), 350.0f);
 		CEnemy::mPointSize = 12;//ポイント数の設定
-		CEnemy::mPoint = new CPoint(CVector(260.0f + 60.0f, 30.0f, 777.0f + 100.0f), 200.0f);
-		CEnemy::mPoint2 = new CPoint(CVector(259.0f + 60.0f, 30.0f, 1300.0f + 200.0f), 200.0f);
-		CEnemy::mPoint3 = new CPoint(CVector(-150.0f + 0.0f, 30.0f, 2058.0f + 200.0f), 200.0f);
-		CEnemy::mPoint4 = new CPoint(CVector(-555.0f - 150.0f, 30.0f, 2111.0f + 300.0f), 200.0f);
-		CEnemy::mPoint5 = new CPoint(CVector(-1039.0f - 150.0f, 30.0f, 2062.0f + 200.0f), 200.0f);
-		CEnemy::mPoint6 = new CPoint(CVector(-1400.0f - 150.0f, 30.0f, 1700.0f + 200.0f), 200.0f);
-		CEnemy::mPoint7 = new CPoint(CVector(-1511.0f, 30.0f, -317.0f - 200.0f), 120.0f);
-		CEnemy::mPoint8 = new CPoint(CVector(-1400.0f, 30.0f, -1079.0f - 300.0f), 200.0f);
-		CEnemy::mPoint9 = new CPoint(CVector(-1000.0f, 30.0f, -1500.0f - 300.0f), 200.0f);
-		CEnemy::mPoint10 = new CPoint(CVector(-550.0f, 30.0f, -1700.0f - 300.0f), 200.0f);
-		CEnemy::mPoint11 = new CPoint(CVector(-100.0f, 30.0f, -1600.0f - 325.0f), 300.0f);
-		CEnemy::mPoint12 = new CPoint(CVector(420.0f, 30.0f, -1182.0f - 300.0f), 350.0f);
+		CEnemy::mPoint = new CPoint(CVector(   260.0f + 00.0f, 30.0f, 777.0f), 40.0f * 4);
+		CEnemy::mPoint2 = new CPoint(CVector(  259.0f + 00.0f, 30.0f, 1300.0f), 50.0f * 4);
+		CEnemy::mPoint3 = new CPoint(CVector( -150.0f + 50.0f, 30.0f + 50.0f, 2058.0f), 65.0f * 4);
+		CEnemy::mPoint4 = new CPoint(CVector(-555.0f + 50.0f, 30.0f + 50.0f, 2111.0f), 65.0f * 4);
+		CEnemy::mPoint5 = new CPoint(CVector(-1039.0f + 50.0f, 30.0f + 50.0f, 2062.0f), 65.0f * 4);
+		CEnemy::mPoint6 = new CPoint(CVector(-1400.0f + 50.0f, 30.0f + 50.0f, 1700.0f), 60.0f * 4);
+		CEnemy::mPoint7 = new CPoint(CVector(-1511.0f + 50.0f, 30.0f, -317.0f), 40.0f * 4);
+		CEnemy::mPoint8 = new CPoint(CVector(-1400.0f + 50.0f, 30.0f - 50.0f, -1079.0f), 40.0f * 4);
+		CEnemy::mPoint9 = new CPoint(CVector(-913.0f + 50.0f, 30.0f - 50.0f, -1637.0f), 40.0f * 4);
+		CEnemy::mPoint10 = new CPoint(CVector(-500.0f + 50.0f, 30.0f - 50.0f, -1700.0f), 60.0f * 4);
+		CEnemy::mPoint11 = new CPoint(CVector(-160.0f + 50.0f, 30.0f - 50.0f, -1600.0f), 60.0f * 4);
+		CEnemy::mPoint12 = new CPoint(CVector(193.0f + 50.0f, 30.0f - 50.0f, -1182.0f), 50.0f * 4);
 	}
 	else if (CSceneTitle::mDifficulty == 3){//難易度：HARD
 		CEnemy::mPointSize = 12;//ポイント数の設定
@@ -384,6 +397,15 @@ void CSceneRace::Init() {
 	new CObj(&mDashBoard, CVector(-1500.0f, -13.1f + 3.0f, -200.0f), CVector(0.0f, 0.0f, 0.0f), CVector(1.0f, 1.0f, 1.0f), 111);
 	new CObj(&mDashBoard, CVector(-500.0f, -13.1f + 3.0f, -1900.0f), CVector(0.0f, -90.0f, 0.0f), CVector(1.0f, 1.0f, 1.0f), 111);
 
+	////物理演算(笑)するオブジェクト No.2001
+	//new CObj(&mTileWhite, CVector(500.0f, -13.1f + 23.0f, 900.0f), CVector(0.0f, 0.0f, 0.0f), CVector(11.0f, 11.0f, 11.0f), 2001);
+	//new CObj(&mTileWhite, CVector(550.0f, -13.1f + 0.0f, 900.0f), CVector(0.0f, 0.0f, 0.0f), CVector(11.0f, 11.0f, 11.0f), 2001);
+	//for (int i = 0; i < 5; i++){
+	//	new CObj(&mTileWhite, CVector(280.0f + 22.0f*i, -13.1f + 22.0f*i, 200.0f), CVector(0.0f, 0.0f, 0.0f), CVector(11.0f, 11.0f, 11.0f), 2001);
+	//}	
+	//new CRigidObj(&mTileWhite, CVector(400.0f, -13.1f, 400.0f), CVector(0.0f, 0.0f, 0.0f), CVector(21.0f, 21.0f, 21.0f));
+
+
 	//new CObj(&mTileWhite, CVector(0.0f, -11.1f, 900.0f), CVector(0.0f, 0.0f, 0.0f), CVector(50.0f, 150.0f, 10.0f), 200);//壁
 	//new CObj(&mTileWhite, CVector(230.0f, -11.1f, 1300.0f), CVector(0.0f, 0.0f, 0.0f), CVector(50.0f, 50.0f, 50.0f), 200);//壁
 	//new CObj(&mTileBlack, CVector(0.0f, -1010.0f, 0.0f), CVector(0.0f, 0.0f, 0.0f), CVector(50000.0f, 1.0f, 50000.0f), 99);//黒
@@ -396,8 +418,10 @@ void CSceneRace::Init() {
 		new CObj(&mDashBoard, CVector(260.0f - 40.0f*i-20.0f, 13.1f + 10.0f, 800.0f), CVector(0.0f, 270.0f, 0.0f), CVector(0.9f, 0.9f, 0.9f), 31);
 	}*/
 
-	////空を描画しない
-	//new CObj(&mSky, CVector(-360.0f, 5.0f - 33.0f, 230.0f), CVector(0.0f, 0.0f, 0.0f), CVector(22.0f, 22.0f, 22.0f), 26);
+	//空を描画しない
+	new CObj(&mSky, CVector(-360.0f, 5.0f - 33.0f, 230.0f), CVector(0.0f, 0.0f, 0.0f), CVector(22.0f, 22.0f, 22.0f), 101);
+
+	new CObj(&mCource01, CVector(1000.0f, -13.1f + 0.5f, 0.0f), CVector(0.0f, 0.0f, 0.0f), CVector(1.0f, 10000.0f, 10000.0f), 9999);//黒タイル
 
 	////ステージ2のマテリアル
 	//if (CSceneTitle::mMode == 2){
@@ -433,6 +457,9 @@ void CSceneRace::Init() {
 	//カメラ視点
 	mCamPoV = 1;
 
+	//バックミラーの描画
+	isRender_BackMirror = true;
+
 	//初期状態では敵の目標地点は描画しない
 	isRendPoint = false;
 	//初期状態ではポーズ状態無効
@@ -456,13 +483,13 @@ void CSceneRace::Update() {
 	//視点を求める
 //	e = CVector(-2.0f, 17.0f, -40.0f) * CMatrix().RotateY(mCamY) * mPlayer->mMatrix   * mPlayer->mMatrixScale * mPlayer->mMatrixRotate * mPlayer->mMatrixTranslate;
 	if (mCamPoV == 1){
-		e = CVector(0.0f, 17.0f, -40.0f) * CMatrix().RotateY(mCamY) * mPlayer->mMatrixScale
+		e = CVector(0.0f, 17.0f, -40.0f) * CMatrix().RotateY(mCamY)*CMatrix().Scale(2.5f, 2.5f, 2.5f)   // * mPlayer->mMatrixScale
 			* CMatrix().RotateY(mPlayer->mRotation.mY)
 			* mPlayer->mMatrixTranslate
 			+ CVector(0.0f, 0.0f, 0.0f);
 		////注視点を求める
 		//c = mPlayer->mPosition + CVector(0.0f, 0.0f, 40.0f)*mPlayer->mMatrixRotate;
-		c = mPlayer->mPosition + CVector(0.0f, 0.0f, 40.0f)* mPlayer->mMatrixScale
+		c = mPlayer->mPosition + CVector(0.0f, 0.0f, 40.0f)*CMatrix().Scale(2.5f, 2.5f, 2.5f)   //* mPlayer->mMatrixScale
 			* CMatrix().RotateY(mPlayer->mRotation.mY);
 			//* CMatrix().RotateZ(mPlayer->mRotation.mZ);
 	}
@@ -522,14 +549,14 @@ void CSceneRace::Update() {
 	////タスクマネージャの描画
 	//TaskManager.Render();
 
-	//mPlayer->mpModel = &mRover;
-	mPlayer->mpModel = &mRover;
-	mPlayer->mScale = CVector(2.5f, 2.5f, 2.5f);
+	/*mPlayer->mpModel = &mRover;
+	mPlayer->mScale = CVector(2.5f, 2.5f, 2.5f);*/
 
 	//タスクマネージャの更新・描画
 	if (isPause == false){
 		CTaskManager::Get()->Update();
 	}
+
 	CTaskManager::Get()->Render();
 	
 	////岩の描画
@@ -559,9 +586,10 @@ void CSceneRace::Update() {
 		CItem::mTargetAmount = 0;
 	}
 	if (CKey::Once('4')){//余剰の計算時、割る数(右の数字)は正の値で計算される？
-		printf("%d\n", -13 % 5);//負%正=負
-		printf("%d\n", -12 % -5);//負%負=負
-		printf("%d\n", 14 % -5);//正%負=正
+		//printf("%d\n", -13 % 5);//負%正=負
+		//printf("%d\n", -12 % -5);//負%負=負
+		//printf("%d\n", 14 % -5);//正%負=正
+		isRender_BackMirror = !isRender_BackMirror;
 	}
 	if (CKey::Push('5')){
 		printf("%f:%f:%f\n", CPlayer::mpPlayer->mRotation.mX, CPlayer::mpPlayer->mRotation.mY, CPlayer::mpPlayer->mRotation.mZ);
@@ -656,7 +684,9 @@ void CSceneRace::Update() {
 	}
 	
 	RenderMiniMap();
-	//RenderBackMirror();
+	if (isRender_BackMirror){
+		RenderBackMirror();
+	}
 
 	//2D描画開始
 	Start2D(0, 800, 0, 600);
@@ -1046,7 +1076,8 @@ void CSceneRace::RenderMiniMap() {
 }
 //バックミラーを表示
 void CSceneRace::RenderBackMirror(){
-	glViewport(600 + 20 - 30 - 300, 450 - 7, 200, 150); //バックミラーの描画エリアの指定
+	//glDisable(GL_DEPTH_TEST);
+	glViewport(800 -400 -150, 400 - 7, 300, 200); //バックミラーの描画エリアの指定
 	////カメラのパラメータを作成する
 	//CVector be, bc, bu;//視点、注視点、上方向
 	////視点を求める
@@ -1071,8 +1102,37 @@ void CSceneRace::RenderBackMirror(){
 	////カメラの設定
 	//Camera3D(be.mX, be.mY, be.mZ, bc.mX, bc.mY, bc.mZ, bu.mX, bu.mY, bu.mZ);
 	//Camera.mEye = be;
+	
+	//2D描画開始
+	Start2D(0, 800, 0, 600);
+	//上記の2D描画範囲の指定値より大きめに白背景を描画する
+	int expand = 100;
+	//白背景を"先に"描画する
+	glBegin(GL_TRIANGLES);//久しぶり
+	glVertex2d(0 - expand, 0 - expand);
+	glVertex2d(800 + expand, 600 + expand);
+	glVertex2d(0 - expand, 600 + expand);
+	glEnd();
+	glBegin(GL_TRIANGLES);
+	glVertex2d(0 - expand, 0 - expand);
+	glVertex2d(800 + expand, 0 - expand);
+	glVertex2d(800 + expand, 600 + expand);
+	glEnd();
+	//2D描画終了
+	End2D();	
+
 	CTaskManager::Get()->Render();
+
+	////2D描画開始
+	//Start2D(0, 800, 0, 600);
+	////バックミラー画面のフレーム(枠)
+	///*????*/
+	////2D描画終了
+	//End2D();
+
 	glViewport(0, 0, 800, 600); //画面の描画エリアをメインの画面に戻す
+	//glEnable(GL_DEPTH_TEST);	
+	//深度テスト(GL_DEPTH_TEST)をするとバックミラー画面の車などが消える
 }
 
 //次のシーンの取得

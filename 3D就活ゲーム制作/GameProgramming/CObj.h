@@ -23,6 +23,9 @@ public:
 
 	////コライダの更新
 	//void TaskCollision();
+
+	////ジャンプ速度の変数
+	//float mVelocity;
 };
 
 class CObjection :public CObj{
