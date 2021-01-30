@@ -57,12 +57,14 @@ CPlayer::CPlayer()
 
 //車体のY座標は0.0fにしたいんだけど・・・
 //0.0fにしたら車体が浮いてるように見えてしまう
-:mColBody(this, CVector(0.0f, 4.0f + 1.0f, 0.5f), CVector(0.0f, 0.0f, 0.0f), CVector(1.0f, 1.0f, 1.0f), 10.0f)
-, mColTire(this, CVector(0.0f, -16.0f+15.0f+1.0f, 0.5f), CVector(0.0f, 0.0f, 0.0f), CVector(1.0f, 1.0f, 1.0f), 10.0f)
+:mColBody(this, CVector(0.0f, 4.0f + 1.0f, 0.5f), CVector(0.0f, 0.0f, 0.0f), CVector(1.0f, 1.0f, 1.0f), 10.0f*3)
+, mColTire(this, CVector(0.0f, -16.0f+15.0f+1.0f, 0.5f), CVector(0.0f, 0.0f, 0.0f), CVector(1.0f, 1.0f, 1.0f), 10.0f*3)
 {
 	mpPlayer = this;
 
-	mScale = CVector(2.5f, 2.5f, 2.5f);
+	//mScale = CVector(2.5f, 2.5f, 2.5f);
+	mScale = CVector(7.5f, 7.5f, 7.5f);
+
 
 	mVelocityJump = 0.0f;
 	mJumpV0 = 1.1f;//バネ取得後は2.3fの予定
@@ -94,7 +96,7 @@ CPlayer::CPlayer()
 	mJumpPrio = 0;
 
 	//スタート地点の座標を設定;
-	mStartPoint[0] = 300.0f;  mStartPoint[1] = -13.538f;  mStartPoint[2] = -100.0f;
+	mStartPoint[0] = 350.0f;  mStartPoint[1] = -13.538f;  mStartPoint[2] = -100.0f;
 	
 	mPosition = CVector(mStartPoint[0], mStartPoint[1], mStartPoint[2]);
 	CCharacter::Update();
