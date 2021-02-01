@@ -203,6 +203,7 @@ void CSceneRace::Init() {
 	//コースの読み込み
 	//mCource01.Load("material\\racing_mat\\CourceNew01.obj", "material\\racing_mat\\CourceNew01.mtl");
 	mCource01.Load("material\\racing_mat\\CourceNew01.obj", "material\\racing_mat\\CourceNew01.mtl");
+	mCource02.Load("material\\racing_mat\\cource2nd\\track01.obj", "material\\racing_mat\\cource2nd\\track01.mtl");
 	//芝生の読み込み
 	mGrass01.Load("material\\racing_mat\\GrassNew01.obj", "material\\racing_mat\\GrassNew01.mtl");
 	//柵(壁)の読み込み
@@ -374,17 +375,24 @@ void CSceneRace::Init() {
 	////ばね
 	//new CItem(&mSpringL, CVector(0.0f, -5.0f, 80.0f), CVector(), CVector(11.0f, 11.0f, 11.0f), 2);//バネ
 
-	//新・コースの生成
-	for (int i = 0; i < 1; i++){
-		//コースの生成//ここを床と壁で分割して処理を分ける予定
-		new CObj(&mCource01, CVector(-360.0f, 5.0f - 33.0f, 230.0f), CVector(), CVector(50.0f, 2.0f, 50.0f), 1);
-		//芝生の生成(通行中は速度低下)
-		new CObj(&mGrass01, CVector(-360.0f, 5.0f - 33.0f, 230.0f), CVector(), CVector(50.0f, 2.0f, 50.0f), 112);
-		//コースに柵の配置(壁扱い)
-		new CObj(&mFenceTop, CVector(-360.0f, -70.0f - 35.0f, 230.0f), CVector(), CVector(50.0f, 5.5f + 1.5f, 50.0f), 1);
-		new CObj(&mFenceSide, CVector(-360.0f, -70.0f - 35.0f, 230.0f), CVector(), CVector(50.0f, 5.5f + 1.5f, 50.0f), 200);
-		//道路と芝生の境目のタイルを生成(当たり判定無し)
-		new CObj(&mRWTile, CVector(-360.0f, 5.0f - 33.0f+0.05f, 230.0f), CVector(), CVector(50.0f, 2.0f, 50.0f), 99);
+	
+	if (CSceneTitle::mMode <= 0){
+		//new CObj(&msumple2, CVector(320.0f, -58.0f, 450.0f), CVector(0.0f, 180.0f, 0.0f), CVector(4.0f, 3.0f, 3.0f), 1);
+		new CObj(&mCource02, CVector(-2800.0f, 0.0f, 0.0f), CVector(0.0f, 0.0f, 0.0f), CVector(7000.0f, 7000.0f, 7000.0f), 1);
+	}
+	else{
+		//新・コースの生成
+		for (int i = 0; i < 1; i++){
+			//コースの生成//ここを床と壁で分割して処理を分ける予定
+			new CObj(&mCource01, CVector(-360.0f, 5.0f - 33.0f, 230.0f), CVector(), CVector(50.0f, 2.0f, 50.0f), 1);
+			//芝生の生成(通行中は速度低下)
+			new CObj(&mGrass01, CVector(-360.0f, 5.0f - 33.0f, 230.0f), CVector(), CVector(50.0f, 2.0f, 50.0f), 112);
+			//コースに柵の配置(壁扱い)
+			new CObj(&mFenceTop, CVector(-360.0f, -70.0f - 35.0f, 230.0f), CVector(), CVector(50.0f, 5.5f + 1.5f, 50.0f), 1);
+			new CObj(&mFenceSide, CVector(-360.0f, -70.0f - 35.0f, 230.0f), CVector(), CVector(50.0f, 5.5f + 1.5f, 50.0f), 200);
+			//道路と芝生の境目のタイルを生成(当たり判定無し)
+			new CObj(&mRWTile, CVector(-360.0f, 5.0f - 33.0f + 0.05f, 230.0f), CVector(), CVector(50.0f, 2.0f, 50.0f), 99);
+		}
 	}
 	//白・黒タイルでゴール示唆
 	for (int i = 0; i < 40; i++){
@@ -446,7 +454,7 @@ void CSceneRace::Init() {
 	////空を描画しない
 	//new CObj(&mSky, CVector(-360.0f, 5.0f - 33.0f, 230.0f), CVector(0.0f, 0.0f, 0.0f), CVector(22.0f, 22.0f, 22.0f), 101);
 
-	new CObj(&mCource01, CVector(1000.0f, -13.1f + 0.5f, 0.0f), CVector(0.0f, 0.0f, 0.0f), CVector(1.0f, 10000.0f, 10000.0f), 9999);//黒タイル
+	//new CObj(&mCource01, CVector(1000.0f, -13.1f + 0.5f, 0.0f), CVector(0.0f, 0.0f, 0.0f), CVector(1.0f, 10000.0f, 10000.0f), 9999);//黒タイル
 
 	////ステージ2のマテリアル
 	//if (CSceneTitle::mMode == 2){
@@ -1133,7 +1141,6 @@ void CSceneRace::RenderMiniMap() {
 //バックミラーを表示
 void CSceneRace::RenderBackMirror(){
 	glDisable(GL_CULL_FACE);//一時的に両面を描画可能にする
-
 	glDisable(GL_DEPTH_TEST);
 	glViewport(800 -400 -150-3, 400 - 7-3, 306, 206); //バックミラーの描画エリアの指定
 	////カメラのパラメータを作成する
@@ -1209,47 +1216,35 @@ void CSceneRace::RenderBackMirror(){
 	End2D();
 
 
-	////カメラのパラメータを作成する
-	//CVector e, c, u;//視点、注視点、上方向
-	////メインカメラと同じ前方視点なはず…
-	//e = CVector(0.0f, 17.0f, -40.0f) * CMatrix().RotateY(mCamY)* mPlayer->mMatrixScale
-	//	* CMatrix().RotateY(mPlayer->mRotation.mY)
-	//	* mPlayer->mMatrixTranslate
-	//	+ CVector(0.0f, 0.0f, 0.0f);
-	//c = mPlayer->mPosition + CVector(0.0f, 0.0f, 40.0f)* mPlayer->mMatrixScale
-	//	* CMatrix().RotateY(mPlayer->mRotation.mY);
-	//u = CVector(0.0f, 1.0f, 0.0f);	
+	//行列を退避させる
+	glPushMatrix();
+	//行列を単位行列にする
+	glLoadIdentity();
 
-
+	//カメラのパラメータを作成する
 	CVector e, c, u;//視点、注視点、上方向
-	e = CVector(0.0f, 0.0f, 0.0f);
-	////注視点を求める
-	c = CVector(0.0f, 0.0f, -0.01f);
-	u = CVector(0.0f, 1.0f, 0.0f);
+	//メインカメラと同じ前方視点なはず…
+	e = CVector(0.0f, 17.0f + 13.0f, 40.0f - 41.0f) * CMatrix().RotateY(mCamY)* mPlayer->mMatrixScale
+		* CMatrix().RotateY(mPlayer->mRotation.mY)
+		* mPlayer->mMatrixTranslate;
+		//+ CVector(0.0f, 0.0f, 0.0f);
+	c = mPlayer->mPosition + CVector(0.0f, 17.0f + 12.8f, 40.0f - 42.0f)* mPlayer->mMatrixScale
+		* CMatrix().RotateY(mPlayer->mRotation.mY);
+	u = CVector(0.0f, 1.0f, 0.0f);	
+
+	//バックミラーのカメラの設定
+	gluLookAt(e.mX, e.mY, e.mZ, c.mX, c.mY, c.mZ, u.mX, u.mY, u.mZ);
 
 	if (CKey::Once('L')){
 		printf("カメラ視点(Back) %f %f %f   %f %f %f     %f %f %f\n", e.mX, e.mY, e.mZ, c.mX, c.mY, c.mZ, u.mX, u.mY, u.mZ);
 	}
 
-	/*////後方視点を表示？
-	//e = CVector(0.0f, 17.0f, 40.0f) * CMatrix().RotateY(mCamY) * mPlayer->mMatrixScale
-	//	* CMatrix().RotateY(mPlayer->mRotation.mY)
-	//	* mPlayer->mMatrixTranslate
-	//	+ CVector(0.0f, 0.0f, 0.0f);
-	//c = mPlayer->mPosition + CVector(0.0f, 0.0f, -40.0f)* mPlayer->mMatrixScale
-	//	* CMatrix().RotateY(mPlayer->mRotation.mY);
-	////上方向を求める
-	//u = CVector(0.0f, 1.0f, 0.0f);
-	*/
 
-	//e.mX = -e.mX;
-	//c.mX = -c.mX;
+	/*CMatrix aaa;
+	aaa = mPlayer->mMatrix;
+	glMultMatrixf(aaa.mM[0]);*/
 
-	//バックミラーのカメラの設定
-	Camera3D(e.mX, e.mY, e.mZ, c.mX, c.mY, c.mZ, u.mX, u.mY, u.mZ);
-	Camera.mEye = e;
-
-	
+	//glMultMatrixf(&e.mX);//ｷﾞｬｱｱｱｱｱｱｱｱ
 
 	CTaskManager::Get()->Render();
 
@@ -1264,7 +1259,9 @@ void CSceneRace::RenderBackMirror(){
 	glEnable(GL_DEPTH_TEST);
 	glViewport(0, 0, 800, 600); //画面の描画エリアをメインの画面に戻す
 	glEnable(GL_CULL_FACE);//表面のみの描画に戻す
-	////深度テスト(GL_DEPTH_TEST)をするとバックミラー画面の車などが消える
+
+	//行列を戻す
+	glPopMatrix();
 }
 
 //次のシーンの取得

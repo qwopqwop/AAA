@@ -50,7 +50,7 @@ CEnemy::CEnemy()
 //0.0f‚É‚µ‚½‚çŽÔ‘Ì‚ª•‚‚¢‚Ä‚é‚æ‚¤‚ÉŒ©‚¦‚Ä‚µ‚Ü‚¤
 :mColBody(this, CVector(0.0f, 4.0f + 1.0f, 0.5f), CVector(0.0f, 0.0f, 0.0f), CVector(1.0f, 1.0f, 1.0f), 10.0f * 3)
 , mColTire(this, CVector(0.0f, -16.0f + 15.0f + 1.0f, 0.5f), CVector(0.0f, 0.0f, 0.0f), CVector(1.0f, 1.0f, 1.0f), 10.0f * 3)
-, mSearch(this, CVector(0.0f, 15.0f, 0.0f), CVector(0.0f, 0.0f, 0.0f), CVector(1.0f, 1.0f, 1.0f), 10.0f * 4)
+, mSearch(this, CVector(0.0f, 15.0f, 0.0f), CVector(0.0f, 0.0f, 0.0f), CVector(1.0f, 1.0f, 1.0f), 10.0f * 6)
 {
 	srand(time(NULL));
 

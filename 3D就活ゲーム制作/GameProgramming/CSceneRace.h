@@ -121,7 +121,8 @@ public:
 
 	bool isRender_BackMirror;
 
-
+	
+	CModel mCource02;
 };
 
 #endif
