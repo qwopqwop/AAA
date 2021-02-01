@@ -120,6 +120,8 @@ public:
 	int mAfterGoalTime;
 
 	bool isRender_BackMirror;
+
+
 };
 
 #endif

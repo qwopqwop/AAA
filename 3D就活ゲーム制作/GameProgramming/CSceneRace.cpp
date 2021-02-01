@@ -97,7 +97,7 @@ void CSceneRace::Init() {
 		CEnemy::mPoint3 = new CPoint(CVector( -150.0f + 50.0f, 30.0f + 50.0f, 2058.0f), 65.0f * 2);
 		CEnemy::mPoint4 = new CPoint(CVector(-555.0f + 50.0f, 30.0f + 50.0f, 2121.0f), 65.0f * 2);
 		CEnemy::mPoint5 = new CPoint(CVector(-1039.0f + 50.0f, 30.0f + 50.0f, 2082.0f), 65.0f * 2);
-		CEnemy::mPoint6 = new CPoint(CVector(-1400.0f + 50.0f, 30.0f + 50.0f, 1700.0f), 60.0f * 2);
+		CEnemy::mPoint6 = new CPoint(CVector(-1400.0f + 50.0f, 30.0f + 50.0f, 1700.0f), 80.0f * 2);
 		CEnemy::mPoint7 = new CPoint(CVector(-1511.0f + 50.0f, 30.0f, -317.0f), 40.0f * 2);
 		CEnemy::mPoint8 = new CPoint(CVector(-1400.0f + 50.0f, 30.0f - 50.0f, -1079.0f), 60.0f * 2);
 		CEnemy::mPoint9 = new CPoint(CVector(-913.0f + 50.0f, 30.0f - 50.0f, -1637.0f), 60.0f * 2);
@@ -420,6 +420,8 @@ void CSceneRace::Init() {
 	new CObj(&mDashBoard, CVector(-1500.0f, -13.1f + 3.0f, -200.0f), CVector(0.0f, 0.0f, 0.0f), CVector(2.0f, 2.0f, 2.0f), 111);
 	new CObj(&mDashBoard, CVector(-500.0f, -13.1f + 3.0f, -1900.0f), CVector(0.0f, -90.0f, 0.0f), CVector(2.0f, 2.0f, 2.0f), 111);
 
+	new CObj(&mDashBoard, CVector(500.0f, 13.1f + 3.0f, -1200.0f), CVector(0.0f, 180.0f, 90.0f), CVector(3.0f, 3.0f, 3.0f), 111);
+
 	////物理演算(笑)するオブジェクト No.2001
 	//new CObj(&mTileWhite, CVector(500.0f, -13.1f + 23.0f, 900.0f), CVector(0.0f, 0.0f, 0.0f), CVector(11.0f, 11.0f, 11.0f), 2001);
 	//new CObj(&mTileWhite, CVector(550.0f, -13.1f + 0.0f, 900.0f), CVector(0.0f, 0.0f, 0.0f), CVector(11.0f, 11.0f, 11.0f), 2001);
@@ -550,7 +552,9 @@ void CSceneRace::Update() {
 	//上方向を求める
 	u = CVector(0.0f, 1.0f, 0.0f);// *mPlayer->mMatrixRotate;
 	
-
+	if (CKey::Once('J')){
+		printf("カメラ視点(Main) %f %f %f   %f %f %f     %f %f %f\n", e.mX, e.mY, e.mZ, c.mX, c.mY, c.mZ, u.mX, u.mY, u.mZ);
+	}
 
 	//e = CVector(0.0f+mXXX, 5000.0f, mZZZ+0.0f);
 	//	/*CVector(0.0f, 3000.0f, 0.0f) * CMatrix().RotateY(mCamY) * mPlayer->mMatrixScale
@@ -711,7 +715,34 @@ void CSceneRace::Update() {
 	//バックミラーの描画
 	if (isRender_BackMirror){
 		RenderBackMirror();
+
+		//e = CVector(0.0f, 17.0f, -40.0f) * CMatrix().RotateY(mCamY)* mPlayer->mMatrixScale   // * mPlayer->mMatrixScale
+		//	* CMatrix().RotateY(mPlayer->mRotation.mY)
+		//	* mPlayer->mMatrixTranslate
+		//	+ CVector(0.0f, 0.0f, 0.0f);
+		//
+		//c = mPlayer->mPosition + CVector(0.0f, 0.0f, 40.0f)* mPlayer->mMatrixScale   //* mPlayer->mMatrixScale
+		//	* CMatrix().RotateY(mPlayer->mRotation.mY);
+		//u = CVector(0.0f, 1.0f, 0.0f);
+
+		///*////後方視点を表示？
+		////e = CVector(0.0f, 17.0f, 40.0f) * CMatrix().RotateY(mCamY) * mPlayer->mMatrixScale
+		////	* CMatrix().RotateY(mPlayer->mRotation.mY)
+		////	* mPlayer->mMatrixTranslate
+		////	+ CVector(0.0f, 0.0f, 0.0f);
+		////c = mPlayer->mPosition + CVector(0.0f, 0.0f, -40.0f)* mPlayer->mMatrixScale
+		////	* CMatrix().RotateY(mPlayer->mRotation.mY);
+		//////上方向を求める
+		////u = CVector(0.0f, 1.0f, 0.0f);
+		//*/
+		//
+		////バックミラーのカメラの設定
+		//Camera3D(e.mX, e.mY, e.mZ, c.mX, c.mY, c.mZ, u.mX, u.mY, u.mZ);
+		//Camera.mEye = e;
+		//CTaskManager::Get()->Render();
 	}
+
+	
 
 	//2D描画開始
 	Start2D(0, 800, 0, 600);
@@ -1101,6 +1132,8 @@ void CSceneRace::RenderMiniMap() {
 }
 //バックミラーを表示
 void CSceneRace::RenderBackMirror(){
+	glDisable(GL_CULL_FACE);//一時的に両面を描画可能にする
+
 	glDisable(GL_DEPTH_TEST);
 	glViewport(800 -400 -150-3, 400 - 7-3, 306, 206); //バックミラーの描画エリアの指定
 	////カメラのパラメータを作成する
@@ -1127,6 +1160,7 @@ void CSceneRace::RenderBackMirror(){
 	////カメラの設定
 	//Camera3D(be.mX, be.mY, be.mZ, bc.mX, bc.mY, bc.mZ, bu.mX, bu.mY, bu.mZ);
 	//Camera.mEye = be;
+	
 
 	//2D描画開始
 	Start2D(0, 800, 0, 600);
@@ -1185,19 +1219,37 @@ void CSceneRace::RenderBackMirror(){
 	//c = mPlayer->mPosition + CVector(0.0f, 0.0f, 40.0f)* mPlayer->mMatrixScale
 	//	* CMatrix().RotateY(mPlayer->mRotation.mY);
 	//u = CVector(0.0f, 1.0f, 0.0f);	
-	///*////後方視点を表示？
-	////e = CVector(0.0f, 17.0f, 40.0f) * CMatrix().RotateY(mCamY) * mPlayer->mMatrixScale
-	////	* CMatrix().RotateY(mPlayer->mRotation.mY)
-	////	* mPlayer->mMatrixTranslate
-	////	+ CVector(0.0f, 0.0f, 0.0f);
-	////c = mPlayer->mPosition + CVector(0.0f, 0.0f, -40.0f)* mPlayer->mMatrixScale
-	////	* CMatrix().RotateY(mPlayer->mRotation.mY);
-	//////上方向を求める
-	////u = CVector(0.0f, 1.0f, 0.0f);
-	//*/
-	////バックミラーのカメラの設定
-	//Camera3D(e.mX, e.mY, e.mZ, c.mX, c.mY, c.mZ, u.mX, u.mY, u.mZ);
-	//Camera.mEye = e;
+
+
+	CVector e, c, u;//視点、注視点、上方向
+	e = CVector(0.0f, 0.0f, 0.0f);
+	////注視点を求める
+	c = CVector(0.0f, 0.0f, -0.01f);
+	u = CVector(0.0f, 1.0f, 0.0f);
+
+	if (CKey::Once('L')){
+		printf("カメラ視点(Back) %f %f %f   %f %f %f     %f %f %f\n", e.mX, e.mY, e.mZ, c.mX, c.mY, c.mZ, u.mX, u.mY, u.mZ);
+	}
+
+	/*////後方視点を表示？
+	//e = CVector(0.0f, 17.0f, 40.0f) * CMatrix().RotateY(mCamY) * mPlayer->mMatrixScale
+	//	* CMatrix().RotateY(mPlayer->mRotation.mY)
+	//	* mPlayer->mMatrixTranslate
+	//	+ CVector(0.0f, 0.0f, 0.0f);
+	//c = mPlayer->mPosition + CVector(0.0f, 0.0f, -40.0f)* mPlayer->mMatrixScale
+	//	* CMatrix().RotateY(mPlayer->mRotation.mY);
+	////上方向を求める
+	//u = CVector(0.0f, 1.0f, 0.0f);
+	*/
+
+	//e.mX = -e.mX;
+	//c.mX = -c.mX;
+
+	//バックミラーのカメラの設定
+	Camera3D(e.mX, e.mY, e.mZ, c.mX, c.mY, c.mZ, u.mX, u.mY, u.mZ);
+	Camera.mEye = e;
+
+	
 
 	CTaskManager::Get()->Render();
 
@@ -1211,7 +1263,8 @@ void CSceneRace::RenderBackMirror(){
 
 	glEnable(GL_DEPTH_TEST);
 	glViewport(0, 0, 800, 600); //画面の描画エリアをメインの画面に戻す
-	//深度テスト(GL_DEPTH_TEST)をするとバックミラー画面の車などが消える
+	glEnable(GL_CULL_FACE);//表面のみの描画に戻す
+	////深度テスト(GL_DEPTH_TEST)をするとバックミラー画面の車などが消える
 }
 
 //次のシーンの取得
