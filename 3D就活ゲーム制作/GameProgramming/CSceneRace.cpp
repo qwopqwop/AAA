@@ -1227,18 +1227,16 @@ void CSceneRace::RenderBackMirror(){
 	e = CVector(0.0f, 17.0f + 13.0f, 40.0f - 41.0f) * CMatrix().RotateY(mCamY)* mPlayer->mMatrixScale
 		* CMatrix().RotateY(mPlayer->mRotation.mY)
 		* mPlayer->mMatrixTranslate;
-		//+ CVector(0.0f, 0.0f, 0.0f);
 	c = mPlayer->mPosition + CVector(0.0f, 17.0f + 12.8f, 40.0f - 42.0f)* mPlayer->mMatrixScale
 		* CMatrix().RotateY(mPlayer->mRotation.mY);
-	u = CVector(0.0f, 1.0f, 0.0f);	
+	u = CVector(0.0f, 1.0f, 0.0f);
+	//カメラののX座標を反転させる	
+	e = e * CMatrix().Scale(-1.0f, 1.0f, 1.0f);
+	c = c * CMatrix().Scale(-1.0f, 1.0f, 1.0f);
+	u = u * CMatrix().Scale(-1.0f, 1.0f, 1.0f);
 
 	//バックミラーのカメラの設定
 	gluLookAt(e.mX, e.mY, e.mZ, c.mX, c.mY, c.mZ, u.mX, u.mY, u.mZ);
-
-	if (CKey::Once('L')){
-		printf("カメラ視点(Back) %f %f %f   %f %f %f     %f %f %f\n", e.mX, e.mY, e.mZ, c.mX, c.mY, c.mZ, u.mX, u.mY, u.mZ);
-	}
-
 	
 	GLfloat translate[] = {
 		-1, 0, 0, 0,
@@ -1247,26 +1245,11 @@ void CSceneRace::RenderBackMirror(){
 		0, 0, 0, 1
 	};
 	glMultMatrixf(translate);
-
-	/*e.mX *= -1;
-	c.mX *= -1;
-	mPlayer->mMatrix.Identity.mM*/
-
-	//mPlayer->mPosition.mX *= -1;
-	//e.mX *= -1;
-	//c.mX *= -1;
-	//glMultMatrixf(CMatrix().RotateY(180));
-	//glMultMatrixf(&e.mX);//ｷﾞｬｱｱｱｱｱｱｱｱ
-
 	CTaskManager::Get()->Render();
 
-
-	////2D描画開始
-	//Start2D(0, 800, 0, 600);
-	////バックミラー画面のフレーム(枠)
-	///*????*/
-	////2D描画終了
-	//End2D();
+	if (CKey::Once('L')){
+		printf("カメラ視点(Back) %f %f %f   %f %f %f     %f %f %f\n", e.mX, e.mY, e.mZ, c.mX, c.mY, c.mZ, u.mX, u.mY, u.mZ);
+	}
 
 	glEnable(GL_DEPTH_TEST);
 	glViewport(0, 0, 800, 600); //画面の描画エリアをメインの画面に戻す
