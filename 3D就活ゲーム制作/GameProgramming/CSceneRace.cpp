@@ -1168,7 +1168,6 @@ void CSceneRace::RenderBackMirror(){
 	//Camera3D(be.mX, be.mY, be.mZ, bc.mX, bc.mY, bc.mZ, bu.mX, bu.mY, bu.mZ);
 	//Camera.mEye = be;
 	
-
 	//2D描画開始
 	Start2D(0, 800, 0, 600);
 	float color[] = { 0.0f, 0.0f, 0.0f, 1.0f };
@@ -1216,6 +1215,7 @@ void CSceneRace::RenderBackMirror(){
 	End2D();
 
 
+
 	//行列を退避させる
 	glPushMatrix();
 	//行列を単位行列にする
@@ -1239,11 +1239,23 @@ void CSceneRace::RenderBackMirror(){
 		printf("カメラ視点(Back) %f %f %f   %f %f %f     %f %f %f\n", e.mX, e.mY, e.mZ, c.mX, c.mY, c.mZ, u.mX, u.mY, u.mZ);
 	}
 
+	
+	GLfloat translate[] = {
+		-1, 0, 0, 0,
+		0, 1, 0, 0,
+		0, 0, 1, 0,
+		0, 0, 0, 1
+	};
+	glMultMatrixf(translate);
 
-	/*CMatrix aaa;
-	aaa = mPlayer->mMatrix;
-	glMultMatrixf(aaa.mM[0]);*/
+	/*e.mX *= -1;
+	c.mX *= -1;
+	mPlayer->mMatrix.Identity.mM*/
 
+	//mPlayer->mPosition.mX *= -1;
+	//e.mX *= -1;
+	//c.mX *= -1;
+	//glMultMatrixf(CMatrix().RotateY(180));
 	//glMultMatrixf(&e.mX);//ｷﾞｬｱｱｱｱｱｱｱｱ
 
 	CTaskManager::Get()->Render();
