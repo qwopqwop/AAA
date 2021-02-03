@@ -723,15 +723,17 @@ void CPlayer::Collision(CCollider *mc, CCollider *yc){
 
 				if (mc->mTag == CCollider::EBODY){
 					if (yc->mpParent->mTag == CCharacter::EENEMY){
-						CVector adjust;//調整用ベクトル
-						////		//球同士の衝突判定
-						if (CCollider::Collision(mc, yc, &adjust)){
-							//位置の更新
-							mPosition = mPosition - adjust * -1;
-							//行列の更新
-							CCharacter::Update();
-							//printf("自分の衝突処理");
-							//SoundCollisionSmall.Play();
+						if (yc->mTag == CCollider::EBODY){
+							CVector adjust;//調整用ベクトル
+							////		//球同士の衝突判定
+							if (CCollider::Collision(mc, yc, &adjust)){
+								//位置の更新
+								mPosition = mPosition - adjust * -1;
+								//行列の更新
+								CCharacter::Update();
+								//printf("自分の衝突処理");
+								//SoundCollisionSmall.Play();
+							}
 						}
 					}
 				}

@@ -72,6 +72,7 @@ public:
 	
 	CModel mFenceTop;//ò‚Ìã–Ê
 	CModel mFenceSide;//ò‚Ì‘¤–Ê
+	CModel mStuff;//“à‘¤‚Ìò‚Ì‹óŠÔ‚ð‹l‚ß‚é•¨
 
 	CModel mPole;//ƒ|[ƒ‹
 

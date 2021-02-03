@@ -50,7 +50,7 @@ CEnemy::CEnemy()
 //0.0fにしたら車体が浮いてるように見えてしまう
 :mColBody(this, CVector(0.0f, 4.0f + 1.0f, 0.5f), CVector(0.0f, 0.0f, 0.0f), CVector(1.0f, 1.0f, 1.0f), 10.0f * 3)
 , mColTire(this, CVector(0.0f, -16.0f + 15.0f + 1.0f, 0.5f), CVector(0.0f, 0.0f, 0.0f), CVector(1.0f, 1.0f, 1.0f), 10.0f * 3)
-, mSearch(this, CVector(0.0f, 15.0f, 0.0f), CVector(0.0f, 0.0f, 0.0f), CVector(1.0f, 1.0f, 1.0f), 10.0f * 6)
+, mSearch(this, CVector(0.0f, 20.0f, 0.0f), CVector(0.0f, 0.0f, 0.0f), CVector(1.0f, 1.0f, 1.0f), 10.0f * 15)
 {
 	srand(time(NULL));
 
@@ -99,6 +99,7 @@ CEnemy::CEnemy()
 
 	mColBody.mTag = CCollider::EBODY;
 	mColTire.mTag = CCollider::ESEARCH;
+	mSearch.mTag = CCollider::ESEARCH;
 
 	SoundBoost.Load("SE\\Shortbridge31-3.wav");
 	SoundEngine.Load("SE\\SNES-Racing01-02.wav");
@@ -110,7 +111,7 @@ CEnemy::CEnemy()
 	//SoundEngine.Repeat();
 
 
-	mSearch.mTag = CCollider::ESEARCH;
+	
 	mPointCnt = 0;//最初のポイントを設定
 	//mpPoint = &mPoint[mPointCnt];//目指すポイントのポインタを設定
 
@@ -197,6 +198,12 @@ void CEnemy::Update(){
 		//printf("mVPoint…X:%.1f Y:%.1f Z:%.1f\n", mVPoint.mX, mVPoint.mY, mVPoint.mZ);
 	}
 
+	//ポイントへのベクトルを求める
+	//CVector dir = mpPoint->mPosition - mPosition;
+	CVector dir = mVPoint - mPosition;
+	//左方向へのベクトルを求める
+	CVector left = CVector(1.0f, 0.0f, 0.0f) * CMatrix().RotateY(mRotation.mY);
+
 	////Aキー、Dキーが同時に入力されているか
 	//if (CKey::Push('A') && CKey::Push('D')){
 	//	mADMoveX = 0.0f;
@@ -261,9 +268,13 @@ void CEnemy::Update(){
 
 	if (CKey::Push(VK_UP) && CanMove || mChecks >= 0 && CanMove){
 		if (mCarSpeed < MAXSPEED + mBoostMaxSpeed){
+			/*if (left.Dot(dir) > -5.0f && left.Dot(dir) < 5.0f){
+				mCarSpeed += CAR_POWER;
+			}*/
 			mCarSpeed += CAR_POWER;
 		}
 	}
+	/*else if (CKey::Push(VK_DOWN) && CanMove || left.Dot(dir) < -5.0f && CanMove || left.Dot(dir) > 5.0f && CanMove)*/
 	else if (CKey::Push(VK_DOWN) && CanMove){
 		if (mCarSpeed > -MAXSPEED_BACK){
 			mCarSpeed -= CAR_POWER;
@@ -330,11 +341,7 @@ void CEnemy::Update(){
 		}
 	}
 
-	//ポイントへのベクトルを求める
-	//CVector dir = mpPoint->mPosition - mPosition;
-	CVector dir = mVPoint - mPosition;
-	//左方向へのベクトルを求める
-	CVector left = CVector(1.0f, 0.0f, 0.0f) * CMatrix().RotateY(mRotation.mY);
+	
 	////左右の回転処理(Y軸)
 	//if (left.Dot(dir) > 0.0f){
 	//	mRotation.mY += 0.3f * 100;
@@ -773,7 +780,7 @@ void CEnemy::Collision(CCollider *mc, CCollider *yc){
 								int gap = (rand() % (r * 2) - r);
 								//敵AIのLvにより分散値も変化
 								if (CSceneTitle::mDifficulty == 1){
-									r = (mc->mRadius + yc->mRadius) * 0.8f;
+									r = (mc->mRadius + yc->mRadius) * 0.5f;
 									gap = (rand() % (r * 2) - r);
 								}
 								else if (CSceneTitle::mDifficulty == 2){
