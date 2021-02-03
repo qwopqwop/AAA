@@ -33,6 +33,8 @@ public:
 	float mADMoveX;
 	float mWSMoveZ;
 	float mCarSpeed;
+	//敵AIの強さによるスピード差
+	float mCPULevelSpeed;
 
 	//回転速度
 	float mTurnSpeed;

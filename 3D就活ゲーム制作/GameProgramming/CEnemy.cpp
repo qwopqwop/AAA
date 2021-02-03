@@ -29,10 +29,10 @@ CEnemy *CEnemy::mpEnemy = 0;
 #define G (9.8f / 120.0f)//重力加速度//60.0f
 #define JUMPV0 (4.0f*4.0f)//ジャンプ初速//4.0f
 
-#define MAXSPEED 4.5f+3.0f //-0.5f//車の最高速度 //一応プレイヤーが追いつける程度に最高速は少し低め
-#define MAXSPEED_BACK 1.0f*2 //車の後退する最大速度
-#define CAR_POWER 0.05f*2//1フレーム辺りの車の加速していく量
-#define CAR_BREAK_POWER 0.025f*2 //前進中のブレーキの強さ
+#define MAXSPEED 20.0f //4.5f+3.0f//-0.5f//車の最高速度 //一応プレイヤーが追いつける程度に最高速は少し低め
+#define MAXSPEED_BACK 1.0f*2 *2//車の後退する最大速度
+#define CAR_POWER 0.05f*2 *2//1フレーム辺りの車の加速していく量
+#define CAR_BREAK_POWER 0.025f*2 *2//前進中のブレーキの強さ
 
 #define DECELERATE 0.05f*2 //車の減速する量
 #define FIX_ANGLE_VALUE 0.5f*2 //角度が0度に向けて調整される量(主にX・Z用)
@@ -64,6 +64,17 @@ CEnemy::CEnemy()
 	mADMoveX = 0.0f;  mWSMoveZ = 0.0f;
 	mCarSpeed = 0.0f;//車の速度の初期化
 	mTurnSpeed = 0.0f;
+
+	mCPULevelSpeed = 0.0f;
+	if (CSceneTitle::mDifficulty == 1){
+		mCPULevelSpeed = 0.0f;
+	}
+	else if (CSceneTitle::mDifficulty == 2){
+		mCPULevelSpeed = 0.0f;
+	}
+	else if (CSceneTitle::mDifficulty == 3){
+		mCPULevelSpeed = 0.0f;
+	}
 
 	//mRotation.mY = -90;
 
@@ -498,7 +509,6 @@ void CEnemy::Collision(CCollider *mc, CCollider *yc){
 			//}
 			//else{
 			//}
-
 			////チェックポイント関連の処理
 			//if (CCollider::Collision(mc, yc)){
 			//	if (yc->mpParent->mTag == CCharacter::ECHECKPOINT){//中間地点1
@@ -531,12 +541,12 @@ void CEnemy::Collision(CCollider *mc, CCollider *yc){
 						if (isBoost == false){
 							//printf("speed down…\n");
 							//一定速度までスピード低下
-							if (mCarSpeed > 3.0f){
-								if (mCarSpeed > 3.3f){
-									mCarSpeed -= 0.3f;
+							if (mCarSpeed > 3.2f){
+								if (mCarSpeed > 4.0f){
+									mCarSpeed -= 0.8f;
 								}
 								else{
-									mCarSpeed = 3.0f;
+									mCarSpeed = 3.2f;
 								}
 							}
 						}
@@ -620,21 +630,19 @@ void CEnemy::Collision(CCollider *mc, CCollider *yc){
 							//衝突したのが壁だった場合は壁には引っかからず落下
 							//壁にぶつかると衝突音がし、車が減速する
 							//速い時に衝突で減速、遅い時の衝突は特に変化なし
-							if (mCarSpeed > 4.5f){
+							if (mCarSpeed > 6.5f){
 								mCarSpeed = 2.0f;
 								//mCarSpeed /= 2.0f;
-							//	SoundCollision.Play();
+								SoundCollision.Play();
 								//激突時、エフェクト発生
-								new CEffect(mPosition + CVector(0.0f, 35.0f, 0.0f), 50.0f, 50.0f, TextureExp, 4, 4, 1, 0);
-								//new CEffect(mPosition + CVector(0.0f, 390.0f/2, 0.0f), 390.0f, 390.0f, TextureExp, 4, 4, 111);
-
-								printf("ｺﾞﾝｯ");
+								new CEffect(mPosition + CVector(0.0f, 35.0f, 0.0f), 100.0f, 100.0f, TextureExp, 4, 4, 1, 0);
+								printf("ﾄﾞｶｰﾝ");
 							}
-							else if (mCarSpeed > 3.0f){
+							else if (mCarSpeed > 4.0f){
 								mCarSpeed = 2.0f;
-							//	SoundCollisionSmall.Play();
+								SoundCollisionSmall.Play();
 								//軽くぶつけた時もエフェクト発生
-								new CEffect(mPosition + CVector(0.0f, 15.5f, 0.0f), 17.0f, 17.0f, TextureHit, 3, 8, 1, 1);
+								new CEffect(mPosition + CVector(0.0f, 15.5f, 0.0f), 60.0f, 60.0f, TextureHit, 3, 8, 1, 1);
 								printf("ｺﾞｽｯ");
 							}
 							else{
@@ -694,7 +702,7 @@ void CEnemy::Collision(CCollider *mc, CCollider *yc){
 						if (isBoost == false){
 							//printf("SPEED UP!\n");
 							//SoundBoost.Play();
-							new CEffect(mPosition + CVector(0.0f, 15.5f, 0.0f), 17.0f, 17.0f, TextureBoost, 3, 5, 1, 1);
+							new CEffect(mPosition + CVector(0.0f, 15.5f, 0.0f), 60.0f, 60.0f, TextureBoost, 3, 5, 1, 1);
 						}
 						isBoost = true;
 						mBoostTime = 45;

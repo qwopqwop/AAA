@@ -187,7 +187,7 @@ void CSceneRace::Init() {
 	mCube2.Load("cube.obj", "cube2.mtl");
 	mCube3.Load("cube.obj", "cube3.mtl");
 	//中間地点の読み込み(透明、ポリゴン1枚のみ)
-	mCheckPoint.Load("plane.obj", "cube2.mtl");
+	mCheckPoint.Load("cube.obj", "cube2.mtl");
 
 	mWater.Load("cube.obj", "water_sumple.mtl");
 
@@ -358,9 +358,9 @@ void CSceneRace::Init() {
 	//透明度の高い物から先に描画する
 	
 	//中間地点(順に通らないと1周したことにならないし、順番を飛ばしてもいけない)
-	new CObj(&mCheckPoint, CVector(50.0f, 15.0f, 2500.0f), CVector(-90.0f, 0.0f, -50.0f), CVector(777.0f, 1.0f, 255.0f), 101);
-	new CObj(&mCheckPoint, CVector(-1800.0f, 15.0f, 20.0f), CVector(-90.0f, 180.0f, 0.0f), CVector(750.0f, 1.0f, 255.0f), 102);
-	new CObj(&mCheckPoint, CVector(-1100.0f, 15.0f, -2000.0f), CVector(-90.0f, 0.0f, 110.0f), CVector(750.0f, 1.0f, 255.0f), 103);
+	new CObj(&mCheckPoint, CVector(50.0f, 15.0f, 2500.0f), CVector(-90.0f, 0.0f, -50.0f), CVector(777.0f, 31.0f, 255.0f), 101);
+	new CObj(&mCheckPoint, CVector(-1800.0f, 15.0f, 20.0f), CVector(-90.0f, 180.0f, 0.0f), CVector(750.0f, 31.0f, 255.0f), 102);
+	new CObj(&mCheckPoint, CVector(-1100.0f, 15.0f, -2000.0f), CVector(-90.0f, 0.0f, 110.0f), CVector(750.0f, 31.0f, 255.0f), 103);
 	//new CObj(&mCheckPoint, CVector(600.0f, 15.0f, 6.9f), CVector(-90.0f, -180.0f, 0.0f), CVector(750.0f, 1.0f, 255.0f), 109);//ゴール地点
 	//new CObj(&mCheckPoint, CVector(0.0f, 20.0f, 2100.0f), CVector(90.0f, 0.0f, 0.0f), CVector(255.0f, 1.0f, 255.0f), 25);
 	/*new CObj(&mPlane, CVector(0.0f, 0.0f, -220.0f), CVector(0.0f, 0.0f, 0.0f), CVector(55.0f, 1.0f, 55.0f), 1);
@@ -426,9 +426,8 @@ void CSceneRace::Init() {
 	new CObj(&mDashBoard, CVector(260.0f, -13.1f + 3.0f, 800.0f), CVector(0.0f, 180.0f, 0.0f), CVector(2.0f, 2.0f, 2.0f), 111);
 	new CObj(&mDashBoard, CVector(234.0f, -13.1f + 3.0f, -980.0f), CVector(0.0f, 180.0f, 0.0f), CVector(2.0f, 2.0f, 2.0f), 111);
 	new CObj(&mDashBoard, CVector(-1500.0f, -13.1f + 3.0f, -200.0f), CVector(0.0f, 0.0f, 0.0f), CVector(2.0f, 2.0f, 2.0f), 111);
-	new CObj(&mDashBoard, CVector(-500.0f, -13.1f + 3.0f, -1900.0f), CVector(0.0f, -90.0f, 0.0f), CVector(2.0f, 2.0f, 2.0f), 111);
-
-	new CObj(&mDashBoard, CVector(500.0f, 13.1f + 3.0f, -1200.0f), CVector(0.0f, 180.0f, 90.0f), CVector(3.0f, 3.0f, 3.0f), 111);
+	//new CObj(&mDashBoard, CVector(-500.0f, -13.1f + 3.0f, -1900.0f), CVector(0.0f, -90.0f, 0.0f), CVector(2.0f, 2.0f, 2.0f), 111);
+	//new CObj(&mDashBoard, CVector(500.0f, 13.1f + 3.0f, -1200.0f), CVector(0.0f, 180.0f, 90.0f), CVector(3.0f, 3.0f, 3.0f), 111);
 
 	////物理演算(笑)するオブジェクト No.2001
 	//new CObj(&mTileWhite, CVector(500.0f, -13.1f + 23.0f, 900.0f), CVector(0.0f, 0.0f, 0.0f), CVector(11.0f, 11.0f, 11.0f), 2001);
@@ -840,6 +839,9 @@ void CSceneRace::Update() {
 	sprintf(carspeed, "SPEED:%4.1f", CPlayer::mpPlayer->mCarSpeed);
 	CText::DrawString(carspeed, 20+560, 20, 10, 12);
 
+	char carhandle[33];
+	sprintf(carhandle, "%4.2f", CPlayer::mpPlayer->mTurnSpeed);
+	CText::DrawString(carhandle, 20 + 260, 20, 10, 12);
 	
 	//ゴール後に表示される文字
 	if (isGoal){

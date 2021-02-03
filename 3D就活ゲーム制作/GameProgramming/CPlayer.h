@@ -50,6 +50,7 @@ public:
 	CSound SoundItemGet;
 	CSound SoundBoost;
 	CSound SoundEngine;//ˆê”Ô‚Ì“ï‘è
+	CSound SoundEngine_Turf;//Å¶‚Ìã‚Å‚Í•Ê‚Ì‰¹‚ª–Â‚éd—l
 	bool isSoundEngine;
 	CSound SoundHorn;
 	CSound ShutUp;
