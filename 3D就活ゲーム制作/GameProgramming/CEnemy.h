@@ -118,6 +118,12 @@ public:
 
 	int mEnemyLap;
 	bool isEnemyGoaled;
+
+	//ポイントへのベクトルを求める
+	//CVector dir = mpPoint->mPosition - mPosition;
+	CVector dir;
+	//左方向へのベクトルを求める
+	CVector left;
 };
 
 

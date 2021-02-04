@@ -79,6 +79,10 @@ CObj::CObj(CModel *model, const CVector &position, const CVector &rotation, cons
 		//•Ç
 		mTag = EWALL;
 	}
+	if (mObjNumber == 202){
+		//ƒWƒƒƒ“ƒv‘ä
+		mTag = EJUMPER;
+	}
 
 
 	if (mObjNumber == 99 || mObjNumber == 575){

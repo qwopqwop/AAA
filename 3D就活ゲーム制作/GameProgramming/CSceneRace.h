@@ -124,6 +124,8 @@ public:
 
 	
 	CModel mCource02;
+
+	CModel mJumper01;
 };
 
 #endif

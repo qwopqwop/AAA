@@ -29,12 +29,14 @@ CPlayer *CPlayer::mpPlayer = 0;
 
 #define MAXSPEED 20.0f //4.5f+3.0f *5//車の最高速度
 #define MAXSPEED_BACK 1.0f*2 *2//車の後退する最大速度
-#define CAR_POWER 0.05f*2 *2//1フレーム辺りの車の加速していく量
+#define CAR_POWER 0.05f*2 //*2//1フレーム辺りの車の加速していく量
 #define CAR_BREAK_POWER 0.025f*2 *2//前進中のブレーキの強さ
 //#define MAXSPEED_LIMITUP 10.0f //ブースト中の最高速度の上限突破量
 
 #define DECELERATE 0.05f*2 //車の減速する量
 #define FIX_ANGLE_VALUE 0.5f*2 //角度が0度に向けて調整される量(主にX・Z用)
+
+#define JUMPER01_POWER 3.0f;//ジャンプ台1によるジャンプの強さ
 
 //#define MAXSPEED 7.0f //車の最高速度
 //#define MAXSPEED_BACK 2.0f //車の後退する最大速度
@@ -526,12 +528,12 @@ void CPlayer::Collision(CCollider *mc, CCollider *yc){
 						if (isBoost == false){
 							//printf("speed down…\n");
 							//一定速度までスピード低下
-							if (mCarSpeed > 3.2f){
-								if (mCarSpeed > 4.0f){
+							if (mCarSpeed > 3.2f + 1.8f){
+								if (mCarSpeed > 4.0f + 1.8f){
 									mCarSpeed -= 0.8f;
 								}
 								else{
-									mCarSpeed = 3.2f;
+									mCarSpeed = 3.2f +1.8f;
 								}
 							}
 						}
@@ -633,6 +635,13 @@ void CPlayer::Collision(CCollider *mc, CCollider *yc){
 								//mCarSpeed = -mCarSpeed * 1.0;
 								//mVelocityJump = 2.0f;
 								
+							}
+							else if(yc->mpParent->mTag == CCharacter::EJUMPER){//ジャンプ台に接触した時
+								//mVelocityJump = 0; 
+								mVelocityJump = JUMPER01_POWER;
+								printf("jump!");
+								mCanJump = true;
+								SoundJump.Play();
 							}
 							else{
 								mVelocityJump = 0;

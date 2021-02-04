@@ -242,6 +242,8 @@ void CSceneRace::Init() {
 	mPole.Load("cube.obj", "material\\soil.mtl");
 
 	mDashBoard.Load("material\\racing_mat\\dashboard.obj", "material\\racing_mat\\dashboard.mtl");
+	//ジャンプ台の読み込み
+	mJumper01.Load("cube.obj", "cube.mtl");
 
 	//ミニマップ上でのプレイヤー・敵のカーソルの読み込み
 	mCarsol.Load("material\\racing_mat\\minicarsol.obj", "material\\racing_mat\\minicarsol.mtl");//プレイヤー
@@ -390,38 +392,39 @@ void CSceneRace::Init() {
 	new CObj(&mCheckPoint, CVector(-1100.0f, 15.0f, -2000.0f), CVector(-90.0f, 0.0f, 110.0f), CVector(750.0f, 31.0f, 255.0f), 103);
 	//new CObj(&mCheckPoint, CVector(600.0f, 15.0f, 6.9f), CVector(-90.0f, -180.0f, 0.0f), CVector(750.0f, 1.0f, 255.0f), 109);//ゴール地点
 	//new CObj(&mCheckPoint, CVector(0.0f, 20.0f, 2100.0f), CVector(90.0f, 0.0f, 0.0f), CVector(255.0f, 1.0f, 255.0f), 25);
-	/*new CObj(&mPlane, CVector(0.0f, 0.0f, -220.0f), CVector(0.0f, 0.0f, 0.0f), CVector(55.0f, 1.0f, 55.0f), 1);
-	new CObj(&mCheckPoint, CVector(0.0f, 15.0f, -400.0f), CVector(0.0f, 0.0f, 0.0f), CVector(55.0f, 1.0f, 55.0f), 1);*/
+	
 
-	////ジャンプ台
-	//new CObj(&mOnBlock, CVector(0.0f, 0.0f, 450.0f), CVector(-40.0f, 0.0f, 0.0f), CVector(60.0f, 5.0f, 40.0f), 1);
-	//new CObj(&mOnBlock, CVector(0.0f, 0.0f, 550.0f), CVector(-40.0f, 90.0f, 0.0f), CVector(60.0f, 5.0f, 40.0f), 1);
-	//new CObj(&mOnBlock, CVector(0.0f, 0.0f, 650.0f), CVector(-40.0f, 180.0f, 0.0f), CVector(60.0f, 5.0f, 40.0f), 1);
-	//new CObj(&mOnBlock, CVector(0.0f, 0.0f, 750.0f), CVector(-40.0f, 270.0f, 0.0f), CVector(60.0f, 5.0f, 40.0f), 1);
+	//ジャンプ台
+	new CObj(&mOnBlock, CVector(0.0f, 0.0f, 450.0f), CVector(-40.0f, 0.0f, 0.0f), CVector(60.0f, 5.0f, 40.0f), 202);
+	new CObj(&mOnBlock, CVector(0.0f, 0.0f, 550.0f), CVector(-40.0f, 90.0f, 0.0f), CVector(60.0f, 5.0f, 40.0f), 202);
+	new CObj(&mOnBlock, CVector(0.0f, 0.0f, 650.0f), CVector(-40.0f, 180.0f, 0.0f), CVector(60.0f, 5.0f, 40.0f), 202);
+	new CObj(&mOnBlock, CVector(0.0f, 0.0f, 750.0f), CVector(-40.0f, 270.0f, 0.0f), CVector(60.0f, 5.0f, 40.0f), 202);
+	new CObj(&mJumper01, CVector(220.0f, -20.0f, 870.0f), CVector(0.0f, 0.0f, 0.0f), CVector(120.0f, 5.0f, 120.0f), 202);
 
 	////ばね
 	//new CItem(&mSpringL, CVector(0.0f, -5.0f, 80.0f), CVector(), CVector(11.0f, 11.0f, 11.0f), 2);//バネ
 
 	
-	if (CSceneTitle::mMode <= 0){
+	if (CSceneTitle::mMode <= 1){
 		//new CObj(&msumple2, CVector(320.0f, -58.0f, 450.0f), CVector(0.0f, 180.0f, 0.0f), CVector(4.0f, 3.0f, 3.0f), 1);
-		new CObj(&mCource02, CVector(-2800.0f, 0.0f, 0.0f), CVector(0.0f, 0.0f, 0.0f), CVector(7000.0f, 7000.0f, 7000.0f), 1);
+		//new CObj(&mCource02, CVector(-2800.0f, 0.0f, 0.0f), CVector(0.0f, 0.0f, 0.0f), CVector(7000.0f, 7000.0f, 7000.0f), 1);
 	}
 	else{
-		//新・コースの生成
-		for (int i = 0; i < 1; i++){
-			//コースの生成//ここを床と壁で分割して処理を分ける予定
-			new CObj(&mCource01, CVector(-360.0f, 5.0f - 33.0f, 230.0f), CVector(), CVector(50.0f, 2.0f, 50.0f), 1);
-			//芝生の生成(通行中は速度低下)
-			new CObj(&mGrass01, CVector(-360.0f, 5.0f - 33.0f, 230.0f), CVector(), CVector(50.0f, 2.0f, 50.0f), 112);
-			//コースに柵の配置(壁扱い)
-			new CObj(&mFenceTop, CVector(-360.0f, -70.0f - 35.0f, 230.0f), CVector(), CVector(50.0f, 5.5f + 1.5f, 50.0f), 1);
-			new CObj(&mFenceSide, CVector(-360.0f, -70.0f - 35.0f, 230.0f), CVector(), CVector(50.0f, 5.5f + 1.5f, 50.0f), 200);
-			//道路と芝生の境目のタイルを生成(当たり判定無し)
-			new CObj(&mRWTile, CVector(-360.0f, 5.0f - 33.0f + 0.05f, 230.0f), CVector(), CVector(50.0f, 2.0f, 50.0f), 99);
-			//柵の内側を詰めてみたが入り込んでしまう
-			//new CObj(&mStuff, CVector(-360.0f, -70.0f - 35.0f, 230.0f), CVector(), CVector(50.0f, 5.5f + 1.5f, 50.0f), 1);
-		}
+		
+	}
+	//新・コースの生成
+	for (int i = 0; i < 1; i++){
+		//コースの生成//ここを床と壁で分割して処理を分ける予定
+		new CObj(&mCource01, CVector(-360.0f, 5.0f - 33.0f, 230.0f), CVector(), CVector(50.0f, 2.0f, 50.0f), 1);
+		//芝生の生成(通行中は速度低下)
+		new CObj(&mGrass01, CVector(-360.0f, 5.0f - 33.0f, 230.0f), CVector(), CVector(50.0f, 2.0f, 50.0f), 112);
+		//コースに柵の配置(壁扱い)
+		new CObj(&mFenceTop, CVector(-360.0f, -70.0f - 35.0f, 230.0f), CVector(), CVector(50.0f, 5.5f + 1.5f, 50.0f), 1);
+		new CObj(&mFenceSide, CVector(-360.0f, -70.0f - 35.0f, 230.0f), CVector(), CVector(50.0f, 5.5f + 1.5f, 50.0f), 200);
+		//道路と芝生の境目のタイルを生成(当たり判定無し)
+		new CObj(&mRWTile, CVector(-360.0f, 5.0f - 33.0f + 0.05f, 230.0f), CVector(), CVector(50.0f, 2.0f, 50.0f), 99);
+		//柵の内側を詰めてみたがやっぱり車が入り込んでしまう
+		//new CObj(&mStuff, CVector(-360.0f, -70.0f - 35.0f, 230.0f), CVector(), CVector(50.0f, 5.5f + 1.5f, 50.0f), 1);
 	}
 	//白・黒タイルでゴール示唆
 	for (int i = 0; i < 40; i++){
@@ -911,7 +914,13 @@ void CSceneRace::Update() {
 		CText::DrawString("P - Resume", 290, 200, 10, 12, 2);
 		CText::DrawString("Esc - Back to Title", 250, 170, 10, 12, 2);
 	}
-	
+
+	char cars[33];
+	sprintf(cars, "%+07.1f", mEnemys[0]->left.Dot(mEnemys[0]->dir));
+	CText::DrawString(cars, 20 + 360, 120, 10, 12,2);
+	//mEnemys[0]->left.Dot(mEnemys[0]->dir)
+	//left.Dot(dir) > 0.0f
+
 	//2D描画終了
 	End2D();
 

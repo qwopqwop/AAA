@@ -31,11 +31,12 @@ CEnemy *CEnemy::mpEnemy = 0;
 
 #define MAXSPEED 20.0f //4.5f+3.0f//-0.5f//車の最高速度 //一応プレイヤーが追いつける程度に最高速は少し低め
 #define MAXSPEED_BACK 1.0f*2 *2//車の後退する最大速度
-#define CAR_POWER 0.05f*2 *2//1フレーム辺りの車の加速していく量
+#define CAR_POWER 0.05f*2 //*2//1フレーム辺りの車の加速していく量
 #define CAR_BREAK_POWER 0.025f*2 *2//前進中のブレーキの強さ
 
 #define DECELERATE 0.05f*2 //車の減速する量
 #define FIX_ANGLE_VALUE 0.5f*2 //角度が0度に向けて調整される量(主にX・Z用)
+#define JUMPER01_POWER 3.0f //ジャンプ台1でのジャンプ力
 
 //#define MAXSPEED 7.0f //車の最高速度
 //#define MAXSPEED_BACK 2.0f //車の後退する最大速度
@@ -200,9 +201,9 @@ void CEnemy::Update(){
 
 	//ポイントへのベクトルを求める
 	//CVector dir = mpPoint->mPosition - mPosition;
-	CVector dir = mVPoint - mPosition;
+	dir = mVPoint - mPosition;
 	//左方向へのベクトルを求める
-	CVector left = CVector(1.0f, 0.0f, 0.0f) * CMatrix().RotateY(mRotation.mY);
+	left = CVector(1.0f, 0.0f, 0.0f) * CMatrix().RotateY(mRotation.mY);
 
 	////Aキー、Dキーが同時に入力されているか
 	//if (CKey::Push('A') && CKey::Push('D')){
@@ -548,12 +549,12 @@ void CEnemy::Collision(CCollider *mc, CCollider *yc){
 						if (isBoost == false){
 							//printf("speed down…\n");
 							//一定速度までスピード低下
-							if (mCarSpeed > 3.2f){
-								if (mCarSpeed > 4.0f){
+							if (mCarSpeed > 3.2f + 1.8f){
+								if (mCarSpeed > 4.0f + 1.8f){
 									mCarSpeed -= 0.8f;
 								}
 								else{
-									mCarSpeed = 3.2f;
+									mCarSpeed = 3.2f + 1.8f;
 								}
 							}
 						}
@@ -663,6 +664,13 @@ void CEnemy::Collision(CCollider *mc, CCollider *yc){
 							//mCarSpeed = -mCarSpeed * 1.0;
 							//mVelocityJump = 2.0f;
 
+						}
+						else if (yc->mpParent->mTag == CCharacter::EJUMPER){//ジャンプ台に接触した時
+							//mVelocityJump = 0; 
+							mVelocityJump = JUMPER01_POWER;
+							printf("jump!");
+							mCanJump = true;
+							//SoundJump.Play();
 						}
 						else{
 							mVelocityJump = 0;

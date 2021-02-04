@@ -40,6 +40,7 @@ public:
 		EDASHBOARD,//â¡ë¨è∞
 		EGRASS, //é≈ê∂
 		EWALL, //ï«
+		EJUMPER, //ÉWÉÉÉìÉvë‰
 	};
 	ETag mTag;
 //	CCharacter *mpParent;	//êe
