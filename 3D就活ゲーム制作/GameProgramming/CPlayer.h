@@ -59,6 +59,7 @@ public:
 	CSound SoundCollisionSmall;
 
 	float mStartPoint[3];//{ X,Y,Z }
+	float mStartRotation;//YŽ²‚Ì‚Ý
 
 	bool mIsGetKey;
 	bool mHaveBoat;

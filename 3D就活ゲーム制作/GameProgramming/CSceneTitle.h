@@ -202,7 +202,7 @@ public:
 			}
 		}
 		glColor4fv(c);
-		CText::DrawString("2-LAP", 450, 300, 16, 16);
+		CText::DrawString("Map-B", 450, 300, 16, 16);
 
 		if (mVariable1 == -1 && mVariable2 == 0){
 			c[0] = c[1] = c[2] = 1.0f; c[3] = 1.0f;

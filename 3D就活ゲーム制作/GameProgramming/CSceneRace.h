@@ -123,7 +123,11 @@ public:
 	bool isRender_BackMirror;
 
 	
-	CModel mCource02;
+	CModel mCource02Road;
+	CModel mCource02Wall;
+	CModel mCource02Jump;
+
+	CModel mCource03;
 
 	CModel mJumper01;
 };

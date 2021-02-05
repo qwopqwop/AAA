@@ -49,118 +49,210 @@ void CSceneRace::Init() {
 	//シーンの設定
 	mScene = ERACE1;
 	
-	if (CSceneTitle::mDifficulty == 1){//難易度：EASY
-		CEnemy::mPointSize = 6;//ポイント数の設定
-		CEnemy::mPoint = new CPoint(CVector(413.0f, 30.0f, 1300.0f), 100.0f *2*4);
-		CEnemy::mPoint2 = new CPoint(CVector(258.0f, 30.0f, 2000.0f), 100.0f*2*4);
-		//CEnemy::mPoint = new CPoint(CVector(413.0f, 30.0f, 1700.0f), 40.0f);
-		//CEnemy::mPoint2 = new CPoint(CVector(-958.0f, 30.0f, 2600.0f), 40.0f);
-		CEnemy::mPoint3 = new CPoint(CVector(-1350.0f, 30.0f, 2150.0f), 100.0f*2*4);
-		CEnemy::mPoint4 = new CPoint(CVector(-1601.0f, 30.0f, -1702.0f), 100.0f*2*4);
-		CEnemy::mPoint5 = new CPoint(CVector(-500.0f, 30.0f, -2000.0f), 100.0f*2*4);
-		CEnemy::mPoint6 = new CPoint(CVector(340.0f, 30.0f, -1182.0f), 100.0f*2*4);
-	}
-	else if (CSceneTitle::mDifficulty == 2){//難易度：NORMAL
-		/*
-		//CEnemy::mPointSize = 12;//ポイント数の設定
-		//CEnemy::mPoint = new CPoint(CVector(260.0f + 60.0f, 30.0f, 777.0f + 100.0f), 200.0f);
-		//CEnemy::mPoint2 = new CPoint(CVector(259.0f + 60.0f, 30.0f, 1300.0f + 200.0f), 200.0f);
-		//CEnemy::mPoint3 = new CPoint(CVector(-150.0f + 0.0f, 30.0f, 2058.0f + 200.0f), 200.0f);
-		//CEnemy::mPoint4 = new CPoint(CVector(-555.0f - 150.0f, 30.0f, 2111.0f + 300.0f), 200.0f);
-		//CEnemy::mPoint5 = new CPoint(CVector(-1039.0f - 150.0f, 30.0f, 2062.0f + 200.0f), 200.0f);
-		//CEnemy::mPoint6 = new CPoint(CVector(-1400.0f - 150.0f, 30.0f, 1700.0f + 200.0f), 200.0f);
-		//CEnemy::mPoint7 = new CPoint(CVector(-1511.0f, 30.0f, -317.0f - 200.0f), 120.0f);
-		//CEnemy::mPoint8 = new CPoint(CVector(-1400.0f, 30.0f, -1079.0f - 300.0f), 200.0f);
-		//CEnemy::mPoint9 = new CPoint(CVector(-1000.0f, 30.0f, -1500.0f - 300.0f), 200.0f);
-		//CEnemy::mPoint10 = new CPoint(CVector(-550.0f, 30.0f, -1700.0f - 300.0f), 200.0f);
-		//CEnemy::mPoint11 = new CPoint(CVector(-100.0f, 30.0f, -1600.0f - 325.0f), 300.0f);
-		//CEnemy::mPoint12 = new CPoint(CVector(420.0f, 30.0f, -1182.0f - 300.0f), 350.0f);
-		*/
-		/*
-		CEnemy::mPointSize = 12;//ポイント数の設定
-		CEnemy::mPoint = new CPoint(CVector(   260.0f + 00.0f, 30.0f, 777.0f), 40.0f * 4);
-		CEnemy::mPoint2 = new CPoint(CVector(  259.0f + 00.0f, 30.0f, 1300.0f), 50.0f * 4);
-		CEnemy::mPoint3 = new CPoint(CVector( -150.0f + 50.0f, 30.0f + 50.0f, 2058.0f), 65.0f * 4);
-		CEnemy::mPoint4 = new CPoint(CVector(-555.0f + 50.0f, 30.0f + 50.0f, 2111.0f), 65.0f * 4);
-		CEnemy::mPoint5 = new CPoint(CVector(-1039.0f + 50.0f, 30.0f + 50.0f, 2062.0f), 65.0f * 4);
-		CEnemy::mPoint6 = new CPoint(CVector(-1400.0f + 50.0f, 30.0f + 50.0f, 1700.0f), 60.0f * 4);
-		CEnemy::mPoint7 = new CPoint(CVector(-1511.0f + 50.0f, 30.0f, -317.0f), 40.0f * 4);
-		CEnemy::mPoint8 = new CPoint(CVector(-1400.0f + 50.0f, 30.0f - 50.0f, -1079.0f), 40.0f * 4);
-		CEnemy::mPoint9 = new CPoint(CVector(-913.0f + 50.0f, 30.0f - 50.0f, -1637.0f), 40.0f * 4);
-		CEnemy::mPoint10 = new CPoint(CVector(-500.0f + 50.0f, 30.0f - 50.0f, -1700.0f), 60.0f * 4);
-		CEnemy::mPoint11 = new CPoint(CVector(-160.0f + 50.0f, 30.0f - 50.0f, -1600.0f), 60.0f * 4);
-		CEnemy::mPoint12 = new CPoint(CVector(193.0f + 50.0f, 30.0f - 50.0f, -1182.0f), 50.0f * 4);
-		*/		
-		//現在、仮の設定
-		CEnemy::mPointSize = 12;//ポイント数の設定
-		CEnemy::mPoint = new CPoint(CVector(413.0f, 30.0f, 1300.0f), 100.0f * 2 * 4);
-		CEnemy::mPoint2 = new CPoint(CVector(258.0f, 30.0f, 2000.0f), 100.0f * 2 * 4);
-		CEnemy::mPoint3 = new CPoint(CVector(-1350.0f, 30.0f, 2150.0f), 100.0f * 2 * 4);
-		CEnemy::mPoint4 = new CPoint(CVector(-1601.0f, 30.0f, -1702.0f), 100.0f * 2 * 4);
-		CEnemy::mPoint5 = new CPoint(CVector(-500.0f, 30.0f, -2000.0f), 100.0f * 2 * 4);
-		CEnemy::mPoint6 = new CPoint(CVector(340.0f, 30.0f, -1182.0f), 100.0f * 2 * 4);
-		CEnemy::mPoint7 = new CPoint(CVector(413.0f, 30.0f, 1300.0f), 100.0f * 2 * 4);
-		CEnemy::mPoint8 = new CPoint(CVector(258.0f, 30.0f, 2000.0f), 100.0f * 2 * 4);
-		CEnemy::mPoint9 = new CPoint(CVector(-1350.0f, 30.0f, 2150.0f), 100.0f * 2 * 4);
-		CEnemy::mPoint10 = new CPoint(CVector(-1601.0f, 30.0f, -1702.0f), 100.0f * 2 * 4);
-		CEnemy::mPoint11 = new CPoint(CVector(-500.0f, 30.0f, -2000.0f), 100.0f * 2 * 4);
-		CEnemy::mPoint12 = new CPoint(CVector(340.0f, 30.0f, -1182.0f), 100.0f * 2 * 4);
-		/*CEnemy::mPoint = new CPoint(CVector(   260.0f + 00.0f, 30.0f, 777.0f), 50.0f * 2);
-		CEnemy::mPoint2 = new CPoint(CVector(  259.0f + 00.0f, 30.0f, 1300.0f), 60.0f * 2);
-		CEnemy::mPoint3 = new CPoint(CVector( -150.0f + 50.0f, 30.0f + 50.0f, 2058.0f), 65.0f * 2);
-		CEnemy::mPoint4 = new CPoint(CVector(-555.0f + 50.0f, 30.0f + 50.0f, 2121.0f), 65.0f * 2);
-		CEnemy::mPoint5 = new CPoint(CVector(-1039.0f + 50.0f, 30.0f + 50.0f, 2082.0f), 65.0f * 2);
-		CEnemy::mPoint6 = new CPoint(CVector(-1400.0f + 50.0f, 30.0f + 50.0f, 1700.0f), 80.0f * 2);
-		CEnemy::mPoint7 = new CPoint(CVector(-1511.0f + 50.0f, 30.0f, -317.0f), 40.0f * 2);
-		CEnemy::mPoint8 = new CPoint(CVector(-1400.0f + 50.0f, 30.0f - 50.0f, -1079.0f), 60.0f * 2);
-		CEnemy::mPoint9 = new CPoint(CVector(-913.0f + 50.0f, 30.0f - 50.0f, -1637.0f), 60.0f * 2);
-		CEnemy::mPoint10 = new CPoint(CVector(-500.0f + 50.0f, 30.0f - 50.0f, -1700.0f), 60.0f * 2);
-		CEnemy::mPoint11 = new CPoint(CVector(-160.0f + 50.0f, 30.0f - 50.0f, -1600.0f), 60.0f * 2);
-		CEnemy::mPoint12 = new CPoint(CVector(193.0f + 50.0f, 30.0f - 50.0f, -1182.0f), 60.0f * 2);*/
-	}
-	else if (CSceneTitle::mDifficulty == 3){//難易度：HARD
-		//現在、仮の設定
-		CEnemy::mPointSize = 12;//ポイント数の設定
-		CEnemy::mPoint = new CPoint(CVector(413.0f, 30.0f, 1300.0f), 100.0f * 2 * 4);
-		CEnemy::mPoint2 = new CPoint(CVector(258.0f, 30.0f, 2000.0f), 100.0f * 2 * 4);
-		CEnemy::mPoint3 = new CPoint(CVector(-1350.0f, 30.0f, 2150.0f), 100.0f * 2 * 4);
-		CEnemy::mPoint4 = new CPoint(CVector(-1601.0f, 30.0f, -1702.0f), 100.0f * 2 * 4);
-		CEnemy::mPoint5 = new CPoint(CVector(-500.0f, 30.0f, -2000.0f), 100.0f * 2 * 4);
-		CEnemy::mPoint6 = new CPoint(CVector(340.0f, 30.0f, -1182.0f), 100.0f * 2 * 4);
-		CEnemy::mPoint7 = new CPoint(CVector(413.0f, 30.0f, 1300.0f), 100.0f * 2 * 4);
-		CEnemy::mPoint8 = new CPoint(CVector(258.0f, 30.0f, 2000.0f), 100.0f * 2 * 4);
-		CEnemy::mPoint9 = new CPoint(CVector(-1350.0f, 30.0f, 2150.0f), 100.0f * 2 * 4);
-		CEnemy::mPoint10 = new CPoint(CVector(-1601.0f, 30.0f, -1702.0f), 100.0f * 2 * 4);
-		CEnemy::mPoint11 = new CPoint(CVector(-500.0f, 30.0f, -2000.0f), 100.0f * 2 * 4);
-		CEnemy::mPoint12 = new CPoint(CVector(340.0f, 30.0f, -1182.0f), 100.0f * 2 * 4);
-		/*CEnemy::mPoint = new CPoint(CVector(260.0f, 30.0f, 777.0f), 40.0f * 2);
-		CEnemy::mPoint2 = new CPoint(CVector(259.0f, 30.0f, 1300.0f), 50.0f * 2);
-		CEnemy::mPoint3 = new CPoint(CVector(-150.0f, 30.0f, 2058.0f), 65.0f * 2);
-		CEnemy::mPoint4 = new CPoint(CVector(-555.0f, 30.0f, 2111.0f), 65.0f * 2);
-		CEnemy::mPoint5 = new CPoint(CVector(-1039.0f, 30.0f, 2062.0f), 65.0f * 2);
-		CEnemy::mPoint6 = new CPoint(CVector(-1400.0f, 30.0f, 1700.0f), 60.0f * 2);
-		CEnemy::mPoint7 = new CPoint(CVector(-1511.0f, 30.0f, -317.0f), 40.0f * 2);
-		CEnemy::mPoint8 = new CPoint(CVector(-1400.0f, 30.0f, -1079.0f), 40.0f * 2);
-		CEnemy::mPoint9 = new CPoint(CVector(-913.0f, 30.0f, -1637.0f), 40.0f * 2);
-		CEnemy::mPoint10 = new CPoint(CVector(-500.0f, 30.0f, -1700.0f), 60.0f * 2);
-		CEnemy::mPoint11 = new CPoint(CVector(-160.0f, 30.0f, -1600.0f), 60.0f * 2);
-		CEnemy::mPoint12 = new CPoint(CVector(193.0f, 30.0f, -1182.0f), 50.0f * 2);*/
+	if (CSceneTitle::mMode < 0){
+		if (CSceneTitle::mDifficulty == 1){//難易度：EASY
+			CEnemy::mPointSize = 6;//ポイント数の設定
+			CEnemy::mPoint = new CPoint(CVector(413.0f, 30.0f, 1300.0f), 100.0f * 2 * 4);
+			CEnemy::mPoint2 = new CPoint(CVector(258.0f, 30.0f, 2000.0f), 100.0f * 2 * 4);
+			//CEnemy::mPoint = new CPoint(CVector(413.0f, 30.0f, 1700.0f), 40.0f);
+			//CEnemy::mPoint2 = new CPoint(CVector(-958.0f, 30.0f, 2600.0f), 40.0f);
+			CEnemy::mPoint3 = new CPoint(CVector(-1350.0f, 30.0f, 2150.0f), 100.0f * 2 * 4);
+			CEnemy::mPoint4 = new CPoint(CVector(-1601.0f, 30.0f, -1702.0f), 100.0f * 2 * 4);
+			CEnemy::mPoint5 = new CPoint(CVector(-500.0f, 30.0f, -2000.0f), 100.0f * 2 * 4);
+			CEnemy::mPoint6 = new CPoint(CVector(340.0f, 30.0f, -1182.0f), 100.0f * 2 * 4);
+		}
+		else if (CSceneTitle::mDifficulty == 2){//難易度：NORMAL
+			/*
+			//CEnemy::mPointSize = 12;//ポイント数の設定
+			//CEnemy::mPoint = new CPoint(CVector(260.0f + 60.0f, 30.0f, 777.0f + 100.0f), 200.0f);
+			//CEnemy::mPoint2 = new CPoint(CVector(259.0f + 60.0f, 30.0f, 1300.0f + 200.0f), 200.0f);
+			//CEnemy::mPoint3 = new CPoint(CVector(-150.0f + 0.0f, 30.0f, 2058.0f + 200.0f), 200.0f);
+			//CEnemy::mPoint4 = new CPoint(CVector(-555.0f - 150.0f, 30.0f, 2111.0f + 300.0f), 200.0f);
+			//CEnemy::mPoint5 = new CPoint(CVector(-1039.0f - 150.0f, 30.0f, 2062.0f + 200.0f), 200.0f);
+			//CEnemy::mPoint6 = new CPoint(CVector(-1400.0f - 150.0f, 30.0f, 1700.0f + 200.0f), 200.0f);
+			//CEnemy::mPoint7 = new CPoint(CVector(-1511.0f, 30.0f, -317.0f - 200.0f), 120.0f);
+			//CEnemy::mPoint8 = new CPoint(CVector(-1400.0f, 30.0f, -1079.0f - 300.0f), 200.0f);
+			//CEnemy::mPoint9 = new CPoint(CVector(-1000.0f, 30.0f, -1500.0f - 300.0f), 200.0f);
+			//CEnemy::mPoint10 = new CPoint(CVector(-550.0f, 30.0f, -1700.0f - 300.0f), 200.0f);
+			//CEnemy::mPoint11 = new CPoint(CVector(-100.0f, 30.0f, -1600.0f - 325.0f), 300.0f);
+			//CEnemy::mPoint12 = new CPoint(CVector(420.0f, 30.0f, -1182.0f - 300.0f), 350.0f);
+			*/
+			/*
+			CEnemy::mPointSize = 12;//ポイント数の設定
+			CEnemy::mPoint = new CPoint(CVector(   260.0f + 00.0f, 30.0f, 777.0f), 40.0f * 4);
+			CEnemy::mPoint2 = new CPoint(CVector(  259.0f + 00.0f, 30.0f, 1300.0f), 50.0f * 4);
+			CEnemy::mPoint3 = new CPoint(CVector( -150.0f + 50.0f, 30.0f + 50.0f, 2058.0f), 65.0f * 4);
+			CEnemy::mPoint4 = new CPoint(CVector(-555.0f + 50.0f, 30.0f + 50.0f, 2111.0f), 65.0f * 4);
+			CEnemy::mPoint5 = new CPoint(CVector(-1039.0f + 50.0f, 30.0f + 50.0f, 2062.0f), 65.0f * 4);
+			CEnemy::mPoint6 = new CPoint(CVector(-1400.0f + 50.0f, 30.0f + 50.0f, 1700.0f), 60.0f * 4);
+			CEnemy::mPoint7 = new CPoint(CVector(-1511.0f + 50.0f, 30.0f, -317.0f), 40.0f * 4);
+			CEnemy::mPoint8 = new CPoint(CVector(-1400.0f + 50.0f, 30.0f - 50.0f, -1079.0f), 40.0f * 4);
+			CEnemy::mPoint9 = new CPoint(CVector(-913.0f + 50.0f, 30.0f - 50.0f, -1637.0f), 40.0f * 4);
+			CEnemy::mPoint10 = new CPoint(CVector(-500.0f + 50.0f, 30.0f - 50.0f, -1700.0f), 60.0f * 4);
+			CEnemy::mPoint11 = new CPoint(CVector(-160.0f + 50.0f, 30.0f - 50.0f, -1600.0f), 60.0f * 4);
+			CEnemy::mPoint12 = new CPoint(CVector(193.0f + 50.0f, 30.0f - 50.0f, -1182.0f), 50.0f * 4);
+			*/
+			//現在、仮の設定
+			CEnemy::mPointSize = 12;//ポイント数の設定
+			CEnemy::mPoint = new CPoint(CVector(413.0f, 30.0f, 1300.0f), 100.0f * 2 * 4);
+			CEnemy::mPoint2 = new CPoint(CVector(258.0f, 30.0f, 2000.0f), 100.0f * 2 * 4);
+			CEnemy::mPoint3 = new CPoint(CVector(-1350.0f, 30.0f, 2150.0f), 100.0f * 2 * 4);
+			CEnemy::mPoint4 = new CPoint(CVector(-1601.0f, 30.0f, -1702.0f), 100.0f * 2 * 4);
+			CEnemy::mPoint5 = new CPoint(CVector(-500.0f, 30.0f, -2000.0f), 100.0f * 2 * 4);
+			CEnemy::mPoint6 = new CPoint(CVector(340.0f, 30.0f, -1182.0f), 100.0f * 2 * 4);
+			CEnemy::mPoint7 = new CPoint(CVector(413.0f, 30.0f, 1300.0f), 100.0f * 2 * 4);
+			CEnemy::mPoint8 = new CPoint(CVector(258.0f, 30.0f, 2000.0f), 100.0f * 2 * 4);
+			CEnemy::mPoint9 = new CPoint(CVector(-1350.0f, 30.0f, 2150.0f), 100.0f * 2 * 4);
+			CEnemy::mPoint10 = new CPoint(CVector(-1601.0f, 30.0f, -1702.0f), 100.0f * 2 * 4);
+			CEnemy::mPoint11 = new CPoint(CVector(-500.0f, 30.0f, -2000.0f), 100.0f * 2 * 4);
+			CEnemy::mPoint12 = new CPoint(CVector(340.0f, 30.0f, -1182.0f), 100.0f * 2 * 4);
+			/*CEnemy::mPoint = new CPoint(CVector(   260.0f + 00.0f, 30.0f, 777.0f), 50.0f * 2);
+			CEnemy::mPoint2 = new CPoint(CVector(  259.0f + 00.0f, 30.0f, 1300.0f), 60.0f * 2);
+			CEnemy::mPoint3 = new CPoint(CVector( -150.0f + 50.0f, 30.0f + 50.0f, 2058.0f), 65.0f * 2);
+			CEnemy::mPoint4 = new CPoint(CVector(-555.0f + 50.0f, 30.0f + 50.0f, 2121.0f), 65.0f * 2);
+			CEnemy::mPoint5 = new CPoint(CVector(-1039.0f + 50.0f, 30.0f + 50.0f, 2082.0f), 65.0f * 2);
+			CEnemy::mPoint6 = new CPoint(CVector(-1400.0f + 50.0f, 30.0f + 50.0f, 1700.0f), 80.0f * 2);
+			CEnemy::mPoint7 = new CPoint(CVector(-1511.0f + 50.0f, 30.0f, -317.0f), 40.0f * 2);
+			CEnemy::mPoint8 = new CPoint(CVector(-1400.0f + 50.0f, 30.0f - 50.0f, -1079.0f), 60.0f * 2);
+			CEnemy::mPoint9 = new CPoint(CVector(-913.0f + 50.0f, 30.0f - 50.0f, -1637.0f), 60.0f * 2);
+			CEnemy::mPoint10 = new CPoint(CVector(-500.0f + 50.0f, 30.0f - 50.0f, -1700.0f), 60.0f * 2);
+			CEnemy::mPoint11 = new CPoint(CVector(-160.0f + 50.0f, 30.0f - 50.0f, -1600.0f), 60.0f * 2);
+			CEnemy::mPoint12 = new CPoint(CVector(193.0f + 50.0f, 30.0f - 50.0f, -1182.0f), 60.0f * 2);*/
+		}
+		else if (CSceneTitle::mDifficulty == 3){//難易度：HARD
+			//現在、仮の設定
+			CEnemy::mPointSize = 12;//ポイント数の設定
+			CEnemy::mPoint = new CPoint(CVector(413.0f, 30.0f, 1300.0f), 100.0f * 2 * 4);
+			CEnemy::mPoint2 = new CPoint(CVector(258.0f, 30.0f, 2000.0f), 100.0f * 2 * 4);
+			CEnemy::mPoint3 = new CPoint(CVector(-1350.0f, 30.0f, 2150.0f), 100.0f * 2 * 4);
+			CEnemy::mPoint4 = new CPoint(CVector(-1601.0f, 30.0f, -1702.0f), 100.0f * 2 * 4);
+			CEnemy::mPoint5 = new CPoint(CVector(-500.0f, 30.0f, -2000.0f), 100.0f * 2 * 4);
+			CEnemy::mPoint6 = new CPoint(CVector(340.0f, 30.0f, -1182.0f), 100.0f * 2 * 4);
+			CEnemy::mPoint7 = new CPoint(CVector(413.0f, 30.0f, 1300.0f), 100.0f * 2 * 4);
+			CEnemy::mPoint8 = new CPoint(CVector(258.0f, 30.0f, 2000.0f), 100.0f * 2 * 4);
+			CEnemy::mPoint9 = new CPoint(CVector(-1350.0f, 30.0f, 2150.0f), 100.0f * 2 * 4);
+			CEnemy::mPoint10 = new CPoint(CVector(-1601.0f, 30.0f, -1702.0f), 100.0f * 2 * 4);
+			CEnemy::mPoint11 = new CPoint(CVector(-500.0f, 30.0f, -2000.0f), 100.0f * 2 * 4);
+			CEnemy::mPoint12 = new CPoint(CVector(340.0f, 30.0f, -1182.0f), 100.0f * 2 * 4);
+			/*CEnemy::mPoint = new CPoint(CVector(260.0f, 30.0f, 777.0f), 40.0f * 2);
+			CEnemy::mPoint2 = new CPoint(CVector(259.0f, 30.0f, 1300.0f), 50.0f * 2);
+			CEnemy::mPoint3 = new CPoint(CVector(-150.0f, 30.0f, 2058.0f), 65.0f * 2);
+			CEnemy::mPoint4 = new CPoint(CVector(-555.0f, 30.0f, 2111.0f), 65.0f * 2);
+			CEnemy::mPoint5 = new CPoint(CVector(-1039.0f, 30.0f, 2062.0f), 65.0f * 2);
+			CEnemy::mPoint6 = new CPoint(CVector(-1400.0f, 30.0f, 1700.0f), 60.0f * 2);
+			CEnemy::mPoint7 = new CPoint(CVector(-1511.0f, 30.0f, -317.0f), 40.0f * 2);
+			CEnemy::mPoint8 = new CPoint(CVector(-1400.0f, 30.0f, -1079.0f), 40.0f * 2);
+			CEnemy::mPoint9 = new CPoint(CVector(-913.0f, 30.0f, -1637.0f), 40.0f * 2);
+			CEnemy::mPoint10 = new CPoint(CVector(-500.0f, 30.0f, -1700.0f), 60.0f * 2);
+			CEnemy::mPoint11 = new CPoint(CVector(-160.0f, 30.0f, -1600.0f), 60.0f * 2);
+			CEnemy::mPoint12 = new CPoint(CVector(193.0f, 30.0f, -1182.0f), 50.0f * 2);*/
+		}
+		else{
+			//隠しHARDの予定
+		}
 	}
 	else{
-		//隠しHARDの予定
+		if (CSceneTitle::mDifficulty == 1){//難易度：EASY
+			CEnemy::mPointSize = 6;//ポイント数の設定
+			CEnemy::mPoint = new CPoint(CVector(413.0f, 30.0f, 1300.0f), 100.0f * 2 * 4);
+			CEnemy::mPoint2 = new CPoint(CVector(258.0f, 30.0f, 2000.0f), 100.0f * 2 * 4);
+			//CEnemy::mPoint = new CPoint(CVector(413.0f, 30.0f, 1700.0f), 40.0f);
+			//CEnemy::mPoint2 = new CPoint(CVector(-958.0f, 30.0f, 2600.0f), 40.0f);
+			CEnemy::mPoint3 = new CPoint(CVector(-1350.0f, 30.0f, 2150.0f), 100.0f * 2 * 4);
+			CEnemy::mPoint4 = new CPoint(CVector(-1601.0f, 30.0f, -1702.0f), 100.0f * 2 * 4);
+			CEnemy::mPoint5 = new CPoint(CVector(-500.0f, 30.0f, -2000.0f), 100.0f * 2 * 4);
+			CEnemy::mPoint6 = new CPoint(CVector(340.0f, 30.0f, -1182.0f), 100.0f * 2 * 4);
+		}
+		else if (CSceneTitle::mDifficulty == 2){//難易度：NORMAL
+			/*
+			//CEnemy::mPointSize = 12;//ポイント数の設定
+			//CEnemy::mPoint = new CPoint(CVector(260.0f + 60.0f, 30.0f, 777.0f + 100.0f), 200.0f);
+			//CEnemy::mPoint2 = new CPoint(CVector(259.0f + 60.0f, 30.0f, 1300.0f + 200.0f), 200.0f);
+			//CEnemy::mPoint3 = new CPoint(CVector(-150.0f + 0.0f, 30.0f, 2058.0f + 200.0f), 200.0f);
+			//CEnemy::mPoint4 = new CPoint(CVector(-555.0f - 150.0f, 30.0f, 2111.0f + 300.0f), 200.0f);
+			//CEnemy::mPoint5 = new CPoint(CVector(-1039.0f - 150.0f, 30.0f, 2062.0f + 200.0f), 200.0f);
+			//CEnemy::mPoint6 = new CPoint(CVector(-1400.0f - 150.0f, 30.0f, 1700.0f + 200.0f), 200.0f);
+			//CEnemy::mPoint7 = new CPoint(CVector(-1511.0f, 30.0f, -317.0f - 200.0f), 120.0f);
+			//CEnemy::mPoint8 = new CPoint(CVector(-1400.0f, 30.0f, -1079.0f - 300.0f), 200.0f);
+			//CEnemy::mPoint9 = new CPoint(CVector(-1000.0f, 30.0f, -1500.0f - 300.0f), 200.0f);
+			//CEnemy::mPoint10 = new CPoint(CVector(-550.0f, 30.0f, -1700.0f - 300.0f), 200.0f);
+			//CEnemy::mPoint11 = new CPoint(CVector(-100.0f, 30.0f, -1600.0f - 325.0f), 300.0f);
+			//CEnemy::mPoint12 = new CPoint(CVector(420.0f, 30.0f, -1182.0f - 300.0f), 350.0f);
+			*/
+			/*
+			CEnemy::mPointSize = 12;//ポイント数の設定
+			CEnemy::mPoint = new CPoint(CVector(   260.0f + 00.0f, 30.0f, 777.0f), 40.0f * 4);
+			CEnemy::mPoint2 = new CPoint(CVector(  259.0f + 00.0f, 30.0f, 1300.0f), 50.0f * 4);
+			CEnemy::mPoint3 = new CPoint(CVector( -150.0f + 50.0f, 30.0f + 50.0f, 2058.0f), 65.0f * 4);
+			CEnemy::mPoint4 = new CPoint(CVector(-555.0f + 50.0f, 30.0f + 50.0f, 2111.0f), 65.0f * 4);
+			CEnemy::mPoint5 = new CPoint(CVector(-1039.0f + 50.0f, 30.0f + 50.0f, 2062.0f), 65.0f * 4);
+			CEnemy::mPoint6 = new CPoint(CVector(-1400.0f + 50.0f, 30.0f + 50.0f, 1700.0f), 60.0f * 4);
+			CEnemy::mPoint7 = new CPoint(CVector(-1511.0f + 50.0f, 30.0f, -317.0f), 40.0f * 4);
+			CEnemy::mPoint8 = new CPoint(CVector(-1400.0f + 50.0f, 30.0f - 50.0f, -1079.0f), 40.0f * 4);
+			CEnemy::mPoint9 = new CPoint(CVector(-913.0f + 50.0f, 30.0f - 50.0f, -1637.0f), 40.0f * 4);
+			CEnemy::mPoint10 = new CPoint(CVector(-500.0f + 50.0f, 30.0f - 50.0f, -1700.0f), 60.0f * 4);
+			CEnemy::mPoint11 = new CPoint(CVector(-160.0f + 50.0f, 30.0f - 50.0f, -1600.0f), 60.0f * 4);
+			CEnemy::mPoint12 = new CPoint(CVector(193.0f + 50.0f, 30.0f - 50.0f, -1182.0f), 50.0f * 4);
+			*/
+			//現在、仮の設定
+			CEnemy::mPointSize = 12;//ポイント数の設定
+			CEnemy::mPoint = new CPoint(CVector(413.0f, 30.0f, 1300.0f), 100.0f * 2 * 4);
+			CEnemy::mPoint2 = new CPoint(CVector(258.0f, 30.0f, 2000.0f), 100.0f * 2 * 4);
+			CEnemy::mPoint3 = new CPoint(CVector(-1350.0f, 30.0f, 2150.0f), 100.0f * 2 * 4);
+			CEnemy::mPoint4 = new CPoint(CVector(-1601.0f, 30.0f, -1702.0f), 100.0f * 2 * 4);
+			CEnemy::mPoint5 = new CPoint(CVector(-500.0f, 30.0f, -2000.0f), 100.0f * 2 * 4);
+			CEnemy::mPoint6 = new CPoint(CVector(340.0f, 30.0f, -1182.0f), 100.0f * 2 * 4);
+			CEnemy::mPoint7 = new CPoint(CVector(413.0f, 30.0f, 1300.0f), 100.0f * 2 * 4);
+			CEnemy::mPoint8 = new CPoint(CVector(258.0f, 30.0f, 2000.0f), 100.0f * 2 * 4);
+			CEnemy::mPoint9 = new CPoint(CVector(-1350.0f, 30.0f, 2150.0f), 100.0f * 2 * 4);
+			CEnemy::mPoint10 = new CPoint(CVector(-1601.0f, 30.0f, -1702.0f), 100.0f * 2 * 4);
+			CEnemy::mPoint11 = new CPoint(CVector(-500.0f, 30.0f, -2000.0f), 100.0f * 2 * 4);
+			CEnemy::mPoint12 = new CPoint(CVector(340.0f, 30.0f, -1182.0f), 100.0f * 2 * 4);
+			/*CEnemy::mPoint = new CPoint(CVector(   260.0f + 00.0f, 30.0f, 777.0f), 50.0f * 2);
+			CEnemy::mPoint2 = new CPoint(CVector(  259.0f + 00.0f, 30.0f, 1300.0f), 60.0f * 2);
+			CEnemy::mPoint3 = new CPoint(CVector( -150.0f + 50.0f, 30.0f + 50.0f, 2058.0f), 65.0f * 2);
+			CEnemy::mPoint4 = new CPoint(CVector(-555.0f + 50.0f, 30.0f + 50.0f, 2121.0f), 65.0f * 2);
+			CEnemy::mPoint5 = new CPoint(CVector(-1039.0f + 50.0f, 30.0f + 50.0f, 2082.0f), 65.0f * 2);
+			CEnemy::mPoint6 = new CPoint(CVector(-1400.0f + 50.0f, 30.0f + 50.0f, 1700.0f), 80.0f * 2);
+			CEnemy::mPoint7 = new CPoint(CVector(-1511.0f + 50.0f, 30.0f, -317.0f), 40.0f * 2);
+			CEnemy::mPoint8 = new CPoint(CVector(-1400.0f + 50.0f, 30.0f - 50.0f, -1079.0f), 60.0f * 2);
+			CEnemy::mPoint9 = new CPoint(CVector(-913.0f + 50.0f, 30.0f - 50.0f, -1637.0f), 60.0f * 2);
+			CEnemy::mPoint10 = new CPoint(CVector(-500.0f + 50.0f, 30.0f - 50.0f, -1700.0f), 60.0f * 2);
+			CEnemy::mPoint11 = new CPoint(CVector(-160.0f + 50.0f, 30.0f - 50.0f, -1600.0f), 60.0f * 2);
+			CEnemy::mPoint12 = new CPoint(CVector(193.0f + 50.0f, 30.0f - 50.0f, -1182.0f), 60.0f * 2);*/
+		}
+		else if (CSceneTitle::mDifficulty == 3){//難易度：HARD
+			//現在、仮の設定
+			CEnemy::mPointSize = 12;//ポイント数の設定
+			CEnemy::mPoint = new CPoint(CVector(413.0f, 30.0f, 1300.0f), 100.0f * 2 * 4);
+			CEnemy::mPoint2 = new CPoint(CVector(258.0f, 30.0f, 2000.0f), 100.0f * 2 * 4);
+			CEnemy::mPoint3 = new CPoint(CVector(-1350.0f, 30.0f, 2150.0f), 100.0f * 2 * 4);
+			CEnemy::mPoint4 = new CPoint(CVector(-1601.0f, 30.0f, -1702.0f), 100.0f * 2 * 4);
+			CEnemy::mPoint5 = new CPoint(CVector(-500.0f, 30.0f, -2000.0f), 100.0f * 2 * 4);
+			CEnemy::mPoint6 = new CPoint(CVector(340.0f, 30.0f, -1182.0f), 100.0f * 2 * 4);
+			CEnemy::mPoint7 = new CPoint(CVector(413.0f, 30.0f, 1300.0f), 100.0f * 2 * 4);
+			CEnemy::mPoint8 = new CPoint(CVector(258.0f, 30.0f, 2000.0f), 100.0f * 2 * 4);
+			CEnemy::mPoint9 = new CPoint(CVector(-1350.0f, 30.0f, 2150.0f), 100.0f * 2 * 4);
+			CEnemy::mPoint10 = new CPoint(CVector(-1601.0f, 30.0f, -1702.0f), 100.0f * 2 * 4);
+			CEnemy::mPoint11 = new CPoint(CVector(-500.0f, 30.0f, -2000.0f), 100.0f * 2 * 4);
+			CEnemy::mPoint12 = new CPoint(CVector(340.0f, 30.0f, -1182.0f), 100.0f * 2 * 4);
+			/*CEnemy::mPoint = new CPoint(CVector(260.0f, 30.0f, 777.0f), 40.0f * 2);
+			CEnemy::mPoint2 = new CPoint(CVector(259.0f, 30.0f, 1300.0f), 50.0f * 2);
+			CEnemy::mPoint3 = new CPoint(CVector(-150.0f, 30.0f, 2058.0f), 65.0f * 2);
+			CEnemy::mPoint4 = new CPoint(CVector(-555.0f, 30.0f, 2111.0f), 65.0f * 2);
+			CEnemy::mPoint5 = new CPoint(CVector(-1039.0f, 30.0f, 2062.0f), 65.0f * 2);
+			CEnemy::mPoint6 = new CPoint(CVector(-1400.0f, 30.0f, 1700.0f), 60.0f * 2);
+			CEnemy::mPoint7 = new CPoint(CVector(-1511.0f, 30.0f, -317.0f), 40.0f * 2);
+			CEnemy::mPoint8 = new CPoint(CVector(-1400.0f, 30.0f, -1079.0f), 40.0f * 2);
+			CEnemy::mPoint9 = new CPoint(CVector(-913.0f, 30.0f, -1637.0f), 40.0f * 2);
+			CEnemy::mPoint10 = new CPoint(CVector(-500.0f, 30.0f, -1700.0f), 60.0f * 2);
+			CEnemy::mPoint11 = new CPoint(CVector(-160.0f, 30.0f, -1600.0f), 60.0f * 2);
+			CEnemy::mPoint12 = new CPoint(CVector(193.0f, 30.0f, -1182.0f), 50.0f * 2);*/
+		}
+		else{
+			//隠しHARDの予定
+		}
 	}
-
-	////ポイントの設定
-	//CEnemy::mPointSize = 5;//ポイント数の設定
-	//CEnemy::mPoint = new CPoint[CEnemy::mPointSize];
-	//CEnemy::mPoint[0].Set(CVector(135.0f, 30.0f, 200.0f), 40.0f);
-	//CEnemy::mPoint[1].Set(CVector(735.0f, 30.0f, 200.0f), 40.0f);
-	//CEnemy::mPoint[2].Set(CVector(435.0f, 30.0f, 500.0f), 40.0f);
-	//CEnemy::mPoint[3].Set(CVector(435.0f, 30.0f, -100.0f), 40.0f);
-	//CEnemy::mPoint[4].Set(CVector(435.0f, 30.0f, 200.0f), 40.0f);//[0]から[3]の中心
-	/*for (int i = 0; i < CEnemy::mPointSize; i++){
-		CEnemy::mPoint.Set
-	}*/
 
 	//的の残数の初期化
 	CItem::mTargetAmount = 0;
@@ -229,7 +321,10 @@ void CSceneRace::Init() {
 	//コースの読み込み
 	//mCource01.Load("material\\racing_mat\\CourceNew01.obj", "material\\racing_mat\\CourceNew01.mtl");
 	mCource01.Load("material\\racing_mat\\CourceNew01.obj", "material\\racing_mat\\CourceNew01.mtl");
-	mCource02.Load("material\\racing_mat\\cource2nd\\track01.obj", "material\\racing_mat\\cource2nd\\track01.mtl");
+	mCource02Road.Load("material\\racing_mat\\cource2nd\\cource02road.obj", "material\\racing_mat\\cource2nd\\cource02road.mtl");
+	mCource02Wall.Load("material\\racing_mat\\cource2nd\\cource02wall.obj", "material\\racing_mat\\cource2nd\\cource02wall.mtl");
+	mCource02Jump.Load("material\\racing_mat\\cource2nd\\cource02jumper.obj", "material\\racing_mat\\cource2nd\\cource02jumper.mtl");
+	mCource03.Load("material\\racing_mat\\cource2nd\\track01.obj", "material\\racing_mat\\cource2nd\\track01.mtl");
 	//芝生の読み込み
 	mGrass01.Load("material\\racing_mat\\GrassNew01.obj", "material\\racing_mat\\GrassNew01.mtl");
 	//柵(壁)の読み込み
@@ -384,82 +479,100 @@ void CSceneRace::Init() {
 	//CChecker(&mTileBlack ,&mTileWhite, 5, 10.0f, 0.5f)
 
 
-	//透明度の高い物から先に描画する
+	/*else if (mChecks == 1){
+		mPosition = CVector(-2060.0f, mStartPoint[1], -3403.0f);
+		mStartRotation = 117.7f;
+	}
+	else if (mChecks == 2){
+		mPosition = CVector(-1020.0f, mStartPoint[1], 4594.0f);
+		mStartRotation = -506.4f;
+	}
+	else if (mChecks == 3){
+		mPosition = CVector(-1277.0f, mStartPoint[1], -448.0f);
+		mStartRotation = -200.0f;
+	}*/
 	
-	//中間地点(順に通らないと1周したことにならないし、順番を飛ばしてもいけない)
-	new CObj(&mCheckPoint, CVector(50.0f, 15.0f, 2500.0f), CVector(-90.0f, 0.0f, -50.0f), CVector(777.0f, 31.0f, 255.0f), 101);
-	new CObj(&mCheckPoint, CVector(-1800.0f, 15.0f, 20.0f), CVector(-90.0f, 180.0f, 0.0f), CVector(750.0f, 31.0f, 255.0f), 102);
-	new CObj(&mCheckPoint, CVector(-1100.0f, 15.0f, -2000.0f), CVector(-90.0f, 0.0f, 110.0f), CVector(750.0f, 31.0f, 255.0f), 103);
-	//new CObj(&mCheckPoint, CVector(600.0f, 15.0f, 6.9f), CVector(-90.0f, -180.0f, 0.0f), CVector(750.0f, 1.0f, 255.0f), 109);//ゴール地点
-	//new CObj(&mCheckPoint, CVector(0.0f, 20.0f, 2100.0f), CVector(90.0f, 0.0f, 0.0f), CVector(255.0f, 1.0f, 255.0f), 25);
-	
-
-	//ジャンプ台
-	new CObj(&mOnBlock, CVector(0.0f, 0.0f, 450.0f), CVector(-40.0f, 0.0f, 0.0f), CVector(60.0f, 5.0f, 40.0f), 202);
-	new CObj(&mOnBlock, CVector(0.0f, 0.0f, 550.0f), CVector(-40.0f, 90.0f, 0.0f), CVector(60.0f, 5.0f, 40.0f), 202);
-	new CObj(&mOnBlock, CVector(0.0f, 0.0f, 650.0f), CVector(-40.0f, 180.0f, 0.0f), CVector(60.0f, 5.0f, 40.0f), 202);
-	new CObj(&mOnBlock, CVector(0.0f, 0.0f, 750.0f), CVector(-40.0f, 270.0f, 0.0f), CVector(60.0f, 5.0f, 40.0f), 202);
-	new CObj(&mJumper01, CVector(220.0f, -20.0f, 870.0f), CVector(0.0f, 0.0f, 0.0f), CVector(120.0f, 5.0f, 120.0f), 202);
-
-	////ばね
-	//new CItem(&mSpringL, CVector(0.0f, -5.0f, 80.0f), CVector(), CVector(11.0f, 11.0f, 11.0f), 2);//バネ
-
-	
-	if (CSceneTitle::mMode <= 1){
+	if (CSceneTitle::mMode == 2){
+		/* ※透明度の高い物から先に描画する */
+		//中間地点(順に通らないと1周したことにならないし、順番を飛ばしてもいけない)
+		new CObj(&mCheckPoint, CVector(2893.0f, -100.0f, 2473.0f), CVector(0.0f, 0.0f, 0.0f), CVector(220.0f, 200.0f, 220.0f), 101);
+		new CObj(&mCheckPoint, CVector(-1020.0f, -100.0f, 4594.0f), CVector(0.0f, 0.0f, 0.0f), CVector(220.0f, 200.0f, 220.0f), 102);
+		new CObj(&mCheckPoint, CVector(-1277.0f, -100.0f, -448.0f), CVector(0.0f, 0.0f, 0.0f), CVector(220.0f, 200.0f, 220.0f), 103);
 		//new CObj(&msumple2, CVector(320.0f, -58.0f, 450.0f), CVector(0.0f, 180.0f, 0.0f), CVector(4.0f, 3.0f, 3.0f), 1);
-		//new CObj(&mCource02, CVector(-2800.0f, 0.0f, 0.0f), CVector(0.0f, 0.0f, 0.0f), CVector(7000.0f, 7000.0f, 7000.0f), 1);
+		new CObj(&mCource02Road, CVector(0.0f, -220.0f, 0.0f), CVector(0.0f, -139.3f, 0.0f), CVector(42.0f, 13.5f, 42.0f), 1);
+		new CObj(&mCource02Wall, CVector(0.0f, -220.0f, 0.0f), CVector(0.0f, -139.3f, 0.0f), CVector(42.0f, 13.5f, 42.0f), 200);
+		new CObj(&mCource02Jump, CVector(0.0f, -220.0f, 0.0f), CVector(0.0f, -139.3f, 0.0f), CVector(42.0f, 13.5f, 42.0f), 202);
+		//ゴール地点
+		//new CObj(&mMiniGoal, CVector(2222.0f, -1.0f, -2300.0f), CVector(0.0f, 0.0f, 0.0f), CVector(4.2f, 10.0f, 4.2f), 99);
+		new CObj(&mMiniGoal, CVector(2315.0f, -1.0f, -2300.0f), CVector(0.0f, 0.0f, 0.0f), CVector(4.2f, 10.0f, 4.2f), 99);
+		new CObj(&mMiniGoal, CVector(2107.0f, -1.0f - 0.05f, -2300.0f), CVector(0.0f, 180.0f, 0.0f), CVector(4.2f, 10.0f, 4.2f), 99);
+		//new CObj(&mCube, CVector(2216.0f, -1.0f, -2300.0f), CVector(0.0f, 0.0f, 0.0f), CVector(220.0f, 300.0f, 40.0f), 1);
 	}
 	else{
-		
-	}
-	//新・コースの生成
-	for (int i = 0; i < 1; i++){
-		//コースの生成//ここを床と壁で分割して処理を分ける予定
-		new CObj(&mCource01, CVector(-360.0f, 5.0f - 33.0f, 230.0f), CVector(), CVector(50.0f, 2.0f, 50.0f), 1);
-		//芝生の生成(通行中は速度低下)
-		new CObj(&mGrass01, CVector(-360.0f, 5.0f - 33.0f, 230.0f), CVector(), CVector(50.0f, 2.0f, 50.0f), 112);
-		//コースに柵の配置(壁扱い)
-		new CObj(&mFenceTop, CVector(-360.0f, -70.0f - 35.0f, 230.0f), CVector(), CVector(50.0f, 5.5f + 1.5f, 50.0f), 1);
-		new CObj(&mFenceSide, CVector(-360.0f, -70.0f - 35.0f, 230.0f), CVector(), CVector(50.0f, 5.5f + 1.5f, 50.0f), 200);
-		//道路と芝生の境目のタイルを生成(当たり判定無し)
-		new CObj(&mRWTile, CVector(-360.0f, 5.0f - 33.0f + 0.05f, 230.0f), CVector(), CVector(50.0f, 2.0f, 50.0f), 99);
-		//柵の内側を詰めてみたがやっぱり車が入り込んでしまう
-		//new CObj(&mStuff, CVector(-360.0f, -70.0f - 35.0f, 230.0f), CVector(), CVector(50.0f, 5.5f + 1.5f, 50.0f), 1);
-	}
-	//白・黒タイルでゴール示唆
-	for (int i = 0; i < 40; i++){
-	//	mStartPoint[0] = 300.0f;  mStartPoint[1] = 63.0f;  mStartPoint[2] = -50.0f;
-		if (i % 2 == 0){
-			new CObj(&mTileBlack, CVector(170.0f + 20.0f*i, -13.1f + 0.5f, -20.0f), CVector(0.0f, 0.0f, 0.0f), CVector(10.0f, 1.0f, 10.0f), 99);//黒タイル
-			new CObj(&mTileWhite, CVector(170.0f + 20.0f*i, -13.1f + 0.5f, -20.0f + 20.0f), CVector(0.0f, 0.0f, 0.0f), CVector(10.0f, 1.0f, 10.0f), 99);//白タイル
+		/*透明度の高い物から先に描画する*/
+		//中間地点(順に通らないと1周したことにならないし、順番を飛ばしてもいけない)
+		new CObj(&mCheckPoint, CVector(50.0f, 15.0f, 2500.0f), CVector(-90.0f, 0.0f, -50.0f), CVector(777.0f, 31.0f, 255.0f), 101);
+		new CObj(&mCheckPoint, CVector(-1800.0f, 15.0f, 20.0f), CVector(-90.0f, 180.0f, 0.0f), CVector(750.0f, 31.0f, 255.0f), 102);
+		new CObj(&mCheckPoint, CVector(-1100.0f, 15.0f, -2000.0f), CVector(-90.0f, 0.0f, 110.0f), CVector(750.0f, 31.0f, 255.0f), 103);
+		//new CObj(&mCheckPoint, CVector(600.0f, 15.0f, 6.9f), CVector(-90.0f, -180.0f, 0.0f), CVector(750.0f, 1.0f, 255.0f), 109);//ゴール地点
+		//new CObj(&mCheckPoint, CVector(0.0f, 20.0f, 2100.0f), CVector(90.0f, 0.0f, 0.0f), CVector(255.0f, 1.0f, 255.0f), 25);
+		/*ジャンプ台*/
+		new CObj(&mOnBlock, CVector(0.0f, 0.0f, 450.0f), CVector(-40.0f, 0.0f, 0.0f), CVector(60.0f, 5.0f, 40.0f), 202);
+		new CObj(&mOnBlock, CVector(0.0f, 0.0f, 550.0f), CVector(-40.0f, 90.0f, 0.0f), CVector(60.0f, 5.0f, 40.0f), 202);
+		new CObj(&mOnBlock, CVector(0.0f, 0.0f, 650.0f), CVector(-40.0f, 180.0f, 0.0f), CVector(60.0f, 5.0f, 40.0f), 202);
+		new CObj(&mOnBlock, CVector(0.0f, 0.0f, 750.0f), CVector(-40.0f, 270.0f, 0.0f), CVector(60.0f, 5.0f, 40.0f), 202);
+		new CObj(&mJumper01, CVector(220.0f, -20.0f, 870.0f), CVector(0.0f, 0.0f, 0.0f), CVector(120.0f, 5.0f, 120.0f), 202);
+
+		//新・コースの生成
+		for (int i = 0; i < 1; i++){
+			//コースの生成//ここを床と壁で分割して処理を分ける予定
+			new CObj(&mCource01, CVector(-360.0f, 5.0f - 33.0f, 230.0f), CVector(), CVector(50.0f, 2.0f, 50.0f), 1);
+			//芝生の生成(通行中は速度低下)
+			new CObj(&mGrass01, CVector(-360.0f, 5.0f - 33.0f, 230.0f), CVector(), CVector(50.0f, 2.0f, 50.0f), 112);
+			//コースに柵の配置(壁扱い)
+			new CObj(&mFenceTop, CVector(-360.0f, -70.0f - 35.0f, 230.0f), CVector(), CVector(50.0f, 5.5f + 1.5f, 50.0f), 1);
+			new CObj(&mFenceSide, CVector(-360.0f, -70.0f - 35.0f, 230.0f), CVector(), CVector(50.0f, 5.5f + 1.5f, 50.0f), 200);
+			//道路と芝生の境目のタイルを生成(当たり判定無し)
+			new CObj(&mRWTile, CVector(-360.0f, 5.0f - 33.0f + 0.05f, 230.0f), CVector(), CVector(50.0f, 2.0f, 50.0f), 99);
+			//柵の内側を詰めてみたがやっぱり車が入り込んでしまう
+			//new CObj(&mStuff, CVector(-360.0f, -70.0f - 35.0f, 230.0f), CVector(), CVector(50.0f, 5.5f + 1.5f, 50.0f), 1);
 		}
-		else{
-			new CObj(&mTileBlack, CVector(170.0f + 20.0f*i, -13.1f + 0.5f, -20.0f + 20.0f), CVector(0.0f, 0.0f, 0.0f), CVector(10.0f, 1.0f, 10.0f), 99);//黒タイル
-			new CObj(&mTileWhite, CVector(170.0f + 20.0f*i, -13.1f + 0.5f, -20.0f), CVector(0.0f, 0.0f, 0.0f), CVector(10.0f, 1.0f, 10.0f), 99);//白タイル
-			//new CObj(&mTileWhite, CVector(300.0f + 20.0f*i, -2.0f + 0.1f, -20.0f), CVector(0.0f, 0.0f, 0.0f), CVector(10.0f, 1.0f, 10.0f), 99);//白タイル
+		//白・黒タイルでゴール示唆
+		for (int i = 0; i < 40; i++){
+			//	mStartPoint[0] = 300.0f;  mStartPoint[1] = 63.0f;  mStartPoint[2] = -50.0f;
+			if (i % 2 == 0){
+				new CObj(&mTileBlack, CVector(170.0f + 20.0f*i, -13.1f + 0.5f, -20.0f), CVector(0.0f, 0.0f, 0.0f), CVector(10.0f, 1.0f, 10.0f), 99);//黒タイル
+				new CObj(&mTileWhite, CVector(170.0f + 20.0f*i, -13.1f + 0.5f, -20.0f + 20.0f), CVector(0.0f, 0.0f, 0.0f), CVector(10.0f, 1.0f, 10.0f), 99);//白タイル
+			}
+			else{
+				new CObj(&mTileBlack, CVector(170.0f + 20.0f*i, -13.1f + 0.5f, -20.0f + 20.0f), CVector(0.0f, 0.0f, 0.0f), CVector(10.0f, 1.0f, 10.0f), 99);//黒タイル
+				new CObj(&mTileWhite, CVector(170.0f + 20.0f*i, -13.1f + 0.5f, -20.0f), CVector(0.0f, 0.0f, 0.0f), CVector(10.0f, 1.0f, 10.0f), 99);//白タイル
+				//new CObj(&mTileWhite, CVector(300.0f + 20.0f*i, -2.0f + 0.1f, -20.0f), CVector(0.0f, 0.0f, 0.0f), CVector(10.0f, 1.0f, 10.0f), 99);//白タイル
+			}
 		}
+		//ゴール(ゲート側)
+		for (int i = 0; i < 20; i++){
+			if (i % 2 == 0){
+				new CObj(&mTileBlack, CVector(170.0f + 40.0f*i + 5.0f + 10.0f, 110.0f + 200.0f - 5.0f - 10.0f - 20.0f - 10.0f, -14.0f), CVector(90.0f, 0.0f, 0.0f), CVector(20.0f, 4.9f, 20.0f), 99);//黒タイル
+				new CObj(&mTileWhite, CVector(170.0f + 40.0f*i + 5.0f + 10.0f, 110.0f + 10.0f + 200.0f - 5.0f - 10.0f, -14.0f), CVector(90.0f, 0.0f, 0.0f), CVector(20.0f, 4.9f, 20.0f), 99);//白タイル
+			}
+			else{
+				new CObj(&mTileBlack, CVector(170.0f + 40.0f*i + 5.0f + 10.0f, 110.0f + 10.0f + 200.0f - 5.0f - 10.0f, -14.0f), CVector(90.0f, 0.0f, 0.0f), CVector(20.0f, 4.9f, 20.0f), 99);//黒タイル
+				new CObj(&mTileWhite, CVector(170.0f + 40.0f*i + 5.0f + 10.0f, 110.0f + 200.0f - 5.0f - 10.0f - 20.0f - 10.0f, -14.0f), CVector(90.0f, 0.0f, 0.0f), CVector(20.0f, 4.9f, 20.0f), 99);//白タイル
+			}
+		}
+		//ポール
+		new CObj(&mTileWhite, CVector(170.0f + 20.0f * -1 + 5.0f + 5.0f, -13.1f - 10.0f, -10.0f), CVector(0.0f, 0.0f, 0.0f), CVector(10.0f, 174.0f, 10.0f), 1);//柱
+		new CObj(&mTileWhite, CVector(170.0f + 20.0f * 40 + 5.0f - 5.0f, -13.1f - 10.0f, -10.0f), CVector(0.0f, 0.0f, 0.0f), CVector(10.0f, 174.0, 10.0f), 1);//柱
+
+		//加速床
+		new CObj(&mDashBoard, CVector(260.0f, -13.1f + 3.0f, 800.0f), CVector(0.0f, 180.0f, 0.0f), CVector(2.0f, 2.0f, 2.0f), 111);
+		new CObj(&mDashBoard, CVector(234.0f, -13.1f + 3.0f, -980.0f), CVector(0.0f, 180.0f, 0.0f), CVector(2.0f, 2.0f, 2.0f), 111);
+		new CObj(&mDashBoard, CVector(-1500.0f, -13.1f + 3.0f, -200.0f), CVector(0.0f, 0.0f, 0.0f), CVector(2.0f, 2.0f, 2.0f), 111);
+		//new CObj(&mDashBoard, CVector(-500.0f, -13.1f + 3.0f, -1900.0f), CVector(0.0f, -90.0f, 0.0f), CVector(2.0f, 2.0f, 2.0f), 111);
+		//new CObj(&mDashBoard, CVector(500.0f, 13.1f + 3.0f, -1200.0f), CVector(0.0f, 180.0f, 90.0f), CVector(3.0f, 3.0f, 3.0f), 111);
 	}
-	//ゴール(ゲート側)
-	for (int i = 0; i < 20; i++){
-		if (i % 2 == 0){
-			new CObj(&mTileBlack, CVector(170.0f + 40.0f*i + 5.0f + 10.0f, 110.0f + 200.0f - 5.0f - 10.0f - 20.0f - 10.0f, -14.0f), CVector(90.0f, 0.0f, 0.0f), CVector(20.0f, 4.9f, 20.0f), 99);//黒タイル
-			new CObj(&mTileWhite, CVector(170.0f + 40.0f*i + 5.0f + 10.0f, 110.0f + 10.0f + 200.0f - 5.0f - 10.0f, -14.0f), CVector(90.0f, 0.0f, 0.0f), CVector(20.0f, 4.9f, 20.0f), 99);//白タイル
-		}
-		else{
-			new CObj(&mTileBlack, CVector(170.0f + 40.0f*i + 5.0f + 10.0f, 110.0f + 10.0f + 200.0f - 5.0f - 10.0f, -14.0f), CVector(90.0f, 0.0f, 0.0f), CVector(20.0f, 4.9f, 20.0f), 99);//黒タイル
-			new CObj(&mTileWhite, CVector(170.0f + 40.0f*i + 5.0f + 10.0f, 110.0f + 200.0f - 5.0f - 10.0f - 20.0f - 10.0f, -14.0f), CVector(90.0f, 0.0f, 0.0f), CVector(20.0f, 4.9f, 20.0f), 99);//白タイル
-		}
-	}
-	//ポール
-	new CObj(&mTileWhite, CVector(170.0f + 20.0f * -1 + 5.0f + 5.0f, -13.1f - 10.0f, -10.0f), CVector(0.0f, 0.0f, 0.0f), CVector(10.0f, 174.0f, 10.0f), 1);//柱
-	new CObj(&mTileWhite, CVector(170.0f + 20.0f * 40 + 5.0f - 5.0f, -13.1f - 10.0f, -10.0f), CVector(0.0f, 0.0f, 0.0f), CVector(10.0f, 174.0, 10.0f), 1);//柱
 	
-	//加速床
-	new CObj(&mDashBoard, CVector(260.0f, -13.1f + 3.0f, 800.0f), CVector(0.0f, 180.0f, 0.0f), CVector(2.0f, 2.0f, 2.0f), 111);
-	new CObj(&mDashBoard, CVector(234.0f, -13.1f + 3.0f, -980.0f), CVector(0.0f, 180.0f, 0.0f), CVector(2.0f, 2.0f, 2.0f), 111);
-	new CObj(&mDashBoard, CVector(-1500.0f, -13.1f + 3.0f, -200.0f), CVector(0.0f, 0.0f, 0.0f), CVector(2.0f, 2.0f, 2.0f), 111);
-	//new CObj(&mDashBoard, CVector(-500.0f, -13.1f + 3.0f, -1900.0f), CVector(0.0f, -90.0f, 0.0f), CVector(2.0f, 2.0f, 2.0f), 111);
-	//new CObj(&mDashBoard, CVector(500.0f, 13.1f + 3.0f, -1200.0f), CVector(0.0f, 180.0f, 90.0f), CVector(3.0f, 3.0f, 3.0f), 111);
 
 	////物理演算(笑)するオブジェクト No.2001
 	//new CObj(&mTileWhite, CVector(500.0f, -13.1f + 23.0f, 900.0f), CVector(0.0f, 0.0f, 0.0f), CVector(11.0f, 11.0f, 11.0f), 2001);
@@ -754,33 +867,7 @@ void CSceneRace::Update() {
 	//バックミラーの描画
 	if (isRender_BackMirror){
 		RenderBackMirror();
-
-		//e = CVector(0.0f, 17.0f, -40.0f) * CMatrix().RotateY(mCamY)* mPlayer->mMatrixScale   // * mPlayer->mMatrixScale
-		//	* CMatrix().RotateY(mPlayer->mRotation.mY)
-		//	* mPlayer->mMatrixTranslate
-		//	+ CVector(0.0f, 0.0f, 0.0f);
-		//
-		//c = mPlayer->mPosition + CVector(0.0f, 0.0f, 40.0f)* mPlayer->mMatrixScale   //* mPlayer->mMatrixScale
-		//	* CMatrix().RotateY(mPlayer->mRotation.mY);
-		//u = CVector(0.0f, 1.0f, 0.0f);
-
-		///*////後方視点を表示？
-		////e = CVector(0.0f, 17.0f, 40.0f) * CMatrix().RotateY(mCamY) * mPlayer->mMatrixScale
-		////	* CMatrix().RotateY(mPlayer->mRotation.mY)
-		////	* mPlayer->mMatrixTranslate
-		////	+ CVector(0.0f, 0.0f, 0.0f);
-		////c = mPlayer->mPosition + CVector(0.0f, 0.0f, -40.0f)* mPlayer->mMatrixScale
-		////	* CMatrix().RotateY(mPlayer->mRotation.mY);
-		//////上方向を求める
-		////u = CVector(0.0f, 1.0f, 0.0f);
-		//*/
-		//
-		////バックミラーのカメラの設定
-		//Camera3D(e.mX, e.mY, e.mZ, c.mX, c.mY, c.mZ, u.mX, u.mY, u.mZ);
-		//Camera.mEye = e;
-		//CTaskManager::Get()->Render();
 	}
-
 	
 
 	//2D描画開始
@@ -933,67 +1020,133 @@ void CSceneRace::Update() {
 
 
 	//ゴール地点通過時の処理
-	if ((CPlayer::mpPlayer->mPosition.mX > -55.0f && CPlayer::mpPlayer->mPosition.mX < 1400.0f)
-		&& (CPlayer::mpPlayer->mPosition.mZ > -3.1f - 5.0f && CPlayer::mpPlayer->mPosition.mZ < -3.1f + 5.0f + 20.0f)
-		&& (CPlayer::mpPlayer->mChecks == 3)
-		&& (isStartRace)){
-		//new CObj(&mCube, CVector(0.0f, 0.0f, 5700.0f), CVector(-90.0f, 0.0f, 0.0f), CVector(100.0f, 13.0f, 211.0f), 1);//ゴール
-		//new CObj(&mTileBlack, CVector(170.0f + 20.0f * -1 + 5.0f, -13.1f + 10.0f, -10.0f), CVector(0.0f, 0.0f, 0.0f), CVector(5.0f, 64.0f, 5.0f), 99);//柱
-		//new CObj(&mTileBlack, CVector(170.0f + 20.0f * 40 + 5.0f, -13.1f + 10.0f, -10.0f), CVector(0.0f, 0.0f, 0.0f), CVector(5.0f, 64.0f, 5.0f), 99);//柱
-
-		if (mLap == mMaxLap){
-			//ベストタイム更新時
-			if (mTime < mBestTime){
-				mBestTime = mTime;
-				isNewRecord = true;
-				//コースによって新しく記録する
-				if (CSceneTitle::mMode == 1){
-					mRecord_A = mBestTime;
+	if (CSceneTitle::mMode == 2){
+		if ((CPlayer::mpPlayer->mPosition.mX > 2216.0f - 222.0f && CPlayer::mpPlayer->mPosition.mX < 2216.0f + 222.0f)
+			&& (CPlayer::mpPlayer->mPosition.mZ > -2300.0f - 30.0f && CPlayer::mpPlayer->mPosition.mZ < -2300.0f + 30.0f)
+			&& (CPlayer::mpPlayer->mChecks == 3)
+			&& (isStartRace)){
+			//new CObj(&mCube, CVector(0.0f, 0.0f, 5700.0f), CVector(-90.0f, 0.0f, 0.0f), CVector(100.0f, 13.0f, 211.0f), 1);//ゴール
+			//new CObj(&mTileBlack, CVector(170.0f + 20.0f * -1 + 5.0f, -13.1f + 10.0f, -10.0f), CVector(0.0f, 0.0f, 0.0f), CVector(5.0f, 64.0f, 5.0f), 99);//柱
+			//new CObj(&mTileBlack, CVector(170.0f + 20.0f * 40 + 5.0f, -13.1f + 10.0f, -10.0f), CVector(0.0f, 0.0f, 0.0f), CVector(5.0f, 64.0f, 5.0f), 99);//柱
+			if (mLap == mMaxLap){
+				//ベストタイム更新時
+				if (mTime < mBestTime){
+					mBestTime = mTime;
+					isNewRecord = true;
+					//コースによって新しく記録する
+					if (CSceneTitle::mMode == 1){
+						mRecord_A = mBestTime;
+					}
+					else if (CSceneTitle::mMode == 2){
+						mRecord_B = mBestTime;
+					}
+					else if (CSceneTitle::mMode == 3){
+						mRecord_C = mBestTime;
+					}
+					else if (CSceneTitle::mMode == 4){
+						mRecord_D = mBestTime;
+					}
 				}
-				else if (CSceneTitle::mMode == 2){				
-					mRecord_B = mBestTime;
-				}
-				else if (CSceneTitle::mMode == 3){					
-					mRecord_C = mBestTime;
-				}
-				else if (CSceneTitle::mMode == 4){					
-					mRecord_D = mBestTime;
-				}
+				isStartRace = false;
+				isGoal = true;
+				BGM.Stop();
+				SoundGoal.Play();
+				//CPlayer::mpPlayer->CanMove = false;//動きストップ
+				CPlayer::mpPlayer->mChecks = 0;
 			}
-			isStartRace = false;
-			isGoal = true;
-			BGM.Stop();
-			SoundGoal.Play();
-			//CPlayer::mpPlayer->CanMove = false;//動きストップ
-			CPlayer::mpPlayer->mChecks = 0;
-		}
-		else{
-			mLap++;
-			CPlayer::mpPlayer->mChecks = 0;
-		}
-	}
-	//CPUの車がゴール地点を通過した時の処理
-	for (int i = 0; i < ENEMYS_AMOUNT; i++){
-		if (mEnemys[i]->mPosition.mX>-55.0f && mEnemys[i]->mPosition.mX < 1400.0f
-			&& (mEnemys[i]->mPosition.mZ > -3.1f - 5.0f && mEnemys[i]->mPosition.mZ < -3.1f + 5.0f + 20.0f)
-			&& (mEnemys[i]->mChecks == 3)
-			&& (mEnemys[i]->isEnemyGoaled == false)){
-			//その敵が最終ラップだった場合
-			if (mEnemys[i]->mEnemyLap == mMaxLap){
-				//プレイヤーの未ゴール時はプレイヤーの最終順位が落ちる
-				if (isGoal == false){
-					mRanking++;
-				}
-				mEnemys[i]->isEnemyGoaled = true;
-			}
-			//まだ最終ラップでない場合
 			else{
-				//チェックポイントをリセットし、次の周スタート
-				mEnemys[i]->mChecks = 0;
-				mEnemys[i]->mEnemyLap++;
+				mLap++;
+				CPlayer::mpPlayer->mChecks = 0;
+			}
+		}
+		//CPUの車がゴール地点を通過した時の処理
+		for (int i = 0; i < ENEMYS_AMOUNT; i++){
+			if (mEnemys[i]->mPosition.mX>2216.0f - 222.0f && mEnemys[i]->mPosition.mX < 2216.0f + 222.0f
+				&& (mEnemys[i]->mPosition.mZ > -2300.0f - 30.0f && mEnemys[i]->mPosition.mZ < -2300.0f + 30.0f)
+				&& (mEnemys[i]->mChecks == 3)
+				&& (mEnemys[i]->isEnemyGoaled == false)){
+				//その敵が最終ラップだった場合
+				if (mEnemys[i]->mEnemyLap == mMaxLap){
+					//プレイヤーの未ゴール時はプレイヤーの最終順位が落ちる
+					if (isGoal == false){
+						mRanking++;
+					}
+					mEnemys[i]->isEnemyGoaled = true;
+				}
+				//まだ最終ラップでない場合
+				else{
+					//チェックポイントをリセットし、次の周スタート
+					mEnemys[i]->mChecks = 0;
+					mEnemys[i]->mEnemyLap++;
+				}
 			}
 		}
 	}
+	else{
+		if ((CPlayer::mpPlayer->mPosition.mX > -55.0f && CPlayer::mpPlayer->mPosition.mX < 1400.0f)
+			&& (CPlayer::mpPlayer->mPosition.mZ > -3.1f - 5.0f && CPlayer::mpPlayer->mPosition.mZ < -3.1f + 5.0f + 20.0f)
+			&& (CPlayer::mpPlayer->mChecks == 3)
+			&& (isStartRace)){
+			//new CObj(&mCube, CVector(0.0f, 0.0f, 5700.0f), CVector(-90.0f, 0.0f, 0.0f), CVector(100.0f, 13.0f, 211.0f), 1);//ゴール
+			//new CObj(&mTileBlack, CVector(170.0f + 20.0f * -1 + 5.0f, -13.1f + 10.0f, -10.0f), CVector(0.0f, 0.0f, 0.0f), CVector(5.0f, 64.0f, 5.0f), 99);//柱
+			//new CObj(&mTileBlack, CVector(170.0f + 20.0f * 40 + 5.0f, -13.1f + 10.0f, -10.0f), CVector(0.0f, 0.0f, 0.0f), CVector(5.0f, 64.0f, 5.0f), 99);//柱
+
+			if (mLap == mMaxLap){
+				//ベストタイム更新時
+				if (mTime < mBestTime){
+					mBestTime = mTime;
+					isNewRecord = true;
+					//コースによって新しく記録する
+					if (CSceneTitle::mMode == 1){
+						mRecord_A = mBestTime;
+					}
+					else if (CSceneTitle::mMode == 2){
+						mRecord_B = mBestTime;
+					}
+					else if (CSceneTitle::mMode == 3){
+						mRecord_C = mBestTime;
+					}
+					else if (CSceneTitle::mMode == 4){
+						mRecord_D = mBestTime;
+					}
+				}
+				isStartRace = false;
+				isGoal = true;
+				BGM.Stop();
+				SoundGoal.Play();
+				//CPlayer::mpPlayer->CanMove = false;//動きストップ
+				CPlayer::mpPlayer->mChecks = 0;
+			}
+			else{
+				mLap++;
+				CPlayer::mpPlayer->mChecks = 0;
+			}
+		}
+		//CPUの車がゴール地点を通過した時の処理
+		for (int i = 0; i < ENEMYS_AMOUNT; i++){
+			if (mEnemys[i]->mPosition.mX>-55.0f && mEnemys[i]->mPosition.mX < 1400.0f
+				&& (mEnemys[i]->mPosition.mZ > -3.1f - 5.0f && mEnemys[i]->mPosition.mZ < -3.1f + 5.0f + 20.0f)
+				&& (mEnemys[i]->mChecks == 3)
+				&& (mEnemys[i]->isEnemyGoaled == false)){
+				//その敵が最終ラップだった場合
+				if (mEnemys[i]->mEnemyLap == mMaxLap){
+					//プレイヤーの未ゴール時はプレイヤーの最終順位が落ちる
+					if (isGoal == false){
+						mRanking++;
+					}
+					mEnemys[i]->isEnemyGoaled = true;
+				}
+				//まだ最終ラップでない場合
+				else{
+					//チェックポイントをリセットし、次の周スタート
+					mEnemys[i]->mChecks = 0;
+					mEnemys[i]->mEnemyLap++;
+				}
+			}
+		}
+	}
+	
+
 	//if ((CPlayer::mpPlayer->mPosition.mX > -55.0f && CPlayer::mpPlayer->mPosition.mX < 1400.0f)
 	//	&& (CPlayer::mpPlayer->mPosition.mZ > -3.1f - 5.0f && CPlayer::mpPlayer->mPosition.mZ < -3.1f + 5.0f + 20.0f)
 	//	&& (CPlayer::mpPlayer->mChecks == 3)
@@ -1067,116 +1220,197 @@ void CSceneRace::RenderMiniMap() {
 	glPushMatrix();
 	glViewport(600 + 20-30, 450 - 440, 200, 150); //画面の描画エリアの指定
 	glLoadIdentity();
-	gluLookAt(0, 4800, 0, 0, 0, 0, 0, 0, 1);
+	if (CSceneTitle::mMode == 2){
+		gluLookAt(0, 7000, 0, 0, 0, 0, 0, 0, 1);
+	}
+	else{
+		gluLookAt(0, 4800, 0, 0, 0, 0, 0, 0, 1);
+	}	
 	glDisable(GL_DEPTH_TEST);
 //	BackGround.Render(CMatrix());
 	//タスクマネージャの描画
 //	TaskManager.Render();
-
-//	mPlayer->mpModel = &mCarsol;
-//	mPlayer->mScale = CVector(10.0f, 1.0f, 10.0f);
 	CTaskManager::Get()->Render();
 
-
-	if (isRendPoint == true){
-		/*デバッグ用*/
-		//設定した敵の目標地点すべてをミニマップ上に描画する
-		CMatrix point;
-		for (int i = 1; i <= 12; i++){//ポイントの数だけ処理実行
-			point = CMatrix().Scale(111.0f, 1.0f, 111.0f)
-				* CMatrix().RotateY(45);
-			//* CEnemy::mPoint->mMatrixTranslate;
-			//1より小さい時は即やめ
-			if (i < 1){
-				break;
-			}
-			if (i == 1){
-				point = point * CEnemy::mPoint->mMatrixTranslate;
-			}
-			else if (i == 2){
-				point = point * CEnemy::mPoint2->mMatrixTranslate;
-			}
-			else if (i == 3){
-				point = point * CEnemy::mPoint3->mMatrixTranslate;
-			}
-			else if (i == 4){
-				point = point * CEnemy::mPoint4->mMatrixTranslate;
-			}
-			else if (i == 5){
-				point = point * CEnemy::mPoint5->mMatrixTranslate;
-			}
-			else if (i == 6){
-				point = point * CEnemy::mPoint6->mMatrixTranslate;
-			}
-			//ハードモードではさらに目標地点が細かく設定される
-			else if (CSceneTitle::mDifficulty == 2 || CSceneTitle::mDifficulty == 3){
-				if (i == 7){
-					point = point * CEnemy::mPoint7->mMatrixTranslate;
+	if (CSceneTitle::mMode == 2){
+		if (isRendPoint == true){
+			/*デバッグ用*/
+			//設定した敵の目標地点すべてをミニマップ上に描画する
+			CMatrix point;
+			for (int i = 1; i <= 12; i++){//ポイントの数だけ処理実行
+				point = CMatrix().Scale(111.0f, 1.0f, 111.0f)
+					* CMatrix().RotateY(45);
+				//* CEnemy::mPoint->mMatrixTranslate;
+				//1より小さい時は即やめ
+				if (i < 1){
+					break;
 				}
-				else if (i == 8){
-					point = point * CEnemy::mPoint8->mMatrixTranslate;
+				if (i == 1){
+					point = point * CEnemy::mPoint->mMatrixTranslate;
 				}
-				else if (i == 9){
-					point = point * CEnemy::mPoint9->mMatrixTranslate;
+				else if (i == 2){
+					point = point * CEnemy::mPoint2->mMatrixTranslate;
 				}
-				else if (i == 10){
-					point = point * CEnemy::mPoint10->mMatrixTranslate;
+				else if (i == 3){
+					point = point * CEnemy::mPoint3->mMatrixTranslate;
 				}
-				else if (i == 11){
-					point = point * CEnemy::mPoint11->mMatrixTranslate;
+				else if (i == 4){
+					point = point * CEnemy::mPoint4->mMatrixTranslate;
 				}
-				else if (i == 12){
-					point = point * CEnemy::mPoint12->mMatrixTranslate;
+				else if (i == 5){
+					point = point * CEnemy::mPoint5->mMatrixTranslate;
 				}
+				else if (i == 6){
+					point = point * CEnemy::mPoint6->mMatrixTranslate;
+				}
+				//ハードモードではさらに目標地点が細かく設定される
+				else if (CSceneTitle::mDifficulty == 2 || CSceneTitle::mDifficulty == 3){
+					if (i == 7){
+						point = point * CEnemy::mPoint7->mMatrixTranslate;
+					}
+					else if (i == 8){
+						point = point * CEnemy::mPoint8->mMatrixTranslate;
+					}
+					else if (i == 9){
+						point = point * CEnemy::mPoint9->mMatrixTranslate;
+					}
+					else if (i == 10){
+						point = point * CEnemy::mPoint10->mMatrixTranslate;
+					}
+					else if (i == 11){
+						point = point * CEnemy::mPoint11->mMatrixTranslate;
+					}
+					else if (i == 12){
+						point = point * CEnemy::mPoint12->mMatrixTranslate;
+					}
+				}
+				else{
+					break;
+				}
+				mTileWhite.Render(point);
 			}
-			else{
-				break;
-			}
-			mTileWhite.Render(point);
 		}
-	}
-	//ミニマップにゴールアイコンを描画
-	CMatrix matminig;
-	matminig = CMatrix().Scale(20.0f, 1.0f, 20.0f)
-		//* mPlayer->mMatrixRotate
-		* CMatrix().RotateX(0)
-		* CMatrix().RotateY(0)
-		* CMatrix().RotateZ(0)
-		* CMatrix().Translate(550.0f, 0.0f, -10.0f);
-	mMiniGoal.Render(matminig);
-	
-	CMatrix matenemys[ENEMYS_AMOUNT];
-	for (int i = 0; i < ENEMYS_AMOUNT; i++){
-		matenemys[i] = CMatrix().Scale(35.0f, 1.0f, 35.0f) //* mPlayer->mMatrixScale
+		//ミニマップにゴールアイコンを描画
+		CMatrix matminig;
+		matminig = CMatrix().Scale(25.0f, 1.0f, 25.0f)
+			//* mPlayer->mMatrixRotate
 			* CMatrix().RotateX(0)
-			* CMatrix().RotateY(mEnemys[i]->mRotation.mY)
+			* CMatrix().RotateY(143)
 			* CMatrix().RotateZ(0)
-			* mEnemys[i]->mMatrixTranslate;
-		mCarsol_Enemy.Render(matenemys[i]);
+			* CMatrix().Translate(-3200.0f, 0.0f, 341.7f);
+		mMiniGoal.Render(matminig);
+		CMatrix matenemys[ENEMYS_AMOUNT];
+		for (int i = 0; i < ENEMYS_AMOUNT; i++){
+			matenemys[i] = CMatrix().Scale(35.0f, 1.0f, 35.0f) //* mPlayer->mMatrixScale
+				* CMatrix().RotateX(0)
+				* CMatrix().RotateY(mEnemys[i]->mRotation.mY)
+				* CMatrix().RotateZ(0)
+				* mEnemys[i]->mMatrixTranslate;
+			mCarsol_Enemy.Render(matenemys[i]);
+		}
+		//ミニマップ状にプレイヤーを示すカーソルを描画
+		CMatrix matplayer;
+		matplayer = CMatrix().Scale(35.0f, 1.0f, 35.0f) //* mPlayer->mMatrixScale
+			//* mPlayer->mMatrixRotate
+			* CMatrix().RotateX(0)
+			* CMatrix().RotateY(mPlayer->mRotation.mY)
+			* CMatrix().RotateZ(0)
+			* mPlayer->mMatrixTranslate;
+		mCarsol.Render(matplayer);
 	}
+	else{
+		if (isRendPoint == true){
+			/*デバッグ用*/
+			//設定した敵の目標地点すべてをミニマップ上に描画する
+			CMatrix point;
+			for (int i = 1; i <= 12; i++){//ポイントの数だけ処理実行
+				point = CMatrix().Scale(111.0f, 1.0f, 111.0f)
+					* CMatrix().RotateY(45);
+				//* CEnemy::mPoint->mMatrixTranslate;
+				//1より小さい時は即やめ
+				if (i < 1){
+					break;
+				}
+				if (i == 1){
+					point = point * CEnemy::mPoint->mMatrixTranslate;
+				}
+				else if (i == 2){
+					point = point * CEnemy::mPoint2->mMatrixTranslate;
+				}
+				else if (i == 3){
+					point = point * CEnemy::mPoint3->mMatrixTranslate;
+				}
+				else if (i == 4){
+					point = point * CEnemy::mPoint4->mMatrixTranslate;
+				}
+				else if (i == 5){
+					point = point * CEnemy::mPoint5->mMatrixTranslate;
+				}
+				else if (i == 6){
+					point = point * CEnemy::mPoint6->mMatrixTranslate;
+				}
+				//ハードモードではさらに目標地点が細かく設定される
+				else if (CSceneTitle::mDifficulty == 2 || CSceneTitle::mDifficulty == 3){
+					if (i == 7){
+						point = point * CEnemy::mPoint7->mMatrixTranslate;
+					}
+					else if (i == 8){
+						point = point * CEnemy::mPoint8->mMatrixTranslate;
+					}
+					else if (i == 9){
+						point = point * CEnemy::mPoint9->mMatrixTranslate;
+					}
+					else if (i == 10){
+						point = point * CEnemy::mPoint10->mMatrixTranslate;
+					}
+					else if (i == 11){
+						point = point * CEnemy::mPoint11->mMatrixTranslate;
+					}
+					else if (i == 12){
+						point = point * CEnemy::mPoint12->mMatrixTranslate;
+					}
+				}
+				else{
+					break;
+				}
+				mTileWhite.Render(point);
+			}
+		}
+		//ミニマップにゴールアイコンを描画
+		CMatrix matminig;
+		matminig = CMatrix().Scale(20.0f, 1.0f, 20.0f)
+			//* mPlayer->mMatrixRotate
+			* CMatrix().RotateX(0)
+			* CMatrix().RotateY(0)
+			* CMatrix().RotateZ(0)
+			* CMatrix().Translate(550.0f, 0.0f, -10.0f);
+		mMiniGoal.Render(matminig);
 
-	//ミニマップ状にプレイヤーを示すカーソルを描画
-	CMatrix matplayer;
-	matplayer = CMatrix().Scale(35.0f, 1.0f, 35.0f) //* mPlayer->mMatrixScale
-		//* mPlayer->mMatrixRotate
-		* CMatrix().RotateX(0)
-		* CMatrix().RotateY(mPlayer->mRotation.mY)
-		* CMatrix().RotateZ(0)
-		* mPlayer->mMatrixTranslate;
-	mCarsol.Render(matplayer);
+		CMatrix matenemys[ENEMYS_AMOUNT];
+		for (int i = 0; i < ENEMYS_AMOUNT; i++){
+			matenemys[i] = CMatrix().Scale(35.0f, 1.0f, 35.0f) //* mPlayer->mMatrixScale
+				* CMatrix().RotateX(0)
+				* CMatrix().RotateY(mEnemys[i]->mRotation.mY)
+				* CMatrix().RotateZ(0)
+				* mEnemys[i]->mMatrixTranslate;
+			mCarsol_Enemy.Render(matenemys[i]);
+		}
 
-
-	//mMatrix = mMatrixScale * mMatrixRotate * mMatrixTranslate;//参考
+		//ミニマップ状にプレイヤーを示すカーソルを描画
+		CMatrix matplayer;
+		matplayer = CMatrix().Scale(35.0f, 1.0f, 35.0f) //* mPlayer->mMatrixScale
+			//* mPlayer->mMatrixRotate
+			* CMatrix().RotateX(0)
+			* CMatrix().RotateY(mPlayer->mRotation.mY)
+			* CMatrix().RotateZ(0)
+			* mPlayer->mMatrixTranslate;
+		mCarsol.Render(matplayer);
+	}
 	
-
 
 	glPopMatrix();
 	glViewport(0, 0, 800, 600); //画面の描画エリアの指定
 	glEnable(GL_DEPTH_TEST);
-	
-	//Camera3D(e.mX, e.mY, e.mZ, c.mX, c.mY, c.mZ, u.mX, u.mY, u.mZ);
-
-	
 }
 //バックミラーを表示
 void CSceneRace::RenderBackMirror(){

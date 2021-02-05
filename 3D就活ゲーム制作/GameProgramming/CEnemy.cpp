@@ -463,7 +463,7 @@ void CEnemy::Update(){
 	}*/
 
 	//コースアウトした時
-	if (mPosition.mY < -150.0f){
+	if (mPosition.mY < -400.0f){
 		//落下の勢いを0にする
 		mVelocityJump = 0.0f;
 		//車の速度を0に

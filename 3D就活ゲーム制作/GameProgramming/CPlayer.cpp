@@ -3,6 +3,7 @@
 
 #include "CItem.h"
 #include "CBullet.h"
+#include "CSceneTitle.h"
 
 //衝突時のエフェクト追加
 #include "CEffect.h"
@@ -98,9 +99,18 @@ CPlayer::CPlayer()
 	mTag = EPLAYER;
 	mJumpPrio = 0;
 
-	//スタート地点の座標を設定;
-	mStartPoint[0] = 350.0f;  mStartPoint[1] = -13.538f;  mStartPoint[2] = -100.0f;
-	
+	if (CSceneTitle::mMode == 2){
+		//スタート地点の座標を設定;
+		mStartPoint[0] = 2222.0f;  mStartPoint[1] = -13.538f;  mStartPoint[2] = -2510.0f;
+		mStartRotation = 0.0f;
+		mRotation.mY = mStartRotation;
+	}
+	else{
+		//スタート地点の座標を設定;
+		mStartPoint[0] = 350.0f;  mStartPoint[1] = -13.538f;  mStartPoint[2] = -100.0f;
+		mStartRotation = 0.0f;
+		mRotation.mY = mStartRotation;
+	}
 	mPosition = CVector(mStartPoint[0], mStartPoint[1], mStartPoint[2]);
 	CCharacter::Update();
 
@@ -434,30 +444,52 @@ void CPlayer::Update(){
 	//mMatrix = mMatrixScale * mMatrixRotate * mMatrixTranslate;
 
 	//転落してしまった時(Rキーで即リスタート)
-	if (mPosition.mY < -150.0f || CKey::Once('R')){
+	if (mPosition.mY < -400.0f || CKey::Once('R')){
 		//落下の勢いを0にする
 		mVelocityJump = 0.0f;
 		//車の速度を0に
 		mCarSpeed = 0.0f;
 
-		mRotation = CVector(0.0f, 0.0f, 0.0f);
-		if (mChecks == 0){
-			//スタートした時の位置、方向に戻される
-			mPosition = CVector(mStartPoint[0], mStartPoint[1], mStartPoint[2]);
-			mRotation.mY = 0.0f;
+		if (CSceneTitle::mMode == 2){
+			if (mChecks == 0){
+				//スタート時の位置、方向に戻される
+				mPosition = CVector(mStartPoint[0], mStartPoint[1], mStartPoint[2]);
+				mStartRotation = 0.0f;
+			}
+			else if (mChecks == 1){
+				mPosition = CVector(2893.0f, mStartPoint[1], 2473.0f);
+				mStartRotation = -59.0f;
+			}
+			else if (mChecks == 2){
+				mPosition = CVector(-1020.0f, mStartPoint[1], 4594.0f);
+				mStartRotation = -506.4f;
+			}
+			else if (mChecks == 3){
+				mPosition = CVector(-1277.0f, mStartPoint[1], -448.0f);
+				mStartRotation = -200.0f;
+			}
 		}
-		else if (mChecks == 1){
-			mPosition = CVector(-80.0f, mStartPoint[1], 2175.0f);
-			mRotation.mY = -55.0f;
+		else{
+			if (mChecks == 0){
+				//スタート時の位置、方向に戻される
+				mPosition = CVector(mStartPoint[0], mStartPoint[1], mStartPoint[2]);
+				mStartRotation = 0.0f;
+			}
+			else if (mChecks == 1){
+				mPosition = CVector(-80.0f, mStartPoint[1], 2175.0f);
+				mStartRotation = -55.0f;
+			}
+			else if (mChecks == 2){
+				mPosition = CVector(-1620.0f, mStartPoint[1], 450.0f);
+				mStartRotation = -175.0f;
+			}
+			else if (mChecks == 3){
+				mPosition = CVector(-1212.0f, mStartPoint[1], -1616.0f);
+				mStartRotation = 120.0f;
+			}
 		}
-		else if (mChecks == 2){
-			mPosition = CVector(-1620.0f, mStartPoint[1], 450.0f);
-			mRotation.mY = -175.0f;
-		}
-		else if (mChecks == 3){
-			mPosition = CVector(-1212.0f, mStartPoint[1], -1616.0f);
-			mRotation.mY = 120.0f;
-		}
+		mRotation = CVector(0.0f, mStartRotation, 0.0f);
+		
 	}
 
 	CCharacter::Update();
