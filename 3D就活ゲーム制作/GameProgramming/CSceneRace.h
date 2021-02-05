@@ -80,6 +80,9 @@ public:
 
 	CPlayer *mPlayer;
 	CEnemy *mEnemys[ENEMYS_AMOUNT];
+
+
+	//CRaceCource1
 	
 
 	CSound BGM;
@@ -88,10 +91,10 @@ public:
 	CSound SoundGoal;
 	
 
-	int mBlockAmoX;//X座標の最大ブロック数
-	int mBlockAmoY;//Y座標の最大ブロック数
-	int mBlockAmoZ;//Z座標の最大ブロック数
-	int mBlockAmount;//上の三つの積にする
+	//int mBlockAmoX;//X座標の最大ブロック数
+	//int mBlockAmoY;//Y座標の最大ブロック数
+	//int mBlockAmoZ;//Z座標の最大ブロック数
+	//int mBlockAmount;//上の三つの積にする
 
 	float mCamY;//プレイヤーの周りをグルグル(水平方向に)
 
@@ -130,6 +133,29 @@ public:
 	CModel mCource03;
 
 	CModel mJumper01;
+
+
+	//CModel mSum;
+	//CRaceCource1 *a;
 };
+
+
+
+class CRaceCource1 : public CSceneRace {
+public:
+	//初期化処理のオーバーライド
+	void Init();
+	//更新処理のオーバーライド
+	void Update();
+
+	CModel mSum;
+};
+//class CRaceCource2 : public CSceneRace {
+//public:
+//	//初期化処理のオーバーライド
+//	void Init();
+//	//更新処理のオーバーライド
+//	void Update();
+//};
 
 #endif

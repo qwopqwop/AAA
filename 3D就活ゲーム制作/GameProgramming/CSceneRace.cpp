@@ -325,6 +325,7 @@ void CSceneRace::Init() {
 	mCource02Wall.Load("material\\racing_mat\\cource2nd\\cource02wall.obj", "material\\racing_mat\\cource2nd\\cource02wall.mtl");
 	mCource02Jump.Load("material\\racing_mat\\cource2nd\\cource02jumper.obj", "material\\racing_mat\\cource2nd\\cource02jumper.mtl");
 	mCource03.Load("material\\racing_mat\\cource2nd\\track01.obj", "material\\racing_mat\\cource2nd\\track01.mtl");
+	
 	//芝生の読み込み
 	mGrass01.Load("material\\racing_mat\\GrassNew01.obj", "material\\racing_mat\\GrassNew01.mtl");
 	//柵(壁)の読み込み
@@ -377,6 +378,9 @@ void CSceneRace::Init() {
 	mSumple.Load("UnderGround\\passage2.obj", "UnderGround\\passage2.mtl");
 	msumple2.Load("material\\racing_mat\\stage2\\tekitou.obj", "material\\racing_mat\\stage2\\tekitou.mtl");
 
+	//コース1の読み込み
+	//mSum.Load("cube.obj", "material\\racing_mat\\single_color\\blue.mtl");
+	new CRaceCource1();
 
 	//プレイヤーの生成
 	mPlayer = new CPlayer();
@@ -572,6 +576,8 @@ void CSceneRace::Init() {
 		//new CObj(&mDashBoard, CVector(-500.0f, -13.1f + 3.0f, -1900.0f), CVector(0.0f, -90.0f, 0.0f), CVector(2.0f, 2.0f, 2.0f), 111);
 		//new CObj(&mDashBoard, CVector(500.0f, 13.1f + 3.0f, -1200.0f), CVector(0.0f, 180.0f, 90.0f), CVector(3.0f, 3.0f, 3.0f), 111);
 	}
+
+	//new CObj(&mSum, CVector(260.0f, -13.1f + 3.0f, 300.0f), CVector(0.0f, 0.0f, 0.0f), CVector(112.0f, 112.0f, 112.0f), 1);
 	
 
 	////物理演算(笑)するオブジェクト No.2001
@@ -1538,3 +1544,18 @@ CScene::EScene CSceneRace::GetNextScene(){
 	return mScene;
 }
 
+
+void CRaceCource1::Init(){
+	mSum.Load("cube.obj", "material\\racing_mat\\single_color\\blue.mtl");
+	new CObj(&mSum, CVector(260.0f, -13.1f + 3.0f, 300.0f), CVector(0.0f, 0.0f, 0.0f), CVector(112.0f, 112.0f, 112.0f), 1);
+}
+void CRaceCource1::Update(){
+	//CTaskManager::Get()->Update();
+	printf("w");
+}
+//void CRaceCource2::Init(){
+//
+//}
+//void CRaceCource2::Update(){
+//
+//}
