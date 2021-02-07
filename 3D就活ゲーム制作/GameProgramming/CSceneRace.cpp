@@ -379,8 +379,11 @@ void CSceneRace::Init() {
 	msumple2.Load("material\\racing_mat\\stage2\\tekitou.obj", "material\\racing_mat\\stage2\\tekitou.mtl");
 
 	//コース1の読み込み
+	//CRaceCource1 *mCource001;
 	//mSum.Load("cube.obj", "material\\racing_mat\\single_color\\blue.mtl");
-	new CRaceCource1();
+	//new CRaceCource1();
+	//mCource001 = new CRaceCource1();
+	//new CRaceCource1();
 
 	//プレイヤーの生成
 	mPlayer = new CPlayer();
@@ -1553,9 +1556,10 @@ void CRaceCource1::Update(){
 	//CTaskManager::Get()->Update();
 	printf("w");
 }
-//void CRaceCource2::Init(){
-//
-//}
-//void CRaceCource2::Update(){
-//
-//}
+
+////void CRaceCource2::Init(){
+////
+////}
+////void CRaceCource2::Update(){
+////
+////}
