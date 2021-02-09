@@ -2,6 +2,9 @@
 #include "CSceneGame.h"
 #include "CSceneGameStage2.h"
 #include "CSceneRace.h"
+#include "CRaceCourceA.h"
+#include "CRaceCourceB.h"
+#include "CRaceCourceC.h"
 #include "CSceneTitle.h"
 #include "CTaskManager.h"
 
@@ -52,8 +55,20 @@ void CSceneManager::Update() {
 			mpScene = new CSceneGameStage2();
 			mpScene->Init();
 			break;
-		case CScene::ERACE1:
+		/*case CScene::ERACE1:
 			mpScene = new CSceneRace();
+			mpScene->Init();
+			break;*/
+		case CScene::ERACE1:
+			mpScene = new CRaceCourceA();
+			mpScene->Init();
+			break;
+		case CScene::ERACE2:
+			mpScene = new CRaceCourceB();
+			mpScene->Init();
+			break;
+		case CScene::ERACE3:
+			mpScene = new CRaceCourceC();
 			mpScene->Init();
 			break;
 		case CScene::ETITLE:

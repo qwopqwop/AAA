@@ -170,30 +170,7 @@ CEnemy::CEnemy()
 	isEnemyGoaled = false;//Ç‹ÇæÉSÅ[ÉãÇµÇƒÇ»Ç¢èÛë‘Ç…Ç∑ÇÈ
 }
 
-void CEnemy::Update(){
-	/*if (CKey::Push('A')){
-	mRotation.mY++;
-	}
-	if (CKey::Push('D')){
-	mRotation.mY--;
-	}
-	if (CKey::Push('W')){
-	mPosition = CVector(0.0f, mVelocityJump, 0.5f) * mMatrix;
-	}
-	else if (CKey::Push('S')){
-	mPosition = CVector(0.0f, mVelocityJump, -0.5f) * mMatrix;
-	}
-	else{
-	mPosition = CVector(0.0f, mVelocityJump, 0.0f) * mMatrix;
-	}*/
-
-	//if (CKey::Push('Q')){//Ç≈ÇŒ
-	//	mRotation.mY++;
-	//}
-	//if (CKey::Push('E')){//Ç¬ÇÆ
-	//	mRotation.mY--;
-	//}
-	
+void CEnemy::Update(){	
 	if (CKey::Once('T')){
 		printf("%d\n", rand(), rand());
 		//printf("mVPointÅcX:%.1f Y:%.1f Z:%.1f\n", mVPoint.mX, mVPoint.mY, mVPoint.mZ);

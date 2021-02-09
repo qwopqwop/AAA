@@ -8,7 +8,6 @@
 //CSound.hをインクルードしたら音の再生の動作が軽くなった？
 #include "CSound.h"
 #include "CSceneGame.h"
-#include "CRaceCource.h"
 
 #define ENEMYS_AMOUNT 8 //0以下には設定できない
 /*
@@ -136,36 +135,6 @@ public:
 	CModel mJumper01;
 
 
-	CModel mSum;
-
-
-
-	//；あるよね？？？？？？
-	CRaceCource1 *mCource001;
-	
+	CModel mSum;	
 };
-
-//#endif
-//#ifndef CRACECOURCE1_H
-//#define CRACECOURCE1_H
-
-class CRaceCource1 : public CSceneRace{
-public:
-	//初期化処理のオーバーライド
-	void Init();
-	//更新処理のオーバーライド
-	void Update();
-
-	CModel mSum;
-
-};
-
-//class CRaceCource2 : public CSceneRace {
-//public:
-//	//初期化処理のオーバーライド
-//	void Init();
-//	//更新処理のオーバーライド
-//	void Update();
-//};
-
 #endif

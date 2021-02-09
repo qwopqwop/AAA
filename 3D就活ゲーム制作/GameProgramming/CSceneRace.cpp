@@ -46,8 +46,9 @@ CSceneRace::~CSceneRace() {
 
 
 void CSceneRace::Init() {
-	//シーンの設定
-	mScene = ERACE1;
+	////CRaceCource～でCSceneRace::Init()を呼び出し次第、ここのシーンに飛んでしまうのでこの処理は無効
+	////シーンの設定
+	//mScene = ERACE1;
 	
 	if (CSceneTitle::mMode < 0){
 		if (CSceneTitle::mDifficulty == 1){//難易度：EASY
@@ -277,9 +278,8 @@ void CSceneRace::Init() {
 	//岩の読み込み
 	mRock.Load("Rock1.obj", "Rock1.mtl");
 	//車の読み込み
-	mRover.Load("Rover1.obj", "material\\racing_mat\\single_color\\white.mtl");
-	//mRover.Load("Rover1.obj", "Rover1.mtl");
-	mCarRed.Load("Rover1.obj", "material\\racing_mat\\single_color\\red.mtl");
+	mRover.Load("Rover1.obj", "material\\racing_mat\\single_color\\white.mtl");//プレイヤー
+	mCarRed.Load("Rover1.obj", "material\\racing_mat\\single_color\\red.mtl");//以下敵の車
 	mCarBlue.Load("Rover1.obj", "material\\racing_mat\\single_color\\blue.mtl");
 	mCarGreen.Load("Rover1.obj", "material\\racing_mat\\single_color\\green.mtl");
 	mCarYellow.Load("Rover1.obj", "material\\racing_mat\\single_color\\yellow.mtl");
@@ -287,7 +287,6 @@ void CSceneRace::Init() {
 	mCarCyan.Load("Rover1.obj", "material\\racing_mat\\single_color\\cyan.mtl");
 	mCarWhite.Load("Rover1.obj", "material\\racing_mat\\single_color\\white.mtl");
 	mCarBlack.Load("Rover1.obj", "material\\racing_mat\\single_color\\black.mtl");
-//	mRover.Load("sphere.obj", "sphere.mtl");
 	//立方体の読み込み
 	mCube.Load("cube.obj", "material\\cube.mtl");
 	//地面の読み込み
@@ -324,16 +323,16 @@ void CSceneRace::Init() {
 	mCource02Road.Load("material\\racing_mat\\cource2nd\\cource02road.obj", "material\\racing_mat\\cource2nd\\cource02road.mtl");
 	mCource02Wall.Load("material\\racing_mat\\cource2nd\\cource02wall.obj", "material\\racing_mat\\cource2nd\\cource02wall.mtl");
 	mCource02Jump.Load("material\\racing_mat\\cource2nd\\cource02jumper.obj", "material\\racing_mat\\cource2nd\\cource02jumper.mtl");
-	mCource03.Load("material\\racing_mat\\cource2nd\\track01.obj", "material\\racing_mat\\cource2nd\\track01.mtl");
+	mCource03.Load("material\\racing_mat\\cource2nd\\track01.obj", "material\\racing_mat\\cource2nd\\track01.mtl");	//借り物
 	
 	//芝生の読み込み
 	mGrass01.Load("material\\racing_mat\\GrassNew01.obj", "material\\racing_mat\\GrassNew01.mtl");
 	//柵(壁)の読み込み
 	mFence01.Load("material\\racing_mat\\Cource01Wall.obj", "material\\racing_mat\\Cource01Wall.mtl");
 	//柵の読み込み
-	mFenceTop.Load("material\\racing_mat\\FenceTopNew.obj", "material\\racing_mat\\FenceTopNew.mtl");
-	mFenceSide.Load("material\\racing_mat\\FenceSideNew.obj", "material\\racing_mat\\FenceSideNew.mtl");
-	mStuff.Load("material\\racing_mat\\fencestuff01.obj", "cube2.mtl");
+	mFenceTop.Load("material\\racing_mat\\FenceTopNew.obj", "material\\racing_mat\\FenceTopNew.mtl");//上面
+	mFenceSide.Load("material\\racing_mat\\FenceSideNew.obj", "material\\racing_mat\\FenceSideNew.mtl");//壁
+	mStuff.Load("material\\racing_mat\\fencestuff01.obj", "cube2.mtl");//詰め物(?)
 
 	mPole.Load("cube.obj", "material\\soil.mtl");
 
@@ -376,14 +375,6 @@ void CSceneRace::Init() {
 	SoundGoal.Load("SE\\tm2_whistle000.wav");
 
 	mSumple.Load("UnderGround\\passage2.obj", "UnderGround\\passage2.mtl");
-	msumple2.Load("material\\racing_mat\\stage2\\tekitou.obj", "material\\racing_mat\\stage2\\tekitou.mtl");
-
-	//コース1の読み込み
-	//CRaceCource1 *mCource001;
-	//mSum.Load("cube.obj", "material\\racing_mat\\single_color\\blue.mtl");
-	//new CRaceCource1();
-	//mCource001 = new CRaceCource1();
-	//new CRaceCource1();
 
 	//プレイヤーの生成
 	mPlayer = new CPlayer();
@@ -446,38 +437,6 @@ void CSceneRace::Init() {
 		mEnemys[i]->CCharacter::Update();
 	}
 
-	//岩の生成　モデルmRock　位置|-20.0 0.0 20.0|
-	//回転|0.0 0.0 0.0|　拡大|5.0 5.0 5.0|
-	//	new CRock(&mRock, CVector(-20.0f, 0.0f, 20.0f), CVector(), CVector(5.0f, 5.0f, 5.0f));
-	//立方体の生成
-	//	new CObj(&mCube, CVector(0.0f, 0.0f, 60.0f), CVector(0.0f, 0.0f, 0.0f), CVector(10.0f, 10.0f, 1.0f), 1);
-	//地面の生成
-//	new CObj(&mPlane, CVector(0.0f, 0.0f, 0.0f), CVector(), CVector(100.0f, 1.0f, 100.0f), 1);
-	////旧コースの生成
-	//new CObj(&mCube, CVector(0.0f, -20.0f, 0.0f + 100.0f * 29), CVector(0.0f, 0.0f, 0.0f), CVector(100.0f, 10.0f, 100.0f * 29 + 100.0f), 1);
-	////ゴール地点の床タイル
-	//for (int i = 0; i < 10; i++){
-	//	if (i % 2 == 0){
-	//		new CObj(&mTileBlack, CVector(-90.0f + 20.0f*i, -2.0f + 0.1f, 5700.0f), CVector(0.0f, 0.0f, 0.0f), CVector(10.0f, 1.0f, 10.0f), 99);//黒タイル
-	//		new CObj(&mTileWhite, CVector(-90.0f + 20.0f*i, -2.0f + 0.1f, 5700.0f + 20.0f), CVector(0.0f, 0.0f, 0.0f), CVector(10.0f, 1.0f, 10.0f), 99);//白タイル
-	//	}
-	//	else{
-	//		new CObj(&mTileBlack, CVector(-90.0f + 20.0f*i, -2.0f + 0.1f, 5700.0f + 20.0f), CVector(0.0f, 0.0f, 0.0f), CVector(10.0f, 1.0f, 10.0f), 99);//黒タイル
-	//		new CObj(&mTileWhite, CVector(-90.0f + 20.0f*i, -2.0f+0.1f, 5700.0f), CVector(0.0f, 0.0f, 0.0f), CVector(10.0f, 1.0f, 10.0f), 99);//白タイル
-	//	}
-	//}
-	////ゴール(ゲート側)
-	//for (int i = 0; i < 10; i++){
-	//	if (i % 2 == 0){
-	//		new CObj(&mTileBlack, CVector(-90.0f + 20.0f*i, 110.0f, 5700.0f), CVector(90.0f, 0.0f, 0.0f), CVector(10.0f, 1.0f, 5.0f), 99);//黒タイル
-	//		new CObj(&mTileWhite, CVector(-90.0f + 20.0f*i, 110.0f + 10.0f, 5700.0f), CVector(90.0f, 0.0f, 0.0f), CVector(10.0f, 1.0f, 5.0f), 99);//白タイル
-	//	}
-	//	else{
-	//		new CObj(&mTileBlack, CVector(-90.0f + 20.0f*i, 110.0f + 10.0f, 5700.0f), CVector(90.0f, 0.0f, 0.0f), CVector(10.0f, 1.0f, 5.0f), 99);//黒タイル
-	//		new CObj(&mTileWhite, CVector(-90.0f + 20.0f*i, 110.0f, 5700.0f), CVector(90.0f, 0.0f, 0.0f), CVector(10.0f, 1.0f, 5.0f), 99);//白タイル
-	//	}
-	//}
-
 	// 1 2 3 4 5
 	//■□■□■
 	//□■□■□
@@ -497,91 +456,14 @@ void CSceneRace::Init() {
 	else if (mChecks == 3){
 		mPosition = CVector(-1277.0f, mStartPoint[1], -448.0f);
 		mStartRotation = -200.0f;
-	}*/
+	}
 	
 	if (CSceneTitle::mMode == 2){
-		/* ※透明度の高い物から先に描画する */
-		//中間地点(順に通らないと1周したことにならないし、順番を飛ばしてもいけない)
-		new CObj(&mCheckPoint, CVector(2893.0f, -100.0f, 2473.0f), CVector(0.0f, 0.0f, 0.0f), CVector(220.0f, 200.0f, 220.0f), 101);
-		new CObj(&mCheckPoint, CVector(-1020.0f, -100.0f, 4594.0f), CVector(0.0f, 0.0f, 0.0f), CVector(220.0f, 200.0f, 220.0f), 102);
-		new CObj(&mCheckPoint, CVector(-1277.0f, -100.0f, -448.0f), CVector(0.0f, 0.0f, 0.0f), CVector(220.0f, 200.0f, 220.0f), 103);
-		//new CObj(&msumple2, CVector(320.0f, -58.0f, 450.0f), CVector(0.0f, 180.0f, 0.0f), CVector(4.0f, 3.0f, 3.0f), 1);
-		new CObj(&mCource02Road, CVector(0.0f, -220.0f, 0.0f), CVector(0.0f, -139.3f, 0.0f), CVector(42.0f, 13.5f, 42.0f), 1);
-		new CObj(&mCource02Wall, CVector(0.0f, -220.0f, 0.0f), CVector(0.0f, -139.3f, 0.0f), CVector(42.0f, 13.5f, 42.0f), 200);
-		new CObj(&mCource02Jump, CVector(0.0f, -220.0f, 0.0f), CVector(0.0f, -139.3f, 0.0f), CVector(42.0f, 13.5f, 42.0f), 202);
-		//ゴール地点
-		//new CObj(&mMiniGoal, CVector(2222.0f, -1.0f, -2300.0f), CVector(0.0f, 0.0f, 0.0f), CVector(4.2f, 10.0f, 4.2f), 99);
-		new CObj(&mMiniGoal, CVector(2315.0f, -1.0f, -2300.0f), CVector(0.0f, 0.0f, 0.0f), CVector(4.2f, 10.0f, 4.2f), 99);
-		new CObj(&mMiniGoal, CVector(2107.0f, -1.0f - 0.05f, -2300.0f), CVector(0.0f, 180.0f, 0.0f), CVector(4.2f, 10.0f, 4.2f), 99);
-		//new CObj(&mCube, CVector(2216.0f, -1.0f, -2300.0f), CVector(0.0f, 0.0f, 0.0f), CVector(220.0f, 300.0f, 40.0f), 1);
+		
 	}
 	else{
-		/*透明度の高い物から先に描画する*/
-		//中間地点(順に通らないと1周したことにならないし、順番を飛ばしてもいけない)
-		new CObj(&mCheckPoint, CVector(50.0f, 15.0f, 2500.0f), CVector(-90.0f, 0.0f, -50.0f), CVector(777.0f, 31.0f, 255.0f), 101);
-		new CObj(&mCheckPoint, CVector(-1800.0f, 15.0f, 20.0f), CVector(-90.0f, 180.0f, 0.0f), CVector(750.0f, 31.0f, 255.0f), 102);
-		new CObj(&mCheckPoint, CVector(-1100.0f, 15.0f, -2000.0f), CVector(-90.0f, 0.0f, 110.0f), CVector(750.0f, 31.0f, 255.0f), 103);
-		//new CObj(&mCheckPoint, CVector(600.0f, 15.0f, 6.9f), CVector(-90.0f, -180.0f, 0.0f), CVector(750.0f, 1.0f, 255.0f), 109);//ゴール地点
-		//new CObj(&mCheckPoint, CVector(0.0f, 20.0f, 2100.0f), CVector(90.0f, 0.0f, 0.0f), CVector(255.0f, 1.0f, 255.0f), 25);
-		/*ジャンプ台*/
-		new CObj(&mOnBlock, CVector(0.0f, 0.0f, 450.0f), CVector(-40.0f, 0.0f, 0.0f), CVector(60.0f, 5.0f, 40.0f), 202);
-		new CObj(&mOnBlock, CVector(0.0f, 0.0f, 550.0f), CVector(-40.0f, 90.0f, 0.0f), CVector(60.0f, 5.0f, 40.0f), 202);
-		new CObj(&mOnBlock, CVector(0.0f, 0.0f, 650.0f), CVector(-40.0f, 180.0f, 0.0f), CVector(60.0f, 5.0f, 40.0f), 202);
-		new CObj(&mOnBlock, CVector(0.0f, 0.0f, 750.0f), CVector(-40.0f, 270.0f, 0.0f), CVector(60.0f, 5.0f, 40.0f), 202);
-		new CObj(&mJumper01, CVector(220.0f, -20.0f, 870.0f), CVector(0.0f, 0.0f, 0.0f), CVector(120.0f, 5.0f, 120.0f), 202);
-
-		//新・コースの生成
-		for (int i = 0; i < 1; i++){
-			//コースの生成//ここを床と壁で分割して処理を分ける予定
-			new CObj(&mCource01, CVector(-360.0f, 5.0f - 33.0f, 230.0f), CVector(), CVector(50.0f, 2.0f, 50.0f), 1);
-			//芝生の生成(通行中は速度低下)
-			new CObj(&mGrass01, CVector(-360.0f, 5.0f - 33.0f, 230.0f), CVector(), CVector(50.0f, 2.0f, 50.0f), 112);
-			//コースに柵の配置(壁扱い)
-			new CObj(&mFenceTop, CVector(-360.0f, -70.0f - 35.0f, 230.0f), CVector(), CVector(50.0f, 5.5f + 1.5f, 50.0f), 1);
-			new CObj(&mFenceSide, CVector(-360.0f, -70.0f - 35.0f, 230.0f), CVector(), CVector(50.0f, 5.5f + 1.5f, 50.0f), 200);
-			//道路と芝生の境目のタイルを生成(当たり判定無し)
-			new CObj(&mRWTile, CVector(-360.0f, 5.0f - 33.0f + 0.05f, 230.0f), CVector(), CVector(50.0f, 2.0f, 50.0f), 99);
-			//柵の内側を詰めてみたがやっぱり車が入り込んでしまう
-			//new CObj(&mStuff, CVector(-360.0f, -70.0f - 35.0f, 230.0f), CVector(), CVector(50.0f, 5.5f + 1.5f, 50.0f), 1);
-		}
-		//白・黒タイルでゴール示唆
-		for (int i = 0; i < 40; i++){
-			//	mStartPoint[0] = 300.0f;  mStartPoint[1] = 63.0f;  mStartPoint[2] = -50.0f;
-			if (i % 2 == 0){
-				new CObj(&mTileBlack, CVector(170.0f + 20.0f*i, -13.1f + 0.5f, -20.0f), CVector(0.0f, 0.0f, 0.0f), CVector(10.0f, 1.0f, 10.0f), 99);//黒タイル
-				new CObj(&mTileWhite, CVector(170.0f + 20.0f*i, -13.1f + 0.5f, -20.0f + 20.0f), CVector(0.0f, 0.0f, 0.0f), CVector(10.0f, 1.0f, 10.0f), 99);//白タイル
-			}
-			else{
-				new CObj(&mTileBlack, CVector(170.0f + 20.0f*i, -13.1f + 0.5f, -20.0f + 20.0f), CVector(0.0f, 0.0f, 0.0f), CVector(10.0f, 1.0f, 10.0f), 99);//黒タイル
-				new CObj(&mTileWhite, CVector(170.0f + 20.0f*i, -13.1f + 0.5f, -20.0f), CVector(0.0f, 0.0f, 0.0f), CVector(10.0f, 1.0f, 10.0f), 99);//白タイル
-				//new CObj(&mTileWhite, CVector(300.0f + 20.0f*i, -2.0f + 0.1f, -20.0f), CVector(0.0f, 0.0f, 0.0f), CVector(10.0f, 1.0f, 10.0f), 99);//白タイル
-			}
-		}
-		//ゴール(ゲート側)
-		for (int i = 0; i < 20; i++){
-			if (i % 2 == 0){
-				new CObj(&mTileBlack, CVector(170.0f + 40.0f*i + 5.0f + 10.0f, 110.0f + 200.0f - 5.0f - 10.0f - 20.0f - 10.0f, -14.0f), CVector(90.0f, 0.0f, 0.0f), CVector(20.0f, 4.9f, 20.0f), 99);//黒タイル
-				new CObj(&mTileWhite, CVector(170.0f + 40.0f*i + 5.0f + 10.0f, 110.0f + 10.0f + 200.0f - 5.0f - 10.0f, -14.0f), CVector(90.0f, 0.0f, 0.0f), CVector(20.0f, 4.9f, 20.0f), 99);//白タイル
-			}
-			else{
-				new CObj(&mTileBlack, CVector(170.0f + 40.0f*i + 5.0f + 10.0f, 110.0f + 10.0f + 200.0f - 5.0f - 10.0f, -14.0f), CVector(90.0f, 0.0f, 0.0f), CVector(20.0f, 4.9f, 20.0f), 99);//黒タイル
-				new CObj(&mTileWhite, CVector(170.0f + 40.0f*i + 5.0f + 10.0f, 110.0f + 200.0f - 5.0f - 10.0f - 20.0f - 10.0f, -14.0f), CVector(90.0f, 0.0f, 0.0f), CVector(20.0f, 4.9f, 20.0f), 99);//白タイル
-			}
-		}
-		//ポール
-		new CObj(&mTileWhite, CVector(170.0f + 20.0f * -1 + 5.0f + 5.0f, -13.1f - 10.0f, -10.0f), CVector(0.0f, 0.0f, 0.0f), CVector(10.0f, 174.0f, 10.0f), 1);//柱
-		new CObj(&mTileWhite, CVector(170.0f + 20.0f * 40 + 5.0f - 5.0f, -13.1f - 10.0f, -10.0f), CVector(0.0f, 0.0f, 0.0f), CVector(10.0f, 174.0, 10.0f), 1);//柱
-
-		//加速床
-		new CObj(&mDashBoard, CVector(260.0f, -13.1f + 3.0f, 800.0f), CVector(0.0f, 180.0f, 0.0f), CVector(2.0f, 2.0f, 2.0f), 111);
-		new CObj(&mDashBoard, CVector(234.0f, -13.1f + 3.0f, -980.0f), CVector(0.0f, 180.0f, 0.0f), CVector(2.0f, 2.0f, 2.0f), 111);
-		new CObj(&mDashBoard, CVector(-1500.0f, -13.1f + 3.0f, -200.0f), CVector(0.0f, 0.0f, 0.0f), CVector(2.0f, 2.0f, 2.0f), 111);
-		//new CObj(&mDashBoard, CVector(-500.0f, -13.1f + 3.0f, -1900.0f), CVector(0.0f, -90.0f, 0.0f), CVector(2.0f, 2.0f, 2.0f), 111);
-		//new CObj(&mDashBoard, CVector(500.0f, 13.1f + 3.0f, -1200.0f), CVector(0.0f, 180.0f, 90.0f), CVector(3.0f, 3.0f, 3.0f), 111);
+		
 	}
-
-	//new CObj(&mSum, CVector(260.0f, -13.1f + 3.0f, 300.0f), CVector(0.0f, 0.0f, 0.0f), CVector(112.0f, 112.0f, 112.0f), 1);
-	
 
 	////物理演算(笑)するオブジェクト No.2001
 	//new CObj(&mTileWhite, CVector(500.0f, -13.1f + 23.0f, 900.0f), CVector(0.0f, 0.0f, 0.0f), CVector(11.0f, 11.0f, 11.0f), 2001);
@@ -591,28 +473,16 @@ void CSceneRace::Init() {
 	//}	
 	//new CRigidObj(&mTileWhite, CVector(400.0f, -13.1f, 400.0f), CVector(0.0f, 0.0f, 0.0f), CVector(21.0f, 21.0f, 21.0f));
 
-
 	//new CObj(&mTileWhite, CVector(0.0f, -11.1f, 900.0f), CVector(0.0f, 0.0f, 0.0f), CVector(50.0f, 150.0f, 10.0f), 200);//壁
 	//new CObj(&mTileWhite, CVector(230.0f, -11.1f, 1300.0f), CVector(0.0f, 0.0f, 0.0f), CVector(50.0f, 50.0f, 50.0f), 200);//壁
 	//new CObj(&mTileBlack, CVector(0.0f, -1010.0f, 0.0f), CVector(0.0f, 0.0f, 0.0f), CVector(50000.0f, 1.0f, 50000.0f), 99);//黒
 
-	////当たり判定有りで生成してもさほど動作は重くならなくなった
-	//new CObj(&mSumple, CVector(430.0f, 10.0f + 1123.0f, 0.0f), CVector(0.0f, 0.0f, 0.0f), CVector(50.0f, 50.0f, 50.0f), 999);
 	//流れるダッシュボード達
-	/*for (int i = 0; i < 16; i++){
+	for (int i = 0; i < 16; i++){
 		new CObj(&mDashBoard, CVector(260.0f - 40.0f*i , 13.1f + 10.0f, 800.0f), CVector(0.0f, 270.0f, 0.0f), CVector(1.0f, 1.0f, 1.0f), 31);
 		new CObj(&mDashBoard, CVector(260.0f - 40.0f*i-20.0f, 13.1f + 10.0f, 800.0f), CVector(0.0f, 270.0f, 0.0f), CVector(0.9f, 0.9f, 0.9f), 31);
 	}*/
 
-	////空を描画しない
-	//new CObj(&mSky, CVector(-360.0f, 5.0f - 33.0f, 230.0f), CVector(0.0f, 0.0f, 0.0f), CVector(22.0f, 22.0f, 22.0f), 101);
-
-	//new CObj(&mCource01, CVector(1000.0f, -13.1f + 0.5f, 0.0f), CVector(0.0f, 0.0f, 0.0f), CVector(1.0f, 10000.0f, 10000.0f), 9999);//黒タイル
-
-	////ステージ2のマテリアル
-	//if (CSceneTitle::mMode == 2){
-	//	new CObj(&msumple2, CVector(320.0f, -58.0f, 450.0f), CVector(0.0f, 180.0f, 0.0f), CVector(4.0f, 3.0f, 3.0f), 1);
-	//}
 
 	//カメラ視点のY座標
 	mCamY = 0.0f;
@@ -1541,25 +1411,7 @@ void CSceneRace::RenderBackMirror(){
 	//行列を戻す
 	glPopMatrix();
 }
-
 //次のシーンの取得
 CScene::EScene CSceneRace::GetNextScene(){
 	return mScene;
 }
-
-
-void CRaceCource1::Init(){
-	mSum.Load("cube.obj", "material\\racing_mat\\single_color\\blue.mtl");
-	new CObj(&mSum, CVector(260.0f, -13.1f + 3.0f, 300.0f), CVector(0.0f, 0.0f, 0.0f), CVector(112.0f, 112.0f, 112.0f), 1);
-}
-void CRaceCource1::Update(){
-	//CTaskManager::Get()->Update();
-	printf("w");
-}
-
-////void CRaceCource2::Init(){
-////
-////}
-////void CRaceCource2::Update(){
-////
-////}

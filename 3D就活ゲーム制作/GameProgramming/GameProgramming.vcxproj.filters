@@ -22,6 +22,9 @@
     <Filter Include="ソース ファイル\RaceGame\ちょっと別フォルダで">
       <UniqueIdentifier>{f9f00719-0209-4630-9464-3be405b239b6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\RaceGame\コース集">
+      <UniqueIdentifier>{6a910a60-b34c-4b84-9033-8a5be57218da}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -120,8 +123,14 @@
     <ClCompile Include="CRigidObj.cpp">
       <Filter>ソース ファイル\RaceGame\ちょっと別フォルダで</Filter>
     </ClCompile>
-    <ClCompile Include="CRaceCource.cpp">
-      <Filter>ソース ファイル\RaceGame\ちょっと別フォルダで</Filter>
+    <ClCompile Include="CRaceCourceA.cpp">
+      <Filter>ソース ファイル\RaceGame\コース集</Filter>
+    </ClCompile>
+    <ClCompile Include="CRaceCourceB.cpp">
+      <Filter>ソース ファイル\RaceGame\コース集</Filter>
+    </ClCompile>
+    <ClCompile Include="CRaceCourceC.cpp">
+      <Filter>ソース ファイル\RaceGame\コース集</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -224,8 +233,14 @@
     <ClInclude Include="CRigidObj.h">
       <Filter>ソース ファイル\RaceGame\ちょっと別フォルダで</Filter>
     </ClInclude>
-    <ClInclude Include="CRaceCource.h">
-      <Filter>ソース ファイル\RaceGame\ちょっと別フォルダで</Filter>
+    <ClInclude Include="CRaceCourceA.h">
+      <Filter>ソース ファイル\RaceGame\コース集</Filter>
+    </ClInclude>
+    <ClInclude Include="CRaceCourceB.h">
+      <Filter>ソース ファイル\RaceGame\コース集</Filter>
+    </ClInclude>
+    <ClInclude Include="CRaceCourceC.h">
+      <Filter>ソース ファイル\RaceGame\コース集</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

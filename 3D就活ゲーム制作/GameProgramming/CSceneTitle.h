@@ -292,8 +292,21 @@ public:
 			}
 			else{
 				//次のシーンはレース画面
-				printf("MODE:%d\n", mMode);
-				mScene = ERACE1;
+				printf("選択したコース番号:No.%d  ", mMode);
+				printf("選択したCPUのレベル:%d\n", mDifficulty);
+				//選択したコースに対応するシーンへ移行			
+				if (mMode == 1 || mMode == 4){
+					//次のシーンはコース1
+					mScene = ERACE1;
+				}
+				else if (mMode == 2){
+					//次のシーンはコース2
+					mScene = ERACE2;
+				}
+				else if (mMode == 3){
+					//次のシーンはコース3
+					mScene = ERACE3;
+				}
 			}			
 		}
 
@@ -351,23 +364,6 @@ public:
 					SoundCancel.Play();
 				}
 			}
-			////難易度変更コマンド
-			//if (CKey::Once('Z')){
-			//	if (mDifficulty > 1){
-			//		mDifficulty--;
-			//	}
-			//	else{
-			//		mDifficulty = 3;
-			//	}
-			//}
-			//if (CKey::Once('X')){
-			//	if (mDifficulty < 3){
-			//		mDifficulty++;
-			//	}
-			//	else{
-			//		mDifficulty = 1;
-			//	}
-			//}
 		}
 		if (mVariable1 == 0 && mVariable2 == 0){
 			mMode = 1;

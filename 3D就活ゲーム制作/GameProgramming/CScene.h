@@ -17,6 +17,8 @@ public:
 		ESTAGE1, //チュートリアルSTAGE
 		ESTAGE2, //本番STAGE
 		ERACE1, //コース1
+		ERACE2, //コース2
+		ERACE3, //コース3
 		ETITLE, //タイトル画面
 	};
 	//次のシーンの取得
