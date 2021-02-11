@@ -116,50 +116,7 @@ CEnemy::CEnemy()
 	mPointCnt = 0;//最初のポイントを設定
 	//mpPoint = &mPoint[mPointCnt];//目指すポイントのポインタを設定
 
-	////mPointと同じ座標とかその他もろもろをmPointRandに渡す
-	//mPointRand = mPoint;
-	//mPointRand2 = mPoint2;
-	//mPointRand3 = mPoint3;
-	//mPointRand4 = mPoint4;
-	//mPointRand5 = mPoint5;
-	//mPointRand6 = mPoint6;
-	//mPointRand7 = mPoint7;
-	//mPointRand8 = mPoint8;
-	//mPointRand9 = mPoint9;
-	//mPointRand10 = mPoint10;
-	//mPointRand11 = mPoint11;
-	//mPointRand12 = mPoint12;
-	////mPointを中心にX座標,Z座標にずれを生じさせる
-	//mPointRand->mPosition.mX += rand() % 101 - 50;
-	//mPointRand->mPosition.mZ += rand() % 101 - 50;[
 
-	//Point1 = *mPoint;
-	//Point2 = *mPoint2;
-	//Point3 = *mPoint3;
-	//Point4 = *mPoint4;
-	//Point5 = *mPoint5;
-	//Point6 = *mPoint6;
-	//Point1.mTag = EPOINT;
-	//Point2.mTag = EPOINT;
-	//Point3.mTag = EPOINT;
-	//Point4.mTag = EPOINT;
-	//Point5.mTag = EPOINT;
-	//Point6.mTag = EPOINT;
-	////敵AIがHARD以上ならポイントの数を拡張する
-	//if (CSceneTitle::mDifficulty == 3){
-	//	Point7 = *mPoint7;
-	//	Point8 = *mPoint8;
-	//	Point9 = *mPoint9;
-	//	Point10 = *mPoint10;
-	//	Point11 = *mPoint11;
-	//	Point12 = *mPoint12;
-	//	Point7.mTag = EPOINT;
-	//	Point8.mTag = EPOINT;
-	//	Point9.mTag = EPOINT;
-	//	Point10.mTag = EPOINT;
-	//	Point11.mTag = EPOINT;
-	//	Point12.mTag = EPOINT;
-	//}
 	////Point1.mPosition = Point1.mPosition + CVector(1.0f *(rand() % 100 - 50), 1.0f *(rand() % 100 - 50), 1.0f *(rand() % 100 - 50));
 	//mpPoint = &Point1;
 
@@ -440,7 +397,7 @@ void CEnemy::Update(){
 	}*/
 
 	//コースアウトした時
-	if (mPosition.mY < -400.0f){
+	if (mPosition.mY < -700.0f){
 		//落下の勢いを0にする
 		mVelocityJump = 0.0f;
 		//車の速度を0に

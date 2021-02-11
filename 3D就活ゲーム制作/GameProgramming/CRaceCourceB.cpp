@@ -21,8 +21,6 @@ void CRaceCourceB::Init(){
 	new CObj(&mMiniGoal, CVector(2315.0f, -1.0f, -2300.0f), CVector(0.0f, 0.0f, 0.0f), CVector(4.2f, 10.0f, 4.2f), 99);
 	new CObj(&mMiniGoal, CVector(2107.0f, -1.0f - 0.05f, -2300.0f), CVector(0.0f, 180.0f, 0.0f), CVector(4.2f, 10.0f, 4.2f), 99);
 
-	//mLap = 3;
-	//mMaxLap = 2;
 }
 void CRaceCourceB::Update(){
 	CSceneRace::Update();

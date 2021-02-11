@@ -132,6 +132,9 @@
     <ClCompile Include="CRaceCourceC.cpp">
       <Filter>ソース ファイル\RaceGame\コース集</Filter>
     </ClCompile>
+    <ClCompile Include="CRaceCourceD.cpp">
+      <Filter>ソース ファイル\RaceGame\コース集</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CSceneGame.h">
@@ -240,6 +243,9 @@
       <Filter>ソース ファイル\RaceGame\コース集</Filter>
     </ClInclude>
     <ClInclude Include="CRaceCourceC.h">
+      <Filter>ソース ファイル\RaceGame\コース集</Filter>
+    </ClInclude>
+    <ClInclude Include="CRaceCourceD.h">
       <Filter>ソース ファイル\RaceGame\コース集</Filter>
     </ClInclude>
   </ItemGroup>

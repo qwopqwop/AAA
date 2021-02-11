@@ -184,7 +184,7 @@ public:
 			}
 		}
 		glColor4fv(c);
-		CText::DrawString("1-LAP", 200, 300, 16, 16);
+		CText::DrawString("Map-A", 200, 300, 16, 16);
 
 		if (mVariable1 == 0 && mVariable2 == 1){
 			c[0] = c[1] = c[2] = 1.0f; c[3] = 1.0f;
@@ -220,7 +220,7 @@ public:
 			}
 		}
 		glColor4fv(c);
-		CText::DrawString("3-LAP", 200, 250, 16, 16);
+		CText::DrawString("Map-C", 200, 250, 16, 16);
 
 		if (mVariable1 == -1 && mVariable2 == 1){
 			c[0] = c[1] = c[2] = 1.0f; c[3] = 1.0f;
@@ -238,7 +238,7 @@ public:
 			}
 		}
 		glColor4fv(c);
-		CText::DrawString("5-LAP", 450, 250, 16, 16);
+		CText::DrawString("Map-D", 450, 250, 16, 16);
 		c[0] = c[1] = c[2] = 1.0f; c[3] = 1.0f;
 		glColor4fv(c);	
 		
@@ -295,7 +295,7 @@ public:
 				printf("選択したコース番号:No.%d  ", mMode);
 				printf("選択したCPUのレベル:%d\n", mDifficulty);
 				//選択したコースに対応するシーンへ移行			
-				if (mMode == 1 || mMode == 4){
+				if (mMode == 1){
 					//次のシーンはコース1
 					mScene = ERACE1;
 				}
@@ -306,6 +306,10 @@ public:
 				else if (mMode == 3){
 					//次のシーンはコース3
 					mScene = ERACE3;
+				}
+				else if (mMode == 4){
+					//次のシーンはコース3
+					mScene = ERACE4;
 				}
 			}			
 		}

@@ -100,6 +100,7 @@
     <ClCompile Include="CRaceCourceA.cpp" />
     <ClCompile Include="CRaceCourceB.cpp" />
     <ClCompile Include="CRaceCourceC.cpp" />
+    <ClCompile Include="CRaceCourceD.cpp" />
     <ClCompile Include="CRigidObj.cpp" />
     <ClCompile Include="CRock.cpp" />
     <ClCompile Include="CScene.cpp" />
@@ -137,6 +138,7 @@
     <ClInclude Include="CRaceCourceA.h" />
     <ClInclude Include="CRaceCourceB.h" />
     <ClInclude Include="CRaceCourceC.h" />
+    <ClInclude Include="CRaceCourceD.h" />
     <ClInclude Include="CRigidObj.h" />
     <ClInclude Include="CRock.h" />
     <ClInclude Include="CScene.h" />

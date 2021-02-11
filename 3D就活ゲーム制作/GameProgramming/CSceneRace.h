@@ -131,6 +131,8 @@ public:
 	CModel mCource02Jump;
 
 	CModel mCource03;
+	
+	CModel mCource04;
 
 	CModel mJumper01;
 

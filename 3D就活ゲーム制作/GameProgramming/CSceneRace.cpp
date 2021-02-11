@@ -323,7 +323,8 @@ void CSceneRace::Init() {
 	mCource02Road.Load("material\\racing_mat\\cource2nd\\cource02road.obj", "material\\racing_mat\\cource2nd\\cource02road.mtl");
 	mCource02Wall.Load("material\\racing_mat\\cource2nd\\cource02wall.obj", "material\\racing_mat\\cource2nd\\cource02wall.mtl");
 	mCource02Jump.Load("material\\racing_mat\\cource2nd\\cource02jumper.obj", "material\\racing_mat\\cource2nd\\cource02jumper.mtl");
-	mCource03.Load("material\\racing_mat\\cource2nd\\track01.obj", "material\\racing_mat\\cource2nd\\track01.mtl");	//借り物
+	mCource03.Load("material\\racing_mat\\stage3\\cource3.obj", "material\\racing_mat\\stage3\\cource3.mtl");
+	mCource04.Load("material\\racing_mat\\cource2nd\\track01.obj", "material\\racing_mat\\cource2nd\\track01.mtl");	//借り物
 	
 	//芝生の読み込み
 	mGrass01.Load("material\\racing_mat\\GrassNew01.obj", "material\\racing_mat\\GrassNew01.mtl");
@@ -350,22 +351,22 @@ void CSceneRace::Init() {
 	//ステージ1BGMの読み込み
 	if (CSceneTitle::mMode == 1){
 		BGM.Load("BGM\\(音量調整版)Popsギター_No.01.wav");
-		mMaxLap = 1;
+		//mMaxLap = 1;
 		mBestTime = mRecord_A;
 	}
 	else if (CSceneTitle::mMode == 2){
 		BGM.Load("BGM\\調整後game_maoudamashii_1_battle34.wav");
-		mMaxLap = 2;
+		//mMaxLap = 2;
 		mBestTime = mRecord_B;
 	}
 	else if (CSceneTitle::mMode == 3){
-		BGM.Load("BGM\\調整後Crazy_Machine.wav");
-		mMaxLap = 3;
+		BGM.Load("BGM\\(調整後)bgm_maoudamashii_neorock33.wav");
+		//mMaxLap = 3;
 		mBestTime = mRecord_C;
 	}
 	else if (CSceneTitle::mMode == 4){
-		BGM.Load("BGM\\(調整後)bgm_maoudamashii_neorock33.wav");
-		mMaxLap = 5;
+		BGM.Load("BGM\\調整後Crazy_Machine.wav");
+		//mMaxLap = 5;
 		mBestTime = mRecord_D;
 	}
 
@@ -502,6 +503,8 @@ void CSceneRace::Init() {
 		
 	//ラップ数の初期化
 	mLap = 1;
+	//3周でゴール(全コース共通)
+	mMaxLap = 3;
 	//記録更新してない状態
 	isNewRecord = false;
 	
@@ -1099,7 +1102,10 @@ void CSceneRace::RenderMiniMap() {
 	glPushMatrix();
 	glViewport(600 + 20-30, 450 - 440, 200, 150); //画面の描画エリアの指定
 	glLoadIdentity();
-	if (CSceneTitle::mMode == 2){
+	if (CSceneTitle::mMode == 3){
+		gluLookAt(0, 9400, 0, 0, 0, 0, 0, 0, 1);
+	}
+	else if (CSceneTitle::mMode == 2){
 		gluLookAt(0, 7000, 0, 0, 0, 0, 0, 0, 1);
 	}
 	else{
@@ -1111,7 +1117,93 @@ void CSceneRace::RenderMiniMap() {
 //	TaskManager.Render();
 	CTaskManager::Get()->Render();
 
-	if (CSceneTitle::mMode == 2){
+	if (CSceneTitle::mMode == 3){
+		if (isRendPoint == true){
+			/*デバッグ用*/
+			//設定した敵の目標地点すべてをミニマップ上に描画する
+			CMatrix point;
+			for (int i = 1; i <= 12; i++){//ポイントの数だけ処理実行
+				point = CMatrix().Scale(150.0f, 1.0f, 150.0f)
+					* CMatrix().RotateY(45);
+				//* CEnemy::mPoint->mMatrixTranslate;
+				//1より小さい時は即やめ
+				if (i < 1){
+					break;
+				}
+				if (i == 1){
+					point = point * CEnemy::mPoint->mMatrixTranslate;
+				}
+				else if (i == 2){
+					point = point * CEnemy::mPoint2->mMatrixTranslate;
+				}
+				else if (i == 3){
+					point = point * CEnemy::mPoint3->mMatrixTranslate;
+				}
+				else if (i == 4){
+					point = point * CEnemy::mPoint4->mMatrixTranslate;
+				}
+				else if (i == 5){
+					point = point * CEnemy::mPoint5->mMatrixTranslate;
+				}
+				else if (i == 6){
+					point = point * CEnemy::mPoint6->mMatrixTranslate;
+				}
+				//ハードモードではさらに目標地点が細かく設定される
+				else if (CSceneTitle::mDifficulty == 2 || CSceneTitle::mDifficulty == 3){
+					if (i == 7){
+						point = point * CEnemy::mPoint7->mMatrixTranslate;
+					}
+					else if (i == 8){
+						point = point * CEnemy::mPoint8->mMatrixTranslate;
+					}
+					else if (i == 9){
+						point = point * CEnemy::mPoint9->mMatrixTranslate;
+					}
+					else if (i == 10){
+						point = point * CEnemy::mPoint10->mMatrixTranslate;
+					}
+					else if (i == 11){
+						point = point * CEnemy::mPoint11->mMatrixTranslate;
+					}
+					else if (i == 12){
+						point = point * CEnemy::mPoint12->mMatrixTranslate;
+					}
+				}
+				else{
+					break;
+				}
+				mTileWhite.Render(point);
+			}
+		}
+		//ミニマップにゴールアイコンを描画
+		CMatrix matminig;
+		matminig = CMatrix().Scale(25.0f, 1.0f, 25.0f)
+			//* mPlayer->mMatrixRotate
+			* CMatrix().RotateX(0)
+			* CMatrix().RotateY(143)
+			* CMatrix().RotateZ(0)
+			* CMatrix().Translate(-3200.0f, 0.0f, 341.7f);
+		mMiniGoal.Render(matminig);
+		CMatrix matenemys[ENEMYS_AMOUNT];
+		for (int i = 0; i < ENEMYS_AMOUNT; i++){
+			matenemys[i] = CMatrix().Scale(70.0f, 1.0f, 70.0f) //* mPlayer->mMatrixScale
+				* CMatrix().RotateX(0)
+				* CMatrix().RotateY(mEnemys[i]->mRotation.mY)
+				* CMatrix().RotateZ(0)
+				* mEnemys[i]->mMatrixTranslate;
+			mCarsol_Enemy.Render(matenemys[i]);
+		}
+		//ミニマップ状にプレイヤーを示すカーソルを描画
+		CMatrix matplayer;
+		matplayer = CMatrix().Scale(70.0f, 1.0f, 70.0f) //* mPlayer->mMatrixScale
+			//* mPlayer->mMatrixRotate
+			* CMatrix().RotateX(0)
+			* CMatrix().RotateY(mPlayer->mRotation.mY)
+			* CMatrix().RotateZ(0)
+			* mPlayer->mMatrixTranslate;
+		mCarsol.Render(matplayer);
+	}
+	else if (CSceneTitle::mMode == 2){
 		if (isRendPoint == true){
 			/*デバッグ用*/
 			//設定した敵の目標地点すべてをミニマップ上に描画する

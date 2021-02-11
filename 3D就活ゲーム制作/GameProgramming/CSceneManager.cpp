@@ -5,6 +5,7 @@
 #include "CRaceCourceA.h"
 #include "CRaceCourceB.h"
 #include "CRaceCourceC.h"
+#include "CRaceCourceD.h"
 #include "CSceneTitle.h"
 #include "CTaskManager.h"
 
@@ -69,6 +70,10 @@ void CSceneManager::Update() {
 			break;
 		case CScene::ERACE3:
 			mpScene = new CRaceCourceC();
+			mpScene->Init();
+			break;
+		case CScene::ERACE4:
+			mpScene = new CRaceCourceD();
 			mpScene->Init();
 			break;
 		case CScene::ETITLE:

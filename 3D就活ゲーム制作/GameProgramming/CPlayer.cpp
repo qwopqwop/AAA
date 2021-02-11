@@ -99,7 +99,13 @@ CPlayer::CPlayer()
 	mTag = EPLAYER;
 	mJumpPrio = 0;
 
-	if (CSceneTitle::mMode == 2){
+	if (CSceneTitle::mMode == 3){
+		//スタート地点の座標を設定;
+		mStartPoint[0] = 0.0f;  mStartPoint[1] = -13.538f;  mStartPoint[2] = 0.0f;
+		mStartRotation = 90.0f;
+		mRotation.mY = mStartRotation;
+	}
+	else if (CSceneTitle::mMode == 2){
 		//スタート地点の座標を設定;
 		mStartPoint[0] = 2222.0f;  mStartPoint[1] = -13.538f;  mStartPoint[2] = -2510.0f;
 		mStartRotation = 0.0f;
@@ -444,7 +450,7 @@ void CPlayer::Update(){
 	//mMatrix = mMatrixScale * mMatrixRotate * mMatrixTranslate;
 
 	//転落してしまった時(Rキーで即リスタート)
-	if (mPosition.mY < -400.0f || CKey::Once('R')){
+	if (mPosition.mY < -700.0f || CKey::Once('R')){
 		//落下の勢いを0にする
 		mVelocityJump = 0.0f;
 		//車の速度を0に
