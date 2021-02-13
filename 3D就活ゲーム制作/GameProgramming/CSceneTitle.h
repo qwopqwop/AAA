@@ -298,18 +298,22 @@ public:
 				if (mMode == 1){
 					//次のシーンはコース1
 					mScene = ERACE1;
+					//ECource mCource = ECOURCE1;
 				}
 				else if (mMode == 2){
 					//次のシーンはコース2
 					mScene = ERACE2;
+					//ECource mCource = ECOURCE2;
 				}
 				else if (mMode == 3){
 					//次のシーンはコース3
 					mScene = ERACE3;
+					//ECource mCource = ECOURCE3;
 				}
 				else if (mMode == 4){
 					//次のシーンはコース3
 					mScene = ERACE4;
+					//ECource mCource = ECOURCE4;
 				}
 			}			
 		}
@@ -410,6 +414,16 @@ public:
 	static int mDifficulty;
 	int mPrevDifficulty;
 	int mSelectScene_Level;//選択画面の何段階目か
+
+	////各コースを列挙型で定義する
+	//enum ECource
+	//{
+	//	ECOURCE1,
+	//	ECOURCE2,
+	//	ECOURCE3,
+	//	ECOURCE4
+	//};
+	//static ECource mCource;
 };
 
 #endif

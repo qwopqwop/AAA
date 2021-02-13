@@ -20,8 +20,6 @@
 //
 #include "CBullet.h"
 
-#define ENEMY_AMOUNT 5
-
 //スマートポインタの生成
 std::shared_ptr<CTexture> TextureExp(new CTexture());
 std::shared_ptr<CTexture> TextureHit(new CTexture());
@@ -46,215 +44,6 @@ CSceneRace::~CSceneRace() {
 
 
 void CSceneRace::Init() {
-	////CRaceCource～でCSceneRace::Init()を呼び出し次第、ここのシーンに飛んでしまうのでこの処理は無効
-	////シーンの設定
-	//mScene = ERACE1;
-	
-	if (CSceneTitle::mMode < 0){
-		if (CSceneTitle::mDifficulty == 1){//難易度：EASY
-			CEnemy::mPointSize = 6;//ポイント数の設定
-			CEnemy::mPoint = new CPoint(CVector(413.0f, 30.0f, 1300.0f), 100.0f * 2 * 4);
-			CEnemy::mPoint2 = new CPoint(CVector(258.0f, 30.0f, 2000.0f), 100.0f * 2 * 4);
-			//CEnemy::mPoint = new CPoint(CVector(413.0f, 30.0f, 1700.0f), 40.0f);
-			//CEnemy::mPoint2 = new CPoint(CVector(-958.0f, 30.0f, 2600.0f), 40.0f);
-			CEnemy::mPoint3 = new CPoint(CVector(-1350.0f, 30.0f, 2150.0f), 100.0f * 2 * 4);
-			CEnemy::mPoint4 = new CPoint(CVector(-1601.0f, 30.0f, -1702.0f), 100.0f * 2 * 4);
-			CEnemy::mPoint5 = new CPoint(CVector(-500.0f, 30.0f, -2000.0f), 100.0f * 2 * 4);
-			CEnemy::mPoint6 = new CPoint(CVector(340.0f, 30.0f, -1182.0f), 100.0f * 2 * 4);
-		}
-		else if (CSceneTitle::mDifficulty == 2){//難易度：NORMAL
-			/*
-			//CEnemy::mPointSize = 12;//ポイント数の設定
-			//CEnemy::mPoint = new CPoint(CVector(260.0f + 60.0f, 30.0f, 777.0f + 100.0f), 200.0f);
-			//CEnemy::mPoint2 = new CPoint(CVector(259.0f + 60.0f, 30.0f, 1300.0f + 200.0f), 200.0f);
-			//CEnemy::mPoint3 = new CPoint(CVector(-150.0f + 0.0f, 30.0f, 2058.0f + 200.0f), 200.0f);
-			//CEnemy::mPoint4 = new CPoint(CVector(-555.0f - 150.0f, 30.0f, 2111.0f + 300.0f), 200.0f);
-			//CEnemy::mPoint5 = new CPoint(CVector(-1039.0f - 150.0f, 30.0f, 2062.0f + 200.0f), 200.0f);
-			//CEnemy::mPoint6 = new CPoint(CVector(-1400.0f - 150.0f, 30.0f, 1700.0f + 200.0f), 200.0f);
-			//CEnemy::mPoint7 = new CPoint(CVector(-1511.0f, 30.0f, -317.0f - 200.0f), 120.0f);
-			//CEnemy::mPoint8 = new CPoint(CVector(-1400.0f, 30.0f, -1079.0f - 300.0f), 200.0f);
-			//CEnemy::mPoint9 = new CPoint(CVector(-1000.0f, 30.0f, -1500.0f - 300.0f), 200.0f);
-			//CEnemy::mPoint10 = new CPoint(CVector(-550.0f, 30.0f, -1700.0f - 300.0f), 200.0f);
-			//CEnemy::mPoint11 = new CPoint(CVector(-100.0f, 30.0f, -1600.0f - 325.0f), 300.0f);
-			//CEnemy::mPoint12 = new CPoint(CVector(420.0f, 30.0f, -1182.0f - 300.0f), 350.0f);
-			*/
-			/*
-			CEnemy::mPointSize = 12;//ポイント数の設定
-			CEnemy::mPoint = new CPoint(CVector(   260.0f + 00.0f, 30.0f, 777.0f), 40.0f * 4);
-			CEnemy::mPoint2 = new CPoint(CVector(  259.0f + 00.0f, 30.0f, 1300.0f), 50.0f * 4);
-			CEnemy::mPoint3 = new CPoint(CVector( -150.0f + 50.0f, 30.0f + 50.0f, 2058.0f), 65.0f * 4);
-			CEnemy::mPoint4 = new CPoint(CVector(-555.0f + 50.0f, 30.0f + 50.0f, 2111.0f), 65.0f * 4);
-			CEnemy::mPoint5 = new CPoint(CVector(-1039.0f + 50.0f, 30.0f + 50.0f, 2062.0f), 65.0f * 4);
-			CEnemy::mPoint6 = new CPoint(CVector(-1400.0f + 50.0f, 30.0f + 50.0f, 1700.0f), 60.0f * 4);
-			CEnemy::mPoint7 = new CPoint(CVector(-1511.0f + 50.0f, 30.0f, -317.0f), 40.0f * 4);
-			CEnemy::mPoint8 = new CPoint(CVector(-1400.0f + 50.0f, 30.0f - 50.0f, -1079.0f), 40.0f * 4);
-			CEnemy::mPoint9 = new CPoint(CVector(-913.0f + 50.0f, 30.0f - 50.0f, -1637.0f), 40.0f * 4);
-			CEnemy::mPoint10 = new CPoint(CVector(-500.0f + 50.0f, 30.0f - 50.0f, -1700.0f), 60.0f * 4);
-			CEnemy::mPoint11 = new CPoint(CVector(-160.0f + 50.0f, 30.0f - 50.0f, -1600.0f), 60.0f * 4);
-			CEnemy::mPoint12 = new CPoint(CVector(193.0f + 50.0f, 30.0f - 50.0f, -1182.0f), 50.0f * 4);
-			*/
-			//現在、仮の設定
-			CEnemy::mPointSize = 12;//ポイント数の設定
-			CEnemy::mPoint = new CPoint(CVector(413.0f, 30.0f, 1300.0f), 100.0f * 2 * 4);
-			CEnemy::mPoint2 = new CPoint(CVector(258.0f, 30.0f, 2000.0f), 100.0f * 2 * 4);
-			CEnemy::mPoint3 = new CPoint(CVector(-1350.0f, 30.0f, 2150.0f), 100.0f * 2 * 4);
-			CEnemy::mPoint4 = new CPoint(CVector(-1601.0f, 30.0f, -1702.0f), 100.0f * 2 * 4);
-			CEnemy::mPoint5 = new CPoint(CVector(-500.0f, 30.0f, -2000.0f), 100.0f * 2 * 4);
-			CEnemy::mPoint6 = new CPoint(CVector(340.0f, 30.0f, -1182.0f), 100.0f * 2 * 4);
-			CEnemy::mPoint7 = new CPoint(CVector(413.0f, 30.0f, 1300.0f), 100.0f * 2 * 4);
-			CEnemy::mPoint8 = new CPoint(CVector(258.0f, 30.0f, 2000.0f), 100.0f * 2 * 4);
-			CEnemy::mPoint9 = new CPoint(CVector(-1350.0f, 30.0f, 2150.0f), 100.0f * 2 * 4);
-			CEnemy::mPoint10 = new CPoint(CVector(-1601.0f, 30.0f, -1702.0f), 100.0f * 2 * 4);
-			CEnemy::mPoint11 = new CPoint(CVector(-500.0f, 30.0f, -2000.0f), 100.0f * 2 * 4);
-			CEnemy::mPoint12 = new CPoint(CVector(340.0f, 30.0f, -1182.0f), 100.0f * 2 * 4);
-			/*CEnemy::mPoint = new CPoint(CVector(   260.0f + 00.0f, 30.0f, 777.0f), 50.0f * 2);
-			CEnemy::mPoint2 = new CPoint(CVector(  259.0f + 00.0f, 30.0f, 1300.0f), 60.0f * 2);
-			CEnemy::mPoint3 = new CPoint(CVector( -150.0f + 50.0f, 30.0f + 50.0f, 2058.0f), 65.0f * 2);
-			CEnemy::mPoint4 = new CPoint(CVector(-555.0f + 50.0f, 30.0f + 50.0f, 2121.0f), 65.0f * 2);
-			CEnemy::mPoint5 = new CPoint(CVector(-1039.0f + 50.0f, 30.0f + 50.0f, 2082.0f), 65.0f * 2);
-			CEnemy::mPoint6 = new CPoint(CVector(-1400.0f + 50.0f, 30.0f + 50.0f, 1700.0f), 80.0f * 2);
-			CEnemy::mPoint7 = new CPoint(CVector(-1511.0f + 50.0f, 30.0f, -317.0f), 40.0f * 2);
-			CEnemy::mPoint8 = new CPoint(CVector(-1400.0f + 50.0f, 30.0f - 50.0f, -1079.0f), 60.0f * 2);
-			CEnemy::mPoint9 = new CPoint(CVector(-913.0f + 50.0f, 30.0f - 50.0f, -1637.0f), 60.0f * 2);
-			CEnemy::mPoint10 = new CPoint(CVector(-500.0f + 50.0f, 30.0f - 50.0f, -1700.0f), 60.0f * 2);
-			CEnemy::mPoint11 = new CPoint(CVector(-160.0f + 50.0f, 30.0f - 50.0f, -1600.0f), 60.0f * 2);
-			CEnemy::mPoint12 = new CPoint(CVector(193.0f + 50.0f, 30.0f - 50.0f, -1182.0f), 60.0f * 2);*/
-		}
-		else if (CSceneTitle::mDifficulty == 3){//難易度：HARD
-			//現在、仮の設定
-			CEnemy::mPointSize = 12;//ポイント数の設定
-			CEnemy::mPoint = new CPoint(CVector(413.0f, 30.0f, 1300.0f), 100.0f * 2 * 4);
-			CEnemy::mPoint2 = new CPoint(CVector(258.0f, 30.0f, 2000.0f), 100.0f * 2 * 4);
-			CEnemy::mPoint3 = new CPoint(CVector(-1350.0f, 30.0f, 2150.0f), 100.0f * 2 * 4);
-			CEnemy::mPoint4 = new CPoint(CVector(-1601.0f, 30.0f, -1702.0f), 100.0f * 2 * 4);
-			CEnemy::mPoint5 = new CPoint(CVector(-500.0f, 30.0f, -2000.0f), 100.0f * 2 * 4);
-			CEnemy::mPoint6 = new CPoint(CVector(340.0f, 30.0f, -1182.0f), 100.0f * 2 * 4);
-			CEnemy::mPoint7 = new CPoint(CVector(413.0f, 30.0f, 1300.0f), 100.0f * 2 * 4);
-			CEnemy::mPoint8 = new CPoint(CVector(258.0f, 30.0f, 2000.0f), 100.0f * 2 * 4);
-			CEnemy::mPoint9 = new CPoint(CVector(-1350.0f, 30.0f, 2150.0f), 100.0f * 2 * 4);
-			CEnemy::mPoint10 = new CPoint(CVector(-1601.0f, 30.0f, -1702.0f), 100.0f * 2 * 4);
-			CEnemy::mPoint11 = new CPoint(CVector(-500.0f, 30.0f, -2000.0f), 100.0f * 2 * 4);
-			CEnemy::mPoint12 = new CPoint(CVector(340.0f, 30.0f, -1182.0f), 100.0f * 2 * 4);
-			/*CEnemy::mPoint = new CPoint(CVector(260.0f, 30.0f, 777.0f), 40.0f * 2);
-			CEnemy::mPoint2 = new CPoint(CVector(259.0f, 30.0f, 1300.0f), 50.0f * 2);
-			CEnemy::mPoint3 = new CPoint(CVector(-150.0f, 30.0f, 2058.0f), 65.0f * 2);
-			CEnemy::mPoint4 = new CPoint(CVector(-555.0f, 30.0f, 2111.0f), 65.0f * 2);
-			CEnemy::mPoint5 = new CPoint(CVector(-1039.0f, 30.0f, 2062.0f), 65.0f * 2);
-			CEnemy::mPoint6 = new CPoint(CVector(-1400.0f, 30.0f, 1700.0f), 60.0f * 2);
-			CEnemy::mPoint7 = new CPoint(CVector(-1511.0f, 30.0f, -317.0f), 40.0f * 2);
-			CEnemy::mPoint8 = new CPoint(CVector(-1400.0f, 30.0f, -1079.0f), 40.0f * 2);
-			CEnemy::mPoint9 = new CPoint(CVector(-913.0f, 30.0f, -1637.0f), 40.0f * 2);
-			CEnemy::mPoint10 = new CPoint(CVector(-500.0f, 30.0f, -1700.0f), 60.0f * 2);
-			CEnemy::mPoint11 = new CPoint(CVector(-160.0f, 30.0f, -1600.0f), 60.0f * 2);
-			CEnemy::mPoint12 = new CPoint(CVector(193.0f, 30.0f, -1182.0f), 50.0f * 2);*/
-		}
-		else{
-			//隠しHARDの予定
-		}
-	}
-	else{
-		if (CSceneTitle::mDifficulty == 1){//難易度：EASY
-			CEnemy::mPointSize = 6;//ポイント数の設定
-			CEnemy::mPoint = new CPoint(CVector(413.0f, 30.0f, 1300.0f), 100.0f * 2 * 4);
-			CEnemy::mPoint2 = new CPoint(CVector(258.0f, 30.0f, 2000.0f), 100.0f * 2 * 4);
-			//CEnemy::mPoint = new CPoint(CVector(413.0f, 30.0f, 1700.0f), 40.0f);
-			//CEnemy::mPoint2 = new CPoint(CVector(-958.0f, 30.0f, 2600.0f), 40.0f);
-			CEnemy::mPoint3 = new CPoint(CVector(-1350.0f, 30.0f, 2150.0f), 100.0f * 2 * 4);
-			CEnemy::mPoint4 = new CPoint(CVector(-1601.0f, 30.0f, -1702.0f), 100.0f * 2 * 4);
-			CEnemy::mPoint5 = new CPoint(CVector(-500.0f, 30.0f, -2000.0f), 100.0f * 2 * 4);
-			CEnemy::mPoint6 = new CPoint(CVector(340.0f, 30.0f, -1182.0f), 100.0f * 2 * 4);
-		}
-		else if (CSceneTitle::mDifficulty == 2){//難易度：NORMAL
-			/*
-			//CEnemy::mPointSize = 12;//ポイント数の設定
-			//CEnemy::mPoint = new CPoint(CVector(260.0f + 60.0f, 30.0f, 777.0f + 100.0f), 200.0f);
-			//CEnemy::mPoint2 = new CPoint(CVector(259.0f + 60.0f, 30.0f, 1300.0f + 200.0f), 200.0f);
-			//CEnemy::mPoint3 = new CPoint(CVector(-150.0f + 0.0f, 30.0f, 2058.0f + 200.0f), 200.0f);
-			//CEnemy::mPoint4 = new CPoint(CVector(-555.0f - 150.0f, 30.0f, 2111.0f + 300.0f), 200.0f);
-			//CEnemy::mPoint5 = new CPoint(CVector(-1039.0f - 150.0f, 30.0f, 2062.0f + 200.0f), 200.0f);
-			//CEnemy::mPoint6 = new CPoint(CVector(-1400.0f - 150.0f, 30.0f, 1700.0f + 200.0f), 200.0f);
-			//CEnemy::mPoint7 = new CPoint(CVector(-1511.0f, 30.0f, -317.0f - 200.0f), 120.0f);
-			//CEnemy::mPoint8 = new CPoint(CVector(-1400.0f, 30.0f, -1079.0f - 300.0f), 200.0f);
-			//CEnemy::mPoint9 = new CPoint(CVector(-1000.0f, 30.0f, -1500.0f - 300.0f), 200.0f);
-			//CEnemy::mPoint10 = new CPoint(CVector(-550.0f, 30.0f, -1700.0f - 300.0f), 200.0f);
-			//CEnemy::mPoint11 = new CPoint(CVector(-100.0f, 30.0f, -1600.0f - 325.0f), 300.0f);
-			//CEnemy::mPoint12 = new CPoint(CVector(420.0f, 30.0f, -1182.0f - 300.0f), 350.0f);
-			*/
-			/*
-			CEnemy::mPointSize = 12;//ポイント数の設定
-			CEnemy::mPoint = new CPoint(CVector(   260.0f + 00.0f, 30.0f, 777.0f), 40.0f * 4);
-			CEnemy::mPoint2 = new CPoint(CVector(  259.0f + 00.0f, 30.0f, 1300.0f), 50.0f * 4);
-			CEnemy::mPoint3 = new CPoint(CVector( -150.0f + 50.0f, 30.0f + 50.0f, 2058.0f), 65.0f * 4);
-			CEnemy::mPoint4 = new CPoint(CVector(-555.0f + 50.0f, 30.0f + 50.0f, 2111.0f), 65.0f * 4);
-			CEnemy::mPoint5 = new CPoint(CVector(-1039.0f + 50.0f, 30.0f + 50.0f, 2062.0f), 65.0f * 4);
-			CEnemy::mPoint6 = new CPoint(CVector(-1400.0f + 50.0f, 30.0f + 50.0f, 1700.0f), 60.0f * 4);
-			CEnemy::mPoint7 = new CPoint(CVector(-1511.0f + 50.0f, 30.0f, -317.0f), 40.0f * 4);
-			CEnemy::mPoint8 = new CPoint(CVector(-1400.0f + 50.0f, 30.0f - 50.0f, -1079.0f), 40.0f * 4);
-			CEnemy::mPoint9 = new CPoint(CVector(-913.0f + 50.0f, 30.0f - 50.0f, -1637.0f), 40.0f * 4);
-			CEnemy::mPoint10 = new CPoint(CVector(-500.0f + 50.0f, 30.0f - 50.0f, -1700.0f), 60.0f * 4);
-			CEnemy::mPoint11 = new CPoint(CVector(-160.0f + 50.0f, 30.0f - 50.0f, -1600.0f), 60.0f * 4);
-			CEnemy::mPoint12 = new CPoint(CVector(193.0f + 50.0f, 30.0f - 50.0f, -1182.0f), 50.0f * 4);
-			*/
-			//現在、仮の設定
-			CEnemy::mPointSize = 12;//ポイント数の設定
-			CEnemy::mPoint = new CPoint(CVector(413.0f, 30.0f, 1300.0f), 100.0f * 2 * 4);
-			CEnemy::mPoint2 = new CPoint(CVector(258.0f, 30.0f, 2000.0f), 100.0f * 2 * 4);
-			CEnemy::mPoint3 = new CPoint(CVector(-1350.0f, 30.0f, 2150.0f), 100.0f * 2 * 4);
-			CEnemy::mPoint4 = new CPoint(CVector(-1601.0f, 30.0f, -1702.0f), 100.0f * 2 * 4);
-			CEnemy::mPoint5 = new CPoint(CVector(-500.0f, 30.0f, -2000.0f), 100.0f * 2 * 4);
-			CEnemy::mPoint6 = new CPoint(CVector(340.0f, 30.0f, -1182.0f), 100.0f * 2 * 4);
-			CEnemy::mPoint7 = new CPoint(CVector(413.0f, 30.0f, 1300.0f), 100.0f * 2 * 4);
-			CEnemy::mPoint8 = new CPoint(CVector(258.0f, 30.0f, 2000.0f), 100.0f * 2 * 4);
-			CEnemy::mPoint9 = new CPoint(CVector(-1350.0f, 30.0f, 2150.0f), 100.0f * 2 * 4);
-			CEnemy::mPoint10 = new CPoint(CVector(-1601.0f, 30.0f, -1702.0f), 100.0f * 2 * 4);
-			CEnemy::mPoint11 = new CPoint(CVector(-500.0f, 30.0f, -2000.0f), 100.0f * 2 * 4);
-			CEnemy::mPoint12 = new CPoint(CVector(340.0f, 30.0f, -1182.0f), 100.0f * 2 * 4);
-			/*CEnemy::mPoint = new CPoint(CVector(   260.0f + 00.0f, 30.0f, 777.0f), 50.0f * 2);
-			CEnemy::mPoint2 = new CPoint(CVector(  259.0f + 00.0f, 30.0f, 1300.0f), 60.0f * 2);
-			CEnemy::mPoint3 = new CPoint(CVector( -150.0f + 50.0f, 30.0f + 50.0f, 2058.0f), 65.0f * 2);
-			CEnemy::mPoint4 = new CPoint(CVector(-555.0f + 50.0f, 30.0f + 50.0f, 2121.0f), 65.0f * 2);
-			CEnemy::mPoint5 = new CPoint(CVector(-1039.0f + 50.0f, 30.0f + 50.0f, 2082.0f), 65.0f * 2);
-			CEnemy::mPoint6 = new CPoint(CVector(-1400.0f + 50.0f, 30.0f + 50.0f, 1700.0f), 80.0f * 2);
-			CEnemy::mPoint7 = new CPoint(CVector(-1511.0f + 50.0f, 30.0f, -317.0f), 40.0f * 2);
-			CEnemy::mPoint8 = new CPoint(CVector(-1400.0f + 50.0f, 30.0f - 50.0f, -1079.0f), 60.0f * 2);
-			CEnemy::mPoint9 = new CPoint(CVector(-913.0f + 50.0f, 30.0f - 50.0f, -1637.0f), 60.0f * 2);
-			CEnemy::mPoint10 = new CPoint(CVector(-500.0f + 50.0f, 30.0f - 50.0f, -1700.0f), 60.0f * 2);
-			CEnemy::mPoint11 = new CPoint(CVector(-160.0f + 50.0f, 30.0f - 50.0f, -1600.0f), 60.0f * 2);
-			CEnemy::mPoint12 = new CPoint(CVector(193.0f + 50.0f, 30.0f - 50.0f, -1182.0f), 60.0f * 2);*/
-		}
-		else if (CSceneTitle::mDifficulty == 3){//難易度：HARD
-			//現在、仮の設定
-			CEnemy::mPointSize = 12;//ポイント数の設定
-			CEnemy::mPoint = new CPoint(CVector(413.0f, 30.0f, 1300.0f), 100.0f * 2 * 4);
-			CEnemy::mPoint2 = new CPoint(CVector(258.0f, 30.0f, 2000.0f), 100.0f * 2 * 4);
-			CEnemy::mPoint3 = new CPoint(CVector(-1350.0f, 30.0f, 2150.0f), 100.0f * 2 * 4);
-			CEnemy::mPoint4 = new CPoint(CVector(-1601.0f, 30.0f, -1702.0f), 100.0f * 2 * 4);
-			CEnemy::mPoint5 = new CPoint(CVector(-500.0f, 30.0f, -2000.0f), 100.0f * 2 * 4);
-			CEnemy::mPoint6 = new CPoint(CVector(340.0f, 30.0f, -1182.0f), 100.0f * 2 * 4);
-			CEnemy::mPoint7 = new CPoint(CVector(413.0f, 30.0f, 1300.0f), 100.0f * 2 * 4);
-			CEnemy::mPoint8 = new CPoint(CVector(258.0f, 30.0f, 2000.0f), 100.0f * 2 * 4);
-			CEnemy::mPoint9 = new CPoint(CVector(-1350.0f, 30.0f, 2150.0f), 100.0f * 2 * 4);
-			CEnemy::mPoint10 = new CPoint(CVector(-1601.0f, 30.0f, -1702.0f), 100.0f * 2 * 4);
-			CEnemy::mPoint11 = new CPoint(CVector(-500.0f, 30.0f, -2000.0f), 100.0f * 2 * 4);
-			CEnemy::mPoint12 = new CPoint(CVector(340.0f, 30.0f, -1182.0f), 100.0f * 2 * 4);
-			/*CEnemy::mPoint = new CPoint(CVector(260.0f, 30.0f, 777.0f), 40.0f * 2);
-			CEnemy::mPoint2 = new CPoint(CVector(259.0f, 30.0f, 1300.0f), 50.0f * 2);
-			CEnemy::mPoint3 = new CPoint(CVector(-150.0f, 30.0f, 2058.0f), 65.0f * 2);
-			CEnemy::mPoint4 = new CPoint(CVector(-555.0f, 30.0f, 2111.0f), 65.0f * 2);
-			CEnemy::mPoint5 = new CPoint(CVector(-1039.0f, 30.0f, 2062.0f), 65.0f * 2);
-			CEnemy::mPoint6 = new CPoint(CVector(-1400.0f, 30.0f, 1700.0f), 60.0f * 2);
-			CEnemy::mPoint7 = new CPoint(CVector(-1511.0f, 30.0f, -317.0f), 40.0f * 2);
-			CEnemy::mPoint8 = new CPoint(CVector(-1400.0f, 30.0f, -1079.0f), 40.0f * 2);
-			CEnemy::mPoint9 = new CPoint(CVector(-913.0f, 30.0f, -1637.0f), 40.0f * 2);
-			CEnemy::mPoint10 = new CPoint(CVector(-500.0f, 30.0f, -1700.0f), 60.0f * 2);
-			CEnemy::mPoint11 = new CPoint(CVector(-160.0f, 30.0f, -1600.0f), 60.0f * 2);
-			CEnemy::mPoint12 = new CPoint(CVector(193.0f, 30.0f, -1182.0f), 50.0f * 2);*/
-		}
-		else{
-			//隠しHARDの予定
-		}
-	}
-
 	//的の残数の初期化
 	CItem::mTargetAmount = 0;
 
@@ -377,66 +166,64 @@ void CSceneRace::Init() {
 
 	mSumple.Load("UnderGround\\passage2.obj", "UnderGround\\passage2.mtl");
 
-	//プレイヤーの生成
-	mPlayer = new CPlayer();
-	mPlayer->mpModel = &mRover;
+	////プレイヤーの生成
+	//mPlayer = new CPlayer();
+	//mPlayer->mpModel = &mRover;
 
-	//敵車の生成
-	for (int i = 0; i < ENEMYS_AMOUNT; i++){
-		mEnemys[i] = new CEnemy();
-		if (i % 8 == 0){
-			mEnemys[i]->mpModel = &mCarBlue;
-		}
-		else if (i % 8 == 1){
-			mEnemys[i]->mpModel = &mCarPink;
-		}		
-		else if (i % 8 == 2){
-			mEnemys[i]->mpModel = &mCarRed;
-		}
-		else if (i % 8 == 3){
-			mEnemys[i]->mpModel = &mCarGreen;
-		}
-		else if (i % 8 == 4){
-			mEnemys[i]->mpModel = &mCarYellow;
-		}
-		else if (i % 8 == 5){
-			mEnemys[i]->mpModel = &mCarBlack;
-		}
-		else if (i % 8 == 6){
-			mEnemys[i]->mpModel = &mCarWhite;
-		}
-		else if (i % 8 == 7){
-			mEnemys[i]->mpModel = &mCarCyan;
-		}
-		
-		//初期の配置座標を設定する
-		mEnemys[i]->mPosition = CVector(350.0f, -13.538f, -130.0f - 80.0f*i);
-		if (i % 2 == 0){
-			mEnemys[i]->mPosition.mX -= 80.0f;
-		}
-		/*if (i < 7){
-			mEnemys[i]->mPosition = CVector(350.0f - 25.0f*i, -13.538f, -140.0f);
-		}		
-		else{
-			int io = i % 7;
-			mEnemys[i]->mPosition = CVector(250.0f + 25.0f*io, -13.538f, -140.0f - (20.0f*i/7));
-		}
-		if (i == 5){
-			mEnemys[i]->mPosition = CVector(250.0f, -13.538f, -100.0f);
-		}
-		else if (i == 6){
-			mEnemys[i]->mPosition = CVector(350.0f, -13.538f, -100.0f);
-		}
-		else if (i == 7){
-			mEnemys[i]->mPosition = CVector(300.0f, -13.538f, -170.0f);
-		}
-		else if (i % 2 == 1){
-			mEnemys[i]->mPosition.mZ -= 7.0f;
-		}		*/
+	////敵車の生成
+	//for (int i = 0; i < ENEMYS_AMOUNT; i++){
+	//	mEnemys[i] = new CEnemy();
+	//	if (i % 8 == 0){
+	//		mEnemys[i]->mpModel = &mCarBlue;
+	//	}
+	//	else if (i % 8 == 1){
+	//		mEnemys[i]->mpModel = &mCarPink;
+	//	}		
+	//	else if (i % 8 == 2){
+	//		mEnemys[i]->mpModel = &mCarRed;
+	//	}
+	//	else if (i % 8 == 3){
+	//		mEnemys[i]->mpModel = &mCarGreen;
+	//	}
+	//	else if (i % 8 == 4){
+	//		mEnemys[i]->mpModel = &mCarYellow;
+	//	}
+	//	else if (i % 8 == 5){
+	//		mEnemys[i]->mpModel = &mCarBlack;
+	//	}
+	//	else if (i % 8 == 6){
+	//		mEnemys[i]->mpModel = &mCarWhite;
+	//	}
+	//	else if (i % 8 == 7){
+	//		mEnemys[i]->mpModel = &mCarCyan;
+	//	}		
+	//	//初期の配置座標を設定する
+	//	mEnemys[i]->mPosition = CVector(350.0f, -13.538f, -130.0f - 80.0f*i);
+	//	if (i % 2 == 0){
+	//		mEnemys[i]->mPosition.mX -= 80.0f;
+	//	}
+	//	/*if (i < 7){
+	//		mEnemys[i]->mPosition = CVector(350.0f - 25.0f*i, -13.538f, -140.0f);
+	//	}		
+	//	else{
+	//		int io = i % 7;
+	//		mEnemys[i]->mPosition = CVector(250.0f + 25.0f*io, -13.538f, -140.0f - (20.0f*i/7));
+	//	}
+	//	if (i == 5){
+	//		mEnemys[i]->mPosition = CVector(250.0f, -13.538f, -100.0f);
+	//	}
+	//	else if (i == 6){
+	//		mEnemys[i]->mPosition = CVector(350.0f, -13.538f, -100.0f);
+	//	}
+	//	else if (i == 7){
+	//		mEnemys[i]->mPosition = CVector(300.0f, -13.538f, -170.0f);
+	//	}
+	//	else if (i % 2 == 1){
+	//		mEnemys[i]->mPosition.mZ -= 7.0f;
+	//	}		*/
+	//	mEnemys[i]->CCharacter::Update();
+	//}
 
-
-		mEnemys[i]->CCharacter::Update();
-	}
 
 	// 1 2 3 4 5
 	//■□■□■
@@ -524,11 +311,11 @@ void CSceneRace::Init() {
 	//初期状態ではポーズ状態無効
 	isPause = false;
 
-	//優先度変更
-	CTaskManager::Get()->ChangePriority(mPlayer, 15);
-	for (int i = 0; i < ENEMYS_AMOUNT; i++){
-		CTaskManager::Get()->ChangePriority(mEnemys[i], 15);
-	}
+	////優先度変更
+	//CTaskManager::Get()->ChangePriority(mPlayer, 15);
+	//for (int i = 0; i < ENEMYS_AMOUNT; i++){
+	//	CTaskManager::Get()->ChangePriority(mEnemys[i], 15);
+	//}
 
 	
 
@@ -573,65 +360,25 @@ void CSceneRace::Update() {
 		c = mPlayer->mPosition + CVector(0.0f, 0.0f, -40.0f)* mPlayer->mMatrixScale
 			* CMatrix().RotateY(mPlayer->mRotation.mY);
 			//* CMatrix().RotateZ(mPlayer->mRotation.mZ);
-	}
-
-	//CMatrix().RotateZ(mRotation.mZ) *CMatrix().RotateX(mRotation.mX) *CMatrix().RotateY(mRotation.mY);
-
-	//////注視点を求める
-	////c = mPlayer->mPosition + CVector(0.0f, 0.0f, 40.0f)*mPlayer->mMatrixRotate;
-	//c = mPlayer->mPosition + CVector(0.0f, 0.0f, 40.0f)
-	//	* CMatrix().RotateY(mPlayer->mRotation.mY)
-	//	* CMatrix().RotateZ(mPlayer->mRotation.mZ);
-	
+	}	
 	//上方向を求める
 	u = CVector(0.0f, 1.0f, 0.0f);// *mPlayer->mMatrixRotate;
 	
 	if (CKey::Once('J')){
 		printf("カメラ視点(Main) %f %f %f   %f %f %f     %f %f %f\n", e.mX, e.mY, e.mZ, c.mX, c.mY, c.mZ, u.mX, u.mY, u.mZ);
 	}
-
-	//e = CVector(0.0f+mXXX, 5000.0f, mZZZ+0.0f);
-	//	/*CVector(0.0f, 3000.0f, 0.0f) * CMatrix().RotateY(mCamY) * mPlayer->mMatrixScale
-	//	* CMatrix().RotateY(mPlayer->mRotation.mY)
-	//	* mPlayer->mMatrixTranslate
-	//	+ CVector(0.0f, 0.0f, 0.0f);*/
-	////注視点を求める
-	//c = CVector(0.0f+mXXX, 0.0f, mZZZ+0.0001f);
-	//	//mPlayer->mPosition + CVector(0.0f, 0.0f, 0.01f)*mPlayer->mMatrixRotate;
-	////上方向を求める
-	//u = CVector(0.0f, 1.0f, 0.0f) * mPlayer->mMatrixRotate;
-
 	//カメラの設定
 	Camera3D(e.mX, e.mY, e.mZ, c.mX, c.mY, c.mZ, u.mX, u.mY, u.mZ);
 	Camera.mEye = e;
-
-	////タスクマネージャの更新
-	//TaskManager.Update();
-	////タスクマネージャの描画
-	//TaskManager.Render();
-
-	/*mPlayer->mpModel = &mRover;
-	mPlayer->mScale = CVector(2.5f, 2.5f, 2.5f);*/
 
 	//タスクマネージャの更新・描画
 	if (isPause == false){
 		CTaskManager::Get()->Update();
 	}
-
-	CTaskManager::Get()->Render();
-	
-	////岩の描画
-	//mRock.Render(CMatrix().Scale(5.0f, 5.0f, 5.0f));
-	////車の描画
-	//mRover.Render(CMatrix().Translate(-20.0f, 0.0f, 10.0f));
-
-	////あ゛
-	////コリジョンマネージャの衝突処理
-	//CollisionManager.Collision();
-	//TaskManager.TaskCollision();
+	CTaskManager::Get()->Render();	
+	//衝突
 	CTaskManager::Get()->TaskCollision();
-
-	//TaskManager.Delete();
+	//削除
 	CTaskManager::Get()->Delete();
 
 	//デバッグ用
@@ -750,13 +497,25 @@ void CSceneRace::Update() {
 	if (isRender_BackMirror){
 		RenderBackMirror();
 	}
-	
 
 	//2D描画開始
 	Start2D(0, 800, 0, 600);
 
 	//順位の描画
 	float color[] = { 1.0f, 1.0f, 1.0f, 1.0f };
+	//////コースによって左下のコース名が変わる
+	////if (CSceneTitle::mCource == CSceneTitle::ECOURCE1){
+	////	CText::DrawString("COURCE 1", 20, 20, 10, 12);
+	////}
+	////else if (CSceneTitle::mCource == CSceneTitle::ECOURCE2){
+	////	CText::DrawString("COURCE 2", 20, 20, 10, 12);
+	////}
+	////else if (CSceneTitle::mCource == CSceneTitle::ECOURCE3){
+	////	CText::DrawString("COURCE 3", 20, 20, 10, 12);
+	////}
+	////else if (CSceneTitle::mCource == CSceneTitle::ECOURCE4){
+	////	CText::DrawString("COURCE 4", 20, 20, 10, 12);
+	////}
 	CText::DrawString("COURCE 1", 20, 20, 10, 12);
 
 	//時間の表示
@@ -889,6 +648,7 @@ void CSceneRace::Update() {
 	CText::DrawString(cars, 20 + 360, 120, 10, 12,2);
 	//mEnemys[0]->left.Dot(mEnemys[0]->dir)
 	//left.Dot(dir) > 0.0f
+
 
 	//2D描画終了
 	End2D();
@@ -1102,6 +862,7 @@ void CSceneRace::RenderMiniMap() {
 	glPushMatrix();
 	glViewport(600 + 20-30, 450 - 440, 200, 150); //画面の描画エリアの指定
 	glLoadIdentity();
+	
 	if (CSceneTitle::mMode == 3){
 		gluLookAt(0, 9400, 0, 0, 0, 0, 0, 0, 1);
 	}
@@ -1116,6 +877,11 @@ void CSceneRace::RenderMiniMap() {
 	//タスクマネージャの描画
 //	TaskManager.Render();
 	CTaskManager::Get()->Render();
+		
+	/*switch (CSceneTitle::mCource){
+	case CSceneTitle::ECOURCE1:
+	default:
+	}*/
 
 	if (CSceneTitle::mMode == 3){
 		if (isRendPoint == true){
