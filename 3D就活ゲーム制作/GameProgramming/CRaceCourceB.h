@@ -10,15 +10,6 @@ public:
 	void Init();
 	//更新処理のオーバーライド
 	void Update();
-
-	CModel mSum;
 };
-//class CRaceCourceB : public CSceneRace {
-//public:
-//	//初期化処理のオーバーライド
-//	void Init();
-//	//更新処理のオーバーライド
-//	void Update();
-//};
 
 #endif

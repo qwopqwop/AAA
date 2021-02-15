@@ -87,9 +87,6 @@ void CSceneRace::Init() {
 	//ONブロック(？)の読み込み
 	mOnBlock.Load("cube.obj", "material\\on.mtl");
 
-	mItem.Load("Rock1.obj", "Rock1.mtl");
-	
-
 	mCube2.Load("cube.obj", "cube2.mtl");
 	mCube3.Load("cube.obj", "cube3.mtl");
 	//中間地点の読み込み(透明、ポリゴン1枚のみ)
@@ -135,8 +132,6 @@ void CSceneRace::Init() {
 	mCarsol_Enemy.Load("material\\racing_mat\\minicarsol.obj", "material\\racing_mat\\minicarsol_enemy.mtl");//敵
 	mMiniGoal.Load("material\\racing_mat\\minigoal.obj", "material\\racing_mat\\minigoal.mtl");
 
-	CBullet::mBullet.Load("銃弾.obj", "銃弾.mtl");
-
 	//ステージ1BGMの読み込み
 	if (CSceneTitle::mMode == 1){
 		BGM.Load("BGM\\(音量調整版)Popsギター_No.01.wav");
@@ -166,93 +161,7 @@ void CSceneRace::Init() {
 
 	mSumple.Load("UnderGround\\passage2.obj", "UnderGround\\passage2.mtl");
 
-	////プレイヤーの生成
-	//mPlayer = new CPlayer();
-	//mPlayer->mpModel = &mRover;
-
-	////敵車の生成
-	//for (int i = 0; i < ENEMYS_AMOUNT; i++){
-	//	mEnemys[i] = new CEnemy();
-	//	if (i % 8 == 0){
-	//		mEnemys[i]->mpModel = &mCarBlue;
-	//	}
-	//	else if (i % 8 == 1){
-	//		mEnemys[i]->mpModel = &mCarPink;
-	//	}		
-	//	else if (i % 8 == 2){
-	//		mEnemys[i]->mpModel = &mCarRed;
-	//	}
-	//	else if (i % 8 == 3){
-	//		mEnemys[i]->mpModel = &mCarGreen;
-	//	}
-	//	else if (i % 8 == 4){
-	//		mEnemys[i]->mpModel = &mCarYellow;
-	//	}
-	//	else if (i % 8 == 5){
-	//		mEnemys[i]->mpModel = &mCarBlack;
-	//	}
-	//	else if (i % 8 == 6){
-	//		mEnemys[i]->mpModel = &mCarWhite;
-	//	}
-	//	else if (i % 8 == 7){
-	//		mEnemys[i]->mpModel = &mCarCyan;
-	//	}		
-	//	//初期の配置座標を設定する
-	//	mEnemys[i]->mPosition = CVector(350.0f, -13.538f, -130.0f - 80.0f*i);
-	//	if (i % 2 == 0){
-	//		mEnemys[i]->mPosition.mX -= 80.0f;
-	//	}
-	//	/*if (i < 7){
-	//		mEnemys[i]->mPosition = CVector(350.0f - 25.0f*i, -13.538f, -140.0f);
-	//	}		
-	//	else{
-	//		int io = i % 7;
-	//		mEnemys[i]->mPosition = CVector(250.0f + 25.0f*io, -13.538f, -140.0f - (20.0f*i/7));
-	//	}
-	//	if (i == 5){
-	//		mEnemys[i]->mPosition = CVector(250.0f, -13.538f, -100.0f);
-	//	}
-	//	else if (i == 6){
-	//		mEnemys[i]->mPosition = CVector(350.0f, -13.538f, -100.0f);
-	//	}
-	//	else if (i == 7){
-	//		mEnemys[i]->mPosition = CVector(300.0f, -13.538f, -170.0f);
-	//	}
-	//	else if (i % 2 == 1){
-	//		mEnemys[i]->mPosition.mZ -= 7.0f;
-	//	}		*/
-	//	mEnemys[i]->CCharacter::Update();
-	//}
-
-
-	// 1 2 3 4 5
-	//■□■□■
-	//□■□■□
-	//チェック柄を作りやすくするメソッド？
-	//CChecker(パターン1,パターン2,どこまで模様を繰り返すか,,,正方形のサイズ,厚み)
-	//CChecker(&mTileBlack ,&mTileWhite, 5, 10.0f, 0.5f)
-
-
-	/*else if (mChecks == 1){
-		mPosition = CVector(-2060.0f, mStartPoint[1], -3403.0f);
-		mStartRotation = 117.7f;
-	}
-	else if (mChecks == 2){
-		mPosition = CVector(-1020.0f, mStartPoint[1], 4594.0f);
-		mStartRotation = -506.4f;
-	}
-	else if (mChecks == 3){
-		mPosition = CVector(-1277.0f, mStartPoint[1], -448.0f);
-		mStartRotation = -200.0f;
-	}
-	
-	if (CSceneTitle::mMode == 2){
-		
-	}
-	else{
-		
-	}
-
+	/*
 	////物理演算(笑)するオブジェクト No.2001
 	//new CObj(&mTileWhite, CVector(500.0f, -13.1f + 23.0f, 900.0f), CVector(0.0f, 0.0f, 0.0f), CVector(11.0f, 11.0f, 11.0f), 2001);
 	//new CObj(&mTileWhite, CVector(550.0f, -13.1f + 0.0f, 900.0f), CVector(0.0f, 0.0f, 0.0f), CVector(11.0f, 11.0f, 11.0f), 2001);
@@ -261,15 +170,12 @@ void CSceneRace::Init() {
 	//}	
 	//new CRigidObj(&mTileWhite, CVector(400.0f, -13.1f, 400.0f), CVector(0.0f, 0.0f, 0.0f), CVector(21.0f, 21.0f, 21.0f));
 
-	//new CObj(&mTileWhite, CVector(0.0f, -11.1f, 900.0f), CVector(0.0f, 0.0f, 0.0f), CVector(50.0f, 150.0f, 10.0f), 200);//壁
-	//new CObj(&mTileWhite, CVector(230.0f, -11.1f, 1300.0f), CVector(0.0f, 0.0f, 0.0f), CVector(50.0f, 50.0f, 50.0f), 200);//壁
-	//new CObj(&mTileBlack, CVector(0.0f, -1010.0f, 0.0f), CVector(0.0f, 0.0f, 0.0f), CVector(50000.0f, 1.0f, 50000.0f), 99);//黒
-
 	//流れるダッシュボード達
 	for (int i = 0; i < 16; i++){
 		new CObj(&mDashBoard, CVector(260.0f - 40.0f*i , 13.1f + 10.0f, 800.0f), CVector(0.0f, 270.0f, 0.0f), CVector(1.0f, 1.0f, 1.0f), 31);
 		new CObj(&mDashBoard, CVector(260.0f - 40.0f*i-20.0f, 13.1f + 10.0f, 800.0f), CVector(0.0f, 270.0f, 0.0f), CVector(0.9f, 0.9f, 0.9f), 31);
-	}*/
+	}
+	*/
 
 
 	//カメラ視点のY座標
@@ -311,14 +217,7 @@ void CSceneRace::Init() {
 	//初期状態ではポーズ状態無効
 	isPause = false;
 
-	////優先度変更
-	//CTaskManager::Get()->ChangePriority(mPlayer, 15);
-	//for (int i = 0; i < ENEMYS_AMOUNT; i++){
-	//	CTaskManager::Get()->ChangePriority(mEnemys[i], 15);
-	//}
-
-	
-
+	//BGMはループ
 	BGM.Repeat();
 }
 
@@ -327,17 +226,13 @@ void CSceneRace::Update() {
 	//カメラのパラメータを作成する
 	CVector e, c, u;//視点、注視点、上方向
 	//視点を求める
-//	e = CVector(-2.0f, 17.0f, -40.0f) * CMatrix().RotateY(mCamY) * mPlayer->mMatrix   * mPlayer->mMatrixScale * mPlayer->mMatrixRotate * mPlayer->mMatrixTranslate;
 	if (mCamPoV == 1){
 		e = CVector(0.0f, 17.0f, -40.0f) * CMatrix().RotateY(mCamY)* mPlayer->mMatrixScale   // * mPlayer->mMatrixScale
 			* CMatrix().RotateY(mPlayer->mRotation.mY)
 			* mPlayer->mMatrixTranslate
 			+ CVector(0.0f, 0.0f, 0.0f);
-		////注視点を求める
-		//c = mPlayer->mPosition + CVector(0.0f, 0.0f, 40.0f)*mPlayer->mMatrixRotate;
 		c = mPlayer->mPosition + CVector(0.0f, 0.0f, 40.0f)* mPlayer->mMatrixScale   //* mPlayer->mMatrixScale
 			* CMatrix().RotateY(mPlayer->mRotation.mY);
-			//* CMatrix().RotateZ(mPlayer->mRotation.mZ);
 	}
 	else if (mCamPoV == 2){
 		e = CVector(0.0f, 0.0f + 0.5f, -40.0f) * CMatrix().RotateY(mCamY) * mPlayer->mMatrixScale
@@ -360,13 +255,17 @@ void CSceneRace::Update() {
 		c = mPlayer->mPosition + CVector(0.0f, 0.0f, -40.0f)* mPlayer->mMatrixScale
 			* CMatrix().RotateY(mPlayer->mRotation.mY);
 			//* CMatrix().RotateZ(mPlayer->mRotation.mZ);
-	}	
-	//上方向を求める
-	u = CVector(0.0f, 1.0f, 0.0f);// *mPlayer->mMatrixRotate;
-	
-	if (CKey::Once('J')){
-		printf("カメラ視点(Main) %f %f %f   %f %f %f     %f %f %f\n", e.mX, e.mY, e.mZ, c.mX, c.mY, c.mZ, u.mX, u.mY, u.mZ);
 	}
+	else{//1～3以外の数値が入っている時はとりあえず前方視点(1と同じ)
+		e = CVector(0.0f, 17.0f, -40.0f) * CMatrix().RotateY(mCamY)* mPlayer->mMatrixScale   // * mPlayer->mMatrixScale
+			* CMatrix().RotateY(mPlayer->mRotation.mY)
+			* mPlayer->mMatrixTranslate
+			+ CVector(0.0f, 0.0f, 0.0f);
+		c = mPlayer->mPosition + CVector(0.0f, 0.0f, 40.0f)* mPlayer->mMatrixScale   //* mPlayer->mMatrixScale
+			* CMatrix().RotateY(mPlayer->mRotation.mY);
+	}
+	//上方向を求める
+	u = CVector(0.0f, 1.0f, 0.0f);// *mPlayer->mMatrixRotate;	
 	//カメラの設定
 	Camera3D(e.mX, e.mY, e.mZ, c.mX, c.mY, c.mZ, u.mX, u.mY, u.mZ);
 	Camera.mEye = e;
@@ -376,9 +275,9 @@ void CSceneRace::Update() {
 		CTaskManager::Get()->Update();
 	}
 	CTaskManager::Get()->Render();	
-	//衝突
+	//衝突処理
 	CTaskManager::Get()->TaskCollision();
-	//削除
+	//削除処理
 	CTaskManager::Get()->Delete();
 
 	//デバッグ用
@@ -393,10 +292,7 @@ void CSceneRace::Update() {
 	if (CKey::Once('3')){//強制的に的の残数を0にする(本来の的は消えない)
 		CItem::mTargetAmount = 0;
 	}
-	if (CKey::Once('4')){//余剰の計算時、割る数(右の数字)は正の値で計算される？
-		//printf("%d\n", -13 % 5);//負%正=負
-		//printf("%d\n", -12 % -5);//負%負=負
-		//printf("%d\n", 14 % -5);//正%負=正
+	if (CKey::Once('4')){//バックミラーのON・OFF切り替え
 		isRender_BackMirror = !isRender_BackMirror;
 	}
 	if (CKey::Push('5')){
@@ -448,30 +344,14 @@ void CSceneRace::Update() {
 	if (CKey::Once('M')){
 		BGM.Stop();
 	}
-	////カメラ視点の切り替え
-	//if (CKey::Once('0')){
-	//	//mCamPoV = 1;
-	//	if (mCamPoV == 1){
-	//		mCamPoV = 2;
-	//	}
-	//	else if (mCamPoV == 2){
-	//		mCamPoV = 3;
-	//	}
-	//	else if (mCamPoV == 3){
-	//		mCamPoV = 1;
-	//	}
-	//}
-	
-#endif
-
-
-	//Bキーを押している間は後方視点になる
+	//Bキーを押している間、メイン画面も後方視点になる
 	if (CKey::Push('B')){
 		mCamPoV = 3;
 	}
 	else{
 		mCamPoV = 1;
 	}
+#endif	
 
 	//ポーズ画面に入っていない時
 	if (isPause == false){
@@ -516,7 +396,18 @@ void CSceneRace::Update() {
 	////else if (CSceneTitle::mCource == CSceneTitle::ECOURCE4){
 	////	CText::DrawString("COURCE 4", 20, 20, 10, 12);
 	////}
-	CText::DrawString("COURCE 1", 20, 20, 10, 12);
+	if (CSceneTitle::mMode == 1){
+		CText::DrawString("COURCE 1", 20, 20, 10, 12);
+	}
+	else if (CSceneTitle::mMode == 2){
+		CText::DrawString("COURCE 2", 20, 20, 10, 12);
+	}
+	else if (CSceneTitle::mMode == 3){
+		CText::DrawString("COURCE 3", 20, 20, 10, 12);
+	}
+	else if (CSceneTitle::mMode == 4){
+		CText::DrawString("COURCE 4", 20, 20, 10, 12);
+	}
 
 	//時間の表示
 	char mti[70];// :も含めた最大文字数の設定
@@ -561,15 +452,6 @@ void CSceneRace::Update() {
 		}
 	}
 
-	//if (isStartRace == false){
-	//	if (mCountDown > 0){
-	//		//カウントダウン中(ゴール以前に、スタートすらしてない)
-	//	}
-	//	else{
-	//		CText::DrawString("FINISH!", 400 - 25 * 6, 300, 25, 30);
-	//	}
-	//}
-
 	char lap[19];
 	sprintf(lap, "LAP%d/%d", mLap, mMaxLap);
 	CText::DrawString(lap, 20, 500, 10, 12, 2);
@@ -598,6 +480,9 @@ void CSceneRace::Update() {
 	char carspeed[33];
 	sprintf(carspeed, "SPEED:%4.1f", CPlayer::mpPlayer->mCarSpeed);
 	CText::DrawString(carspeed, 20+560, 20, 10, 12);
+	char enecarspeed[33];
+	sprintf(enecarspeed, "SPEED:%4.1f", mEnemys[0]->mCarSpeed);
+	CText::DrawString(enecarspeed, 20 + 560, 20+25, 10, 12);
 
 	char carhandle[33];
 	sprintf(carhandle, "%4.2f", CPlayer::mpPlayer->mTurnSpeed);
@@ -608,7 +493,6 @@ void CSceneRace::Update() {
 		if (mAfterGoalTime < 999){
 			mAfterGoalTime++;
 		}
-
 		if (mAfterGoalTime > 85){
 			color[3] = 1.0f - 0.1f * (mAfterGoalTime - 85);
 			glColor4fv(color);
@@ -632,34 +516,18 @@ void CSceneRace::Update() {
 		}
 		CText::DrawString(rank, 357, 310, 10 * 2, 12 * 2, 2);		
 	}
+	//色合いを元に戻す
 	color[3] = 1.0f;
 	glColor4fv(color);
-	
 
-	//ポーズ時に表示される文字
+	//ポーズ中に表示される文字
 	if (isPause){
 		CText::DrawString("PAUSE", 280, 300, 10*3, 12*3, 3);		
 		CText::DrawString("P - Resume", 290, 200, 10, 12, 2);
 		CText::DrawString("Esc - Back to Title", 250, 170, 10, 12, 2);
 	}
-
-	char cars[33];
-	sprintf(cars, "%+07.1f", mEnemys[0]->left.Dot(mEnemys[0]->dir));
-	CText::DrawString(cars, 20 + 360, 120, 10, 12,2);
-	//mEnemys[0]->left.Dot(mEnemys[0]->dir)
-	//left.Dot(dir) > 0.0f
-
-
 	//2D描画終了
 	End2D();
-
-	//if (CKey::Push('Y')){//でば
-	//	mCamY += 1.0f;
-	//}
-	//if (CKey::Push('U')){//つぐ
-	//	mCamY += -1.0f;
-	//}
-
 
 	//ゴール地点通過時の処理
 	if (CSceneTitle::mMode == 2){
@@ -729,10 +597,6 @@ void CSceneRace::Update() {
 			&& (CPlayer::mpPlayer->mPosition.mZ > -3.1f - 5.0f && CPlayer::mpPlayer->mPosition.mZ < -3.1f + 5.0f + 20.0f)
 			&& (CPlayer::mpPlayer->mChecks == 3)
 			&& (isStartRace)){
-			//new CObj(&mCube, CVector(0.0f, 0.0f, 5700.0f), CVector(-90.0f, 0.0f, 0.0f), CVector(100.0f, 13.0f, 211.0f), 1);//ゴール
-			//new CObj(&mTileBlack, CVector(170.0f + 20.0f * -1 + 5.0f, -13.1f + 10.0f, -10.0f), CVector(0.0f, 0.0f, 0.0f), CVector(5.0f, 64.0f, 5.0f), 99);//柱
-			//new CObj(&mTileBlack, CVector(170.0f + 20.0f * 40 + 5.0f, -13.1f + 10.0f, -10.0f), CVector(0.0f, 0.0f, 0.0f), CVector(5.0f, 64.0f, 5.0f), 99);//柱
-
 			if (mLap == mMaxLap){
 				//ベストタイム更新時
 				if (mTime < mBestTime){
@@ -756,7 +620,7 @@ void CSceneRace::Update() {
 				isGoal = true;
 				BGM.Stop();
 				SoundGoal.Play();
-				//CPlayer::mpPlayer->CanMove = false;//動きストップ
+				//CPlayer::mpPlayer->CanMove = false;//false:ゴール後も一応走り続けることはできる
 				CPlayer::mpPlayer->mChecks = 0;
 			}
 			else{
@@ -1257,11 +1121,7 @@ void CSceneRace::RenderBackMirror(){
 	};
 	glMultMatrixf(translate);
 	CTaskManager::Get()->Render();
-
-	if (CKey::Once('L')){
-		printf("カメラ視点(Back) %f %f %f   %f %f %f     %f %f %f\n", e.mX, e.mY, e.mZ, c.mX, c.mY, c.mZ, u.mX, u.mY, u.mZ);
-	}
-
+	
 	glEnable(GL_DEPTH_TEST);
 	glViewport(0, 0, 800, 600); //画面の描画エリアをメインの画面に戻す
 	glEnable(GL_CULL_FACE);//表面のみの描画に戻す

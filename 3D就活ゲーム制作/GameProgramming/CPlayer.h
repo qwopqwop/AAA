@@ -41,9 +41,6 @@ public:
 
 	bool mCanJump;//ジャンプ可能か(≒地面に足が着いてるか)
 	int mCanSwim;//水泳可能か
-	int mCanFire;//発砲可能か
-	//弾の再発射間隔
-	int FireCount;
 
 	CSound SoundJump;
 	CSound SoundShot;

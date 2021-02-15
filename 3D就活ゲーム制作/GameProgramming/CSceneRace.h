@@ -45,9 +45,6 @@ public:
 	CModel mTarget;//的
 	CModel mOnBlock;//OFFになると消える
 
-	CModel mItem;
-	
-
 	CModel mCube2;//本当に透明
 	CModel mCube3;//窓っぽい色
 
@@ -55,6 +52,7 @@ public:
 
 	CModel mWater;//水タイル
 
+	//ジャンプ床に活用できる気がする…
 	CModel mSpringS;//ばね
 	CModel mSpringL;//ばね伸び
 
@@ -76,26 +74,16 @@ public:
 
 	CModel mPole;//ポール
 
-	CModel mDashBoard;//加速する床
+	CModel mDashBoard;//加速床
 
 	CPlayer *mPlayer;
 	CEnemy *mEnemys[ENEMYS_AMOUNT];
-
-
-	//CRaceCource1
-	
 
 	CSound BGM;
 	CSound SoundCountDown;
 	CSound SoundStart;
 	CSound SoundGoal;
 	
-
-	//int mBlockAmoX;//X座標の最大ブロック数
-	//int mBlockAmoY;//Y座標の最大ブロック数
-	//int mBlockAmoZ;//Z座標の最大ブロック数
-	//int mBlockAmount;//上の三つの積にする
-
 	float mCamY;//プレイヤーの周りをグルグル(水平方向に)
 
 	bool mPutCol;
@@ -134,9 +122,6 @@ public:
 	
 	CModel mCource04;
 
-	CModel mJumper01;
-
-
-	CModel mSum;	
+	CModel mJumper01;//ジャンプ台
 };
 #endif

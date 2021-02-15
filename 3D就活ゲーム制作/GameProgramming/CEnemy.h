@@ -62,9 +62,6 @@ public:
 	//コライダの更新
 	void TaskCollision();
 
-
-
-
 	//誘導ポイント//中心、全エネミー共通のポイント
 	static CPoint *mPoint;
 	static CPoint *mPoint2;
@@ -78,42 +75,15 @@ public:
 	static CPoint *mPoint10;
 	static CPoint *mPoint11;
 	static CPoint *mPoint12;
-	////乱数でのブレを含む誘導ポイント
-	//CPoint *mPointRand;
-	//CPoint *mPointRand2;
-	//CPoint *mPointRand3;
-	//CPoint *mPointRand4;
-	//CPoint *mPointRand5;
-	//CPoint *mPointRand6;
-	//CPoint *mPointRand7;
-	//CPoint *mPointRand8;
-	//CPoint *mPointRand9;
-	//CPoint *mPointRand10;
-	//CPoint *mPointRand11;
-	//CPoint *mPointRand12;
-
-	//// *は使わない方がいい？
-	//CPoint Point1;
-	//CPoint Point2;
-	//CPoint Point3;
-	//CPoint Point4;
-	//CPoint Point5;
-	//CPoint Point6;
-	//CPoint Point7;
-	//CPoint Point8;
-	//CPoint Point9;
-	//CPoint Point10;
-	//CPoint Point11;
-	//CPoint Point12;
-
 	static int mPointSize;//ポイントの数
 	CPoint *mpPoint;//目指すポイント
 	int mPointCnt;//ポイントのカウンタ
+	//次のポイントまでに出す最高速度
+	float mMaxSpeed_PtoP;
 
 	//コライダ
 	CCollider mSearch;
 
-	CPoint *mpPoint2;
 	CVector mVPoint;
 
 	int mEnemyLap;

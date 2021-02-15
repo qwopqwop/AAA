@@ -48,17 +48,6 @@ CPlayer *CPlayer::mpPlayer = 0;
 //#define FIX_ANGLE_VALUE 0.5f //角度が0度に向けて調整される量(主にX・Z用)
 
 CPlayer::CPlayer()
-//:mColHead(this, CVector(0.0f, 19.2f, 0.5f), CVector(0.0f, 0.0f, 0.0f), CVector(1.0f, 1.0f, 1.0f), 2.0f)
-//, mColBody(this, CVector(0.0f, 14.0f, 0.5f), CVector(0.0f, 0.0f, 0.0f), CVector(1.0f, 1.0f, 1.0f), 3.0f)
-//, mColLeg(this, CVector(0.0f, 9.0f, 0.5f), CVector(0.0f, 0.0f, 0.0f), CVector(1.0f, 1.0f, 1.0f), 2.0f)
-//, mColKnee(this, CVector(0.0f, 5.5f, 0.5f), CVector(0.0f, 0.0f, 0.0f), CVector(1.0f, 1.0f, 1.0f), 2.0f)
-//, mColFoot(this, CVector(0.0f, 2.0f, 0.5f), CVector(0.0f, 0.0f, 0.0f), CVector(1.0f, 1.0f, 1.0f), 2.0f)
-//: mColHead(this, CVector(0.0f, 6.2f, 0.5f), CVector(0.0f, 0.0f, 0.0f), CVector(1.0f, 1.0f, 1.0f), 2.0f)
-//, mColBody(this, CVector(0.0f, 1.0f, 0.5f), CVector(0.0f, 0.0f, 0.0f), CVector(1.0f, 1.0f, 1.0f), 3.0f)
-//, mColLeg(this, CVector(0.0f, -4.0f, 0.5f), CVector(0.0f, 0.0f, 0.0f), CVector(1.0f, 1.0f, 1.0f), 2.0f)
-//, mColKnee(this, CVector(0.0f, -7.5f, 0.5f), CVector(0.0f, 0.0f, 0.0f), CVector(1.0f, 1.0f, 1.0f), 2.0f)
-//, mColFoot(this, CVector(0.0f, -11.0f, 0.5f), CVector(0.0f, 0.0f, 0.0f), CVector(1.0f, 1.0f, 1.0f), 2.0f)
-
 //車体のY座標は0.0fにしたいんだけど・・・
 //0.0fにしたら車体が浮いてるように見えてしまう
 :mColBody(this, CVector(0.0f, 4.0f + 1.0f, 0.5f), CVector(0.0f, 0.0f, 0.0f), CVector(1.0f, 1.0f, 1.0f), 10.0f*3)
@@ -66,9 +55,7 @@ CPlayer::CPlayer()
 {
 	mpPlayer = this;
 
-	//mScale = CVector(2.5f, 2.5f, 2.5f);
 	mScale = CVector(7.5f, 7.5f, 7.5f);
-
 
 	mVelocityJump = 0.0f;
 	mJumpV0 = 1.1f;//バネ取得後は2.3fの予定
@@ -76,14 +63,10 @@ CPlayer::CPlayer()
 	mADMoveX = 0.0f;  mWSMoveZ = 0.0f;
 	mCarSpeed = 0.0f;//車の速度の初期化
 	mTurnSpeed = 0.0f;
-
-	//mRotation.mY = -90;
-
-	mBuzzerCount = 0;//ブザーを鳴らした回数、鳴らしすぎると…
+	mBuzzerCount = 0;//ブザーを鳴らした回数
 
 	mCanJump = false;
 	mCanSwim = false;
-	mCanFire = false;
 	mIsGetKey = false;
 	mHaveBoat = false;
 	mFlyingMode = false;
@@ -141,22 +124,6 @@ CPlayer::CPlayer()
 }
 
 void CPlayer::Update(){
-	/*if (CKey::Push('A')){
-		mRotation.mY++;
-	}
-	if (CKey::Push('D')){
-		mRotation.mY--;
-	}
-	if (CKey::Push('W')){
-		mPosition = CVector(0.0f, mVelocityJump, 0.5f) * mMatrix;
-	}
-	else if (CKey::Push('S')){
-		mPosition = CVector(0.0f, mVelocityJump, -0.5f) * mMatrix;
-	}
-	else{
-		mPosition = CVector(0.0f, mVelocityJump, 0.0f) * mMatrix;
-	}*/
-
 	if (CKey::Push('Q')){//でば
 		mRotation.mY++;
 	}
@@ -173,61 +140,7 @@ void CPlayer::Update(){
 		}*/
 	}
 
-	////Aキー、Dキーが同時に入力されているか
-	//if (CKey::Push('A') && CKey::Push('D')){
-	//	mADMoveX = 0.0f;
-	//}
-	//else if (CKey::Push('A')){//Aキーだけ
-	//	mADMoveX = mMoveSpeed;
-	//}
-	//else if (CKey::Push('D')){//Dキーだけ
-	//	mADMoveX = -mMoveSpeed;
-	//}
-	//else{//どちらも入力なし
-	//	mADMoveX = 0.0f;
-	//}
-	////Wキー、Sキーが同時に入力されているか
-	//if (CKey::Push('W') && CKey::Push('S')){
-	//	mWSMoveZ = 0.0f;
-	//}
-	//else if (CKey::Push('W')){//Wキーだけ
-	//	mWSMoveZ = mMoveSpeed;
-	//}
-	//else if (CKey::Push('S')){//Sキーだけ
-	//	mWSMoveZ = -mMoveSpeed;
-	//}
-	//else{//どちらも入力なし
-	//	mWSMoveZ = 0.0f;
-	//}
-
 	
-
-	if (FireCount > 0){
-		FireCount--;
-	}
-	//弾を発射可能な時
-	if (mCanFire){
-		//スペースキー入力で弾発射
-		if (CKey::Push(VK_SPACE)){
-			if (FireCount <= 0){
-				CBullet *bullet = new CBullet();
-				bullet->Set(2.0f, 0.1f);
-				//bullet->mPosition = CVector(0.0f, 0.0f, 10.0f) * mMatrix;
-				bullet->mPosition = CVector(0.0f, 1.0f, 10.0f) * CMatrix().RotateY(90) * mMatrix;
-				bullet->mRotation = mRotation;
-				bullet->mScale = CVector(3.0f, 3.0f, 3.0f);
-				//	TaskManager.Add(bullet);
-				FireCount = 12;
-				//Bullet.Set(0.1f, 1.5f);
-				//Bullet.mPosition = CVector(0.0f, 0.0f, 10.0f) * mMatrix;
-				//Bullet.mRotation = mRotation;
-
-				//レーザー発射音の再生
-				SoundShot.Play();
-			}
-		}
-	}
-
 	//飛行モード有効時(デバッグ用)
 	if (mFlyingMode){
 		if (CKey::Push('W')){
@@ -388,19 +301,6 @@ void CPlayer::Update(){
 	}
 	mRotation.mY += mTurnSpeed;
 	
-
-	if (CKey::Push('Z')){
-		mRotation.mX++;
-	}
-	if (CKey::Push('X')){
-		mRotation.mX--;
-	}
-	if (CKey::Push('C')){
-		mRotation.mZ+=2;
-	}
-	if (CKey::Push('V')){
-		mRotation.mZ-=2;
-	}
 	if (mRotation.mZ > 180){
 		mRotation.mZ = -180;
 	}
@@ -529,33 +429,6 @@ void CPlayer::Collision(CCollider *mc, CCollider *yc){
 	case CCollider::ESPHERE://球コライダ
 		//相手のコライダが三角コライダの時
 		if (yc->mType == CCollider::ETRIANGLE){
-			////水泳可能な時は水場(水の上)を通過できる
-			//if (yc->mTag == EWATER && mCanSwim){
-			//}
-			//else{
-			//}
-			////チェックポイント関連の処理
-			//if (CCollider::Collision(mc, yc)){
-			//	if (yc->mpParent->mTag == CCharacter::ECHECKPOINT){//中間地点1
-			//		if (mChecks == 0){
-			//			//各中間地点を通過しないと1周したとみなされない
-			//			mChecks = 1;
-			//		}
-			//	}
-			//	if (yc->mpParent->mTag == CCharacter::ECHECKPOINT2){//中間地点2
-			//		if (mChecks == 1){
-			//			//各中間地点を通過しないと1周したとみなされない
-			//			mChecks = 2;
-			//		}
-			//	}
-			//	if (yc->mpParent->mTag == CCharacter::ECHECKPOINT3){//中間地点3
-			//		if (mChecks == 2){
-			//			//各中間地点を通過しないと1周したとみなされない
-			//			mChecks = 3;
-			//		}
-			//	}
-			//}
-			
 			//自分のコライダが本体の時
 			if (mc->mTag == CCollider::EBODY){
 				//芝生通過中の処理
@@ -604,19 +477,6 @@ void CPlayer::Collision(CCollider *mc, CCollider *yc){
 						}
 					}
 				}
-				////加速床に乗った時の処理
-				//if (yc->mpParent->mTag == CCharacter::EDASHBOARD){
-				//	CVector aiueo;//とりまベクトル
-				//	if (CCollider::CollisionTriangleSphere(yc, mc, &aiueo)){
-				//		//mCarSpeed += 10.0f;
-				//		isBoost = true;
-				//		mBoostTime = 45;
-				//		printf("SPEED UP!\n");
-				//	}
-				//}
-
-
-
 				if (mCanSwim && yc->mpParent->mTag == CCharacter::EWATER){
 					//通過可能、ステージ1の水
 				}
@@ -651,23 +511,17 @@ void CPlayer::Collision(CCollider *mc, CCollider *yc){
 									SoundCollision.Play();
 									//激突時、エフェクト発生
 									new CEffect(mPosition + CVector(0.0f,35.0f,0.0f), 100.0f, 100.0f, TextureExp, 4, 4, 1, 0);
-									//new CEffect(mPosition + CVector(0.0f, 390.0f/2, 0.0f), 390.0f, 390.0f, TextureExp, 4, 4, 111);
-
-									printf("ｺﾞﾝｯ");
 								}
 								else if (mCarSpeed > 4.0f){
 									mCarSpeed = 2.0f;
 									SoundCollisionSmall.Play();
 									//軽くぶつけた時もエフェクト発生
 									new CEffect(mPosition + CVector(0.0f, 15.5f, 0.0f), 60.0f, 60.0f, TextureHit, 3, 8,	1, 1);
-									printf("ｺﾞｽｯ");
 								}
 								else{
 									//壁にこすりながらの移動時、速度が遅くなる
 									if (mCarSpeed > 2.0f){
 										mCarSpeed = 2.0f;
-										/*new CEffect(mPosition + CVector(0.0f, 20.0f, 0.0f), 68.0f + 12.0f, 17.0f + 3.0f, TextureHit, 1, 1, 1, 1);
-										new CEffect(mPosition + CVector(0.0f, 60.0f, 0.0f), 68.0f + 12.0f, 17.0f + 3.0f, TextureHit, 1, 1, 1, 0);*/
 									}
 								}
 								//mCarSpeed = -mCarSpeed * 1.0;
@@ -677,7 +531,6 @@ void CPlayer::Collision(CCollider *mc, CCollider *yc){
 							else if(yc->mpParent->mTag == CCharacter::EJUMPER){//ジャンプ台に接触した時
 								//mVelocityJump = 0; 
 								mVelocityJump = JUMPER01_POWER;
-								printf("jump!");
 								mCanJump = true;
 								SoundJump.Play();
 							}
@@ -724,7 +577,6 @@ void CPlayer::Collision(CCollider *mc, CCollider *yc){
 						//mCarSpeed += 10.0f;
 						//mCarSpeed = MAXSPEED+10.0f;						
 						if (isBoost == false){
-							//printf("SPEED UP!\n");
 							SoundBoost.Play();
 							new CEffect(mPosition + CVector(0.0f, 15.5f, 0.0f), 60.0f, 60.0f, TextureBoost, 3, 5, 1, 1);
 						}
@@ -752,10 +604,6 @@ void CPlayer::Collision(CCollider *mc, CCollider *yc){
 				}
 				if (yc->mpParent->mTag == CCharacter::ESCREW){
 					mCanSwim = true;
-					SoundItemGet.Play();
-				}
-				if (yc->mpParent->mTag == CCharacter::EGUN){
-					mCanFire = true;
 					SoundItemGet.Play();
 				}
 				if (yc->mpParent->mTag == CCharacter::EKEY){

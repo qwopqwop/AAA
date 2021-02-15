@@ -23,18 +23,18 @@ void CRaceCourceB::Init(){
 	else if (CSceneTitle::mDifficulty == 2){//難易度：NORMAL
 		//現在、仮の設定
 		CEnemy::mPointSize = 12;//ポイント数の設定
-		CEnemy::mPoint = new CPoint(CVector(413.0f, 30.0f, 1300.0f), 100.0f * 2 * 4);
-		CEnemy::mPoint2 = new CPoint(CVector(258.0f, 30.0f, 2000.0f), 100.0f * 2 * 4);
-		CEnemy::mPoint3 = new CPoint(CVector(-1350.0f, 30.0f, 2150.0f), 100.0f * 2 * 4);
-		CEnemy::mPoint4 = new CPoint(CVector(-1601.0f, 30.0f, -1702.0f), 100.0f * 2 * 4);
-		CEnemy::mPoint5 = new CPoint(CVector(-500.0f, 30.0f, -2000.0f), 100.0f * 2 * 4);
-		CEnemy::mPoint6 = new CPoint(CVector(340.0f, 30.0f, -1182.0f), 100.0f * 2 * 4);
-		CEnemy::mPoint7 = new CPoint(CVector(413.0f, 30.0f, 1300.0f), 100.0f * 2 * 4);
-		CEnemy::mPoint8 = new CPoint(CVector(258.0f, 30.0f, 2000.0f), 100.0f * 2 * 4);
-		CEnemy::mPoint9 = new CPoint(CVector(-1350.0f, 30.0f, 2150.0f), 100.0f * 2 * 4);
-		CEnemy::mPoint10 = new CPoint(CVector(-1601.0f, 30.0f, -1702.0f), 100.0f * 2 * 4);
-		CEnemy::mPoint11 = new CPoint(CVector(-500.0f, 30.0f, -2000.0f), 100.0f * 2 * 4);
-		CEnemy::mPoint12 = new CPoint(CVector(340.0f, 30.0f, -1182.0f), 100.0f * 2 * 4);
+		CEnemy::mPoint = new CPoint(CVector(2377.0f, 30.0f, -753.0f), 100.0f * 2);
+		CEnemy::mPoint2 = new CPoint(CVector(3068.0f, 30.0f, -355.0f), 100.0f * 2);
+		CEnemy::mPoint3 = new CPoint(CVector(3763.0f, 30.0f, 510.0f), 100.0f * 2);
+		CEnemy::mPoint4 = new CPoint(CVector(3330.0f, 30.0f, 2133.0f), 100.0f * 2);
+		CEnemy::mPoint5 = new CPoint(CVector(1719.0f, 30.0f, 3250.0f), 100.0f * 2);
+		CEnemy::mPoint6 = new CPoint(CVector(1212.0f, 30.0f, 4516.0f), 100.0f * 2);
+		CEnemy::mPoint7 = new CPoint(CVector(671.0f, 30.0f, 4970.0f), 100.0f * 2);
+		CEnemy::mPoint8 = new CPoint(CVector(-2528.0f, 30.0f, 1832.0f), 100.0f * 2);
+		CEnemy::mPoint9 = new CPoint(CVector(-3363.0f, 30.0f, 1220.0f), 100.0f * 2);
+		CEnemy::mPoint10 = new CPoint(CVector(-3248.0f, 30.0f, 480.0f), 100.0f * 2);
+		CEnemy::mPoint11 = new CPoint(CVector(-1500.0f, 30.0f, -80.0f), 100.0f * 2);
+		CEnemy::mPoint12 = new CPoint(CVector(609.0f-80.0f, 30.0f, -3665.0f+100.0f), 100.0f);
 	}
 	else if (CSceneTitle::mDifficulty == 3){//難易度：HARD
 		//現在、仮の設定
@@ -57,7 +57,7 @@ void CRaceCourceB::Init(){
 	}
 	//プレイヤーの生成
 	mPlayer = new CPlayer();
-	mPlayer->mpModel = &mCarBlack;
+	mPlayer->mpModel = &mCarWhite;
 	//敵車の生成
 	for (int i = 0; i < ENEMYS_AMOUNT; i++){
 		mEnemys[i] = new CEnemy();
@@ -85,8 +85,10 @@ void CRaceCourceB::Init(){
 		else if (i % 8 == 7){
 			mEnemys[i]->mpModel = &mCarCyan;
 		}
+		/*mStartPoint[0] = 2222.0f;  mStartPoint[1] = -13.538f;  mStartPoint[2] = -2510.0f;
+		mStartRotation = 0.0f;*/
 		//初期の配置座標を設定する
-		mEnemys[i]->mPosition = CVector(350.0f, -13.538f, -130.0f - 80.0f*i);
+		mEnemys[i]->mPosition = CVector(2222.0f, -13.538f, -2510.0f - 30.0f - 80.0f*i);
 		if (i % 2 == 0){
 			mEnemys[i]->mPosition.mX -= 80.0f;
 		}

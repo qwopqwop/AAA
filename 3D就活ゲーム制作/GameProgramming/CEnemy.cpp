@@ -107,31 +107,64 @@ CEnemy::CEnemy()
 	SoundCollision.Load("SE\\bomb1.wav");
 	SoundCollisionSmall.Load("SE\\SNES-Racing01-10(Collision).wav");
 
-
 	isSoundEngine = false;
-	//SoundEngine.Repeat();
-
-
 	
 	mPointCnt = 0;//最初のポイントを設定
 	//mpPoint = &mPoint[mPointCnt];//目指すポイントのポインタを設定
 
-
-	////Point1.mPosition = Point1.mPosition + CVector(1.0f *(rand() % 100 - 50), 1.0f *(rand() % 100 - 50), 1.0f *(rand() % 100 - 50));
-	//mpPoint = &Point1;
-
 	mpPoint = mPoint;
 	mVPoint = mpPoint->mPosition;//一番最初は分散無し
+
+	if (CSceneTitle::mDifficulty == 1){
+
+	}
+	else{
+
+	}
+	mMaxSpeed_PtoP = 20.0f;
 
 	mEnemyLap = 1;//敵のラップ数を１周目に設定する
 	isEnemyGoaled = false;//まだゴールしてない状態にする
 }
 
 void CEnemy::Update(){	
-	if (CKey::Once('T')){
-		printf("%d\n", rand(), rand());
-		//printf("mVPoint…X:%.1f Y:%.1f Z:%.1f\n", mVPoint.mX, mVPoint.mY, mVPoint.mZ);
+	//コース・ポインタ・AIの強さごとに最高速度を調整
+	if (CSceneTitle::mMode == 2){
+		if (mpPoint == mPoint){
+			mMaxSpeed_PtoP = 15.0f;
+		}
+		else if (mpPoint == mPoint2){
+			mMaxSpeed_PtoP = 10.0f;
+		}
+		else if (mpPoint == mPoint4){
+			mMaxSpeed_PtoP = 15.0f;
+		}
+		else if (mpPoint == mPoint6){
+			mMaxSpeed_PtoP = 15.0f;
+		}
+		else if (mpPoint == mPoint7){
+			mMaxSpeed_PtoP = 15.0f;
+		}
+		else if (mpPoint == mPoint9){
+			mMaxSpeed_PtoP = 14.0f;
+		}
+		else if (mpPoint == mPoint10){
+			mMaxSpeed_PtoP = 13.0f;
+		}
+		else if (mpPoint == mPoint11){
+			mMaxSpeed_PtoP = 10.0f;
+		}
+		else if (mpPoint == mPoint12){
+			mMaxSpeed_PtoP = 18.0f;
+		}
+		else{
+			mMaxSpeed_PtoP = 20.0f;
+		}
 	}
+	else{
+		mMaxSpeed_PtoP = 20.0f;
+	}
+	
 
 	//ポイントへのベクトルを求める
 	//CVector dir = mpPoint->mPosition - mPosition;
@@ -201,7 +234,7 @@ void CEnemy::Update(){
 	}
 
 
-	if (CKey::Push(VK_UP) && CanMove || mChecks >= 0 && CanMove){
+	if (CKey::Push(VK_UP) && CanMove && mCarSpeed < mMaxSpeed_PtoP || mChecks >= 0 && CanMove && mCarSpeed < mMaxSpeed_PtoP){
 		if (mCarSpeed < MAXSPEED + mBoostMaxSpeed){
 			/*if (left.Dot(dir) > -5.0f && left.Dot(dir) < 5.0f){
 				mCarSpeed += CAR_POWER;
@@ -326,19 +359,6 @@ void CEnemy::Update(){
 	}
 	mRotation.mY += mTurnSpeed;
 
-
-	if (CKey::Push('Z')){
-		mRotation.mX++;
-	}
-	if (CKey::Push('X')){
-		mRotation.mX--;
-	}
-	if (CKey::Push('C')){
-		mRotation.mZ += 2;
-	}
-	if (CKey::Push('V')){
-		mRotation.mZ -= 2;
-	}
 	if (mRotation.mZ > 180){
 		mRotation.mZ = -180;
 	}
@@ -366,19 +386,10 @@ void CEnemy::Update(){
 			isSoundEngine = true;
 		}
 	}
-
-	//mPosition = CVector(mADMoveX, mVelocityJump, mWSMoveZ)  * CMatrix().RotateY(mRotation.mY) * mMatrix;
-
-	/*mPosition = CVector(mADMoveX, mVelocityJump, mWSMoveZ) * CMatrix().RotateY(90) * mMatrix;*/
-	//mPosition = CVector(mADMoveX, mVelocityJump, mWSMoveZ+mCarSpeed) * CMatrix().RotateY(90) * mMatrix;
-
-	/*常に地面に垂直に落下するようにする(プレイヤーの真下ではない)*/
-	//mPosition = CVector(mADMoveX, mVelocityJump, mWSMoveZ + mCarSpeed) * mMatrix;
-
-	//mPosition = CVector(mADMoveX, 0.0f, mWSMoveZ + mCarSpeed) * mMatrix;
+	//X,Z方向の移動とY軸方向(重力)の移動は別々に行う
 	mPosition = CVector(mADMoveX, 0.0f, mWSMoveZ + mCarSpeed) * mMatrixRotate * mMatrixTranslate;
 	CCharacter::Update();
-	//Y方向(重力)は分ける
+	//常に地面に対して垂直に落下
 	//mPosition = CVector(0.0f, mVelocityJump, 0.0f) * mMatrix;//できてない
 	mPosition = CVector(0.0f, mVelocityJump*2.0f, 0.0f) * //mMatrixScale * 
 		CMatrix().RotateZ(0) *
@@ -386,15 +397,6 @@ void CEnemy::Update(){
 		CMatrix().RotateY(0)
 		*mMatrixTranslate;//できてる？
 	//mMatrix = mMatrixScale * mMatrixRotate * mMatrixTranslate;
-
-
-	
-	/*if (left.Dot(dir) < 0.0f){
-		mRotation.mY -= 11;
-	}
-	else if (left.Dot(dir) > 0.0f){
-		mRotation.mY += 11;
-	}*/
 
 	//コースアウトした時
 	if (mPosition.mY < -700.0f){
@@ -404,40 +406,93 @@ void CEnemy::Update(){
 		mCarSpeed = 0.0f;
 
 		mRotation = CVector(0.0f, 0.0f, 0.0f);
-		if (mChecks == 0){
-			//スタートした時の位置、方向に戻される
-			mPosition = CVector(mStartPoint[0], mStartPoint[1], mStartPoint[2]);
-			mRotation.mY = 0.0f;
+		if (CSceneTitle::mMode == 1){
+			if (mChecks == 0){
+				//スタートした時の位置、方向に戻される
+				mPosition = CVector(mStartPoint[0], mStartPoint[1], mStartPoint[2]);
+				mRotation.mY = 0.0f;
+			}
+			else if (mChecks == 1){
+				mPosition = CVector(-80.0f, mStartPoint[1], 2175.0f);
+				mRotation.mY = -55.0f;
+			}
+			else if (mChecks == 2){
+				mPosition = CVector(-1620.0f, mStartPoint[1], 450.0f);
+				mRotation.mY = -175.0f;
+			}
+			else if (mChecks == 3){
+				mPosition = CVector(-1212.0f, mStartPoint[1], -1616.0f);
+				mRotation.mY = 120.0f;
+			}
 		}
-		else if (mChecks == 1){
-			mPosition = CVector(-80.0f, mStartPoint[1], 2175.0f);
-			mRotation.mY = -55.0f;
+		else if (CSceneTitle::mMode == 2){
+			if (mChecks == 0){
+				//スタートした時の位置、方向に戻される
+				mPosition = CVector(2222.0f, -13.538f, -2510.0f - 30.0f);
+				mRotation.mY = 0.0f;
+				//目標地点も戻る
+				mpPoint = mPoint;
+				mVPoint = mpPoint->mPosition;
+			}
+			else if (mChecks == 1){
+				mPosition = CVector(2893.0f, mStartPoint[1], 2473.0f);
+				mRotation.mY = -59.0f;
+				mpPoint = mPoint5;
+				mVPoint = mpPoint->mPosition;
+			}
+			else if (mChecks == 2){
+				mPosition = CVector(-1020.0f, mStartPoint[1], 4594.0f);
+				mRotation.mY = -506.4f;
+				mpPoint = mPoint8;
+				mVPoint = mpPoint->mPosition;
+			}
+			else if (mChecks == 3){
+				mPosition = CVector(-1357.0f, mStartPoint[1] - 30.0f, -520.0f);
+				mRotation.mY = -200.0f+40.0f;
+				mpPoint = mPoint12;
+				mVPoint = mpPoint->mPosition;
+			}
+			/*else if (mChecks == 1){
+				mPosition = CVector(2893.0f, mStartPoint[1], 2473.0f);
+				mStartRotation = -59.0f;
+			}
+			else if (mChecks == 2){
+				mPosition = CVector(-1020.0f, mStartPoint[1], 4594.0f);
+				mStartRotation = -506.4f;
+			}
+			else if (mChecks == 3){
+				mPosition = CVector(-1277.0f, mStartPoint[1], -448.0f);
+				mStartRotation = -200.0f;
+			}*/
 		}
-		else if (mChecks == 2){
-			mPosition = CVector(-1620.0f, mStartPoint[1], 450.0f);
-			mRotation.mY = -175.0f;
-		}
-		else if (mChecks == 3){
-			mPosition = CVector(-1212.0f, mStartPoint[1], -1616.0f);
-			mRotation.mY = 120.0f;
-		}
+		else{
+			if (mChecks == 0){
+				//スタートした時の位置、方向に戻される
+				mPosition = CVector(mStartPoint[0], mStartPoint[1], mStartPoint[2]);
+				mRotation.mY = 0.0f;
+			}
+			else if (mChecks == 1){
+				mPosition = CVector(-80.0f, mStartPoint[1], 2175.0f);
+				mRotation.mY = -55.0f;
+			}
+			else if (mChecks == 2){
+				mPosition = CVector(-1620.0f, mStartPoint[1], 450.0f);
+				mRotation.mY = -175.0f;
+			}
+			else if (mChecks == 3){
+				mPosition = CVector(-1212.0f, mStartPoint[1], -1616.0f);
+				mRotation.mY = 120.0f;
+			}
+		}		
 	}
-	//mPosition.mZ += 1.0f;
 	CCharacter::Update();
 
 	//重力の影響を反映する
 	mVelocityJump -= G;
-
 	
 	if (CKey::Push('I')){
 		mpPoint->mRotation.mY++;
 	}
-
-	/*mpPoint->mPosition.mX = sposX;
-	mpPoint->mPosition.mZ = sposZ;*/
-
-
-	
 }
 
 void CEnemy::Collision(CCollider *mc, CCollider *yc){
@@ -446,33 +501,6 @@ void CEnemy::Collision(CCollider *mc, CCollider *yc){
 	case CCollider::ESPHERE://球コライダ
 		//相手のコライダが三角コライダの時
 		if (yc->mType == CCollider::ETRIANGLE){
-			////水泳可能な時は水場(水の上)を通過できる
-			//if (yc->mTag == EWATER && mCanSwim){
-			//}
-			//else{
-			//}
-			////チェックポイント関連の処理
-			//if (CCollider::Collision(mc, yc)){
-			//	if (yc->mpParent->mTag == CCharacter::ECHECKPOINT){//中間地点1
-			//		if (mChecks == 0){
-			//			//各中間地点を通過しないと1周したとみなされない
-			//			mChecks = 1;
-			//		}
-			//	}
-			//	if (yc->mpParent->mTag == CCharacter::ECHECKPOINT2){//中間地点2
-			//		if (mChecks == 1){
-			//			//各中間地点を通過しないと1周したとみなされない
-			//			mChecks = 2;
-			//		}
-			//	}
-			//	if (yc->mpParent->mTag == CCharacter::ECHECKPOINT3){//中間地点3
-			//		if (mChecks == 2){
-			//			//各中間地点を通過しないと1周したとみなされない
-			//			mChecks = 3;
-			//		}
-			//	}
-			//}
-
 			//自分のコライダが本体の時
 			if (mc->mTag == CCollider::EBODY){
 				//芝生通過中の処理
@@ -492,15 +520,6 @@ void CEnemy::Collision(CCollider *mc, CCollider *yc){
 								}
 							}
 						}
-						
-						/*if (mTurnSpeed <= 0.0f&&mTurnSpeed>-0.5f){
-							mTurnSpeed = -0.5f;
-						}
-						if (mTurnSpeed > 0.0f){
-							mTurnSpeed -= 0.11f;
-						}
-						mTurnSpeed -= 0.04f;*/
-
 					}
 				}
 				if (yc->mpParent->mTag == CCharacter::ECHECKPOINT){//中間地点1
@@ -531,19 +550,6 @@ void CEnemy::Collision(CCollider *mc, CCollider *yc){
 						}
 					}
 				}
-				////加速床に乗った時の処理
-				//if (yc->mpParent->mTag == CCharacter::EDASHBOARD){
-				//	CVector aiueo;//とりまベクトル
-				//	if (CCollider::CollisionTriangleSphere(yc, mc, &aiueo)){
-				//		//mCarSpeed += 10.0f;
-				//		isBoost = true;
-				//		mBoostTime = 45;
-				//		printf("SPEED UP!\n");
-				//	}
-				//}
-
-
-
 				if (yc->mpParent->mTag == CCharacter::EWATER){
 					//通過可能、ステージ1の水
 				}
@@ -554,20 +560,15 @@ void CEnemy::Collision(CCollider *mc, CCollider *yc){
 					|| yc->mpParent->mTag == CCharacter::ECHECKPOINT2
 					|| yc->mpParent->mTag == CCharacter::ECHECKPOINT3
 					|| yc->mpParent->mTag == CCharacter::EDASHBOARD){
-					//処理は行われるが、これらのパネルは通過可能
+					//これらのタグが付いたオブジェクトは通過可能
 				}
 				else{
-					
-
 					CVector adjust;//調整用ベクトル
-					//		//三角形と球の衝突判定
-					//		CCollider::CollisionTriangleSphere(yc, mc, &adjust);
 					if (CCollider::CollisionTriangleSphere(yc, mc, &adjust)){
 						//位置の更新
 						mPosition = mPosition - adjust * -1;
 						//行列の更新
 						CCharacter::Update();
-
 						if (yc->mpParent->mTag == CCharacter::EWALL){
 							//衝突したのが壁だった場合は壁には引っかからず落下
 							//壁にぶつかると衝突音がし、車が減速する
@@ -578,14 +579,12 @@ void CEnemy::Collision(CCollider *mc, CCollider *yc){
 								SoundCollision.Play();
 								//激突時、エフェクト発生
 								new CEffect(mPosition + CVector(0.0f, 35.0f, 0.0f), 100.0f, 100.0f, TextureExp, 4, 4, 1, 0);
-								printf("ﾄﾞｶｰﾝ");
 							}
 							else if (mCarSpeed > 4.0f){
 								mCarSpeed = 2.0f;
 								SoundCollisionSmall.Play();
 								//軽くぶつけた時もエフェクト発生
 								new CEffect(mPosition + CVector(0.0f, 15.5f, 0.0f), 60.0f, 60.0f, TextureHit, 3, 8, 1, 1);
-								printf("ｺﾞｽｯ");
 							}
 							else{
 								//壁にこすりながらの移動時、速度が遅くなる
@@ -602,7 +601,6 @@ void CEnemy::Collision(CCollider *mc, CCollider *yc){
 						else if (yc->mpParent->mTag == CCharacter::EJUMPER){//ジャンプ台に接触した時
 							//mVelocityJump = 0; 
 							mVelocityJump = JUMPER01_POWER;
-							printf("jump!");
 							mCanJump = true;
 							//SoundJump.Play();
 						}
@@ -646,11 +644,7 @@ void CEnemy::Collision(CCollider *mc, CCollider *yc){
 				if (yc->mpParent->mTag == CCharacter::EDASHBOARD){
 					CVector aiueo;//とりまベクトル
 					if (CCollider::CollisionTriangleSphere(yc, mc, &aiueo)){
-						//mCarSpeed += 10.0f;
-
 						if (isBoost == false){
-							//printf("SPEED UP!\n");
-							//SoundBoost.Play();
 							new CEffect(mPosition + CVector(0.0f, 15.5f, 0.0f), 60.0f, 60.0f, TextureBoost, 3, 5, 1, 1);
 						}
 						isBoost = true;
@@ -658,16 +652,6 @@ void CEnemy::Collision(CCollider *mc, CCollider *yc){
 					}
 				}
 			}
-
-
-
-
-			/*if(yc->mpParent->mTag == CCharacter::ESPRING){
-			mJumpV0 = 2.3f;
-			}*/
-			/*if (CItem::mpItem->mItemNumber == 2){
-			mJumpV0 = 2.3f;
-			}*/
 		}
 		if (yc->mType == CCollider::ESPHERE){
 			if (CCollider::Collision(mc, yc)){
@@ -681,8 +665,6 @@ void CEnemy::Collision(CCollider *mc, CCollider *yc){
 							mPosition = mPosition - adjust * -1;
 							//行列の更新
 							CCharacter::Update();
-							//printf("X:%f Y:%f Z:%f",mPosition.mX,mPosition.mY,mPosition.mZ);
-							//printf("敵の衝突処理");
 						}
 					}
 					
@@ -698,7 +680,6 @@ void CEnemy::Collision(CCollider *mc, CCollider *yc){
 							mPosition = mPosition - adjust * -1;
 							//行列の更新
 							CCharacter::Update();
-							//printf("X:%f Y:%f Z:%f",mPosition.mX,mPosition.mY,mPosition.mZ);
 						}
 					}					
 				}
@@ -711,13 +692,7 @@ void CEnemy::Collision(CCollider *mc, CCollider *yc){
 						if (CCollider::Collision(mc, yc, &adjust)){
 							//衝突したポインタと目指しているポインタが同じ時
 							if (yc->mpParent == mpPoint){
-								//mPointCnt++;//次のポイントにする
-								////最後だったら最初にする
-								//mPointCnt %= mPointSize;
-								//mpPoint = &mPoint[mPointCnt];
-								
-								
-
+								//とりあえず先にint付けで生成しておく
 								int r = (mc->mRadius + yc->mRadius) * 0.8f;
 								int gap = (rand() % (r * 2) - r);
 								//敵AIのLvにより分散値も変化
@@ -791,47 +766,14 @@ void CEnemy::Collision(CCollider *mc, CCollider *yc){
 									mVPoint = mPoint->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
 									mpPoint = mPoint;
 								}
-								
-								//printf("mpPoint…X:%.1f Y:%.1f Z:%.1f\n", mpPoint->mPosition.mX, mpPoint->mPosition.mY, mpPoint->mPosition.mZ);
 							}
 						}
 					}
-					//switch (yc->mpParent->mTag){
-					//case EPOINT://ポイントの時
-					//	//衝突したポインタと目指しているポインタが同じ時
-					//	if (yc->mpParent == mpPoint){
-					//		mPointCnt++;//次のポイントにする
-					//		//最後だったら最初にする
-					//		mPointCnt %= mPointSize;
-					//		//次のポイントのポインタを設定
-					//		mpPoint = &mPoint[mPointCnt];
-					//		printf("a");
-					//	}
-					//	break;
-					//default:
-					//	;
-					//}
 				}
 			}
 		}
-
-
 		break;
 	}
-
-	////球コラと三角形の時
-	//if (mc->mType == CCollider::ESPHERE && yc->mType == CCollider::ETRIANGLE){
-	//	CVector adjust;//調整用ベクトル
-	//	//コライダのmとyが衝突しているか判定
-	//	//三角形と球の衝突判定
-	//	if (CCollider::CollisionTriangleSphere(yc, mc, &adjust)){
-	//		//位置の更新
-	//		mPosition = mPosition - adjust * -1;
-	//		//行列の更新
-	//		CCharacter::Update();
-	//	}
-	//}
-
 }
 
 void CEnemy::TaskCollision()
