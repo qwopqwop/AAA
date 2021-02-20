@@ -266,12 +266,6 @@ public:
 		//2D描画終了
 		End2D();
 
-		////2D描画開始
-		//Start2D(0, 800, 0, 600);
-
-		////2D描画終了
-		//End2D();
-		
 		if (CKey::Once(VK_RETURN)){
 			//開始フラグが建ったら連打しようが音は鳴らない
 			if (mStart == false){

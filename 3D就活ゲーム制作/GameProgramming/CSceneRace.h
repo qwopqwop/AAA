@@ -39,6 +39,7 @@ public:
 	CModel mCarCyan;
 	CModel mCarWhite;
 	CModel mCarBlack;//もはやシルエット
+	CModel mCarGray;
 	CModel mCube;
 	CModel mPlane;
 	CModel mStairs;//階段
@@ -122,6 +123,8 @@ public:
 	CModel mCource03Fence;
 	
 	CModel mCource04;
+	CModel mCource04Water;
+	CModel mCource04A;
 
 	CModel mJumper01;//ジャンプ台
 };

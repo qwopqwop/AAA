@@ -30,11 +30,11 @@ extern CSound SoundCountDown;
 extern CSound SoundStart;
 extern CSound SoundGoal;
 
-//ベストタイムの初期記録は2分00秒00
-int CSceneRace::mBestTime = 20000;
+//ここのmBestTimeの値は関係ない(mRecord_ の値を入れるため)
+int CSceneRace::mBestTime = 0;
 int CSceneRace::mRecord_A = 10000;
 int CSceneRace::mRecord_B = 13000;
-int CSceneRace::mRecord_C = 20000;
+int CSceneRace::mRecord_C = 22000;
 int CSceneRace::mRecord_D = 30000;
 
 CSceneRace::~CSceneRace() {
@@ -76,6 +76,7 @@ void CSceneRace::Init() {
 	mCarCyan.Load("Rover1.obj", "material\\racing_mat\\single_color\\cyan.mtl");
 	mCarWhite.Load("Rover1.obj", "material\\racing_mat\\single_color\\white.mtl");
 	mCarBlack.Load("Rover1.obj", "material\\racing_mat\\single_color\\black.mtl");
+	mCarGray.Load("Rover1.obj", "material\\racing_mat\\single_color\\gray.mtl");
 	//立方体の読み込み
 	mCube.Load("cube.obj", "material\\cube.mtl");//白
 	mCube2.Load("cube.obj", "cube2.mtl");//透明
@@ -115,6 +116,8 @@ void CSceneRace::Init() {
 	mCource03Wall.Load("material\\racing_mat\\stage3\\cource03wall.obj", "material\\racing_mat\\stage3\\cource03wall.mtl");
 	mCource03Fence.Load("material\\racing_mat\\stage3\\cource03fence.obj", "material\\racing_mat\\stage3\\cource03fence.mtl");
 	mCource04.Load("material\\racing_mat\\cource2nd\\track01.obj", "material\\racing_mat\\cource2nd\\track01.mtl");	//借り物
+	mCource04Water.Load("material\\racing_mat\\stage4\\cource04water.obj", "material\\racing_mat\\stage4\\cource04water.mtl");
+	mCource04A.Load("material\\racing_mat\\stage4\\cource04a.obj", "material\\racing_mat\\stage4\\cource04a.mtl");
 	
 	//芝生の読み込み
 	mGrass01.Load("material\\racing_mat\\GrassNew01.obj", "material\\racing_mat\\GrassNew01.mtl");
@@ -153,7 +156,8 @@ void CSceneRace::Init() {
 		mBestTime = mRecord_C;
 	}
 	else if (CSceneTitle::mMode == 4){
-		BGM.Load("BGM\\調整後Crazy_Machine.wav");
+		//BGM.Load("BGM\\調整後Crazy_Machine.wav");
+		BGM.Load("BGM\\調整後Spring_Breeze.wav");		
 		//mMaxLap = 5;
 		mBestTime = mRecord_D;
 	}
@@ -162,23 +166,6 @@ void CSceneRace::Init() {
 	SoundCountDown.Load("SE\\Countdown01-5.wav");
 	SoundStart.Load("SE\\Countdown01-6.wav");
 	SoundGoal.Load("SE\\tm2_whistle000.wav");
-
-	/*
-	////物理演算(笑)するオブジェクト No.2001
-	//new CObj(&mTileWhite, CVector(500.0f, -13.1f + 23.0f, 900.0f), CVector(0.0f, 0.0f, 0.0f), CVector(11.0f, 11.0f, 11.0f), 2001);
-	//new CObj(&mTileWhite, CVector(550.0f, -13.1f + 0.0f, 900.0f), CVector(0.0f, 0.0f, 0.0f), CVector(11.0f, 11.0f, 11.0f), 2001);
-	//for (int i = 0; i < 5; i++){
-	//	new CObj(&mTileWhite, CVector(280.0f + 22.0f*i, -13.1f + 22.0f*i, 200.0f), CVector(0.0f, 0.0f, 0.0f), CVector(11.0f, 11.0f, 11.0f), 2001);
-	//}	
-	//new CRigidObj(&mTileWhite, CVector(400.0f, -13.1f, 400.0f), CVector(0.0f, 0.0f, 0.0f), CVector(21.0f, 21.0f, 21.0f));
-
-	//流れるダッシュボード達
-	for (int i = 0; i < 16; i++){
-		new CObj(&mDashBoard, CVector(260.0f - 40.0f*i , 13.1f + 10.0f, 800.0f), CVector(0.0f, 270.0f, 0.0f), CVector(1.0f, 1.0f, 1.0f), 31);
-		new CObj(&mDashBoard, CVector(260.0f - 40.0f*i-20.0f, 13.1f + 10.0f, 800.0f), CVector(0.0f, 270.0f, 0.0f), CVector(0.9f, 0.9f, 0.9f), 31);
-	}
-	*/
-
 
 	//カメラ視点のY座標
 	mCamY = 0.0f;

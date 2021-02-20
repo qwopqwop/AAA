@@ -85,6 +85,7 @@ public:
 	static CPoint *mPoint20;
 	static CPoint *mPoint21;
 	static CPoint *mPoint22;
+	static CPoint *mPoint23;
 	static int mPointSize;//ポイントの数
 	CPoint *mpPoint;//目指すポイント
 	int mPointCnt;//ポイントのカウンタ

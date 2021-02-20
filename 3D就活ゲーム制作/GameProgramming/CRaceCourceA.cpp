@@ -85,7 +85,7 @@ void CRaceCourceA::Init(){
 			mEnemys[i]->mpModel = &mCarBlack;
 		}
 		else if (i % 8 == 6){
-			mEnemys[i]->mpModel = &mCarWhite;
+			mEnemys[i]->mpModel = &mCarGray;
 		}
 		else if (i % 8 == 7){
 			mEnemys[i]->mpModel = &mCarCyan;

@@ -7,7 +7,8 @@ void CRaceCourceD::Init(){
 	mScene = ERACE4;
 
 	CSceneRace::Init();
-
+	
+	/*開発中です*/
 	//敵のポイント(目的地)の設定
 	if (CSceneTitle::mDifficulty == 1){//難易度：EASY
 		CEnemy::mPointSize = 12;//ポイント数の設定
@@ -84,7 +85,7 @@ void CRaceCourceD::Init(){
 			mEnemys[i]->mpModel = &mCarBlack;
 		}
 		else if (i % 8 == 6){
-			mEnemys[i]->mpModel = &mCarWhite;
+			mEnemys[i]->mpModel = &mCarGray;
 		}
 		else if (i % 8 == 7){
 			mEnemys[i]->mpModel = &mCarCyan;
@@ -97,8 +98,12 @@ void CRaceCourceD::Init(){
 		mEnemys[i]->CCharacter::Update();
 	}
 
-	//借り物
-	new CObj(&mCource04, CVector(-360.0f, 5.0f - 33.0f, -230.0f), CVector(), CVector(5110.0f, 5110.0f, 5110.0f), 1);
+	////借り物//敵がコースに近づくと重くなる…
+	//new CObj(&mCource04, CVector(-360.0f, 5.0f - 33.0f, -230.0f), CVector(), CVector(5110.0f, 5110.0f, 5110.0f), 1);
+
+	//new CObj(&mCource04Water, CVector(0.0f, -60.0f - 33.0f, 0.0f), CVector(), CVector(10.0f, 10.0f, 10.0f), 1);//当たり判定いらない
+	new CObj(&mCource04Water, CVector(0.0f, -60.0f - 33.0f, 0.0f), CVector(), CVector(100.0f, 100.0f, 100.0f), 99);
+	new CObj(&mCource04A, CVector(0.0f, -60.0f - 33.0f, 0.0f), CVector(), CVector(40.0f, 40.0f, 40.0f), 1);
 
 	//優先度変更
 	CTaskManager::Get()->ChangePriority(mPlayer, 15);
