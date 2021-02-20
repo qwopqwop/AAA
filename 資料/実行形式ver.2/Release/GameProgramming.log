@@ -1,0 +1,51 @@
+﻿  CRaceCourceC.cpp
+c:\users\fujiitomoya\desktop\ゲームプログラミング実習_2020_2 これは…\git\aaa\3d就活ゲーム制作\gameprogramming\CSound.h(67): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\string.h(112) : 'strcpy' の宣言を確認してください。
+c:\users\fujiitomoya\desktop\ゲームプログラミング実習_2020_2 これは…\git\aaa\3d就活ゲーム制作\gameprogramming\CSound.h(102): warning C4101: 'cnt' : ローカル変数は 1 度も使われていません。
+c:\users\fujiitomoya\desktop\ゲームプログラミング実習_2020_2 これは…\git\aaa\3d就活ゲーム制作\gameprogramming\CSound.h(102): warning C4101: 'dw' : ローカル変数は 1 度も使われていません。
+c:\users\fujiitomoya\desktop\ゲームプログラミング実習_2020_2 これは…\git\aaa\3d就活ゲーム制作\gameprogramming\CSound.h(101): warning C4101: 'state' : ローカル変数は 1 度も使われていません。
+c:\users\fujiitomoya\desktop\ゲームプログラミング実習_2020_2 これは…\git\aaa\3d就活ゲーム制作\gameprogramming\CSceneTitle.h(247): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\stdio.h(356) : 'sprintf' の宣言を確認してください。
+c:\users\fujiitomoya\desktop\ゲームプログラミング実習_2020_2 これは…\git\aaa\3d就活ゲーム制作\gameprogramming\CSceneTitle.h(251): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\stdio.h(356) : 'sprintf' の宣言を確認してください。
+c:\users\fujiitomoya\desktop\ゲームプログラミング実習_2020_2 これは…\git\aaa\3d就活ゲーム制作\gameprogramming\CSceneTitle.h(255): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\stdio.h(356) : 'sprintf' の宣言を確認してください。
+c:\users\fujiitomoya\desktop\ゲームプログラミング実習_2020_2 これは…\git\aaa\3d就活ゲーム制作\gameprogramming\CSceneTitle.h(259): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\stdio.h(356) : 'sprintf' の宣言を確認してください。
+  CSceneRace.cpp
+c:\users\fujiitomoya\desktop\ゲームプログラミング実習_2020_2 これは…\git\aaa\3d就活ゲーム制作\gameprogramming\CSound.h(67): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\string.h(112) : 'strcpy' の宣言を確認してください。
+c:\users\fujiitomoya\desktop\ゲームプログラミング実習_2020_2 これは…\git\aaa\3d就活ゲーム制作\gameprogramming\CSound.h(102): warning C4101: 'cnt' : ローカル変数は 1 度も使われていません。
+c:\users\fujiitomoya\desktop\ゲームプログラミング実習_2020_2 これは…\git\aaa\3d就活ゲーム制作\gameprogramming\CSound.h(102): warning C4101: 'dw' : ローカル変数は 1 度も使われていません。
+c:\users\fujiitomoya\desktop\ゲームプログラミング実習_2020_2 これは…\git\aaa\3d就活ゲーム制作\gameprogramming\CSound.h(101): warning C4101: 'state' : ローカル変数は 1 度も使われていません。
+c:\users\fujiitomoya\desktop\ゲームプログラミング実習_2020_2 これは…\git\aaa\3d就活ゲーム制作\gameprogramming\CSceneTitle.h(247): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\stdio.h(356) : 'sprintf' の宣言を確認してください。
+c:\users\fujiitomoya\desktop\ゲームプログラミング実習_2020_2 これは…\git\aaa\3d就活ゲーム制作\gameprogramming\CSceneTitle.h(251): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\stdio.h(356) : 'sprintf' の宣言を確認してください。
+c:\users\fujiitomoya\desktop\ゲームプログラミング実習_2020_2 これは…\git\aaa\3d就活ゲーム制作\gameprogramming\CSceneTitle.h(255): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\stdio.h(356) : 'sprintf' の宣言を確認してください。
+c:\users\fujiitomoya\desktop\ゲームプログラミング実習_2020_2 これは…\git\aaa\3d就活ゲーム制作\gameprogramming\CSceneTitle.h(259): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\stdio.h(356) : 'sprintf' の宣言を確認してください。
+CSceneRace.cpp(405): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\stdio.h(356) : 'sprintf' の宣言を確認してください。
+CSceneRace.cpp(410): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\stdio.h(356) : 'sprintf' の宣言を確認してください。
+CSceneRace.cpp(433): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\stdio.h(356) : 'sprintf' の宣言を確認してください。
+CSceneRace.cpp(446): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\stdio.h(356) : 'sprintf' の宣言を確認してください。
+CSceneRace.cpp(471): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\stdio.h(356) : 'sprintf' の宣言を確認してください。
+CSceneRace.cpp(478): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\stdio.h(356) : 'sprintf' の宣言を確認してください。
+CSceneRace.cpp(496): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\stdio.h(356) : 'sprintf' の宣言を確認してください。
+CSceneRace.cpp(499): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\stdio.h(356) : 'sprintf' の宣言を確認してください。
+CSceneRace.cpp(502): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\stdio.h(356) : 'sprintf' の宣言を確認してください。
+CSceneRace.cpp(505): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\stdio.h(356) : 'sprintf' の宣言を確認してください。
+  コード生成しています。
+  コード生成が終了しました。
+  GameProgramming.vcxproj -> C:\Users\fujiitomoya\Desktop\ゲームプログラミング実習_2020_2 これは…\Git\AAA\3D就活ゲーム制作\Release\GameProgramming.exe
