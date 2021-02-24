@@ -127,5 +127,12 @@ public:
 	CModel mCource04A;
 
 	CModel mJumper01;//ƒWƒƒƒ“ƒv‘ä
+
+	CModel mTile_Curve01;
+	CModel mTile_Curve02;
+	CModel mTile_Curve03;
+	CModel mTile_Curve04;
+	CModel mTile_Straight01;
+	CModel mTile_Straight02;
 };
 #endif

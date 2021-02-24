@@ -101,9 +101,47 @@ void CRaceCourceD::Init(){
 	////éÿÇËï®//ìGÇ™ÉRÅ[ÉXÇ…ãﬂÇ√Ç≠Ç∆èdÇ≠Ç»ÇÈÅc
 	//new CObj(&mCource04, CVector(-360.0f, 5.0f - 33.0f, -230.0f), CVector(), CVector(5110.0f, 5110.0f, 5110.0f), 1);
 
-	//new CObj(&mCource04Water, CVector(0.0f, -60.0f - 33.0f, 0.0f), CVector(), CVector(10.0f, 10.0f, 10.0f), 1);//ìñÇΩÇËîªíËÇ¢ÇÁÇ»Ç¢
-	new CObj(&mCource04Water, CVector(0.0f, -60.0f - 33.0f, 0.0f), CVector(), CVector(100.0f, 100.0f, 100.0f), 99);
-	new CObj(&mCource04A, CVector(0.0f, -60.0f - 33.0f, 0.0f), CVector(), CVector(40.0f, 40.0f, 40.0f), 1);
+	/*new CObj(&mCource04Water, CVector(0.0f, -60.0f - 33.0f, 0.0f), CVector(), CVector(100.0f, 100.0f, 100.0f), 99);
+	new CObj(&mCource04A, CVector(0.0f, -60.0f - 33.0f, 0.0f), CVector(), CVector(40.0f, 40.0f, 40.0f), 1);*/
+	//new CObj(&mCource04Water, CVector(0.0f, -260.0f - 33.0f, 0.0f), CVector(), CVector(100.0f, 100.0f, 100.0f), 99);
+
+	//îzóÒÇ…ïœä∑ÇµÇƒÉRÅ[ÉXÇê∂ê¨
+	int edit[5][4] = {
+		{ 24, 12, 12, 21 },
+		{ 23, 12, 21, 11 },
+		{ 24, 21, 11, 11 },
+		{ 11, 23, 22, 11 },
+		{ 23, 12, 12, 22 }
+	};
+	int size = 6;//ÉRÅ[ÉXÇÃèké⁄
+	for (int i = 0; i < 5; i++){
+		for (int j = 0; j < 4; j++){
+			if (edit[i][j] == 11){
+				new CObj(&mTile_Straight01, CVector(-100.0f * size * j, 0.0f, -100.0f * size * i), CVector(), CVector(1.0f * size, 1.0f* size, 1.0f* size), 1);//Iéö
+			}
+			else if(edit[i][j] == 12){
+				new CObj(&mTile_Straight02, CVector(-100.0f * size * j, 0.0f, -100.0f * size * i), CVector(), CVector(1.0f * size, 1.0f* size, 1.0f* size), 1);//àÍéö
+			}
+			else if (edit[i][j] == 21){
+				new CObj(&mTile_Curve03, CVector(-100.0f * size * j, 0.0f, -100.0f * size * i), CVector(), CVector(1.0f * size, 1.0f* size, 1.0f* size), 1);//0éûÅ`3éû
+			}
+			else if (edit[i][j] == 22){
+				new CObj(&mTile_Curve04, CVector(-100.0f * size * j, 0.0f, -100.0f * size * i), CVector(), CVector(1.0f * size, 1.0f* size, 1.0f* size), 1);//3éûÅ`6éû
+			}
+			else if (edit[i][j] == 23){
+				new CObj(&mTile_Curve01, CVector(-100.0f * size * j, 0.0f, -100.0f * size * i), CVector(), CVector(1.0f * size, 1.0f* size, 1.0f* size), 1);//6éûÅ`9éû
+			}
+			else if (edit[i][j] == 24){
+				new CObj(&mTile_Curve02, CVector(-100.0f * size * j, 0.0f, -100.0f * size * i), CVector(), CVector(1.0f * size, 1.0f* size, 1.0f* size), 1);//9éûÅ`12éû
+			}
+		}
+	}
+	//new CObj(&mTile_Curve01, CVector(0.0f, 0.0f, 500.0f*6), CVector(), CVector(6.0f, 6.0f, 6.0f), 1);//6éûÅ`9éû
+	//new CObj(&mTile_Curve02, CVector(0.0f, 0.0f, 100.0f*6), CVector(), CVector(6.0f, 6.0f, 6.0f), 1);//9éûÅ`12éû
+	//new CObj(&mTile_Curve03, CVector(0.0f, 0.0f, 200.0f*6), CVector(), CVector(6.0f, 6.0f, 6.0f), 1);//0éûÅ`3éû
+	//new CObj(&mTile_Curve04, CVector(0.0f, 0.0f, 300.0f*6), CVector(), CVector(6.0f, 6.0f, 6.0f), 1);//3éûÅ`6éû
+	//new CObj(&mTile_Straight01, CVector(0.0f, 0.0f, 0.0f*6), CVector(), CVector(6.0f, 6.0f, 6.0f), 1);//Iéö
+	//new CObj(&mTile_Straight02, CVector(0.0f, 0.0f, 400.0f*6), CVector(), CVector(6.0f, 6.0f, 6.0f), 1);//àÍéö
 
 	//óDêÊìxïœçX
 	CTaskManager::Get()->ChangePriority(mPlayer, 15);

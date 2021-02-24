@@ -94,6 +94,12 @@ CPlayer::CPlayer()
 		mStartRotation = 0.0f;
 		mRotation.mY = mStartRotation;
 	}
+	else if (CSceneTitle::mMode == 4){
+		//スタート地点の座標を設定;
+		mStartPoint[0] = 0.0f;  mStartPoint[1] = 0.0f;  mStartPoint[2] = 0.0f;
+		mStartRotation = 180.0f;
+		mRotation.mY = mStartRotation;
+	}
 	else{
 		//スタート地点の座標を設定;
 		mStartPoint[0] = 350.0f;  mStartPoint[1] = -13.538f;  mStartPoint[2] = -100.0f;
@@ -430,7 +436,6 @@ void CPlayer::Update(){
 	//			mCanJump = false;
 	//			mVelocityJump = mJumpV0;
 	//			mJumpPrio = 2;
-
 	//			////ジャンプ音再生
 	//			SoundJump.Play();
 	//		}

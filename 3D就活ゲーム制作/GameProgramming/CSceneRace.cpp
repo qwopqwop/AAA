@@ -118,6 +118,13 @@ void CSceneRace::Init() {
 	mCource04.Load("material\\racing_mat\\cource2nd\\track01.obj", "material\\racing_mat\\cource2nd\\track01.mtl");	//Ø‚è•¨
 	mCource04Water.Load("material\\racing_mat\\stage4\\cource04water.obj", "material\\racing_mat\\stage4\\cource04water.mtl");
 	mCource04A.Load("material\\racing_mat\\stage4\\cource04a.obj", "material\\racing_mat\\stage4\\cource04a.mtl");
+	//ƒR[ƒXƒGƒfƒBƒ^[‚Ìƒ^ƒCƒ‹‚Ì“Ç‚İ‚İ
+	mTile_Curve01.Load("material\\racing_mat\\stage_edit\\tile_curve01.obj", "material\\racing_mat\\stage_edit\\tile_curve01.mtl");
+	mTile_Curve02.Load("material\\racing_mat\\stage_edit\\tile_curve02.obj", "material\\racing_mat\\stage_edit\\tile_curve02.mtl");
+	mTile_Curve03.Load("material\\racing_mat\\stage_edit\\tile_curve03.obj", "material\\racing_mat\\stage_edit\\tile_curve03.mtl");
+	mTile_Curve04.Load("material\\racing_mat\\stage_edit\\tile_curve04.obj", "material\\racing_mat\\stage_edit\\tile_curve04.mtl");
+	mTile_Straight01.Load("material\\racing_mat\\stage_edit\\tile_straight01.obj", "material\\racing_mat\\stage_edit\\tile_straight01.mtl");
+	mTile_Straight02.Load("material\\racing_mat\\stage_edit\\tile_straight02.obj", "material\\racing_mat\\stage_edit\\tile_straight02.mtl");
 	
 	//Å¶‚Ì“Ç‚İ‚İ
 	mGrass01.Load("material\\racing_mat\\GrassNew01.obj", "material\\racing_mat\\GrassNew01.mtl");
@@ -771,6 +778,31 @@ void CSceneRace::RenderMiniMap() {
 	}
 	else if (CSceneTitle::mMode == 2){
 		gluLookAt(0, 7000, 0, 0, 0, 0, 0, 0, 1);
+	}
+	else if (CSceneTitle::mMode == 4){
+		//2D•`‰æŠJn
+		Start2D(0, 800, 0, 600);
+		float color[] = { 0.9f, 0.9f, 0.9f, 1.0f };
+		glColor4fv(color);
+		//ã‹L‚Ì2D•`‰æ”ÍˆÍ‚Ìw’è’l‚æ‚è‘å‚«‚ß‚É”’”wŒi‚ğ•`‰æ‚·‚é
+		int expand = 100;
+		//”’”wŒi‚Ì‚æ‚è‚àæ‚É•˜g‚Æ‚È‚é‚à‚Ì‚ğ•`‰æ‚·‚é
+		glBegin(GL_TRIANGLES);//‹v‚µ‚Ô‚è
+		glVertex2d(0 - expand, 0 - expand);
+		glVertex2d(800 + expand, 600 + expand);
+		glVertex2d(0 - expand, 600 + expand);
+		glEnd();
+		glBegin(GL_TRIANGLES);
+		glVertex2d(0 - expand, 0 - expand);
+		glVertex2d(800 + expand, 0 - expand);
+		glVertex2d(800 + expand, 600 + expand);
+		glEnd();
+		color[0] = color[1] = color[2] = color[3] = 1.0f;
+		glColor4fv(color);
+		//2D•`‰æI—¹
+		End2D();
+		//
+		gluLookAt(0, 3600, 0, 0, 0, 0, 0, 0, 1);
 	}
 	else{
 		gluLookAt(0, 4800, 0, 0, 0, 0, 0, 0, 1);
