@@ -148,23 +148,22 @@ void CSceneRace::Init() {
 
 	//ステージ1BGMの読み込み
 	if (CSceneTitle::mMode == 1){
-		BGM.Load("BGM\\(音量調整版)Popsギター_No.01.wav");
+		BGM.Load("BGM\\revolumed_PopsGuitar_No.01.wav");
 		//mMaxLap = 1;
 		mBestTime = mRecord_A;
 	}
 	else if (CSceneTitle::mMode == 2){
-		BGM.Load("BGM\\調整後game_maoudamashii_1_battle34.wav");
+		BGM.Load("BGM\\revolumed_game_maoudamashii_1_battle34.wav");
 		//mMaxLap = 2;
 		mBestTime = mRecord_B;
 	}
 	else if (CSceneTitle::mMode == 3){
-		BGM.Load("BGM\\(調整後)bgm_maoudamashii_neorock33.wav");
+		BGM.Load("BGM\\revolumed_bgm_maoudamashii_neorock33.wav");
 		//mMaxLap = 3;
 		mBestTime = mRecord_C;
 	}
 	else if (CSceneTitle::mMode == 4){
-		//BGM.Load("BGM\\調整後Crazy_Machine.wav");
-		BGM.Load("BGM\\調整後Spring_Breeze.wav");		
+		BGM.Load("BGM\\revolumed_Spring_Breeze.wav");		
 		//mMaxLap = 5;
 		mBestTime = mRecord_D;
 	}

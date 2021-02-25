@@ -19,11 +19,14 @@
     <Filter Include="ソース ファイル\RaceGame">
       <UniqueIdentifier>{e737a8f8-86e4-4dd4-a3d4-839df992c13f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\RaceGame\ちょっと別フォルダで">
+    <Filter Include="ソース ファイル\RaceGame\CourceFolder">
+      <UniqueIdentifier>{6a910a60-b34c-4b84-9033-8a5be57218da}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\RaceGame\TemporaryFolder">
       <UniqueIdentifier>{f9f00719-0209-4630-9464-3be405b239b6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\RaceGame\コース集">
-      <UniqueIdentifier>{6a910a60-b34c-4b84-9033-8a5be57218da}</UniqueIdentifier>
+    <Filter Include="ソース ファイル\RaceGame\WallFloorwww">
+      <UniqueIdentifier>{d8286d00-78a8-407a-8e3d-a5b11d88dac7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -121,19 +124,19 @@
       <Filter>ソース ファイル\RaceGame</Filter>
     </ClCompile>
     <ClCompile Include="CRigidObj.cpp">
-      <Filter>ソース ファイル\RaceGame\ちょっと別フォルダで</Filter>
+      <Filter>ソース ファイル\RaceGame\TemporaryFolder</Filter>
     </ClCompile>
     <ClCompile Include="CRaceCourceA.cpp">
-      <Filter>ソース ファイル\RaceGame\コース集</Filter>
+      <Filter>ソース ファイル\RaceGame\CourceFolder</Filter>
     </ClCompile>
     <ClCompile Include="CRaceCourceB.cpp">
-      <Filter>ソース ファイル\RaceGame\コース集</Filter>
+      <Filter>ソース ファイル\RaceGame\CourceFolder</Filter>
     </ClCompile>
     <ClCompile Include="CRaceCourceC.cpp">
-      <Filter>ソース ファイル\RaceGame\コース集</Filter>
+      <Filter>ソース ファイル\RaceGame\CourceFolder</Filter>
     </ClCompile>
     <ClCompile Include="CRaceCourceD.cpp">
-      <Filter>ソース ファイル\RaceGame\コース集</Filter>
+      <Filter>ソース ファイル\RaceGame\CourceFolder</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -234,19 +237,19 @@
       <Filter>ソース ファイル\RaceGame</Filter>
     </ClInclude>
     <ClInclude Include="CRigidObj.h">
-      <Filter>ソース ファイル\RaceGame\ちょっと別フォルダで</Filter>
+      <Filter>ソース ファイル\RaceGame\TemporaryFolder</Filter>
     </ClInclude>
     <ClInclude Include="CRaceCourceA.h">
-      <Filter>ソース ファイル\RaceGame\コース集</Filter>
+      <Filter>ソース ファイル\RaceGame\CourceFolder</Filter>
     </ClInclude>
     <ClInclude Include="CRaceCourceB.h">
-      <Filter>ソース ファイル\RaceGame\コース集</Filter>
+      <Filter>ソース ファイル\RaceGame\CourceFolder</Filter>
     </ClInclude>
     <ClInclude Include="CRaceCourceC.h">
-      <Filter>ソース ファイル\RaceGame\コース集</Filter>
+      <Filter>ソース ファイル\RaceGame\CourceFolder</Filter>
     </ClInclude>
     <ClInclude Include="CRaceCourceD.h">
-      <Filter>ソース ファイル\RaceGame\コース集</Filter>
+      <Filter>ソース ファイル\RaceGame\CourceFolder</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

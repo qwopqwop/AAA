@@ -121,7 +121,7 @@ CPlayer::CPlayer()
 	SoundEngine.Load("SE\\SNES-Racing01-02.wav");
 	SoundEngine_Turf.Load("SE\\SNES-Racing02-02.wav");
 	SoundHorn.Load("SE\\car-horn1.wav");
-	ShutUp.Load("SE\\半沢「うるせぇぇぇ!!!」.wav");	
+	ShutUp.Load("SE\\Hanzawa's_SHOUT_UP!.wav");	
 	SoundCollision.Load("SE\\bomb1.wav");
 	SoundCollisionSmall.Load("SE\\SNES-Racing01-10(Collision).wav");
 	
@@ -140,10 +140,10 @@ void CPlayer::Update(){
 	if (CKey::Once(' ')){//クラクションを鳴らす
 		SoundHorn.Play();
 		mBuzzerCount++;
-		/*if (mBuzzerCount > 0 && mBuzzerCount % 7 == 0){
+		if (mBuzzerCount > 0 && mBuzzerCount % 7 == 0){
 			ShutUp.Play();
 			mBuzzerCount = 0;
-		}*/
+		}
 	}
 
 	

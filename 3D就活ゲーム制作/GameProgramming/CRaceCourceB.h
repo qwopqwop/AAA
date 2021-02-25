@@ -10,6 +10,8 @@ public:
 	void Init();
 	//更新処理のオーバーライド
 	void Update();
+
+	virtual void Mo();
 };
 
 #endif

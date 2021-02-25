@@ -38,9 +38,9 @@ public:
 		mPrevVariable2 = mVariable2;
 		mStart = false;
 		mStartWaitTime = 0;
-		SoundMoveCarsol.Load("SE\\カーソル2.wav");
-		SoundDecide.Load("SE\\決定＿小決定（SF系）.wav");
-		SoundCancel.Load("SE\\キャンセル2.wav");
+		SoundMoveCarsol.Load("SE\\Carsol2.wav");
+		SoundDecide.Load("SE\\Decision_Small(SF).wav");
+		SoundCancel.Load("SE\\Cancel2.wav");
 	}
 	//更新処理のオーバーライド
 	void Update() {
