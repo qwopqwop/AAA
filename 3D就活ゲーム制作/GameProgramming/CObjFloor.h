@@ -1,18 +1,15 @@
 #ifndef COBJFLOOR_H
 #define COBJFLOOR_H
-#include "CCharacter.h"
-#include "CCollider.h"
-#include "CCollisionManager.h"
+#include "CObj.h"
 
-class CObjFloor :public CCharacter{
+class CObjFloor :public CObj{
 public:
-	//コライダの追加
-	CCollider *mpCollider;
 	//コンストラクタで初期設定
 	CObjFloor(CModel*model, const CVector &position, const CVector &rotation, const CVector &scale);
-	~CObjFloor();
 
-	void Update();//virtual…再定義可能になる?
-
+	////CObj側で衝突処理…は以前、処理が爆重になったのでやらない、やれない、やりたくない
+	//void Collision(CCollider *m, CCollider *y);
+	////更新処理のオーバーライド
+	//void Update();
 };
 #endif

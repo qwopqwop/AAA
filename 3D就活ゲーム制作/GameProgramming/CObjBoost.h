@@ -1,11 +1,12 @@
-#ifndef COBJWALL_H
-#define COBJWALL_H
+#ifndef COBJBOOST_H
+#define COBJBOOST_H
+
 #include "CObj.h"
 
-class CObjWall :public CObj{
+class CObjBoost :public CObj{
 public:
 	//コンストラクタで初期設定
-	CObjWall(CModel*model, const CVector &position, const CVector &rotation, const CVector &scale);
+	CObjBoost(CModel*model, const CVector &position, const CVector &rotation, const CVector &scale);
 
 	////CObj側で衝突処理…は以前、処理が爆重になったのでやらない、やれない、やりたくない
 	//void Collision(CCollider *m, CCollider *y);
@@ -13,5 +14,3 @@ public:
 	//void Update();
 };
 #endif
-
-

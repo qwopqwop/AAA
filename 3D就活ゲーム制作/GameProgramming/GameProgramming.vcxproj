@@ -96,7 +96,9 @@
     <ClCompile Include="CMatrix.cpp" />
     <ClCompile Include="CModel.cpp" />
     <ClCompile Include="CObj.cpp" />
+    <ClCompile Include="CObjBoost.cpp" />
     <ClCompile Include="CObjFloor.cpp" />
+    <ClCompile Include="CObjGrass.cpp" />
     <ClCompile Include="CObjWall.cpp" />
     <ClCompile Include="CPlayer.cpp" />
     <ClCompile Include="CPoint.cpp" />
@@ -136,7 +138,9 @@
     <ClInclude Include="CMatrix.h" />
     <ClInclude Include="CModel.h" />
     <ClInclude Include="CObj.h" />
+    <ClInclude Include="CObjBoost.h" />
     <ClInclude Include="CObjFloor.h" />
+    <ClInclude Include="CObjGrass.h" />
     <ClInclude Include="CObjWall.h" />
     <ClInclude Include="CPlayer.h" />
     <ClInclude Include="CPoint.h" />

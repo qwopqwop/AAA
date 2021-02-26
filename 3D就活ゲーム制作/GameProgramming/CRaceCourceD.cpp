@@ -2,6 +2,8 @@
 #include "CObj.h"
 #include "CObjWall.h"
 #include "CObjFloor.h"
+//
+#include "CObjBoost.h"
 #include "CSceneTitle.h"
 
 void CRaceCourceD::Init(){
@@ -145,6 +147,8 @@ void CRaceCourceD::Init(){
 			}
 		}
 	}
+	
+	new CObjBoost(&mDashBoard, CVector(-200.0f, 40.0f, -200.0f), CVector(), CVector(1.0f * size, 1.0f* size, 1.0f* size));
 
 	//—Dæ“x•ÏX
 	CTaskManager::Get()->ChangePriority(mPlayer, 15);
