@@ -328,14 +328,14 @@ void CCollider::ChangePriority(){
 		position = position*(1.0 / 2.0f);//合計値の2分の1が中心
 		break;
 	}
-	mPriority = position.Length();//原点からの距離を優先度にする
+	SetPriority(position.Length());
 	CollisionManager.Remove(this);//リストから削除する
 	CollisionManager.Add(this);//リストに追加する
 }
 
 //ChangePriority(優先度)
 void CCollider::ChangePriority(int priority){
-	mPriority = priority; //優先度を設定する
+	SetPriority(priority);
 	CollisionManager.Remove(this); //リストから削除する
 	CollisionManager.Add(this); //リストに追加する
 }

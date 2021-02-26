@@ -64,7 +64,7 @@ void CItem::Collision(CCollider *m, CCollider *y){
 
 			if (y->mpParent->mTag == CCharacter::EPLAYER){
 				printf("Item Get!\n");
-				mEnabled = false;
+				SetEnabled(false);
 			}
 		}
 	}
@@ -74,7 +74,7 @@ void CItem::Collision(CCollider *m, CCollider *y){
 			if (y->mpParent->mTag == CCharacter::EBULLET){
 				SoundDest.Play();
 				mTargetAmount--;
-				mEnabled = false;
+				SetEnabled(false);
 			}
 		}
 	}

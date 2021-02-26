@@ -1,5 +1,7 @@
 #include "CRaceCourceD.h"
 #include "CObj.h"
+#include "CObjWall.h"
+#include "CObjFloor.h"
 #include "CSceneTitle.h"
 
 void CRaceCourceD::Init(){
@@ -101,6 +103,7 @@ void CRaceCourceD::Init(){
 	////借り物//敵がコースに近づくと重くなる…
 	//new CObj(&mCource04, CVector(-360.0f, 5.0f - 33.0f, -230.0f), CVector(), CVector(5110.0f, 5110.0f, 5110.0f), 1);
 
+	////こっちは自作
 	/*new CObj(&mCource04Water, CVector(0.0f, -60.0f - 33.0f, 0.0f), CVector(), CVector(100.0f, 100.0f, 100.0f), 99);
 	new CObj(&mCource04A, CVector(0.0f, -60.0f - 33.0f, 0.0f), CVector(), CVector(40.0f, 40.0f, 40.0f), 1);*/
 	//new CObj(&mCource04Water, CVector(0.0f, -260.0f - 33.0f, 0.0f), CVector(), CVector(100.0f, 100.0f, 100.0f), 99);
@@ -116,32 +119,32 @@ void CRaceCourceD::Init(){
 	int size = 6;//コースの縮尺
 	for (int i = 0; i < 5; i++){
 		for (int j = 0; j < 4; j++){
-			if (edit[i][j] == 11){
-				new CObj(&mTile_Straight01, CVector(-100.0f * size * j, 0.0f, -100.0f * size * i), CVector(), CVector(1.0f * size, 1.0f* size, 1.0f* size), 1);//I字
+			if (edit[i][j] == 11){//直線:一字
+				new CObjFloor(&mTile_Straight01_Floor, CVector(-100.0f * size * j, 0.0f, -100.0f * size * i), CVector(), CVector(1.0f * size, 1.0f* size, 1.0f* size));
+				new CObjWall(&mTile_Straight01_Wall, CVector(-100.0f * size * j, 0.0f, -100.0f * size * i), CVector(), CVector(1.0f * size, 1.0f* size, 1.0f* size));
 			}
-			else if(edit[i][j] == 12){
-				new CObj(&mTile_Straight02, CVector(-100.0f * size * j, 0.0f, -100.0f * size * i), CVector(), CVector(1.0f * size, 1.0f* size, 1.0f* size), 1);//一字
+			else if(edit[i][j] == 12){//直線:I字
+				new CObjFloor(&mTile_Straight02_Floor, CVector(-100.0f * size * j, 0.0f, -100.0f * size * i), CVector(), CVector(1.0f * size, 1.0f* size, 1.0f* size));
+				new CObjWall(&mTile_Straight02_Wall, CVector(-100.0f * size * j, 0.0f, -100.0f * size * i), CVector(), CVector(1.0f * size, 1.0f* size, 1.0f* size));
 			}
-			else if (edit[i][j] == 21){
-				new CObj(&mTile_Curve03, CVector(-100.0f * size * j, 0.0f, -100.0f * size * i), CVector(), CVector(1.0f * size, 1.0f* size, 1.0f* size), 1);//0時～3時
+			else if (edit[i][j] == 21){//カーブ:0時～3時
+				new CObjFloor(&mTile_Curve03_Floor, CVector(-100.0f * size * j, 0.0f, -100.0f * size * i), CVector(), CVector(1.0f * size, 1.0f* size, 1.0f* size));
+				new CObjWall(&mTile_Curve03_Wall, CVector(-100.0f * size * j, 0.0f, -100.0f * size * i), CVector(), CVector(1.0f * size, 1.0f* size, 1.0f* size));
 			}
-			else if (edit[i][j] == 22){
-				new CObj(&mTile_Curve04, CVector(-100.0f * size * j, 0.0f, -100.0f * size * i), CVector(), CVector(1.0f * size, 1.0f* size, 1.0f* size), 1);//3時～6時
+			else if (edit[i][j] == 22){//カーブ:3時～6時
+				new CObjFloor(&mTile_Curve04_Floor, CVector(-100.0f * size * j, 0.0f, -100.0f * size * i), CVector(), CVector(1.0f * size, 1.0f* size, 1.0f* size));
+				new CObjWall(&mTile_Curve04_Wall, CVector(-100.0f * size * j, 0.0f, -100.0f * size * i), CVector(), CVector(1.0f * size, 1.0f* size, 1.0f* size));
 			}
-			else if (edit[i][j] == 23){
-				new CObj(&mTile_Curve01, CVector(-100.0f * size * j, 0.0f, -100.0f * size * i), CVector(), CVector(1.0f * size, 1.0f* size, 1.0f* size), 1);//6時～9時
+			else if (edit[i][j] == 23){//カーブ:6時～9時
+				new CObjFloor(&mTile_Curve01_Floor, CVector(-100.0f * size * j, 0.0f, -100.0f * size * i), CVector(), CVector(1.0f * size, 1.0f* size, 1.0f* size));
+				new CObjWall(&mTile_Curve01_Wall, CVector(-100.0f * size * j, 0.0f, -100.0f * size * i), CVector(), CVector(1.0f * size, 1.0f* size, 1.0f* size));
 			}
-			else if (edit[i][j] == 24){
-				new CObj(&mTile_Curve02, CVector(-100.0f * size * j, 0.0f, -100.0f * size * i), CVector(), CVector(1.0f * size, 1.0f* size, 1.0f* size), 1);//9時～12時
+			else if (edit[i][j] == 24){//カーブ:9時～12時
+				new CObjFloor(&mTile_Curve02_Floor, CVector(-100.0f * size * j, 0.0f, -100.0f * size * i), CVector(), CVector(1.0f * size, 1.0f* size, 1.0f* size));
+				new CObjWall(&mTile_Curve02_Wall, CVector(-100.0f * size * j, 0.0f, -100.0f * size * i), CVector(), CVector(1.0f * size, 1.0f* size, 1.0f* size));
 			}
 		}
 	}
-	//new CObj(&mTile_Curve01, CVector(0.0f, 0.0f, 500.0f*6), CVector(), CVector(6.0f, 6.0f, 6.0f), 1);//6時～9時
-	//new CObj(&mTile_Curve02, CVector(0.0f, 0.0f, 100.0f*6), CVector(), CVector(6.0f, 6.0f, 6.0f), 1);//9時～12時
-	//new CObj(&mTile_Curve03, CVector(0.0f, 0.0f, 200.0f*6), CVector(), CVector(6.0f, 6.0f, 6.0f), 1);//0時～3時
-	//new CObj(&mTile_Curve04, CVector(0.0f, 0.0f, 300.0f*6), CVector(), CVector(6.0f, 6.0f, 6.0f), 1);//3時～6時
-	//new CObj(&mTile_Straight01, CVector(0.0f, 0.0f, 0.0f*6), CVector(), CVector(6.0f, 6.0f, 6.0f), 1);//I字
-	//new CObj(&mTile_Straight02, CVector(0.0f, 0.0f, 400.0f*6), CVector(), CVector(6.0f, 6.0f, 6.0f), 1);//一字
 
 	//優先度変更
 	CTaskManager::Get()->ChangePriority(mPlayer, 15);

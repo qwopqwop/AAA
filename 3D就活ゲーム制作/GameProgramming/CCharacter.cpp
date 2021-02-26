@@ -41,7 +41,7 @@ CCharacter::CCharacter()
 , mScale(1.0f, 1.0f, 1.0f)
 {
 	isRender = true;
-	mPriority = 1;
+	SetPriority(1);
 	//タスクリストに追加
 	CTaskManager::Get()->Add(this);
 	//TaskManager.Add(this);

@@ -14,10 +14,10 @@ public:
 
 	int mObjNumber;
 	
-	//衝突処理
-	void Collision(CCollider *m, CCollider *y);
+	////衝突処理
+	//void Collision(CCollider *m, CCollider *y);
 
-	void Update();
+	void Update();//virtual…再定義可能になる?
 
 	//bool mDeleteFlag;
 
@@ -28,9 +28,9 @@ public:
 	//float mVelocity;
 };
 
-class CObjection :public CObj{
-public:
-	//コライダの更新
-	void TaskCollision();
-};
+//class CObjection :public CObj{
+//public:
+//	//コライダの更新
+//	void TaskCollision();
+//};
 #endif

@@ -14,7 +14,7 @@ void CRock::Collision(CCollider *m, CCollider *y){
 	if (CCollider::Collision(m, y)){
 		//ƒvƒŒƒCƒ„[‚ÆÚG‚·‚é‚ÆÁ–Å
 		if (y->mpParent->mTag == CCharacter::EPLAYER){
-			mEnabled = false;
+			SetEnabled(false);
 		}
 	}
 }

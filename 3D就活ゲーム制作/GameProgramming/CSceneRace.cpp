@@ -14,6 +14,8 @@
 //
 #include "CObj.h"
 //
+#include "CObjWall.h"
+//
 #include "CItem.h"
 //
 #include "CKey.h"
@@ -119,12 +121,18 @@ void CSceneRace::Init() {
 	mCource04Water.Load("material\\racing_mat\\stage4\\cource04water.obj", "material\\racing_mat\\stage4\\cource04water.mtl");
 	mCource04A.Load("material\\racing_mat\\stage4\\cource04a.obj", "material\\racing_mat\\stage4\\cource04a.mtl");
 	//コースエディターのタイルの読み込み
-	mTile_Curve01.Load("material\\racing_mat\\stage_edit\\tile_curve01.obj", "material\\racing_mat\\stage_edit\\tile_curve01.mtl");
-	mTile_Curve02.Load("material\\racing_mat\\stage_edit\\tile_curve02.obj", "material\\racing_mat\\stage_edit\\tile_curve02.mtl");
-	mTile_Curve03.Load("material\\racing_mat\\stage_edit\\tile_curve03.obj", "material\\racing_mat\\stage_edit\\tile_curve03.mtl");
-	mTile_Curve04.Load("material\\racing_mat\\stage_edit\\tile_curve04.obj", "material\\racing_mat\\stage_edit\\tile_curve04.mtl");
-	mTile_Straight01.Load("material\\racing_mat\\stage_edit\\tile_straight01.obj", "material\\racing_mat\\stage_edit\\tile_straight01.mtl");
-	mTile_Straight02.Load("material\\racing_mat\\stage_edit\\tile_straight02.obj", "material\\racing_mat\\stage_edit\\tile_straight02.mtl");
+	mTile_Curve01_Floor.Load("material\\racing_mat\\stage_edit\\Curve01_floor.obj", "material\\racing_mat\\stage_edit\\Curve01_floor.mtl");
+	mTile_Curve01_Wall.Load("material\\racing_mat\\stage_edit\\Curve01_wall.obj", "material\\racing_mat\\stage_edit\\Curve01_wall.mtl");
+	mTile_Curve02_Floor.Load("material\\racing_mat\\stage_edit\\Curve02_floor.obj", "material\\racing_mat\\stage_edit\\Curve02_floor.mtl");
+	mTile_Curve02_Wall.Load("material\\racing_mat\\stage_edit\\Curve02_wall.obj", "material\\racing_mat\\stage_edit\\Curve02_wall.mtl");
+	mTile_Curve03_Floor.Load("material\\racing_mat\\stage_edit\\Curve03_floor.obj", "material\\racing_mat\\stage_edit\\Curve03_floor.mtl");
+	mTile_Curve03_Wall.Load("material\\racing_mat\\stage_edit\\Curve03_wall.obj", "material\\racing_mat\\stage_edit\\Curve03_wall.mtl");
+	mTile_Curve04_Floor.Load("material\\racing_mat\\stage_edit\\Curve04_floor.obj", "material\\racing_mat\\stage_edit\\Curve04_floor.mtl");
+	mTile_Curve04_Wall.Load("material\\racing_mat\\stage_edit\\Curve04_wall.obj", "material\\racing_mat\\stage_edit\\Curve04_wall.mtl");
+	mTile_Straight01_Floor.Load("material\\racing_mat\\stage_edit\\Straight01_floor.obj", "material\\racing_mat\\stage_edit\\Straight01_floor.mtl");
+	mTile_Straight01_Wall.Load("material\\racing_mat\\stage_edit\\Straight01_wall.obj", "material\\racing_mat\\stage_edit\\Straight01_wall.mtl");
+	mTile_Straight02_Floor.Load("material\\racing_mat\\stage_edit\\Straight02_floor.obj", "material\\racing_mat\\stage_edit\\Straight02_floor.mtl");
+	mTile_Straight02_Wall.Load("material\\racing_mat\\stage_edit\\Straight02_wall.obj", "material\\racing_mat\\stage_edit\\Straight02_wall.mtl");
 	
 	//芝生の読み込み
 	mGrass01.Load("material\\racing_mat\\GrassNew01.obj", "material\\racing_mat\\GrassNew01.mtl");

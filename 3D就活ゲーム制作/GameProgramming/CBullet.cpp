@@ -31,7 +31,7 @@ void CBullet::Update(){
 	}
 	else{
 		//–³Œø‚É‚·‚é
-		mEnabled = false;
+		SetEnabled(false);
 	}
 }
 
@@ -66,7 +66,7 @@ void CBullet::Collision(CCollider *m, CCollider *y){
 			//‹@‘Ì‚Ì
 			if (y->mTag == CCollider::EBODY){
 				//Õ“Ë‚µ‚Ä‚¢‚é‚Æ‚«‚Í–³Œø‚É‚·‚é
-				mEnabled = false;
+				SetEnabled(false);
 			}
 		}
 	}

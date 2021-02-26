@@ -8,11 +8,13 @@
 タスクリストの管理
 */
 class CTaskManager {
-public:
+private:
 	static CTaskManager *instance;
+protected:
+	CTask *mpHead;	//先頭ポインタ
+public:
 	static CTaskManager *Get();
 
-	CTask *mpHead;	//先頭ポインタ
 //	CTask *mpTail;	//最後ポインタ
 	//デフォルトコンストラクタ
 	CTaskManager();
