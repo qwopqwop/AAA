@@ -150,6 +150,15 @@
     <ClCompile Include="CObjGrass.cpp">
       <Filter>ソース ファイル\RaceGame\WallFloor</Filter>
     </ClCompile>
+    <ClCompile Include="CObjCheckPoint.cpp">
+      <Filter>ソース ファイル\RaceGame\WallFloor</Filter>
+    </ClCompile>
+    <ClCompile Include="CObjNonCol.cpp">
+      <Filter>ソース ファイル\RaceGame\WallFloor</Filter>
+    </ClCompile>
+    <ClCompile Include="CObjJumper.cpp">
+      <Filter>ソース ファイル\RaceGame\WallFloor</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CSceneGame.h">
@@ -273,6 +282,15 @@
       <Filter>ソース ファイル\RaceGame\WallFloor</Filter>
     </ClInclude>
     <ClInclude Include="CObjGrass.h">
+      <Filter>ソース ファイル\RaceGame\WallFloor</Filter>
+    </ClInclude>
+    <ClInclude Include="CObjCheckPoint.h">
+      <Filter>ソース ファイル\RaceGame\WallFloor</Filter>
+    </ClInclude>
+    <ClInclude Include="CObjNonCol.h">
+      <Filter>ソース ファイル\RaceGame\WallFloor</Filter>
+    </ClInclude>
+    <ClInclude Include="CObjJumper.h">
       <Filter>ソース ファイル\RaceGame\WallFloor</Filter>
     </ClInclude>
   </ItemGroup>

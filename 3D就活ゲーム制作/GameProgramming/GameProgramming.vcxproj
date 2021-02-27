@@ -97,8 +97,11 @@
     <ClCompile Include="CModel.cpp" />
     <ClCompile Include="CObj.cpp" />
     <ClCompile Include="CObjBoost.cpp" />
+    <ClCompile Include="CObjCheckPoint.cpp" />
     <ClCompile Include="CObjFloor.cpp" />
     <ClCompile Include="CObjGrass.cpp" />
+    <ClCompile Include="CObjJumper.cpp" />
+    <ClCompile Include="CObjNonCol.cpp" />
     <ClCompile Include="CObjWall.cpp" />
     <ClCompile Include="CPlayer.cpp" />
     <ClCompile Include="CPoint.cpp" />
@@ -139,8 +142,11 @@
     <ClInclude Include="CModel.h" />
     <ClInclude Include="CObj.h" />
     <ClInclude Include="CObjBoost.h" />
+    <ClInclude Include="CObjCheckPoint.h" />
     <ClInclude Include="CObjFloor.h" />
     <ClInclude Include="CObjGrass.h" />
+    <ClInclude Include="CObjJumper.h" />
+    <ClInclude Include="CObjNonCol.h" />
     <ClInclude Include="CObjWall.h" />
     <ClInclude Include="CPlayer.h" />
     <ClInclude Include="CPoint.h" />

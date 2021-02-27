@@ -2,6 +2,8 @@
 #include "CObj.h"
 #include "CObjWall.h"
 #include "CObjFloor.h"
+#include "CObjCheckPoint.h"
+#include "CObjNonCol.h"
 #include "CSceneTitle.h"
 
 void CRaceCourceC::Init(){
@@ -131,18 +133,16 @@ void CRaceCourceC::Init(){
 		mEnemys[i]->CCharacter::Update();
 	}
 
-	//mPosition = CVector(1127.4f, mStartPoint[1], -5054.0f);
-	//-5861.0f, mStartPoint[1], 1165.0f
 	//中間地点(順に通らないと1周したことにならないし、順番を飛ばしてもいけない)
-	new CObj(&mCheckPoint, CVector(1127.4f, -100.0f, -5054.0f), CVector(0.0f, 0.0f, 0.0f), CVector(220.0f, 200.0f, 220.0f), 101);
-	new CObj(&mCheckPoint, CVector(777.0f, -100.0f, 1925.0f), CVector(0.0f, 0.0f, 0.0f), CVector(220.0f, 200.0f, 220.0f), 102);
-	new CObj(&mCheckPoint, CVector(-5861.0f, -300.0f, 1165.0f), CVector(0.0f, 0.0f, 0.0f), CVector(220.0f, 200.0f, 220.0f), 103);
+	new CObjCheckPoint(&mCheckPoint, CVector(1127.4f, -100.0f, -5054.0f), CVector(0.0f, 0.0f, 0.0f), CVector(220.0f, 200.0f, 220.0f), 1);
+	new CObjCheckPoint(&mCheckPoint, CVector(777.0f, -100.0f, 1925.0f), CVector(0.0f, 0.0f, 0.0f), CVector(220.0f, 200.0f, 220.0f), 2);
+	new CObjCheckPoint(&mCheckPoint, CVector(-5861.0f, -300.0f, 1165.0f), CVector(0.0f, 0.0f, 0.0f), CVector(220.0f, 200.0f, 220.0f), 3);
 	//コースの生成
 	new CObjFloor(&mCource03Road, CVector(0.0f, 5.0f - 373.0f, -350.0f), CVector(), CVector(40.0f, 20.0f, 40.0f));
 	new CObjWall(&mCource03Wall, CVector(0.0f, 5.0f - 373.0f, -350.0f), CVector(), CVector(40.0f, 20.0f, 40.0f));
 	new CObjWall(&mCource03Fence, CVector(0.0f, 5.0f - 373.0f, -350.0f), CVector(), CVector(40.0f, 20.0f, 40.0f));
 	//ゴール地点
-	new CObj(&mMiniGoal, CVector(140.0f, -159.0f, 90.0f-30.0f), CVector(0.0f, 90.0f, 0.0f), CVector(5.1f, 10.0f, 5.1f), 99);
+	new CObjNonCol(&mMiniGoal, CVector(140.0f, -159.0f, 90.0f-30.0f), CVector(0.0f, 90.0f, 0.0f), CVector(5.1f, 10.0f, 5.1f));
 
 	//優先度変更
 	CTaskManager::Get()->ChangePriority(mPlayer, 15);

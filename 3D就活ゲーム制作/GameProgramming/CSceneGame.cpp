@@ -76,77 +76,77 @@ void CSceneGame::Init() {
 	//ステージ1BGMの読み込み
 	BGM.Load("BGM\\game_maoudamashii_7_event46.wav");
 
-	//透明度の高い物から先に描画する
-	
-	/*for (int i = 0; i < 12; i++){
-		new CObj(&mCube3, CVector(43.0f, 15.0f + i * 7.0f, 118.0f), CVector(0.0f, 0.0f, 0.0f), CVector(10.0f, 2.0f, 10.0f), 9);
-	}*/
-	//new CObj(&mCube3, CVector(-73.0f, 5.0f, 100.0f), CVector(0.0f, 0.0f, 0.0f), CVector(30.0f, 45.0f, 1.0f), 13);
+	////透明度の高い物から先に描画する
+	//
+	///*for (int i = 0; i < 12; i++){
+	//	new CObj(&mCube3, CVector(43.0f, 15.0f + i * 7.0f, 118.0f), CVector(0.0f, 0.0f, 0.0f), CVector(10.0f, 2.0f, 10.0f), 9);
+	//}*/
+	////new CObj(&mCube3, CVector(-73.0f, 5.0f, 100.0f), CVector(0.0f, 0.0f, 0.0f), CVector(30.0f, 45.0f, 1.0f), 13);
 
-	new CObj(&mCube3, CVector(10.0f, 23.0f, 100.0f), CVector(0.0f, 0.0f, 0.0f), CVector(40.0f, 3.0f, 10.5f), 9);//あそこのガラス
+	//new CObj(&mCube3, CVector(10.0f, 23.0f, 100.0f), CVector(0.0f, 0.0f, 0.0f), CVector(40.0f, 3.0f, 10.5f), 9);//あそこのガラス
 
-	new CObj(&mWater, CVector(-60.0f, -1.8f, 60.0f), CVector(0.0f, 0.0f, 0.0f), CVector(140.0f, 1.0f, 65.0f), 9);//水面
+	//new CObj(&mWater, CVector(-60.0f, -1.8f, 60.0f), CVector(0.0f, 0.0f, 0.0f), CVector(140.0f, 1.0f, 65.0f), 9);//水面
 
-	for (int i = 0; i < 18; i++){ 
-		new CObj(&mWarpPoint, CVector(-143.0f, -0.5f, 94.0f), CVector(0.0f, 0.0f + 10.0f * i, 0.0f), CVector(6.0f, 20.0f, 6.0f), 18);//ワープ地点の光
-	}
+	//for (int i = 0; i < 18; i++){ 
+	//	new CObj(&mWarpPoint, CVector(-143.0f, -0.5f, 94.0f), CVector(0.0f, 0.0f + 10.0f * i, 0.0f), CVector(6.0f, 20.0f, 6.0f), 18);//ワープ地点の光
+	//}
 
 
-	//new CObj(&mCube3, CVector(37.5f, 0.0f, 30.0f), CVector(), CVector(23.0f, 10.0f, 13.0f), 9);//ボートのケース
+	////new CObj(&mCube3, CVector(37.5f, 0.0f, 30.0f), CVector(), CVector(23.0f, 10.0f, 13.0f), 9);//ボートのケース
 
 	mPlayer = new CPlayer();
 	mPlayer->mpModel = &mRover;
 
-	//岩の生成　モデルmRock　位置|-20.0 0.0 20.0|
-	//回転|0.0 0.0 0.0|　拡大|5.0 5.0 5.0|
-//	new CRock(&mRock, CVector(-20.0f, 0.0f, 20.0f), CVector(), CVector(5.0f, 5.0f, 5.0f));
-	//立方体の生成
-//	new CObj(&mCube, CVector(0.0f, 0.0f, 60.0f), CVector(0.0f, 0.0f, 0.0f), CVector(10.0f, 10.0f, 1.0f), 1);
-	//地面の生成
-	new CObj(&mPlane, CVector(0.0f, 0.0f, 0.0f), CVector(), CVector(200.0f, 1.0f, 200.0f), 1);
-
-
-
-	for (int i = 0; i < 3; i++){
-		for (int j = 0; j < 3; j++){
-			for (int k = 0; k < 3; k++){
-				if ((i == 1 && j == 1) || (j == 1 && k == 1) || (k == 1 && i == 1) || (k == 2 && j != 1) || (j == 1 && k == 0)) {
-					
-
-				}
-				else if (k == 0){
-					new CObj(&mCube, CVector(-20.0f + 20.0f * i, -1.0f + 20.0f * k, 80.0f + 20.0f * j), CVector(0.0f, 0.0f, 0.0f), CVector(10.0f, 15.0f, 10.0f), 1);
-				}
-				else{
-					new CObj(&mCube, CVector(-20.0f + 20.0f * i, 9.0f + 20.0f * k, 80.0f + 20.0f * j), CVector(0.0f, 0.0f, 0.0f), CVector(10.0f, 10.0f, 10.0f), 1);
-				}
-
-			}
-		}
-	}
-	new CObj(&mOnBlock, CVector(0.0f, 60.0f, 100.0f), CVector(0.0f, 0.0f, 0.0f), CVector(10.0f, 10.0f, 10.0f), 10);
-	new CItem(&mItemGun, CVector(0.0f, 80.0f, 100.0f), CVector(), CVector(2.0f, 2.0f, 2.0f), 4);//銃
-	for (int i = 0; i < 5; i++){
-		new CItem(&mTarget, CVector(-10.0f + i * 7.5f, 93.0f, 150.0f), CVector(), CVector(2.1f, 2.1f, 2.1), 1);//的(岩)
-	}
-	//的の後に生成する
-	new CObj(&mOnBlock, CVector(5.0f, 89.0f, 155.0f), CVector(), CVector(22.0f, 5.0f, 1.0f), 10);
-
-
-
-//	new CItem(&mItem, CVector(43.0f, 111.0f, 118.0f), CVector(), CVector(2.0f, 2.0f, 2.0f), 3);//スクリュー
-	
-	new CObj(&mCube, CVector(0.0f,-5.55f, 13.0f), CVector(-5.4f, 0.0f, 0.0f), CVector(10.0f, 4.0f, 28.0f), 1);//橋？
-	for (int l = 0; l < 5; l++){
-		new CObj(&mStairs, CVector(0.0f, -1.0f, 43.0f + l * 6.0f), CVector(0.0f, 0.0f, 0.0f), CVector(10.0f, 3.0f + 3.0f*l , 3.0f), 1);//階段
-	}
-	new CItem(&mSpringL, CVector(0.0f, 30.0f, 80.0f), CVector(), CVector(5.0f, 5.0f, 5.0f), 2);//バネ
-
-	new CItem(&mBoat, CVector(35.0f, 7.0f, 30.0f), CVector(), CVector(2.5f, 2.5f, 2.5f), 7);//ボート
-	new CObj(&mOnBlock, CVector(37.5f, 0.0f, 30.0f), CVector(), CVector(23.0f, 12.0f, 13.0f), 10);//ボートを包む箱
-
-
-	//new CObj(&mCube, CVector(30.0f, 0.0f, 30.0f), CVector(0.0f, 0.0f, 0.0f), CVector(10.0f, 2.0f, 10.0f), 2);
+//	//岩の生成　モデルmRock　位置|-20.0 0.0 20.0|
+//	//回転|0.0 0.0 0.0|　拡大|5.0 5.0 5.0|
+////	new CRock(&mRock, CVector(-20.0f, 0.0f, 20.0f), CVector(), CVector(5.0f, 5.0f, 5.0f));
+//	//立方体の生成
+////	new CObj(&mCube, CVector(0.0f, 0.0f, 60.0f), CVector(0.0f, 0.0f, 0.0f), CVector(10.0f, 10.0f, 1.0f), 1);
+//	//地面の生成
+//	new CObj(&mPlane, CVector(0.0f, 0.0f, 0.0f), CVector(), CVector(200.0f, 1.0f, 200.0f), 1);
+//
+//
+//
+//	for (int i = 0; i < 3; i++){
+//		for (int j = 0; j < 3; j++){
+//			for (int k = 0; k < 3; k++){
+//				if ((i == 1 && j == 1) || (j == 1 && k == 1) || (k == 1 && i == 1) || (k == 2 && j != 1) || (j == 1 && k == 0)) {
+//					
+//
+//				}
+//				else if (k == 0){
+//					new CObj(&mCube, CVector(-20.0f + 20.0f * i, -1.0f + 20.0f * k, 80.0f + 20.0f * j), CVector(0.0f, 0.0f, 0.0f), CVector(10.0f, 15.0f, 10.0f), 1);
+//				}
+//				else{
+//					new CObj(&mCube, CVector(-20.0f + 20.0f * i, 9.0f + 20.0f * k, 80.0f + 20.0f * j), CVector(0.0f, 0.0f, 0.0f), CVector(10.0f, 10.0f, 10.0f), 1);
+//				}
+//
+//			}
+//		}
+//	}
+//	new CObj(&mOnBlock, CVector(0.0f, 60.0f, 100.0f), CVector(0.0f, 0.0f, 0.0f), CVector(10.0f, 10.0f, 10.0f), 10);
+//	new CItem(&mItemGun, CVector(0.0f, 80.0f, 100.0f), CVector(), CVector(2.0f, 2.0f, 2.0f), 4);//銃
+//	for (int i = 0; i < 5; i++){
+//		new CItem(&mTarget, CVector(-10.0f + i * 7.5f, 93.0f, 150.0f), CVector(), CVector(2.1f, 2.1f, 2.1), 1);//的(岩)
+//	}
+//	//的の後に生成する
+//	new CObj(&mOnBlock, CVector(5.0f, 89.0f, 155.0f), CVector(), CVector(22.0f, 5.0f, 1.0f), 10);
+//
+//
+//
+////	new CItem(&mItem, CVector(43.0f, 111.0f, 118.0f), CVector(), CVector(2.0f, 2.0f, 2.0f), 3);//スクリュー
+//	
+//	new CObj(&mCube, CVector(0.0f,-5.55f, 13.0f), CVector(-5.4f, 0.0f, 0.0f), CVector(10.0f, 4.0f, 28.0f), 1);//橋？
+//	for (int l = 0; l < 5; l++){
+//		new CObj(&mStairs, CVector(0.0f, -1.0f, 43.0f + l * 6.0f), CVector(0.0f, 0.0f, 0.0f), CVector(10.0f, 3.0f + 3.0f*l , 3.0f), 1);//階段
+//	}
+//	new CItem(&mSpringL, CVector(0.0f, 30.0f, 80.0f), CVector(), CVector(5.0f, 5.0f, 5.0f), 2);//バネ
+//
+//	new CItem(&mBoat, CVector(35.0f, 7.0f, 30.0f), CVector(), CVector(2.5f, 2.5f, 2.5f), 7);//ボート
+//	new CObj(&mOnBlock, CVector(37.5f, 0.0f, 30.0f), CVector(), CVector(23.0f, 12.0f, 13.0f), 10);//ボートを包む箱
+//
+//
+//	//new CObj(&mCube, CVector(30.0f, 0.0f, 30.0f), CVector(0.0f, 0.0f, 0.0f), CVector(10.0f, 2.0f, 10.0f), 2);
 
 	mCamY = 0.0f;
 	mPutCol = false;

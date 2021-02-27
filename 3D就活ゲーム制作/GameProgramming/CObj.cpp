@@ -10,15 +10,16 @@
 #define G (9.8f / 120.0f)//重力加速度//60.0f
 
 //コンストラクタ
-//model:モデルのポインタ position:位置 rotation:回転 scale:拡縮
-CObj::CObj(CModel *model, const CVector &position, const CVector &rotation, const CVector &scale, int objnum)
+//model:モデルのポインタ position:位置 rotation:回転 scale:拡縮 hascollider:コライダの生成の有無(設定がなければ有)
+CObj::CObj(CModel *model, const CVector &position, const CVector &rotation, const CVector &scale, bool hascollider)
 :mpCollider(0)
 {
 	mpModel = model;
 	mPosition = position;
 	mRotation = rotation;
 	mScale = scale;
-	mObjNumber = objnum;
+	
+	mObjNumber = 1;
 
 	if (mObjNumber == 9){
 		mTag = EWATER;
@@ -65,27 +66,12 @@ CObj::CObj(CModel *model, const CVector &position, const CVector &rotation, cons
 		CTaskManager::Get()->Remove(this);
 		CTaskManager::Get()->Add(this);
 	}
-	if (mObjNumber == 111){
-		//加速床
-		mTag = EDASHBOARD;
-		//mpCollider->mPosition.mY += 5.0f;
-		//mPosition.mY += 5.0f;
-	}
-	if (mObjNumber == 112){
-		//芝生(減速)
-		mTag = EGRASS;
-	}
-	if (mObjNumber == 200){
-		//壁
-		mTag = EWALL;
-	}
 	if (mObjNumber == 202){
 		//ジャンプ台
 		mTag = EJUMPER;
 	}
 
-
-	if (mObjNumber == 99 || mObjNumber == 575){
+	if (hascollider == false){
 		//当たり判定を生成しない
 		//これにより当たり判定の数を増やすほど処理が重くなることが実証された
 		//逆に当たり判定を増やさなければいいので、必要ない当たり判定はどんどんカットしていくよ。
@@ -110,6 +96,7 @@ CObj::CObj(CModel *model, const CVector &position, const CVector &rotation, cons
 		}
 	}
 
+	
 
 	//mVelocity = 0.0f;
 
@@ -535,17 +522,6 @@ void CObj::Update(){
 			mRotation.mY += 3;
 		}
 	}
-	//if (mObjNumber == 19){
-	//	//ボートを取得しないと表示されないよ！
-	//	if (CPlayer::mpPlayer->mHaveBoat == false){
-	//		mScale.mY = 0.0f;
-	//	}
-	//	//取得さえすれば表示されるよ！
-	//	else{
-	//		mScale.mY = 35.7f;
-	//		mRotation.mY -= 3;
-	//	}
-	//}
 
 	if (mObjNumber == 21){//仮の番号
 		//川を流れるブロック？
