@@ -140,5 +140,7 @@ public:
 	CModel mTile_Curve04_Wall;
 	CModel mTile_Straight01_Wall;
 	CModel mTile_Straight02_Wall;
+
+	CModel mSumpluuu;
 };
 #endif

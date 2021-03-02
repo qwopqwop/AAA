@@ -136,6 +136,18 @@ void CPlayer::Update(){
 	if (CKey::Push('E')){//つぐ
 		mRotation.mY--;
 	}
+	if (CKey::Push('Z')){//でば
+		mRotation.mX+=10;
+	}
+	if (CKey::Push('X')){//つぐ
+		mRotation.mX-=10;
+	}
+	if (CKey::Push('C')){//でば
+		mRotation.mZ += 10;
+	}
+	if (CKey::Push('V')){//つぐ
+		mRotation.mZ-=10;
+	}
 
 	if (CKey::Once(' ')){//クラクションを鳴らす
 		SoundHorn.Play();
@@ -569,16 +581,42 @@ void CPlayer::Collision(CCollider *mc, CCollider *yc){
 								mRotation.mX--;
 								}*/
 
-								int rotateofycmx = yc->mpParent->mRotation.mX;
-								rotateofycmx %= 360; //-360度から360度までの数値に変換
-								//-235=125 300=-60 -180度未満か、180度以上の角度は
-								if (rotateofycmx < -180){
-									rotateofycmx += 360;
-								}
-								else if (rotateofycmx >= 180){
-									rotateofycmx -= 360;
-								}
-								mRotation.mX = rotateofycmx;
+								/*１．斜面の法線ベクトルからY軸ベクトルを求めます。　済？
+									２．車体の進行方向から、Z軸ベクトルを求めます。  ???
+									３．Y軸ベクトルとZ軸ベクトルの外積を計算し、X軸ベクトルを求めます。
+									４．X軸ベクトルとY軸ベクトルの外積を計算し、Z軸ベクトルを求めます。
+									５．Z軸ベクトルからX軸の回転値を求めます。
+									６．Z軸ベクトルからY軸の回転値を求めます。
+									７．X軸ベクトルとY軸ベクトルからZ軸の回転値を求めます。
+									８．求めた回転値を車体に適用します。*/
+								CVector v[3], sv, ev;
+								//各コライダの頂点をワールド座標へ変換
+								v[0] = yc->mV[0] * yc->mMatrix * yc->mpParent->mMatrix;
+								v[1] = yc->mV[1] * yc->mMatrix * yc->mpParent->mMatrix;
+								v[2] = yc->mV[2] * yc->mMatrix * yc->mpParent->mMatrix;
+								//面の法線を、外積を正規化して求める
+								CVector normal = (v[1] - v[0]).Cross(v[2] - v[0]).Normalize();  //法線ベクトルは取れてるかも？
+								/*printf("%f  %f  %f\n", yc->mV[0].mX, yc->mV[0].mY, yc->mV[0].mZ);
+								printf("%f  %f  %f\n", yc->mV[1].mX, yc->mV[1].mY, yc->mV[1].mZ);
+								printf("%f  %f  %f\n", yc->mV[2].mX, yc->mV[2].mY, yc->mV[2].mZ);
+								printf("wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww\n");
+								printf("%f  %f  %f\n", normal.mX, normal.mY, normal.mZ);
+								printf("wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww\n");*/
+																
+								CVector susumu = CVector(0.0f, 0.0f, 1.0f) * mMatrixRotate;
+								printf("%f  %f  %f\n", susumu.mX, susumu.mY, susumu.mZ);
+								printf("wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww\n");
+
+								//int rotateofycmx = yc->mpParent->mRotation.mX;
+								//rotateofycmx %= 360; //-360度から360度までの数値に変換
+								////-235=125 300=-60 -180度未満か、180度以上の角度は
+								//if (rotateofycmx < -180){
+								//	rotateofycmx += 360;
+								//}
+								//else if (rotateofycmx >= 180){
+								//	rotateofycmx -= 360;
+								//}
+								//mRotation.mX = rotateofycmx;
 								//if (mRotation.mX < yc->mpParent->mRotation.mX){
 								//	mRotation.mX = yc->mpParent->mRotation.mX;
 								//}

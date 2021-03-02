@@ -604,6 +604,10 @@ void CEnemy::Collision(CCollider *mc, CCollider *yc){
 							mVelocityJump = 0;
 							mCanJump = true;
 
+							/*yc->mV[0] = yc->mV[0] + CVector(0.0f, 0.5f, 0.0f);
+							yc->mV[1] = yc->mV[1] + CVector(0.0f, 0.5f, 0.0f);
+							yc->mV[2] = yc->mV[2] + CVector(0.0f, 0.5f, 0.0f);*/
+
 							/*if (mRotation.mX < yc->mpParent->mRotation.mX){
 							mRotation.mX++;
 							}
@@ -611,23 +615,23 @@ void CEnemy::Collision(CCollider *mc, CCollider *yc){
 							mRotation.mX--;
 							}*/
 
-							int rotateofycmx = yc->mpParent->mRotation.mX;
-							rotateofycmx %= 360; //-360度から360度までの数値に変換
-							//-235=125 300=-60 -180度未満か、180度以上の角度は
-							if (rotateofycmx < -180){
-								rotateofycmx += 360;
-							}
-							else if (rotateofycmx >= 180){
-								rotateofycmx -= 360;
-							}
-							mRotation.mX = rotateofycmx;
-							//if (mRotation.mX < yc->mpParent->mRotation.mX){
-							//	mRotation.mX = yc->mpParent->mRotation.mX;
+							//int rotateofycmx = yc->mpParent->mRotation.mX;
+							//rotateofycmx %= 360; //-360度から360度までの数値に変換
+							////-235=125 300=-60 -180度未満か、180度以上の角度は
+							//if (rotateofycmx < -180){
+							//	rotateofycmx += 360;
 							//}
-							//else if (mRotation.mX > yc->mpParent->mRotation.mX){
-							//	mRotation.mX = yc->mpParent->mRotation.mX;
+							//else if (rotateofycmx >= 180){
+							//	rotateofycmx -= 360;
 							//}
-							//mRotation = yc->mpParent->mRotation;
+							//mRotation.mX = rotateofycmx;
+							////if (mRotation.mX < yc->mpParent->mRotation.mX){
+							////	mRotation.mX = yc->mpParent->mRotation.mX;
+							////}
+							////else if (mRotation.mX > yc->mpParent->mRotation.mX){
+							////	mRotation.mX = yc->mpParent->mRotation.mX;
+							////}
+							////mRotation = yc->mpParent->mRotation;
 						}
 					}
 					
