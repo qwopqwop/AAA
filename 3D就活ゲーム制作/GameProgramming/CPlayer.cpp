@@ -599,21 +599,41 @@ void CPlayer::Collision(CCollider *mc, CCollider *yc){
 								v[0] = yc->mV[0] * yc->mMatrix * yc->mpParent->mMatrix;
 								v[1] = yc->mV[1] * yc->mMatrix * yc->mpParent->mMatrix;
 								v[2] = yc->mV[2] * yc->mMatrix * yc->mpParent->mMatrix;
-								//面の法線を、外積を正規化して求める
+								//面の法線を、外積を正規化して求める 1.
 								CVector normal = (v[1] - v[0]).Cross(v[2] - v[0]).Normalize();  //法線ベクトルは取れてるかも？
 								/*printf("%f  %f  %f\n", normal.mX, normal.mY, normal.mZ);
 								printf("wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww\n");*/
-																
+
+								// 2.
 								CVector susumu = CVector(0.0f, 0.0f, 1.0f) * mMatrixRotate;
 							//	printf("%f  %f  %f\n", susumu.mX, susumu.mY, susumu.mZ);
 							//	printf("wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww\n");
 
-								CVector step3 = (normal - susumu).Cross(normal - susumu).Normalize();//？？？？？？？？？？？
-								/*printf("%f  %f  %f\n", step3.mX, step3.mY, step3.mZ);
-								printf("wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww\n");*/
+								/*疑心ZONE*/
+								// 3.
+								CVector step3 = (normal - susumu).Cross(step3).Normalize();//？？？？？？？？？？？ 
+							//	printf("%f  %f  %f\n", step3.mX, step3.mY, step3.mZ); //面が傾いてない場合、その上で垂直な車が回転してもmYの値は変わらないはず…
+							//	printf("wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww\n");
+
+								// 4.
+								CVector step4 = (step3 - normal).Cross(step4).Normalize();//？？？？？？？？？？？
 
 
+								float RzRxRy[9] = { 
+									step3.mX, step3.mY, step3.mZ,
+									normal.mX, normal.mY, normal.mZ,
+									step4.mX, step4.mY, step4.mZ };
 
+
+								//回転値に変換？ 5.6.7	
+								float rad = asin(step4.mY);//5.
+								float rotX = rad * 180 * PI;
+								printf("%f\n", rotX);
+								float rotY = atan2(step4.mX, step4.mZ);//6.
+								float rotZ = atan2(step3.mY, normal.mY);//7.
+								////それらの値を代入 8.
+								//mRotation = CVector(x, y, z);//回転できなくなるのまずくない？
+							
 								//int rotateofycmx = yc->mpParent->mRotation.mX;
 								//rotateofycmx %= 360; //-360度から360度までの数値に変換
 								////-235=125 300=-60 -180度未満か、180度以上の角度は
