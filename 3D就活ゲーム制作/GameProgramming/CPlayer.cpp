@@ -12,6 +12,11 @@ extern std::shared_ptr<CTexture> TextureHit;
 extern std::shared_ptr<CTexture> TextureBoost;
 #include "CTaskManager.h"
 
+#include <stdio.h>
+#include <math.h>
+
+#define PI 3.141592
+
 extern CSound SoundJump;
 extern CSound SoundShot;
 extern CSound SoundItemGet;
@@ -582,7 +587,7 @@ void CPlayer::Collision(CCollider *mc, CCollider *yc){
 								}*/
 
 								/*１．斜面の法線ベクトルからY軸ベクトルを求めます。　済？
-									２．車体の進行方向から、Z軸ベクトルを求めます。  ???
+									２．車体の進行方向から、Z軸ベクトルを求めます。  済??
 									３．Y軸ベクトルとZ軸ベクトルの外積を計算し、X軸ベクトルを求めます。
 									４．X軸ベクトルとY軸ベクトルの外積を計算し、Z軸ベクトルを求めます。
 									５．Z軸ベクトルからX軸の回転値を求めます。
@@ -596,16 +601,18 @@ void CPlayer::Collision(CCollider *mc, CCollider *yc){
 								v[2] = yc->mV[2] * yc->mMatrix * yc->mpParent->mMatrix;
 								//面の法線を、外積を正規化して求める
 								CVector normal = (v[1] - v[0]).Cross(v[2] - v[0]).Normalize();  //法線ベクトルは取れてるかも？
-								/*printf("%f  %f  %f\n", yc->mV[0].mX, yc->mV[0].mY, yc->mV[0].mZ);
-								printf("%f  %f  %f\n", yc->mV[1].mX, yc->mV[1].mY, yc->mV[1].mZ);
-								printf("%f  %f  %f\n", yc->mV[2].mX, yc->mV[2].mY, yc->mV[2].mZ);
-								printf("wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww\n");
-								printf("%f  %f  %f\n", normal.mX, normal.mY, normal.mZ);
+								/*printf("%f  %f  %f\n", normal.mX, normal.mY, normal.mZ);
 								printf("wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww\n");*/
 																
 								CVector susumu = CVector(0.0f, 0.0f, 1.0f) * mMatrixRotate;
-								printf("%f  %f  %f\n", susumu.mX, susumu.mY, susumu.mZ);
-								printf("wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww\n");
+							//	printf("%f  %f  %f\n", susumu.mX, susumu.mY, susumu.mZ);
+							//	printf("wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww\n");
+
+								CVector step3 = (normal - susumu).Cross(normal - susumu).Normalize();//？？？？？？？？？？？
+								/*printf("%f  %f  %f\n", step3.mX, step3.mY, step3.mZ);
+								printf("wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww\n");*/
+
+
 
 								//int rotateofycmx = yc->mpParent->mRotation.mX;
 								//rotateofycmx %= 360; //-360度から360度までの数値に変換
