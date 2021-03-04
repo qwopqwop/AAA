@@ -586,54 +586,48 @@ void CPlayer::Collision(CCollider *mc, CCollider *yc){
 								mRotation.mX--;
 								}*/
 
-								/*１．斜面の法線ベクトルからY軸ベクトルを求めます。　済？
+								/*１．斜面の法線ベクトルからY軸ベクトルを求めます。　済
 									２．車体の進行方向から、Z軸ベクトルを求めます。  済??
 									３．Y軸ベクトルとZ軸ベクトルの外積を計算し、X軸ベクトルを求めます。
 									４．X軸ベクトルとY軸ベクトルの外積を計算し、Z軸ベクトルを求めます。
-									５．Z軸ベクトルからX軸の回転値を求めます。
-									６．Z軸ベクトルからY軸の回転値を求めます。
-									７．X軸ベクトルとY軸ベクトルからZ軸の回転値を求めます。
-									８．求めた回転値を車体に適用します。*/
+									５．Z軸ベクトルからX軸の回転値を求めます。              okか…？
+									６．Z軸ベクトルからY軸の回転値を求めます。              okか…？
+									７．X軸ベクトルとY軸ベクトルからZ軸の回転値を求めます。 okか…？
+									８．求めた回転値を車体に適用します。                    okか…？*/
 								CVector v[3], sv, ev;
 								//各コライダの頂点をワールド座標へ変換
 								v[0] = yc->mV[0] * yc->mMatrix * yc->mpParent->mMatrix;
 								v[1] = yc->mV[1] * yc->mMatrix * yc->mpParent->mMatrix;
 								v[2] = yc->mV[2] * yc->mMatrix * yc->mpParent->mMatrix;
-								//面の法線を、外積を正規化して求める 1.
+								//面の法線を、外積を正規化して求める
+								// 1.斜面の法線ベクトルからY軸ベクトルを求める
 								CVector normal = (v[1] - v[0]).Cross(v[2] - v[0]).Normalize();  //法線ベクトルは取れてるかも？
-								/*printf("%f  %f  %f\n", normal.mX, normal.mY, normal.mZ);
-								printf("wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww\n");*/
 
-								// 2.
-								CVector susumu = CVector(0.0f, 0.0f, 1.0f) * mMatrixRotate;
-							//	printf("%f  %f  %f\n", susumu.mX, susumu.mY, susumu.mZ);
-							//	printf("wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww\n");
+								// 2.車体の進行方向から、Z軸ベクトルを求める
+								CVector preZvec = CVector(0.0f, 0.0f, 1.0f) * mMatrixRotate;
 
-								/*疑心ZONE*/
-								// 3.
-								CVector step3 = (normal - susumu).Cross(step3).Normalize();//？？？？？？？？？？？ 
+								// 3.Y軸ベクトルとZ軸ベクトルの外積を計算し、X軸ベクトルを求める
+								CVector Xvec = (normal).Cross(preZvec).Normalize();//？？？？？？？？？？？ 
 							//	printf("%f  %f  %f\n", step3.mX, step3.mY, step3.mZ); //面が傾いてない場合、その上で垂直な車が回転してもmYの値は変わらないはず…
-							//	printf("wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww\n");
+							//	printf("------------------------------------------------------\n");
 
-								// 4.
-								CVector step4 = (step3 - normal).Cross(step4).Normalize();//？？？？？？？？？？？
-
-
-								float RzRxRy[9] = { 
+								// 4.X軸ベクトルとY軸ベクトルの外積を計算し、Z軸ベクトルを求める
+								CVector Zvec = (Xvec).Cross(normal).Normalize();//？？？？？？？？？？？
+								
+								/*float RzRxRy[9] = { 
 									step3.mX, step3.mY, step3.mZ,
 									normal.mX, normal.mY, normal.mZ,
-									step4.mX, step4.mY, step4.mZ };
+									step4.mX, step4.mY, step4.mZ };	*/
 
+								// 5～7.回転値を求める
+								float rad = asin(Zvec.mY);//5.
+								float rotX = rad * 180 / PI * -1;//X軸は反転
+								float rotY = atan2(Zvec.mX, Zvec.mZ) * 180 / PI;//6.
+								float rotZ = atan2(Xvec.mY, normal.mY) * 180 / PI;//7.
+								// 8.求めた回転値を車体に適用
+								mRotation = CVector(rotX, rotY, rotZ);
+								printf("%f %f %f\n", rotX, rotY, rotZ);
 
-								//回転値に変換？ 5.6.7	
-								float rad = asin(step4.mY);//5.
-								float rotX = rad * 180 * PI;
-								printf("%f\n", rotX);
-								float rotY = atan2(step4.mX, step4.mZ);//6.
-								float rotZ = atan2(step3.mY, normal.mY);//7.
-								////それらの値を代入 8.
-								//mRotation = CVector(x, y, z);//回転できなくなるのまずくない？
-							
 								//int rotateofycmx = yc->mpParent->mRotation.mX;
 								//rotateofycmx %= 360; //-360度から360度までの数値に変換
 								////-235=125 300=-60 -180度未満か、180度以上の角度は
