@@ -128,6 +128,7 @@ public:
 
 	CModel mJumper01;//ÉWÉÉÉìÉvë‰
 	
+	//ïΩÇÁ
 	CModel mTile_Curve01_Floor;
 	CModel mTile_Curve02_Floor;
 	CModel mTile_Curve03_Floor;
@@ -140,6 +141,15 @@ public:
 	CModel mTile_Curve04_Wall;
 	CModel mTile_Straight01_Wall;
 	CModel mTile_Straight02_Wall;
+	//ç‚
+	CModel mTile_Slope01_Floor;
+	CModel mTile_Slope02_Floor;
+	CModel mTile_Slope03_Floor;
+	CModel mTile_Slope04_Floor;
+	CModel mTile_Slope01_Wall;
+	CModel mTile_Slope02_Wall;
+	CModel mTile_Slope03_Wall;
+	CModel mTile_Slope04_Wall;
 
 	CModel mSumpluuu;
 };

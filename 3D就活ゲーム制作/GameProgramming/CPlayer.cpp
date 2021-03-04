@@ -602,23 +602,12 @@ void CPlayer::Collision(CCollider *mc, CCollider *yc){
 								//面の法線を、外積を正規化して求める
 								// 1.斜面の法線ベクトルからY軸ベクトルを求める
 								CVector normal = (v[1] - v[0]).Cross(v[2] - v[0]).Normalize();  //法線ベクトルは取れてるかも？
-
 								// 2.車体の進行方向から、Z軸ベクトルを求める
 								CVector preZvec = CVector(0.0f, 0.0f, 1.0f) * mMatrixRotate;
-
 								// 3.Y軸ベクトルとZ軸ベクトルの外積を計算し、X軸ベクトルを求める
-								CVector Xvec = (normal).Cross(preZvec).Normalize();//？？？？？？？？？？？ 
-							//	printf("%f  %f  %f\n", step3.mX, step3.mY, step3.mZ); //面が傾いてない場合、その上で垂直な車が回転してもmYの値は変わらないはず…
-							//	printf("------------------------------------------------------\n");
-
+								CVector Xvec = (normal).Cross(preZvec).Normalize();
 								// 4.X軸ベクトルとY軸ベクトルの外積を計算し、Z軸ベクトルを求める
-								CVector Zvec = (Xvec).Cross(normal).Normalize();//？？？？？？？？？？？
-								
-								/*float RzRxRy[9] = { 
-									step3.mX, step3.mY, step3.mZ,
-									normal.mX, normal.mY, normal.mZ,
-									step4.mX, step4.mY, step4.mZ };	*/
-
+								CVector Zvec = (Xvec).Cross(normal).Normalize();//？？？？？？？？？？？								
 								// 5～7.回転値を求める
 								float rad = asin(Zvec.mY);//5.
 								float rotX = rad * 180 / PI * -1;//X軸は反転

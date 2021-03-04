@@ -110,94 +110,69 @@ void CRaceCourceD::Init(){
 	new CObj(&mCource04A, CVector(0.0f, -60.0f - 33.0f, 0.0f), CVector(), CVector(40.0f, 40.0f, 40.0f), 1);*/
 	//new CObj(&mCource04Water, CVector(0.0f, -260.0f - 33.0f, 0.0f), CVector(), CVector(100.0f, 100.0f, 100.0f), 99);
 
-	int ess[2][3][4] = {
+	int ess[2][4][4] = {
 		{
-			{ 24, 11, 11, 21 },
+			{ 24, 12, 12, 21 },
+			{ 11, 24, 21, 11 },
+			{ 00, 23, 22, 00 },
 			{ 12, 12, 12, 12 },
-			{ 23, 11, 11, 22 },
 		}, 
 		{
-			{ 24, 21, 11, 11 },
-			{ 23, 22, 11, 11 },
-			{ 11, 11, 11, 11 },
+			{ 24, 12, 12, 21 },
+			{ 23, 21, 24, 22 },
+			{ 33, 11, 11, 33 },
+			{ 23, 22, 23, 22 },
 		}
-
-		/*{ 24, 12, 12, 24, 12, 12, 21, 24, 12, 12, 21, 12 },
-		{ 24, 12, 12, 24, 12, 12, 21, 24, 12, 12, 21, 12 }*/
 	};
-	int size = 6;//コースの縮尺
+	int size = 10;//コースの縮尺
 	for (int i = 0; i < 2; i++){
-		for (int j = 0; j < 3; j++){
+		for (int j = 0; j < 4; j++){
 			for (int k = 0; k < 4; k++){
-				if (ess[i][j][k] == 11){//直線:一字
-					new CObjFloor(&mTile_Straight01_Floor, CVector(-100.0f * size * k, -50.0f * size * i, -100.0f * size * j), CVector(), CVector(1.0f * size, 1.0f* size, 1.0f* size));
-					new CObjWall(&mTile_Straight01_Wall, CVector(-100.0f * size * k, -50.0f * size * i, -100.0f * size * j), CVector(), CVector(1.0f * size, 1.0f* size, 1.0f* size));
+				if (ess[i][j][k] == 11){//直線:I字
+					new CObjFloor(&mTile_Straight01_Floor, CVector(-100.0f * size * k, -45.0f * size * i, -100.0f * size * j), CVector(), CVector(1.0f * size, 1.0f* size, 1.0f* size));
+					new CObjWall(&mTile_Straight01_Wall, CVector(-100.0f * size * k, -45.0f * size * i, -100.0f * size * j), CVector(), CVector(1.0f * size, 1.0f* size, 1.0f* size));
 				}
-				else if (ess[i][j][k] == 12){//直線:I字
-					new CObjFloor(&mTile_Straight02_Floor, CVector(-100.0f * size * k, -50.0f * size * i, -100.0f * size * j), CVector(), CVector(1.0f * size, 1.0f* size, 1.0f* size));
-					new CObjWall(&mTile_Straight02_Wall, CVector(-100.0f * size * k, -50.0f * size * i, -100.0f * size * j), CVector(), CVector(1.0f * size, 1.0f* size, 1.0f* size));
+				else if (ess[i][j][k] == 12){//直線:一字
+					new CObjFloor(&mTile_Straight02_Floor, CVector(-100.0f * size * k, -45.0f * size * i, -100.0f * size * j), CVector(), CVector(1.0f * size, 1.0f* size, 1.0f* size));
+					new CObjWall(&mTile_Straight02_Wall, CVector(-100.0f * size * k, -45.0f * size * i, -100.0f * size * j), CVector(), CVector(1.0f * size, 1.0f* size, 1.0f* size));
 				}
 				else if (ess[i][j][k] == 21){//カーブ:0時～3時
-					new CObjFloor(&mTile_Curve03_Floor, CVector(-100.0f * size * k, -50.0f * size * i, -100.0f * size * j), CVector(), CVector(1.0f * size, 1.0f* size, 1.0f* size));
-					new CObjWall(&mTile_Curve03_Wall, CVector(-100.0f * size * k, -50.0f * size * i, -100.0f * size * j), CVector(), CVector(1.0f * size, 1.0f* size, 1.0f* size));
+					new CObjFloor(&mTile_Curve03_Floor, CVector(-100.0f * size * k, -45.0f * size * i, -100.0f * size * j), CVector(), CVector(1.0f * size, 1.0f* size, 1.0f* size));
+					new CObjWall(&mTile_Curve03_Wall, CVector(-100.0f * size * k, -45.0f * size * i, -100.0f * size * j), CVector(), CVector(1.0f * size, 1.0f* size, 1.0f* size));
 				}
 				else if (ess[i][j][k] == 22){//カーブ:3時～6時
-					new CObjFloor(&mTile_Curve04_Floor, CVector(-100.0f * size * k, -50.0f * size * i, -100.0f * size * j), CVector(), CVector(1.0f * size, 1.0f* size, 1.0f* size));
-					new CObjWall(&mTile_Curve04_Wall, CVector(-100.0f * size * k, -50.0f * size * i, -100.0f * size * j), CVector(), CVector(1.0f * size, 1.0f* size, 1.0f* size));
+					new CObjFloor(&mTile_Curve04_Floor, CVector(-100.0f * size * k, -45.0f * size * i, -100.0f * size * j), CVector(), CVector(1.0f * size, 1.0f* size, 1.0f* size));
+					new CObjWall(&mTile_Curve04_Wall, CVector(-100.0f * size * k, -45.0f * size * i, -100.0f * size * j), CVector(), CVector(1.0f * size, 1.0f* size, 1.0f* size));
 				}
 				else if (ess[i][j][k] == 23){//カーブ:6時～9時
-					new CObjFloor(&mTile_Curve01_Floor, CVector(-100.0f * size * k, -50.0f * size * i, -100.0f * size * j), CVector(), CVector(1.0f * size, 1.0f* size, 1.0f* size));
-					new CObjWall(&mTile_Curve01_Wall, CVector(-100.0f * size * k, -50.0f * size * i, -100.0f * size * j), CVector(), CVector(1.0f * size, 1.0f* size, 1.0f* size));
+					new CObjFloor(&mTile_Curve01_Floor, CVector(-100.0f * size * k, -45.0f * size * i, -100.0f * size * j), CVector(), CVector(1.0f * size, 1.0f* size, 1.0f* size));
+					new CObjWall(&mTile_Curve01_Wall, CVector(-100.0f * size * k, -45.0f * size * i, -100.0f * size * j), CVector(), CVector(1.0f * size, 1.0f* size, 1.0f* size));
 				}
 				else if (ess[i][j][k] == 24){//カーブ:9時～12時
-					new CObjFloor(&mTile_Curve02_Floor, CVector(-100.0f * size * k, -50.0f * size * i, -100.0f * size * j), CVector(), CVector(1.0f * size, 1.0f* size, 1.0f* size));
-					new CObjWall(&mTile_Curve02_Wall, CVector(-100.0f * size * k, -50.0f * size * i, -100.0f * size * j), CVector(), CVector(1.0f * size, 1.0f* size, 1.0f* size));
+					new CObjFloor(&mTile_Curve02_Floor, CVector(-100.0f * size * k, -45.0f * size * i, -100.0f * size * j), CVector(), CVector(1.0f * size, 1.0f* size, 1.0f* size));
+					new CObjWall(&mTile_Curve02_Wall, CVector(-100.0f * size * k, -45.0f * size * i, -100.0f * size * j), CVector(), CVector(1.0f * size, 1.0f* size, 1.0f* size));
+				}
+				else if (ess[i][j][k] == 31){//坂:
+					new CObjFloor(&mTile_Slope01_Floor, CVector(-100.0f * size * k, -45.0f * size * i, -100.0f * size * j), CVector(), CVector(1.0f * size, 1.0f* size, 1.0f* size));
+					new CObjWall(&mTile_Slope01_Wall, CVector(-100.0f * size * k, -45.0f * size * i, -100.0f * size * j), CVector(), CVector(1.0f * size, 1.0f* size, 1.0f* size));
+				}
+				else if (ess[i][j][k] == 32){//坂:
+					new CObjFloor(&mTile_Slope02_Floor, CVector(-100.0f * size * k, -45.0f * size * i, -100.0f * size * j), CVector(), CVector(1.0f * size, 1.0f* size, 1.0f* size));
+					new CObjWall(&mTile_Slope02_Wall, CVector(-100.0f * size * k, -45.0f * size * i, -100.0f * size * j), CVector(), CVector(1.0f * size, 1.0f* size, 1.0f* size));
+				}
+				else if (ess[i][j][k] == 33){//坂:
+					new CObjFloor(&mTile_Slope03_Floor, CVector(-100.0f * size * k, -45.0f * size * i, -100.0f * size * j), CVector(), CVector(1.0f * size, 1.0f* size, 1.0f* size));
+					new CObjWall(&mTile_Slope03_Wall, CVector(-100.0f * size * k, -45.0f * size * i, -100.0f * size * j), CVector(), CVector(1.0f * size, 1.0f* size, 1.0f* size));
+				}
+				else if (ess[i][j][k] == 34){//坂:
+					new CObjFloor(&mTile_Slope04_Floor, CVector(-100.0f * size * k, -45.0f * size * i, -100.0f * size * j), CVector(), CVector(1.0f * size, 1.0f* size, 1.0f* size));
+					new CObjWall(&mTile_Slope04_Wall, CVector(-100.0f * size * k, -45.0f * size * i, -100.0f * size * j), CVector(), CVector(1.0f * size, 1.0f* size, 1.0f* size));
 				}
 			}
 		}
 	}
-
-	////配列に変換してコースを生成
-	//int edit[5][4] = {
-	//	{ 24, 12, 12, 21 },
-	//	{ 23, 12, 21, 11 },
-	//	{ 24, 21, 11, 11 },
-	//	{ 11, 23, 22, 11 },
-	//	{ 23, 12, 12, 22 }
-	//};
-	//int size = 6;//コースの縮尺
-	//for (int i = 0; i < 5; i++){
-	//	for (int j = 0; j < 4; j++){
-	//		if (edit[i][j] == 11){//直線:一字
-	//			new CObjFloor(&mTile_Straight01_Floor, CVector(-100.0f * size * j, 0.0f, -100.0f * size * i), CVector(), CVector(1.0f * size, 1.0f* size, 1.0f* size));
-	//			new CObjWall(&mTile_Straight01_Wall, CVector(-100.0f * size * j, 0.0f, -100.0f * size * i), CVector(), CVector(1.0f * size, 1.0f* size, 1.0f* size));
-	//		}
-	//		else if(edit[i][j] == 12){//直線:I字
-	//			new CObjFloor(&mTile_Straight02_Floor, CVector(-100.0f * size * j, 0.0f, -100.0f * size * i), CVector(), CVector(1.0f * size, 1.0f* size, 1.0f* size));
-	//			new CObjWall(&mTile_Straight02_Wall, CVector(-100.0f * size * j, 0.0f, -100.0f * size * i), CVector(), CVector(1.0f * size, 1.0f* size, 1.0f* size));
-	//		}
-	//		else if (edit[i][j] == 21){//カーブ:0時～3時
-	//			new CObjFloor(&mTile_Curve03_Floor, CVector(-100.0f * size * j, 0.0f, -100.0f * size * i), CVector(), CVector(1.0f * size, 1.0f* size, 1.0f* size));
-	//			new CObjWall(&mTile_Curve03_Wall, CVector(-100.0f * size * j, 0.0f, -100.0f * size * i), CVector(), CVector(1.0f * size, 1.0f* size, 1.0f* size));
-	//		}
-	//		else if (edit[i][j] == 22){//カーブ:3時～6時
-	//			new CObjFloor(&mTile_Curve04_Floor, CVector(-100.0f * size * j, 0.0f, -100.0f * size * i), CVector(), CVector(1.0f * size, 1.0f* size, 1.0f* size));
-	//			new CObjWall(&mTile_Curve04_Wall, CVector(-100.0f * size * j, 0.0f, -100.0f * size * i), CVector(), CVector(1.0f * size, 1.0f* size, 1.0f* size));
-	//		}
-	//		else if (edit[i][j] == 23){//カーブ:6時～9時
-	//			new CObjFloor(&mTile_Curve01_Floor, CVector(-100.0f * size * j, 0.0f, -100.0f * size * i), CVector(), CVector(1.0f * size, 1.0f* size, 1.0f* size));
-	//			new CObjWall(&mTile_Curve01_Wall, CVector(-100.0f * size * j, 0.0f, -100.0f * size * i), CVector(), CVector(1.0f * size, 1.0f* size, 1.0f* size));
-	//		}
-	//		else if (edit[i][j] == 24){//カーブ:9時～12時
-	//			new CObjFloor(&mTile_Curve02_Floor, CVector(-100.0f * size * j, 0.0f, -100.0f * size * i), CVector(), CVector(1.0f * size, 1.0f* size, 1.0f* size));
-	//			new CObjWall(&mTile_Curve02_Wall, CVector(-100.0f * size * j, 0.0f, -100.0f * size * i), CVector(), CVector(1.0f * size, 1.0f* size, 1.0f* size));
-	//		}
-	//	}
-	//}
-	
-	new CObjFloor(&mSumpluuu, CVector(0.0f, -650.0f, 0.0f), CVector(), CVector(7.0f * size, 7.0f* size, 7.0f* size));
-	
-	new CObjBoost(&mDashBoard, CVector(-200.0f, 40.0f, -200.0f), CVector(), CVector(1.0f * size, 1.0f* size, 1.0f* size));
+	//new CObjFloor(&mSumpluuu, CVector(0.0f, -650.0f, 0.0f), CVector(), CVector(7.0f * size, 7.0f* size, 7.0f* size));
+	//new CObjBoost(&mDashBoard, CVector(-200.0f, 40.0f, -200.0f), CVector(), CVector(1.0f * size, 1.0f* size, 1.0f* size));
 
 	//優先度変更
 	CTaskManager::Get()->ChangePriority(mPlayer, 15);
