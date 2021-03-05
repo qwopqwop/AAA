@@ -21,6 +21,8 @@ extern CSound SoundBoost;
 extern CSound SoundEngine;
 extern CSound SoundCollision;
 extern CSound SoundCollisionSmall;
+extern CSound SoundRespawn;
+extern CSound SoundRespawn2;
 
 int CEnemy::RenderType;
 
@@ -106,6 +108,8 @@ CEnemy::CEnemy()
 	SoundEngine.Load("SE\\SNES-Racing01-02.wav");
 	SoundCollision.Load("SE\\bomb1.wav");
 	SoundCollisionSmall.Load("SE\\SNES-Racing01-10(Collision).wav");
+	SoundRespawn.Load("SE\\nc31154.wav");
+	SoundRespawn2.Load("SE\\nc55733.wav");
 
 	isSoundEngine = false;
 	
@@ -123,6 +127,7 @@ CEnemy::CEnemy()
 	}
 	mMaxSpeed_PtoP = 20.0f;
 
+	mRespawnCount = 0;
 	mEnemyLap = 1;//敵のラップ数を１周目に設定する
 	isEnemyGoaled = false;//まだゴールしてない状態にする
 }
@@ -380,12 +385,22 @@ void CEnemy::Update(){
 	//mMatrix = mMatrixScale * mMatrixRotate * mMatrixTranslate;
 
 	//コースアウトした時
+	/*※不具合 複数の敵が同時にリスポーン時、一体だけ正常にリスポーンし、他の敵が消える*/
 	if (mPosition.mY < -700.0f){
 		//落下の勢いを0にする
 		mVelocityJump = 0.0f;
 		//車の速度を0に
 		mCarSpeed = 0.0f;
-
+		////リスタート時の効果音
+		//int sr = rand() % 2;
+		//if (sr == 0){
+		//	SoundRespawn.Play();
+		//}
+		//else{
+		//	SoundRespawn2.Play();
+		//}
+		//mRespawnCount++;
+		//printf("%d-%d\n",33*mRespawnCount,4*mRespawnCount);
 		mRotation = CVector(0.0f, 0.0f, 0.0f);
 		if (CSceneTitle::mMode == 1){
 			if (mChecks == 0){
@@ -467,7 +482,7 @@ void CEnemy::Update(){
 		else{
 			if (mChecks == 0){
 				//スタートした時の位置、方向に戻される
-				mPosition = CVector(mStartPoint[0], mStartPoint[1], mStartPoint[2]);
+				mPosition = CVector(mStartPoint[0] + rand() % 100, mStartPoint[1] + rand() % 100, mStartPoint[2] + rand() % 100);
 				mRotation.mY = 0.0f;
 			}
 			else if (mChecks == 1){

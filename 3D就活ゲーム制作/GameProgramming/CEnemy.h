@@ -46,6 +46,9 @@ public:
 	bool isSoundEngine;
 	CSound SoundCollision;
 	CSound SoundCollisionSmall;
+	CSound SoundRespawn;
+	CSound SoundRespawn2;
+	int mRespawnCount;
 
 	float mStartPoint[3];//{ X,Y,Z }
 

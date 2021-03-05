@@ -25,6 +25,8 @@ extern CSound SoundEngine;
 extern CSound SoundHorn;
 extern CSound SoundCollision;
 extern CSound SoundCollisionSmall;
+extern CSound SoundRespawn;
+extern CSound SoundRespawn2;
 
 int CPlayer::RenderType;
 
@@ -69,6 +71,7 @@ CPlayer::CPlayer()
 	mCarSpeed = 0.0f;//車の速度の初期化
 	mTurnSpeed = 0.0f;
 	mBuzzerCount = 0;//ブザーを鳴らした回数
+	mRespawnCount = 0;//リスポーンした回数
 
 	mCanJump = false;
 	mCanSwim = false;
@@ -102,6 +105,7 @@ CPlayer::CPlayer()
 	else if (CSceneTitle::mMode == 4){
 		//スタート地点の座標を設定;
 		mStartPoint[0] = 0.0f;  mStartPoint[1] = 0.0f;  mStartPoint[2] = 0.0f;
+		//mStartPoint[0] = 450.0f;  mStartPoint[1] = -13.538f;  mStartPoint[2] = -50.0f;
 		mStartRotation = 180.0f;
 		mRotation.mY = mStartRotation;
 	}
@@ -129,6 +133,9 @@ CPlayer::CPlayer()
 	ShutUp.Load("SE\\Hanzawa's_SHOUT_UP!.wav");	
 	SoundCollision.Load("SE\\bomb1.wav");
 	SoundCollisionSmall.Load("SE\\SNES-Racing01-10(Collision).wav");
+	SoundRespawn.Load("SE\\nc31154.wav");
+	SoundRespawn2.Load("SE\\nc55733.wav");
+	
 	
 	isSoundEngine = false;
 	//SoundEngine.Repeat();
@@ -378,6 +385,47 @@ void CPlayer::Update(){
 		mVelocityJump = 0.0f;
 		//車の速度を0に
 		mCarSpeed = 0.0f;
+		//リスタート時の効果音
+		int sr = rand()%2;
+		if (sr == 0){
+			SoundRespawn.Play();
+		}
+		else{
+			SoundRespawn2.Play();
+		}
+		mRespawnCount++;
+		int respawntext = 0;
+		//5回目までは煽られない
+		if (mRespawnCount <= 5){
+			respawntext = 0;
+		}
+		else if (mRespawnCount <= 10){
+			respawntext = rand() % 2;
+		}
+		else{
+			respawntext = rand() % 3;
+		}
+		//リスポーンしすぎると煽られます
+		if (respawntext == 0){
+			printf("%d-%d\n", 33 * mRespawnCount, 4 * mRespawnCount);
+		}
+		else if (respawntext == 1){
+			printf("(笑)\n");
+		}
+		else if (respawntext == 2){
+			if (mRespawnCount < 20){
+				printf("^^;\n");
+			}
+			else if (mRespawnCount < 30){
+				printf("^^;;;;;\n");
+			}
+			else if (mRespawnCount < 50){
+				printf("^^;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;\n");
+			}
+			else{
+				printf("^^;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;\n");
+			}
+		}		
 
 		if (CSceneTitle::mMode == 2){
 			if (mChecks == 0){
@@ -615,7 +663,6 @@ void CPlayer::Collision(CCollider *mc, CCollider *yc){
 								float rotZ = atan2(Xvec.mY, normal.mY) * 180 / PI;//7.
 								// 8.求めた回転値を車体に適用
 								mRotation = CVector(rotX, rotY, rotZ);
-								printf("%f %f %f\n", rotX, rotY, rotZ);
 
 								//int rotateofycmx = yc->mpParent->mRotation.mX;
 								//rotateofycmx %= 360; //-360度から360度までの数値に変換

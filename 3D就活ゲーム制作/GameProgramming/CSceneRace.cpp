@@ -303,7 +303,10 @@ void CSceneRace::Update() {
 		printf("X:%f Y:%f Z:%f\n", CPlayer::mpPlayer->mPosition.mX, CPlayer::mpPlayer->mPosition.mY, CPlayer::mpPlayer->mPosition.mZ);
 	}
 	if (CKey::Once('3')){//強制的に的の残数を0にする(本来の的は消えない)
-		CItem::mTargetAmount = 0;
+		for (int i = 0; i < ENEMYS_AMOUNT; i++){
+			printf("X:%f Y:%f Z:%f\n", mEnemys[i]->mPosition.mX, mEnemys[i]->mPosition.mY, mEnemys[i]->mPosition.mZ);
+		}
+		//CItem::mTargetAmount = 0;
 	}
 	if (CKey::Once('4')){//バックミラーのON・OFF切り替え
 		isRender_BackMirror = !isRender_BackMirror;

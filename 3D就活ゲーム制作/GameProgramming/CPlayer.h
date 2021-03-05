@@ -54,6 +54,9 @@ public:
 	int mBuzzerCount;//ƒNƒ‰ƒNƒVƒ‡ƒ“‚ğ–Â‚ç‚µ‚½‰ñ”
 	CSound SoundCollision;
 	CSound SoundCollisionSmall;
+	CSound SoundRespawn;
+	CSound SoundRespawn2;
+	int mRespawnCount;
 
 	float mStartPoint[3];//{ X,Y,Z }
 	float mStartRotation;//Y²‚Ì‚İ
