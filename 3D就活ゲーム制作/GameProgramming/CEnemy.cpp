@@ -482,7 +482,7 @@ void CEnemy::Update(){
 		else{
 			if (mChecks == 0){
 				//スタートした時の位置、方向に戻される
-				mPosition = CVector(mStartPoint[0] + rand() % 100, mStartPoint[1] + rand() % 100, mStartPoint[2] + rand() % 100);
+				mPosition = CVector(mStartPoint[0]-300.0f, mStartPoint[1]+400.0f, mStartPoint[2]-0.0f);
 				mRotation.mY = 0.0f;
 			}
 			else if (mChecks == 1){
