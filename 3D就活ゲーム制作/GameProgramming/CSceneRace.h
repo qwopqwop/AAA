@@ -150,6 +150,11 @@ public:
 	CModel mTile_Slope02_Wall;
 	CModel mTile_Slope03_Wall;
 	CModel mTile_Slope04_Wall;
+	//‚Å‚©‚¢
+	CModel mTile_Wide_Floor;
+	CModel mTile_Wide_Wall;
+	CModel mBlock_Floor;
+	CModel mBlock_Wall;
 
 	CModel mSumpluuu;
 };

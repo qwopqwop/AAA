@@ -354,8 +354,8 @@ bool CCollider::Collision(CCollider *m, CCollider *y ,CVector *a) {
 	//中心の距離が半径の合計より小さいと衝突
 	if (m->mRadius + y->mRadius > mpos.Length()) {
 		if (mpos.Length() == 0){
-			//完全に同じ座標の時は少し上に移動させる
-			*a = CVector(0.0f, 0.1f, 0.0f);
+			//完全に同じ座標の時は半径の和の分、上に移動させる
+			*a = CVector(0.0f, 1.0f, 0.0f) * (m->mRadius + y->mRadius);//CVector(0.0f, 0.1f, 0.0f);
 		}
 		else{
 			*a = mpos.Normalize() * (m->mRadius + y->mRadius - mpos.Length());

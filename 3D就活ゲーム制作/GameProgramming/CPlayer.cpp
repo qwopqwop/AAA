@@ -385,47 +385,47 @@ void CPlayer::Update(){
 		mVelocityJump = 0.0f;
 		//車の速度を0に
 		mCarSpeed = 0.0f;
-		//リスタート時の効果音
-		int sr = rand()%2;
-		if (sr == 0){
-			SoundRespawn.Play();
-		}
-		else{
-			SoundRespawn2.Play();
-		}
-		mRespawnCount++;
-		int respawntext = 0;
-		//5回目までは煽られない
-		if (mRespawnCount <= 5){
-			respawntext = 0;
-		}
-		else if (mRespawnCount <= 10){
-			respawntext = rand() % 2;
-		}
-		else{
-			respawntext = rand() % 3;
-		}
-		//リスポーンしすぎると煽られます
-		if (respawntext == 0){
-			printf("%d-%d\n", 33 * mRespawnCount, 4 * mRespawnCount);
-		}
-		else if (respawntext == 1){
-			printf("(笑)\n");
-		}
-		else if (respawntext == 2){
-			if (mRespawnCount < 20){
-				printf("^^;\n");
-			}
-			else if (mRespawnCount < 30){
-				printf("^^;;;;;\n");
-			}
-			else if (mRespawnCount < 50){
-				printf("^^;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;\n");
-			}
-			else{
-				printf("^^;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;\n");
-			}
-		}		
+		////リスタート時の効果音
+		//int sr = rand()%2;
+		//if (sr == 0){
+		//	SoundRespawn.Play();
+		//}
+		//else{
+		//	SoundRespawn2.Play();
+		//}
+		//mRespawnCount++;
+		//int respawntext = 0;
+		////5回目までは煽られない
+		//if (mRespawnCount <= 5){
+		//	respawntext = 0;
+		//}
+		//else if (mRespawnCount <= 10){
+		//	respawntext = rand() % 2;
+		//}
+		//else{
+		//	respawntext = rand() % 3;
+		//}
+		////リスポーンしすぎると煽られます
+		//if (respawntext == 0){
+		//	printf("%d-%d\n", 33 * mRespawnCount, 4 * mRespawnCount);
+		//}
+		//else if (respawntext == 1){
+		//	printf("(笑)\n");
+		//}
+		//else if (respawntext == 2){
+		//	if (mRespawnCount < 20){
+		//		printf("^^;\n");
+		//	}
+		//	else if (mRespawnCount < 30){
+		//		printf("^^;;;;;\n");
+		//	}
+		//	else if (mRespawnCount < 50){
+		//		printf("^^;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;\n");
+		//	}
+		//	else{
+		//		printf("^^;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;\n");
+		//	}
+		//}
 
 		if (CSceneTitle::mMode == 2){
 			if (mChecks == 0){
