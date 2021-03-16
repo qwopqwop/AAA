@@ -96,7 +96,7 @@ public:
 	static int mBestTime;
 	int mLap, mMaxLap;
 	bool isNewRecord;
-	static int mRecord_A, mRecord_B, mRecord_C, mRecord_D;
+	static int mRecord_A, mRecord_B, mRecord_C, mRecord_D, mRecord_E, mRecord_F;
 
 	int mCamPoV;
 
@@ -155,6 +155,12 @@ public:
 	CModel mTile_Wide_Wall;
 	CModel mBlock_Floor;
 	CModel mBlock_Wall;
+	
+	CModel mCource05Grass;
+	CModel mCource05Wall;
+	CModel mCource05Mountain;
+	CModel mCource05Road;
+	CModel mCource05Lake;
 
 	CModel mSumpluuu;
 };

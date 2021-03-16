@@ -20,6 +20,8 @@ public:
 		ERACE2, //コース2
 		ERACE3, //コース3
 		ERACE4, //コース4
+		ERACE5, //コース5
+		ERACE6, //コース4
 		ETITLE, //タイトル画面
 	};
 	//次のシーンの取得

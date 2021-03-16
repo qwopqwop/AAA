@@ -38,6 +38,8 @@ int CSceneRace::mRecord_A = 10000;
 int CSceneRace::mRecord_B = 13000;
 int CSceneRace::mRecord_C = 22000;
 int CSceneRace::mRecord_D = 30000;
+int CSceneRace::mRecord_E = 32000;
+int CSceneRace::mRecord_F = 40000;
 
 CSceneRace::~CSceneRace() {
 	CTaskManager::Get()->Disabled();
@@ -146,6 +148,12 @@ void CSceneRace::Init() {
 	mBlock_Floor.Load("material\\racing_mat\\stage_edit\\BlockF.obj", "material\\racing_mat\\stage_edit\\BlockF.mtl");
 	mBlock_Wall.Load("material\\racing_mat\\stage_edit\\BlockW.obj", "material\\racing_mat\\stage_edit\\BlockW.mtl");
 
+	mCource05Grass.Load("material\\racing_mat\\stage5\\cource05grass.obj","material\\racing_mat\\stage5\\cource05grass.mtl");
+	mCource05Wall.Load("material\\racing_mat\\stage5\\cource05wall.obj", "material\\racing_mat\\stage5\\cource05wall.mtl");
+	mCource05Mountain.Load("material\\racing_mat\\stage5\\cource05mountain.obj", "material\\racing_mat\\stage5\\cource05mountain.mtl");//全ての山共通
+	mCource05Road.Load("material\\racing_mat\\stage5\\cource05road.obj", "material\\racing_mat\\stage5\\cource05road.mtl");
+	mCource05Lake.Load("material\\racing_mat\\stage5\\cource05_lake.obj", "material\\racing_mat\\stage5\\cource05_lake.mtl");
+
 	mSumpluuu.Load("material\\sunsunsumple.obj", "material\\racing_mat\\single_color\\white.mtl");
 	
 	//芝生の読み込み
@@ -188,6 +196,16 @@ void CSceneRace::Init() {
 		BGM.Load("BGM\\revolumed_Spring_Breeze.wav");		
 		//mMaxLap = 5;
 		mBestTime = mRecord_D;
+	}
+	else if (CSceneTitle::mMode == 5){
+		BGM.Load("BGM\\Go_on_the_mountain_road.wav");
+		//mMaxLap = 3;
+		mBestTime = mRecord_E;
+	}
+	else if (CSceneTitle::mMode == 6){
+		BGM.Load("BGM\\game_maoudamashii_7_event46.wav");
+		//mMaxLap = 3;
+		mBestTime = mRecord_F;
 	}
 
 	//効果音の読み込み
@@ -564,6 +582,12 @@ void CSceneRace::Update() {
 					else if (CSceneTitle::mMode == 4){
 						mRecord_D = mBestTime;
 					}
+					else if (CSceneTitle::mMode == 5){
+						mRecord_E = mBestTime;
+					}
+					else if (CSceneTitle::mMode == 6){
+						mRecord_F = mBestTime;
+					}
 				}
 				isStartRace = false;
 				isGoal = true;
@@ -626,6 +650,12 @@ void CSceneRace::Update() {
 					else if (CSceneTitle::mMode == 4){
 						mRecord_D = mBestTime;
 					}
+					else if (CSceneTitle::mMode == 5){
+						mRecord_E = mBestTime;
+					}
+					else if (CSceneTitle::mMode == 6){
+						mRecord_F = mBestTime;
+					}
 				}
 				isStartRace = false;
 				isGoal = true;
@@ -684,6 +714,12 @@ void CSceneRace::Update() {
 					}
 					else if (CSceneTitle::mMode == 4){
 						mRecord_D = mBestTime;
+					}
+					else if (CSceneTitle::mMode == 5){
+						mRecord_E = mBestTime;
+					}
+					else if (CSceneTitle::mMode == 6){
+						mRecord_F = mBestTime;
 					}
 				}
 				isStartRace = false;
@@ -802,6 +838,9 @@ void CSceneRace::RenderMiniMap() {
 	}
 	else if (CSceneTitle::mMode == 2){
 		gluLookAt(0, 7000, 0, 0, 0, 0, 0, 0, 1);
+	}
+	else if (CSceneTitle::mMode == 5){
+		gluLookAt(0, 10000, 0, 0, 0, 0, 0, 0, 1);
 	}
 	else if (CSceneTitle::mMode == 4){
 		//2D描画開始

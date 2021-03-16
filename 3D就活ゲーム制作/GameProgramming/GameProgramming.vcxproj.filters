@@ -159,6 +159,12 @@
     <ClCompile Include="CObjJumper.cpp">
       <Filter>ソース ファイル\RaceGame\WallFloor</Filter>
     </ClCompile>
+    <ClCompile Include="CRaceCourceE.cpp">
+      <Filter>ソース ファイル\RaceGame\CourceFolder</Filter>
+    </ClCompile>
+    <ClCompile Include="CRaceCourceF.cpp">
+      <Filter>ソース ファイル\RaceGame\CourceFolder</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CSceneGame.h">
@@ -292,6 +298,12 @@
     </ClInclude>
     <ClInclude Include="CObjJumper.h">
       <Filter>ソース ファイル\RaceGame\WallFloor</Filter>
+    </ClInclude>
+    <ClInclude Include="CRaceCourceE.h">
+      <Filter>ソース ファイル\RaceGame\CourceFolder</Filter>
+    </ClInclude>
+    <ClInclude Include="CRaceCourceF.h">
+      <Filter>ソース ファイル\RaceGame\CourceFolder</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

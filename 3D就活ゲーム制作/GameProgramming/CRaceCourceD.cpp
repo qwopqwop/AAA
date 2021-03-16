@@ -3,6 +3,7 @@
 #include "CObjWall.h"
 #include "CObjFloor.h"
 //
+#include "CObjGrass.h"
 #include "CObjBoost.h"
 #include "CObjNonCol.h"
 #include "CSceneTitle.h"
@@ -109,7 +110,7 @@ void CRaceCourceD::Init(){
 	//Ç±Ç¡ÇøÇÕé©çÏ
 	/*new CObj(&mCource04Water, CVector(0.0f, -60.0f - 33.0f, 0.0f), CVector(), CVector(100.0f, 100.0f, 100.0f), 99);
 	new CObj(&mCource04A, CVector(0.0f, -60.0f - 33.0f, 0.0f), CVector(), CVector(40.0f, 40.0f, 40.0f), 1);*/
-	new CObjNonCol(&mCource04Water, CVector(0.0f, 0.0f, 0.0f), CVector(), CVector(100.0f, 100.0f, 100.0f));
+//	new CObjNonCol(&mCource04Water, CVector(0.0f, 0.0f, 0.0f), CVector(), CVector(100.0f, 100.0f, 100.0f));
 
 	int ess[3][4][5] = {
 		{
@@ -187,6 +188,9 @@ void CRaceCourceD::Init(){
 			}
 		}
 	}
+
+	
+
 	//new CObjFloor(&mSumpluuu, CVector(0.0f, -650.0f, 0.0f), CVector(), CVector(7.0f * size, 7.0f* size, 7.0f* size));
 	//new CObjBoost(&mDashBoard, CVector(-200.0f, 40.0f, -200.0f), CVector(), CVector(1.0f * size, 1.0f* size, 1.0f* size));
 

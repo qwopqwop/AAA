@@ -60,8 +60,8 @@ public:
 		CText::DrawString("Push Enter Key", 200, 177, 16, 16);
 		//
 		if (mSelectScene_Level == 1){
-			CText::DrawString("[", 186 + mVariable2 * 250, 300 + mVariable1 * 50, 20, 30, 2);
-			CText::DrawString("]", 370 + mVariable2 * 250-30, 300 + mVariable1 * 50, 20, 30, 2);
+			CText::DrawString("[", 66 + mVariable2 * 250, 300 + mVariable1 * 50, 20, 30, 2);
+			CText::DrawString("]", 250 + mVariable2 * 250-30, 300 + mVariable1 * 50, 20, 30, 2);
 		}
 		if (mSelectScene_Level == 2 && mStart == false){
 			if (mDifficulty == 1){
@@ -184,7 +184,7 @@ public:
 			}
 		}
 		glColor4fv(c);
-		CText::DrawString("Map-A", 200, 300, 16, 16);
+		CText::DrawString("Map-A", 80, 300, 16, 16);
 
 		if (mVariable1 == 0 && mVariable2 == 1){
 			c[0] = c[1] = c[2] = 1.0f; c[3] = 1.0f;
@@ -202,7 +202,25 @@ public:
 			}
 		}
 		glColor4fv(c);
-		CText::DrawString("Map-B", 450, 300, 16, 16);
+		CText::DrawString("Map-B", 330, 300, 16, 16);
+
+		if (mVariable1 == 0 && mVariable2 == 2){
+			c[0] = c[1] = c[2] = 1.0f; c[3] = 1.0f;
+		}
+		else{
+			c[0] = c[1] = c[2] = 0.5f; c[3] = 1.0f;
+		}
+		//選択時に点滅する
+		if (mStart && mVariable1 == 0 && mVariable2 == 2){
+			if (mStartWaitTime > 20){
+				c[0] = c[1] = c[2] = 1.0f;
+			}
+			else if (mStartWaitTime % 8 < 4){
+				c[0] = c[1] = c[2] = 0.5f;
+			}
+		}
+		glColor4fv(c);
+		CText::DrawString("Map-C", 580, 300, 16, 16);
 
 		if (mVariable1 == -1 && mVariable2 == 0){
 			c[0] = c[1] = c[2] = 1.0f; c[3] = 1.0f;
@@ -220,7 +238,7 @@ public:
 			}
 		}
 		glColor4fv(c);
-		CText::DrawString("Map-C", 200, 250, 16, 16);
+		CText::DrawString("Map-D", 80, 250, 16, 16);
 
 		if (mVariable1 == -1 && mVariable2 == 1){
 			c[0] = c[1] = c[2] = 1.0f; c[3] = 1.0f;
@@ -238,9 +256,31 @@ public:
 			}
 		}
 		glColor4fv(c);
-		CText::DrawString("Map-D", 450, 250, 16, 16);
+		CText::DrawString("Map-E", 330, 250, 16, 16);
+		
+		if (mVariable1 == -1 && mVariable2 == 2){
+			c[0] = c[1] = c[2] = 1.0f; c[3] = 1.0f;
+		}
+		else{
+			c[0] = c[1] = c[2] = 0.5f; c[3] = 1.0f;
+		}
+		//選択時に点滅する
+		if (mStart && mVariable1 == -1 && mVariable2 == 2){
+			if (mStartWaitTime > 20){
+				c[0] = c[1] = c[2] = 1.0f;
+			}
+			else if (mStartWaitTime % 8 < 4){
+				c[0] = c[1] = c[2] = 0.5f;
+			}
+		}
+		glColor4fv(c);
+		CText::DrawString("Map-F", 580, 250, 16, 16);
+
+		//最後に値を1.0fに戻す
 		c[0] = c[1] = c[2] = 1.0f; c[3] = 1.0f;
 		glColor4fv(c);	
+
+		
 		
 		char mrecord[70];// :も含めた最大文字数の設定
 		if (mMode == 1){
@@ -257,6 +297,14 @@ public:
 		}
 		else if (mMode == 4){
 			sprintf(mrecord, "BEST:%02d:%02d:%02d", CSceneRace::mRecord_D / 10000 % 100, CSceneRace::mRecord_D / 100 % 100, CSceneRace::mRecord_D % 100);
+			CText::DrawString(mrecord, 20, 580, 10, 12);
+		}
+		else if (mMode == 5){
+			sprintf(mrecord, "BEST:%02d:%02d:%02d", CSceneRace::mRecord_E / 10000 % 100, CSceneRace::mRecord_E / 100 % 100, CSceneRace::mRecord_E % 100);
+			CText::DrawString(mrecord, 20, 580, 10, 12);
+		}
+		else if (mMode == 6){
+			sprintf(mrecord, "BEST:%02d:%02d:%02d", CSceneRace::mRecord_F / 10000 % 100, CSceneRace::mRecord_F / 100 % 100, CSceneRace::mRecord_F % 100);
 			CText::DrawString(mrecord, 20, 580, 10, 12);
 		}
 		//シーンが移行する直前で表示
@@ -309,6 +357,16 @@ public:
 					mScene = ERACE4;
 					//ECource mCource = ECOURCE4;
 				}
+				else if (mMode == 5){
+					//次のシーンはコース3
+					mScene = ERACE5;
+					//ECource mCource = ECOURCE4;
+				}
+				else if (mMode == 6){
+					//次のシーンはコース3
+					mScene = ERACE6;
+					//ECource mCource = ECOURCE4;
+				}
 			}			
 		}
 
@@ -337,7 +395,7 @@ public:
 				}
 				if (CKey::Once(VK_RIGHT)){
 					//次のシーンはゲーム
-					if (mVariable2 < 1){
+					if (mVariable2 < 2){
 						mVariable2 += 1;
 					}
 				}
@@ -373,11 +431,17 @@ public:
 		else if (mVariable1 == 0 && mVariable2 == 1){
 			mMode = 2;
 		}
-		else if (mVariable1 == -1 && mVariable2 == 0){
+		else if (mVariable1 == 0 && mVariable2 == 2){
 			mMode = 3;
 		}
-		else if (mVariable1 == -1 && mVariable2 == 1){
+		else if (mVariable1 == -1 && mVariable2 == 0){
 			mMode = 4;
+		}
+		else if (mVariable1 == -1 && mVariable2 == 1){
+			mMode = 5;
+		}		
+		else if (mVariable1 == -1 && mVariable2 == 2){
+			mMode = 6;
 		}
 
 		//カーソルの場所が1f前と変わった瞬間
