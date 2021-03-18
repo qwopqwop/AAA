@@ -147,14 +147,10 @@ void CRaceCourceE::Init(){
 	new CObjFloor(&mCource05Road, CVector(0.0f, 21.0f, 0.0f), CVector(), CVector(30.0f, 30.0f, 30.0f));
 	new CObjWall(&mCource05Wall, CVector(0.0f, 21.0f, 0.0f), CVector(), CVector(30.0f, 30.0f, 30.0f));
 	new CObjGrass(&mCource05Mountain, CVector(0.0f, 21.0f, 0.0f), CVector(), CVector(30.0f, 30.0f, 30.0f));
-	new CObjNonCol(&mCource05Lake, CVector(0.0f, 21.0f, 0.0f), CVector(), CVector(30.0f, 30.0f, 30.0f));
-	//草原を複数に分けて生成する(オブジェが大きすぎると当たり判定が上手くいかないため)
-	for (int i = 0; i < 3; i++){
-		for (int j = 0; j < 3; j++){
-			new CObjGrass(&mCource05Grass, CVector(0.0f + 1500.0f*i, 21.0f - 1.1f, 0.0f + 1500.0f*j), CVector(), CVector(3.0f, 3.0f, 3.0f));
-		}
-	}
-	//new CObjNonCol(&mCube, CVector(-3743.0f, 21.0f, 9291.0f), CVector(), CVector(30.0f, 30.0f, 30.0f));
+	new CObjNonCol(&mCource05Lake, CVector(0.0f, 221.0f, 0.0f), CVector(), CVector(30.0f, 30.0f, 30.0f));//湖の当たり判定は無し
+	
+	new CObjNonCol(&mCource05Grass, CVector(0.0f, 20.0f, 0.0f), CVector(), CVector(30.0f, 30.0f, 30.0f));//当たり判定が仕事しない
+	new CObjNonCol(&mCource05HoleGrass, CVector(0.0f, 20.0f, 0.0f), CVector(), CVector(30.0f, 30.0f, 30.0f));//その為、人力でやります(怒)
 
 	//優先度変更
 	CTaskManager::Get()->ChangePriority(mPlayer, 15);

@@ -161,6 +161,7 @@ public:
 	CModel mCource05Mountain;
 	CModel mCource05Road;
 	CModel mCource05Lake;
+	CModel mCource05HoleGrass;
 
 	CModel mSumpluuu;
 };

@@ -1,7 +1,7 @@
 # 3ds Max Wavefront OBJ Exporter v0.97b - (c)2007 guruware
-# 作成したファイル : 18.03.2021 11:47:47
+# 作成したファイル : 18.03.2021 11:42:02
 
-newmtl Material__7
+newmtl Material__6
 	Ns 10.0000
 	Ni 1.5000
 	d 1.0000
@@ -12,5 +12,5 @@ newmtl Material__7
 	Kd 0.5880 0.5880 0.5880
 	Ks 0.0000 0.0000 0.0000
 	Ke 0.0000 0.0000 0.0000
-	map_Ka material\racing_mat\stage5\water-bg-pattern-04.tga
-	map_Kd material\racing_mat\stage5\water-bg-pattern-04.tga
+	map_Ka material\racing_mat\stage5\grass01.tga
+	map_Kd material\racing_mat\stage5\grass01.tga

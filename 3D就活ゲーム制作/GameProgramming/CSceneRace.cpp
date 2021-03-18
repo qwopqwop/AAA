@@ -153,6 +153,7 @@ void CSceneRace::Init() {
 	mCource05Mountain.Load("material\\racing_mat\\stage5\\cource05mountain.obj", "material\\racing_mat\\stage5\\cource05mountain.mtl");//‘S‚Ä‚ÌŽR‹¤’Ê
 	mCource05Road.Load("material\\racing_mat\\stage5\\cource05road.obj", "material\\racing_mat\\stage5\\cource05road.mtl");
 	mCource05Lake.Load("material\\racing_mat\\stage5\\cource05_lake.obj", "material\\racing_mat\\stage5\\cource05_lake.mtl");
+	mCource05HoleGrass.Load("material\\racing_mat\\stage5\\cource05grass_lake.obj", "material\\racing_mat\\stage5\\cource05grass_lake.mtl");//ŒÎ‚ÌŒŠ‚ªŠJ‚¢‚Ä‚¢‚é
 
 	mSumpluuu.Load("material\\sunsunsumple.obj", "material\\racing_mat\\single_color\\white.mtl");
 	
