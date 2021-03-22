@@ -148,10 +148,12 @@ void CSceneRace::Init() {
 	mBlock_Floor.Load("material\\racing_mat\\stage_edit\\BlockF.obj", "material\\racing_mat\\stage_edit\\BlockF.mtl");
 	mBlock_Wall.Load("material\\racing_mat\\stage_edit\\BlockW.obj", "material\\racing_mat\\stage_edit\\BlockW.mtl");
 
-	mCource05Grass.Load("material\\racing_mat\\stage5\\cource05grass.obj","material\\racing_mat\\stage5\\cource05grass.mtl");
+	mCource05Grass.Load("material\\racing_mat\\stage5\\cource05grass.obj", "material\\racing_mat\\stage5\\cource05grass.mtl");
+	//mCource05Grass.Load("material\\racing_mat\\stage5\\cource05_island.obj","material\\racing_mat\\stage5\\cource05_island.mtl");	
+	//mCource05Grass.Load("material\\racing_mat\\stage5\\cource05_cube.obj", "material\\racing_mat\\stage5\\cource05_cube.mtl");
 	mCource05Wall.Load("material\\racing_mat\\stage5\\cource05wall.obj", "material\\racing_mat\\stage5\\cource05wall.mtl");
 	mCource05Mountain.Load("material\\racing_mat\\stage5\\cource05mountain.obj", "material\\racing_mat\\stage5\\cource05mountain.mtl");//‘S‚Ä‚ÌŽR‹¤’Ê
-	mCource05Road.Load("material\\racing_mat\\stage5\\cource05road.obj", "material\\racing_mat\\stage5\\cource05road.mtl");
+	mCource05Road.Load("material\\racing_mat\\stage5\\cource05road2.obj", "material\\racing_mat\\stage5\\cource05road2.mtl");
 	mCource05Lake.Load("material\\racing_mat\\stage5\\cource05_lake.obj", "material\\racing_mat\\stage5\\cource05_lake.mtl");
 	mCource05HoleGrass.Load("material\\racing_mat\\stage5\\cource05grass_lake.obj", "material\\racing_mat\\stage5\\cource05grass_lake.mtl");//ŒÎ‚ÌŒŠ‚ªŠJ‚¢‚Ä‚¢‚é
 
