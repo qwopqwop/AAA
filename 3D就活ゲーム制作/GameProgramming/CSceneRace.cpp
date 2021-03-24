@@ -38,7 +38,7 @@ int CSceneRace::mRecord_A = 10000;
 int CSceneRace::mRecord_B = 13000;
 int CSceneRace::mRecord_C = 22000;
 int CSceneRace::mRecord_D = 30000;
-int CSceneRace::mRecord_E = 32000;
+int CSceneRace::mRecord_E = 53000;
 int CSceneRace::mRecord_F = 40000;
 
 CSceneRace::~CSceneRace() {
@@ -147,15 +147,13 @@ void CSceneRace::Init() {
 	mTile_Wide_Wall.Load("material\\racing_mat\\stage_edit\\Tile_WideW.obj", "material\\racing_mat\\stage_edit\\Tile_WideW.mtl");
 	mBlock_Floor.Load("material\\racing_mat\\stage_edit\\BlockF.obj", "material\\racing_mat\\stage_edit\\BlockF.mtl");
 	mBlock_Wall.Load("material\\racing_mat\\stage_edit\\BlockW.obj", "material\\racing_mat\\stage_edit\\BlockW.mtl");
-
-	mCource05Grass.Load("material\\racing_mat\\stage5\\cource05grass.obj", "material\\racing_mat\\stage5\\cource05grass.mtl");
-	//mCource05Grass.Load("material\\racing_mat\\stage5\\cource05_island.obj","material\\racing_mat\\stage5\\cource05_island.mtl");	
-	//mCource05Grass.Load("material\\racing_mat\\stage5\\cource05_cube.obj", "material\\racing_mat\\stage5\\cource05_cube.mtl");
+	//コース05の読み込み
 	mCource05Wall.Load("material\\racing_mat\\stage5\\cource05wall.obj", "material\\racing_mat\\stage5\\cource05wall.mtl");
 	mCource05Mountain.Load("material\\racing_mat\\stage5\\cource05mountain.obj", "material\\racing_mat\\stage5\\cource05mountain.mtl");//全ての山共通
 	mCource05Road.Load("material\\racing_mat\\stage5\\cource05road2.obj", "material\\racing_mat\\stage5\\cource05road2.mtl");
 	mCource05Lake.Load("material\\racing_mat\\stage5\\cource05_lake.obj", "material\\racing_mat\\stage5\\cource05_lake.mtl");
-	mCource05HoleGrass.Load("material\\racing_mat\\stage5\\cource05grass_lake.obj", "material\\racing_mat\\stage5\\cource05grass_lake.mtl");//湖の穴が開いている
+	mCource05Grass_Floor.Load("material\\racing_mat\\stage5\\cource05grassF.obj", "material\\racing_mat\\stage5\\cource05grassF.mtl");
+	mCource05Grass_Wall.Load("material\\racing_mat\\stage5\\cource05grass_wall.obj", "material\\racing_mat\\stage5\\cource05grass_wall.mtl");
 
 	mSumpluuu.Load("material\\sunsunsumple.obj", "material\\racing_mat\\single_color\\white.mtl");
 	
@@ -1146,7 +1144,7 @@ void CSceneRace::RenderMiniMap() {
 void CSceneRace::RenderBackMirror(){
 	glDisable(GL_CULL_FACE);//一時的に両面を描画可能にする
 	glDisable(GL_DEPTH_TEST);
-	glViewport(800 -400 -150-3, 400 - 7-3, 306, 206); //バックミラーの描画エリアの指定
+	glViewport(800 -400 -150-3+39, 400 - 7-3+51, 306-75-2, 206-50-2); //バックミラーの描画エリアの指定
 	////カメラのパラメータを作成する
 	//CVector be, bc, bu;//視点、注視点、上方向
 	////視点を求める
@@ -1194,7 +1192,7 @@ void CSceneRace::RenderBackMirror(){
 	//2D描画終了
 	End2D();
 
-	glViewport(800 - 400 - 150, 400 - 7, 300, 200);
+	glViewport(800 - 400 - 150+38, 400 - 7+50, 300-75, 200-50);
 	//2D描画開始
 	Start2D(0, 800, 0, 600);
 	color[0] = color[1] = color[2] = color[3] = 1.0f;

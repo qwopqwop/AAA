@@ -145,36 +145,15 @@ void CRaceCourceE::Init(){
 	////ゴール地点
 	//new CObjNonCol(&mMiniGoal, CVector(140.0f, -159.0f, 90.0f - 30.0f), CVector(0.0f, 90.0f, 0.0f), CVector(5.1f, 10.0f, 5.1f));
 	
-	//サイズ感変更(XZ:30.0f→33.0f Y:30.0f→22.0f)
+	//コース全体のサイズ感を設定
 	float mtsize = 35.0f;
 	float height = 11.0f;
 	new CObjFloor(&mCource05Road, CVector(0.0f, 21.0f, 0.0f), CVector(), CVector(mtsize, height, mtsize));//
 	new CObjWall(&mCource05Wall, CVector(0.0f, 21.0f, 0.0f), CVector(), CVector(mtsize, height, mtsize));//
 	new CObjGrass(&mCource05Mountain, CVector(0.0f, 21.0f, 0.0f), CVector(), CVector(mtsize, height, mtsize));//
+	new CObjGrass(&mCource05Grass_Floor, CVector(0.0f, 20.0f, 0.0f), CVector(), CVector(mtsize, 30.0f, mtsize));
+	new CObjWall(&mCource05Grass_Wall, CVector(0.0f, 20.0f, 0.0f), CVector(), CVector(mtsize, 30.0f, mtsize));
 	new CObjNonCol(&mCource05Lake, CVector(0.0f, 221.0f, 0.0f), CVector(), CVector(mtsize, 30.0f, mtsize));//湖は当たり判定無し
-
-	new CObjGrass(&mCource05Grass, CVector(0.0f, 20.0f, 0.0f), CVector(), CVector(mtsize, 30.0f, mtsize));
-	new CObjGrass(&mCource05HoleGrass, CVector(0.0f, 20.0f, 0.0f), CVector(), CVector(mtsize, 30.0f, mtsize));
-	//new CObjGrass(&mCource05Grass, CVector(0.0f, 20.0f, 0.0f), CVector(), CVector(mtsize, 30.0f, mtsize));
-	//new CObjGrass(&mCource05HoleGrass, CVector(0.0f, 20.0f, 0.0f), CVector(), CVector(mtsize, 30.0f, mtsize));
-	/*for (int i = 0; i < 8; i++){
-		for (int j = 0; j < 8; j++){
-			new CObjGrass(&mCource05Grass, CVector(0.0f+400.0f*i*mtsize, 20.0f, 0.0f+400.0f*j*mtsize), CVector(), CVector(mtsize, 30.0f, mtsize));
-		}
-	}*/
-	//new CObjFloor(&mCube, CVector(0.0f, 18.05f, 0.0f), CVector(), CVector(1000.0f, 1.0f, 1000.0f));
-	//new CObjFloor(&mCube, CVector(0.0f, -318.05f, 0.0f), CVector(), CVector(10000.0f, 1.0f, 10000.0f));
-	/*for (int i = 0; i < 10; i++){
-		for (int j = 0; j < 10; j++){
-			new CObjFloor(&mCube, CVector(0.0f + 500.0f*i * 2, 20.05f - 50.0f * 2 , 0.0f + 500.0f*j * 2), CVector(), CVector(500.0f, 50.0f, 500.0f));
-		}
-	}*/
-	//new CObjFloor(&mCource05Road, CVector(0.0f, 21.0f, 0.0f), CVector(), CVector(33.0f, 22.0f, 33.0f));//
-	//new CObjWall(&mCource05Wall, CVector(0.0f, 21.0f, 0.0f), CVector(), CVector(33.0f, 22.0f, 33.0f));//
-	//new CObjGrass(&mCource05Mountain, CVector(0.0f, 21.0f, 0.0f), CVector(), CVector(33.0f, 22.0f, 33.0f));//
-	//new CObjNonCol(&mCource05Lake, CVector(0.0f, 221.0f, 0.0f), CVector(), CVector(33.0f, 30.0f, 33.0f));//湖の当たり判定は無し
-	//new CObjNonCol(&mCource05Grass, CVector(0.0f, 20.0f, 0.0f), CVector(), CVector(33.0f, 30.0f, 33.0f));//当たり判定が仕事しない
-	//new CObjNonCol(&mCource05HoleGrass, CVector(0.0f, 20.0f, 0.0f), CVector(), CVector(33.0f, 30.0f, 33.0f));//その為、人力でやります(怒)
 
 	//優先度変更
 	CTaskManager::Get()->ChangePriority(mPlayer, 15);

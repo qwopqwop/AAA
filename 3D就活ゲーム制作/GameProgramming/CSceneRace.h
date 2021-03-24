@@ -156,12 +156,12 @@ public:
 	CModel mBlock_Floor;
 	CModel mBlock_Wall;
 	
-	CModel mCource05Grass;
-	CModel mCource05Wall;
 	CModel mCource05Mountain;
+	CModel mCource05Wall;
 	CModel mCource05Road;
 	CModel mCource05Lake;
-	CModel mCource05HoleGrass;
+	CModel mCource05Grass_Floor;
+	CModel mCource05Grass_Wall;
 
 	CModel mSumpluuu;
 };
