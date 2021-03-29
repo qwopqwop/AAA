@@ -67,6 +67,7 @@ public:
 	bool mFlyingMode;
 
 	int mChecks;
+	bool isTouchGoal;//ゴール地点に入っているか
 
 	bool isBoost;//ブースト中か(加速床で一定時間有効)
 	float mBoostMaxSpeed;//ブーストで底上げされる最高速度の数値

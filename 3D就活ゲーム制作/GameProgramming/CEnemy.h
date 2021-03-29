@@ -89,6 +89,31 @@ public:
 	static CPoint *mPoint21;
 	static CPoint *mPoint22;
 	static CPoint *mPoint23;
+	//
+	static CPoint *mPoint24;
+	static CPoint *mPoint25;
+	static CPoint *mPoint26;
+	static CPoint *mPoint27;
+	static CPoint *mPoint28;
+	static CPoint *mPoint29;
+	static CPoint *mPoint30;
+	static CPoint *mPoint31;
+	static CPoint *mPoint32;
+	static CPoint *mPoint33;
+	static CPoint *mPoint34;
+	static CPoint *mPoint35;
+	static CPoint *mPoint36;
+	static CPoint *mPoint37;
+	static CPoint *mPoint38;
+	static CPoint *mPoint39;
+	static CPoint *mPoint40;
+	static CPoint *mPoint41;
+	static CPoint *mPoint42;
+	static CPoint *mPoint43;
+	static CPoint *mPoint44;
+	static CPoint *mPoint45;
+	static CPoint *mPoint46;
+	static CPoint *mPoint47;
 	static int mPointSize;//ポイントの数
 	CPoint *mpPoint;//目指すポイント
 	int mPointCnt;//ポイントのカウンタ
@@ -101,6 +126,7 @@ public:
 	CVector mVPoint;
 
 	int mEnemyLap;
+	bool isTouchGoal;//ゴール地点に入っているか
 	bool isEnemyGoaled;
 
 	//ポイントへのベクトルを求める

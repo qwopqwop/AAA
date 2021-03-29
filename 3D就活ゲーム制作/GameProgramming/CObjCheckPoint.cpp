@@ -16,4 +16,7 @@ CObjCheckPoint::CObjCheckPoint(CModel *model, const CVector &position, const CVe
 	else if (cpnumber == 3){
 		mTag = ECHECKPOINT3;
 	}
+	else if (cpnumber == 9){
+		mTag = EGOALPOINT;
+	}
 }

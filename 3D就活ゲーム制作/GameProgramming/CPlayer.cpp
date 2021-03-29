@@ -145,6 +145,7 @@ CPlayer::CPlayer()
 	
 	isSoundEngine = false;
 	//SoundEngine.Repeat();
+	isTouchGoal = false;
 }
 
 void CPlayer::Update(){
@@ -478,16 +479,16 @@ void CPlayer::Update(){
 				mStartRotation = -145.0f;
 			}
 			else if (mChecks == 1){
-				mPosition = CVector(1127.4f, mStartPoint[1] + 100.0f, -5054.0f);
-				mStartRotation = -59.0f;
+				mPosition = CVector(-16054.4f, 4915.0f, -2180.0f);
+				mStartRotation = -174.6f;
 			}
 			else if (mChecks == 2){
-				mPosition = CVector(777.0f, mStartPoint[1], 1925.0f);
-				mStartRotation = 405.1f;
+				mPosition = CVector(4680.0f, 13.5f, -2027.0f);
+				mStartRotation = 147.2f;
 			}
 			else if (mChecks == 3){
-				mPosition = CVector(-5861.0f, mStartPoint[1], 1165.0f);
-				mStartRotation = -583.5f;
+				mPosition = CVector(14809.0f, 13.5f, 4270.0f);
+				mStartRotation = -9.5f;
 			}
 		}
 		else{
@@ -591,6 +592,18 @@ void CPlayer::Collision(CCollider *mc, CCollider *yc){
 						}
 					}
 				}
+				if (yc->mpParent->mTag == CCharacter::EGOALPOINT){//中間地点3
+					if (mChecks == 3){
+						//各中間地点を通過しないと1周したとみなされない
+						CVector aiu;//数合わせのためだけのベクトル
+						if (CCollider::CollisionTriangleSphere(yc, mc, &aiu)){
+							isTouchGoal = true;
+						}
+					}
+				}
+				/*else{
+					isTouchGoal = false;
+				}*/
 				if (mCanSwim && yc->mpParent->mTag == CCharacter::EWATER){
 					//通過可能、ステージ1の水
 				}
@@ -600,6 +613,7 @@ void CPlayer::Collision(CCollider *mc, CCollider *yc){
 				else if (yc->mpParent->mTag == CCharacter::ECHECKPOINT
 					|| yc->mpParent->mTag == CCharacter::ECHECKPOINT2
 					|| yc->mpParent->mTag == CCharacter::ECHECKPOINT3
+					|| yc->mpParent->mTag == CCharacter::EGOALPOINT
 					|| yc->mpParent->mTag == CCharacter::EDASHBOARD){
 					//処理は行われるが、これらのパネルは通過可能
 				}

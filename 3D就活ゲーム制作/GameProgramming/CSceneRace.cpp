@@ -152,8 +152,12 @@ void CSceneRace::Init() {
 	mCource05Mountain.Load("material\\racing_mat\\stage5\\cource05mountain.obj", "material\\racing_mat\\stage5\\cource05mountain.mtl");//全ての山共通
 	mCource05Road.Load("material\\racing_mat\\stage5\\cource05road2.obj", "material\\racing_mat\\stage5\\cource05road2.mtl");
 	mCource05Lake.Load("material\\racing_mat\\stage5\\cource05_lake.obj", "material\\racing_mat\\stage5\\cource05_lake.mtl");
-	mCource05Grass_Floor.Load("material\\racing_mat\\stage5\\cource05grassF.obj", "material\\racing_mat\\stage5\\cource05grassF.mtl");
+	mCource05Grass_Floor.Load("material\\racing_mat\\stage5\\cource05grassF02.obj", "material\\racing_mat\\stage5\\cource05grassF02.mtl");
 	mCource05Grass_Wall.Load("material\\racing_mat\\stage5\\cource05grass_wall.obj", "material\\racing_mat\\stage5\\cource05grass_wall.mtl");
+	mCource05GoalTile.Load("material\\racing_mat\\stage5\\Checker_Tile.obj", "material\\racing_mat\\stage5\\Checker_Tile.mtl");
+
+	mSign_Left.Load("material\\racing_mat\\stage5\\Sign_TurnLeft.obj", "material\\racing_mat\\stage5\\Sign_TurnLeft.mtl");
+	mSign_Right.Load("material\\racing_mat\\stage5\\Sign_TurnLeft.obj", "material\\racing_mat\\stage5\\Sign_TurnRight.mtl");
 
 	mSumpluuu.Load("material\\sunsunsumple.obj", "material\\racing_mat\\single_color\\white.mtl");
 	
@@ -688,6 +692,73 @@ void CSceneRace::Update() {
 				else{
 					//チェックポイントをリセットし、次の周スタート
 					mEnemys[i]->mChecks = 0;
+					mEnemys[i]->mEnemyLap++;
+				}
+			}
+		}
+	}
+	else if (CSceneTitle::mMode == 5){
+		if ((CPlayer::mpPlayer->isTouchGoal)
+			&& (CPlayer::mpPlayer->mChecks == 3)
+			&& (isStartRace)){
+			if (mLap == mMaxLap){
+				//ベストタイム更新時
+				if (mTime < mBestTime){
+					mBestTime = mTime;
+					isNewRecord = true;
+					//コースによって新しく記録する
+					if (CSceneTitle::mMode == 1){
+						mRecord_A = mBestTime;
+					}
+					else if (CSceneTitle::mMode == 2){
+						mRecord_B = mBestTime;
+					}
+					else if (CSceneTitle::mMode == 3){
+						mRecord_C = mBestTime;
+					}
+					else if (CSceneTitle::mMode == 4){
+						mRecord_D = mBestTime;
+					}
+					else if (CSceneTitle::mMode == 5){
+						mRecord_E = mBestTime;
+					}
+					else if (CSceneTitle::mMode == 6){
+						mRecord_F = mBestTime;
+					}
+				}
+				isStartRace = false;
+				isGoal = true;
+				BGM.Stop();
+				SoundGoal.Play();
+				//CPlayer::mpPlayer->CanMove = false;//動きストップ
+				CPlayer::mpPlayer->mChecks = 0;
+				CPlayer::mpPlayer->isTouchGoal = false;
+			}
+			else{
+				mLap++;
+				CPlayer::mpPlayer->mChecks = 0;
+				CPlayer::mpPlayer->isTouchGoal = false;
+			}
+		}
+		//CPUの車がゴール地点を通過した時の処理
+		for (int i = 0; i < ENEMYS_AMOUNT; i++){
+			if (mEnemys[i]->isTouchGoal
+				&& (mEnemys[i]->mChecks == 3)
+				&& (mEnemys[i]->isEnemyGoaled == false)){
+				//その敵が最終ラップだった場合
+				if (mEnemys[i]->mEnemyLap == mMaxLap){
+					//プレイヤーの未ゴール時はプレイヤーの最終順位が落ちる
+					if (isGoal == false){
+						mRanking++;
+					}
+					mEnemys[i]->isTouchGoal = false;
+					mEnemys[i]->isEnemyGoaled = true;
+				}
+				//まだ最終ラップでない場合
+				else{
+					//チェックポイントをリセットし、次の周スタート
+					mEnemys[i]->mChecks = 0;
+					mEnemys[i]->isTouchGoal = false;
 					mEnemys[i]->mEnemyLap++;
 				}
 			}

@@ -9,7 +9,7 @@
 #include "CSound.h"
 #include "CSceneGame.h"
 
-#define ENEMYS_AMOUNT 8 //0ˆÈ‰º‚É‚Íİ’è‚Å‚«‚È‚¢
+#define ENEMYS_AMOUNT 7-4 //0ˆÈ‰º‚É‚Íİ’è‚Å‚«‚È‚¢
 /*
 ƒQ[ƒ€‚ÌƒV[ƒ“
 */
@@ -162,6 +162,10 @@ public:
 	CModel mCource05Lake;
 	CModel mCource05Grass_Floor;
 	CModel mCource05Grass_Wall;
+	CModel mCource05GoalTile;
+
+	CModel mSign_Left;
+	CModel mSign_Right;
 
 	CModel mSumpluuu;
 };
