@@ -38,7 +38,7 @@ int CSceneRace::mRecord_A = 10000;
 int CSceneRace::mRecord_B = 13000;
 int CSceneRace::mRecord_C = 22000;
 int CSceneRace::mRecord_D = 30000;
-int CSceneRace::mRecord_E = 53000;
+int CSceneRace::mRecord_E = 33000;
 int CSceneRace::mRecord_F = 40000;
 
 CSceneRace::~CSceneRace() {
@@ -152,7 +152,7 @@ void CSceneRace::Init() {
 	mCource05Mountain.Load("material\\racing_mat\\stage5\\cource05mountain.obj", "material\\racing_mat\\stage5\\cource05mountain.mtl");//全ての山共通
 	mCource05Road.Load("material\\racing_mat\\stage5\\cource05road2.obj", "material\\racing_mat\\stage5\\cource05road2.mtl");
 	mCource05Lake.Load("material\\racing_mat\\stage5\\cource05_lake.obj", "material\\racing_mat\\stage5\\cource05_lake.mtl");
-	mCource05Grass_Floor.Load("material\\racing_mat\\stage5\\cource05grassF02.obj", "material\\racing_mat\\stage5\\cource05grassF02.mtl");
+	mCource05Grass_Floor.Load("material\\racing_mat\\stage5\\cource05grassF03.obj", "material\\racing_mat\\stage5\\cource05grassF03.mtl");
 	mCource05Grass_Wall.Load("material\\racing_mat\\stage5\\cource05grass_wall.obj", "material\\racing_mat\\stage5\\cource05grass_wall.mtl");
 	mCource05GoalTile.Load("material\\racing_mat\\stage5\\Checker_Tile.obj", "material\\racing_mat\\stage5\\Checker_Tile.mtl");
 
@@ -233,11 +233,15 @@ void CSceneRace::Init() {
 	isStartRace = isGoal = false;
 	//時間のリセット
 	mTime = 0;
+	mTime_Output = 0;
 		
 	//ラップ数の初期化
 	mLap = 1;
-	//3周でゴール(全コース共通)
+	//3周でゴール(基本は3周)
 	mMaxLap = 3;
+	if (CSceneTitle::mMode == 5){
+		mMaxLap = 2;
+	}
 	//記録更新してない状態
 	isNewRecord = false;
 	
@@ -398,7 +402,8 @@ void CSceneRace::Update() {
 
 	//ポーズ画面に入っていない時
 	if (isPause == false){
-		if (isStartRace){
+		if (isStartRace || isGoal){
+			//mTime:ゴール後も内部的にタイマーは作動し続ける
 			//59:59:59が最大時間
 			if (mTime < 595959){
 				if (mTime % 10000 == 5959){
@@ -409,9 +414,23 @@ void CSceneRace::Update() {
 				}
 				else{
 					mTime += 1;
+				}				
+			}			
+		}
+		if (isStartRace){
+			//mTime_Output:レース中に表示されるタイム(ゴール後にタイマー停止)
+			if (mTime_Output < 595959){
+				if (mTime_Output % 10000 == 5959){
+					mTime_Output += 1 + 40 + 4000;
+				}
+				else if (mTime_Output % 100 == 59){
+					mTime_Output += 1 + 40;
+				}
+				else{
+					mTime_Output += 1;
 				}
 			}
-		}
+		}		
 	}
 	
 	//ミニマップの描画
@@ -441,12 +460,11 @@ void CSceneRace::Update() {
 	}
 
 	//時間の表示
-	char mti[70];// :も含めた最大文字数の設定
-//	sprintf(mti, "%06d", mTime);
-	sprintf(mti, "TIME:%02d:%02d:%02d", mTime / 10000 % 100, mTime / 100 % 100, mTime % 100);
+	char mti[20];// :も含めた最大文字数の設定
+	sprintf(mti, "TIME:%02d:%02d:%02d", mTime_Output / 10000 % 100, mTime_Output / 100 % 100, mTime_Output % 100);
 	CText::DrawString(mti, 20, 530, 10, 12);
 	//ベストタイムの表示
-	char mbestti[70];// :も含めた最大文字数の設定
+	char mbestti[20];// :も含めた最大文字数の設定
 	//	sprintf(mti, "%06d", mTime);
 	sprintf(mbestti, "BEST:%02d:%02d:%02d", mBestTime / 10000 % 100, mBestTime / 100 % 100, mBestTime % 100);
 	CText::DrawString(mbestti, 20, 580, 10, 12);
@@ -533,24 +551,37 @@ void CSceneRace::Update() {
 		color[3] = 0.05f * (mAfterGoalTime - 100);
 		glColor4fv(color);
 		char rank[8];
-		if (mRanking == 1){      //1st
-			sprintf(rank, "%dst", mRanking);
+		if (mPlayer->mRank == 1){      //1st
+			sprintf(rank, "%dst", mPlayer->mRank);
 		}
-		else if (mRanking == 2){ //2nd
-			sprintf(rank, "%dnd", mRanking);
+		else if (mPlayer->mRank == 2){ //2nd
+			sprintf(rank, "%dnd", mPlayer->mRank);
 		}
-		else if (mRanking == 3){ //3rd
-			sprintf(rank, "%drd", mRanking);
+		else if (mPlayer->mRank == 3){ //3rd
+			sprintf(rank, "%drd", mPlayer->mRank);
 		}
 		else{ //4th,5th,...
-			sprintf(rank, "%dth", mRanking);
+			sprintf(rank, "%dth", mPlayer->mRank);
 		}
-		CText::DrawString(rank, 357, 310, 10 * 2, 12 * 2, 2);		
+		CText::DrawString(rank, 357, 310, 10 * 2, 12 * 2, 2);
+
+		//ゴール済みのプレイヤー、ライバルの記録を表示
+		char goaltime[30];
+		sprintf(goaltime, "%d YOU  %02d:%02d:%02d", mPlayer->mRank, mPlayer->mGoalTime / 10000 % 100, mPlayer->mGoalTime / 100 % 100, mPlayer->mGoalTime % 100);
+		if (isGoal){
+			CText::DrawString(goaltime, 270, 285 - mPlayer->mRank * 17, 10, 12, 2);
+		}
+		for (int i = 0; i < ENEMYS_AMOUNT; i++){
+			sprintf(goaltime, "%d CPU%d %02d:%02d:%02d", mEnemys[i]->mRank, i + 1, mEnemys[i]->mGoalTime / 10000 % 100, mEnemys[i]->mGoalTime / 100 % 100, mEnemys[i]->mGoalTime % 100);
+			if (mEnemys[i]->isEnemyGoaled){
+				CText::DrawString(goaltime, 270, 285 - mEnemys[i]->mRank * 17, 10, 12, 2);
+			}			
+		}
 	}
 	//色合いを元に戻す
 	color[3] = 1.0f;
 	glColor4fv(color);
-
+	
 	//ポーズ中に表示される文字
 	if (isPause){
 		CText::DrawString("PAUSE", 280, 300, 10*3, 12*3, 3);		
@@ -594,6 +625,8 @@ void CSceneRace::Update() {
 						mRecord_F = mBestTime;
 					}
 				}
+				mPlayer->mRank = mRanking;
+				mRanking++;
 				isStartRace = false;
 				isGoal = true;
 				BGM.Stop();
@@ -614,10 +647,8 @@ void CSceneRace::Update() {
 				&& (mEnemys[i]->isEnemyGoaled == false)){
 				//その敵が最終ラップだった場合
 				if (mEnemys[i]->mEnemyLap == mMaxLap){
-					//プレイヤーの未ゴール時はプレイヤーの最終順位が落ちる
-					if (isGoal == false){
-						mRanking++;
-					}
+					mEnemys[i]->mRank = mRanking;
+					mRanking++;
 					mEnemys[i]->isEnemyGoaled = true;
 				}
 				//まだ最終ラップでない場合
@@ -662,6 +693,8 @@ void CSceneRace::Update() {
 						mRecord_F = mBestTime;
 					}
 				}
+				mPlayer->mRank = mRanking;
+				mRanking++;
 				isStartRace = false;
 				isGoal = true;
 				BGM.Stop();
@@ -682,10 +715,8 @@ void CSceneRace::Update() {
 				&& (mEnemys[i]->isEnemyGoaled == false)){
 				//その敵が最終ラップだった場合
 				if (mEnemys[i]->mEnemyLap == mMaxLap){
-					//プレイヤーの未ゴール時はプレイヤーの最終順位が落ちる
-					if (isGoal == false){
-						mRanking++;
-					}
+					mEnemys[i]->mRank = mRanking;
+					mRanking++;
 					mEnemys[i]->isEnemyGoaled = true;
 				}
 				//まだ最終ラップでない場合
@@ -726,6 +757,8 @@ void CSceneRace::Update() {
 						mRecord_F = mBestTime;
 					}
 				}
+				mPlayer->mRank = mRanking;
+				mRanking++;
 				isStartRace = false;
 				isGoal = true;
 				BGM.Stop();
@@ -747,10 +780,8 @@ void CSceneRace::Update() {
 				&& (mEnemys[i]->isEnemyGoaled == false)){
 				//その敵が最終ラップだった場合
 				if (mEnemys[i]->mEnemyLap == mMaxLap){
-					//プレイヤーの未ゴール時はプレイヤーの最終順位が落ちる
-					if (isGoal == false){
-						mRanking++;
-					}
+					mEnemys[i]->mRank = mRanking;
+					mRanking++;
 					mEnemys[i]->isTouchGoal = false;
 					mEnemys[i]->isEnemyGoaled = true;
 				}
@@ -794,12 +825,15 @@ void CSceneRace::Update() {
 						mRecord_F = mBestTime;
 					}
 				}
+				mPlayer->mRank = mRanking;
+				mRanking++;
 				isStartRace = false;
 				isGoal = true;
 				BGM.Stop();
 				SoundGoal.Play();
 				//CPlayer::mpPlayer->CanMove = false;//false:ゴール後も一応走り続けることはできる
 				CPlayer::mpPlayer->mChecks = 0;
+				CPlayer::mpPlayer->mGoalTime = mTime;
 			}
 			else{
 				mLap++;
@@ -814,11 +848,10 @@ void CSceneRace::Update() {
 				&& (mEnemys[i]->isEnemyGoaled == false)){
 				//その敵が最終ラップだった場合
 				if (mEnemys[i]->mEnemyLap == mMaxLap){
-					//プレイヤーの未ゴール時はプレイヤーの最終順位が落ちる
-					if (isGoal == false){
-						mRanking++;
-					}
+					mEnemys[i]->mRank = mRanking;
+					mRanking++;
 					mEnemys[i]->isEnemyGoaled = true;
+					mEnemys[i]->mGoalTime = mTime;
 				}
 				//まだ最終ラップでない場合
 				else{
@@ -1293,7 +1326,6 @@ void CSceneRace::RenderBackMirror(){
 	glPushMatrix();
 	//行列を単位行列にする
 	glLoadIdentity();
-
 	//カメラのパラメータを作成する
 	CVector e, c, u;//視点、注視点、上方向
 	//メインカメラと同じ前方視点なはず…
@@ -1307,10 +1339,8 @@ void CSceneRace::RenderBackMirror(){
 	e = e * CMatrix().Scale(-1.0f, 1.0f, 1.0f);
 	c = c * CMatrix().Scale(-1.0f, 1.0f, 1.0f);
 	u = u * CMatrix().Scale(-1.0f, 1.0f, 1.0f);
-
 	//バックミラーのカメラの設定
-	gluLookAt(e.mX, e.mY, e.mZ, c.mX, c.mY, c.mZ, u.mX, u.mY, u.mZ);
-	
+	gluLookAt(e.mX, e.mY, e.mZ, c.mX, c.mY, c.mZ, u.mX, u.mY, u.mZ);	
 	GLfloat translate[] = {
 		-1, 0, 0, 0,
 		0, 1, 0, 0,
@@ -1319,6 +1349,54 @@ void CSceneRace::RenderBackMirror(){
 	};
 	glMultMatrixf(translate);
 	CTaskManager::Get()->Render();
+
+
+
+	//glViewport(550 - 400 - 150 + 38, 400 - 7 + 50, 300 - 75, 200 - 50);
+	////2D描画開始
+	//Start2D(0, 800, 0, 600);
+	//color[0] = color[1] = color[2] = color[3] = 1.0f;
+	//glColor4fv(color);
+	////上記の2D描画範囲の指定値より大きめに白背景を描画する
+	//expand = 100;
+	////白背景を"先に"描画する
+	//glBegin(GL_TRIANGLES);//久しぶり
+	//glVertex2d(0 - expand, 0 - expand);
+	//glVertex2d(800 + expand, 600 + expand);
+	//glVertex2d(0 - expand, 600 + expand);
+	//glEnd();
+	//glBegin(GL_TRIANGLES);
+	//glVertex2d(0 - expand, 0 - expand);
+	//glVertex2d(800 + expand, 0 - expand);
+	//glVertex2d(800 + expand, 600 + expand);
+	//glEnd();
+	//color[0] = color[1] = color[2] = color[3] = 1.0f;
+	//glColor4fv(color);
+	////2D描画終了
+	//End2D();
+	////行列を退避させる
+	//glPushMatrix();
+	////行列を単位行列にする
+	//glLoadIdentity();
+	//
+	//glViewport(550 - 400 - 150 + 38, 400 - 7 + 50, 300 - 75, 200 - 50);
+	////メインカメラと同じ前方視点なはず…
+	//e = CVector(0.0f, 17.0f + 13.0f, 40.0f - 41.0f) * CMatrix().RotateY(mCamY)* mPlayer->mMatrixScale
+	//	* CMatrix().RotateY(mPlayer->mRotation.mY)
+	//	* mPlayer->mMatrixTranslate;
+	//c = mPlayer->mPosition + CVector(0.0f, 17.0f + 12.8f, 40.0f - 42.0f)* mPlayer->mMatrixScale
+	//	* CMatrix().RotateY(mPlayer->mRotation.mY);
+	//u = CVector(0.0f, 1.0f, 0.0f);
+	////カメラののX座標を反転させる	
+	//e = e * CMatrix().Scale(-1.0f, 1.0f, 1.0f);
+	//c = c * CMatrix().Scale(-1.0f, 1.0f, 1.0f);
+	//u = u * CMatrix().Scale(-1.0f, 1.0f, 1.0f);
+	////バックミラーのカメラの設定
+	//gluLookAt(e.mX, e.mY, e.mZ, c.mX, c.mY, c.mZ, u.mX, u.mY, u.mZ);
+	//translate[5] = 0;
+	//glMultMatrixf(translate);
+	//CTaskManager::Get()->Render();
+	
 	
 	glEnable(GL_DEPTH_TEST);
 	glViewport(0, 0, 800, 600); //画面の描画エリアをメインの画面に戻す

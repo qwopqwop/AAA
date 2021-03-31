@@ -32,7 +32,7 @@ int CPlayer::RenderType;
 
 CPlayer *CPlayer::mpPlayer = 0;
 
-#define G (9.8f / 120.0f)//重力加速度//60.0f
+#define G (9.8f / 90.0f)//重力加速度//60.0f
 #define JUMPV0 (4.0f*4.0f)//ジャンプ初速//4.0f
 
 #define MAXSPEED 20.0f //4.5f+3.0f *5//車の最高速度
@@ -146,6 +146,7 @@ CPlayer::CPlayer()
 	isSoundEngine = false;
 	//SoundEngine.Repeat();
 	isTouchGoal = false;
+	mGoalTime = 0; mRank = 1;
 }
 
 void CPlayer::Update(){

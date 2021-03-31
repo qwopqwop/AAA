@@ -9,7 +9,7 @@
 #include "CSound.h"
 #include "CSceneGame.h"
 
-#define ENEMYS_AMOUNT 7-4 //0ˆÈ‰º‚É‚Íİ’è‚Å‚«‚È‚¢
+#define ENEMYS_AMOUNT 7 //0ˆÈ‰º‚É‚Íİ’è‚Å‚«‚È‚¢
 /*
 ƒQ[ƒ€‚ÌƒV[ƒ“
 */
@@ -92,7 +92,7 @@ public:
 	int mFrame;
 	int mCountDown;
 	bool isStartRace, isGoal;
-	int mTime;
+	int mTime, mTime_Output;
 	static int mBestTime;
 	int mLap, mMaxLap;
 	bool isNewRecord;

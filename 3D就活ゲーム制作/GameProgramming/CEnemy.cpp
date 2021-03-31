@@ -28,7 +28,7 @@ int CEnemy::RenderType;
 
 CEnemy *CEnemy::mpEnemy = 0;
 
-#define G (9.8f / 120.0f)//重力加速度//60.0f
+#define G (9.8f / 90.0f)//重力加速度//60.0f
 #define JUMPV0 (4.0f*4.0f)//ジャンプ初速//4.0f
 
 #define MAXSPEED 20.0f //4.5f+3.0f//-0.5f//車の最高速度 //一応プレイヤーが追いつける程度に最高速は少し低め
@@ -131,6 +131,7 @@ CEnemy::CEnemy()
 	mEnemyLap = 1;//敵のラップ数を１周目に設定する
 	isTouchGoal = false;
 	isEnemyGoaled = false;//まだゴールしてない状態にする
+	mGoalTime = 0; mRank = 1;
 }
 
 void CEnemy::Update(){	

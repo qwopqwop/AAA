@@ -128,6 +128,8 @@ public:
 	int mEnemyLap;
 	bool isTouchGoal;//ゴール地点に入っているか
 	bool isEnemyGoaled;
+	int mGoalTime;
+	int mRank;
 
 	//ポイントへのベクトルを求める
 	//CVector dir = mpPoint->mPosition - mPosition;
