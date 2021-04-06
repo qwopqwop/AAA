@@ -170,6 +170,9 @@ void CRaceCourceE::Init(){
 	//ÉvÉåÉCÉÑÅ[ÇÃê∂ê¨
 	mPlayer = new CPlayer();
 	mPlayer->mpModel = &mCarWhite;
+
+	mCam = new CCameraPos();
+
 	//ìGé‘ÇÃê∂ê¨
 	for (int i = 0; i < ENEMYS_AMOUNT; i++){
 		mEnemys[i] = new CEnemy();
@@ -205,7 +208,7 @@ void CRaceCourceE::Init(){
 
 		//mStartPoint[0] = -3884.5f;  mStartPoint[1] = 13.5f;  mStartPoint[2] = 15952.5f;
 		//mStartRotation = -145.0f;
-		mEnemys[i]->mPosition = CVector(-3884.5f - 80.0f*i, 13.5f, 15952.5f - 80.0f*i);
+		mEnemys[i]->mPosition = CVector(-3884.5f+50.0f - 60.0f*i, 13.5f, 15952.5f - 100.0f*i);
 		mEnemys[i]->mRotation.mY = -145.0f;
 
 		if (i % 2 == 0){

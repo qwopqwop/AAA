@@ -1,6 +1,11 @@
 #ifndef CCAMERA_H
 #define CCAMERA_H
 #include "CVector.h"
+
+#include "CCharacter.h"
+#include "CCollider.h"
+#include "CCollisionManager.h"
+
 /*
 ƒJƒƒ‰ƒNƒ‰ƒX
 */

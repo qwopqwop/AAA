@@ -283,41 +283,40 @@ void CEnemy::Update(){
 		}
 	}
 
-	//プレイヤーのX角度が0に戻されていく
-	if (mRotation.mX > 0.0f){
-		if (mRotation.mX > FIX_ANGLE_VALUE){
-			mRotation.mX -= FIX_ANGLE_VALUE;
-		}
-		else{
-			mRotation.mX = 0.0f;
-		}
-	}
-	else if (mRotation.mX < 0.0f){
-		if (mRotation.mX < -FIX_ANGLE_VALUE){
-			mRotation.mX += FIX_ANGLE_VALUE;
-		}
-		else{
-			mRotation.mX = 0.0f;
-		}
-	}
-	//プレイヤーのZ角度が0に戻されていく
-	if (mRotation.mZ > 0.0f){
-		if (mRotation.mZ > FIX_ANGLE_VALUE){
-			mRotation.mZ -= FIX_ANGLE_VALUE;
-		}
-		else{
-			mRotation.mZ = 0.0f;
-		}
-	}
-	else if (mRotation.mZ < 0.0f){
-		if (mRotation.mZ < -FIX_ANGLE_VALUE){
-			mRotation.mZ += FIX_ANGLE_VALUE;
-		}
-		else{
-			mRotation.mZ = 0.0f;
-		}
-	}
-
+	////プレイヤーのX角度が0に戻されていく
+	//if (mRotation.mX > 0.0f){
+	//	if (mRotation.mX > FIX_ANGLE_VALUE){
+	//		mRotation.mX -= FIX_ANGLE_VALUE;
+	//	}
+	//	else{
+	//		mRotation.mX = 0.0f;
+	//	}
+	//}
+	//else if (mRotation.mX < 0.0f){
+	//	if (mRotation.mX < -FIX_ANGLE_VALUE){
+	//		mRotation.mX += FIX_ANGLE_VALUE;
+	//	}
+	//	else{
+	//		mRotation.mX = 0.0f;
+	//	}
+	//}
+	////プレイヤーのZ角度が0に戻されていく
+	//if (mRotation.mZ > 0.0f){
+	//	if (mRotation.mZ > FIX_ANGLE_VALUE){
+	//		mRotation.mZ -= FIX_ANGLE_VALUE;
+	//	}
+	//	else{
+	//		mRotation.mZ = 0.0f;
+	//	}
+	//}
+	//else if (mRotation.mZ < 0.0f){
+	//	if (mRotation.mZ < -FIX_ANGLE_VALUE){
+	//		mRotation.mZ += FIX_ANGLE_VALUE;
+	//	}
+	//	else{
+	//		mRotation.mZ = 0.0f;
+	//	}
+	//}
 	
 	////左右の回転処理(Y軸)
 	//if (left.Dot(dir) > 0.0f){
@@ -505,7 +504,7 @@ void CEnemy::Update(){
 		else if (CSceneTitle::mMode == 5){
 			if (mChecks == 0){
 				//スタートした時の位置、方向に戻される
-				mPosition = CVector(-3884.5f, 13.5f, 15952.5f);
+				mPosition = CVector(-3755.5f, 13.5f, 16060.5f);
 				mRotation.mY = -145.0f;
 				//目標地点も戻る
 				mpPoint = mPoint;

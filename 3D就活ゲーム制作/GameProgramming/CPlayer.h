@@ -18,6 +18,8 @@ public:
 	CCollider mColBody;
 	//プレイヤーのタイヤの当たり判定
 	CCollider mColTire;
+	////プレイヤーのタイヤの当たり判定
+	//CCollider mColCamera;
 
 	//衝突処理
 	void Collision(CCollider *mc, CCollider *yc);

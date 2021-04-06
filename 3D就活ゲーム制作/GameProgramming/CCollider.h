@@ -15,6 +15,7 @@ public:
 		ENONE,
 		EBODY,//機体
 		ESEARCH,//サーチ
+		ECAMERA,//カメラ
 	};
 	ETag mTag;
 	//コライダタイプ

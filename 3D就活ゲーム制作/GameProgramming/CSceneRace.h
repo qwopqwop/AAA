@@ -4,12 +4,13 @@
 #include "CModel.h"
 #include "CPlayer.h"
 #include "CEnemy.h"
+#include "CCameraPos.h"
 #include "CRigidObj.h"
 //CSound.hをインクルードしたら音の再生の動作が軽くなった？
 #include "CSound.h"
 #include "CSceneGame.h"
 
-#define ENEMYS_AMOUNT 7 //0以下には設定できない
+#define ENEMYS_AMOUNT 7-2 //0以下には設定できない
 /*
 ゲームのシーン
 */
@@ -79,6 +80,7 @@ public:
 
 	CPlayer *mPlayer;
 	CEnemy *mEnemys[ENEMYS_AMOUNT];
+	CCameraPos *mCam;
 
 	CSound BGM;
 	CSound SoundCountDown;

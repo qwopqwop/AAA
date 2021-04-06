@@ -38,8 +38,8 @@ int CSceneRace::mRecord_A = 10000;
 int CSceneRace::mRecord_B = 13000;
 int CSceneRace::mRecord_C = 22000;
 int CSceneRace::mRecord_D = 30000;
-int CSceneRace::mRecord_E = 33000;
-int CSceneRace::mRecord_F = 40000;
+int CSceneRace::mRecord_E = 40000;
+int CSceneRace::mRecord_F = 43300;
 
 CSceneRace::~CSceneRace() {
 	CTaskManager::Get()->Disabled();
@@ -308,6 +308,18 @@ void CSceneRace::Update() {
 		c = mPlayer->mPosition + CVector(0.0f, 0.0f, 40.0f)* mPlayer->mMatrixScale   //* mPlayer->mMatrixScale
 			* CMatrix().RotateY(mPlayer->mRotation.mY);
 	}
+
+	//e = CVector(0.0f, 17.0f, -40.0f) * CMatrix().RotateY(mCamY)* mPlayer->mMatrixScale   // * mPlayer->mMatrixScale
+	//	* CMatrix().RotateY(mPlayer->mRotation.mY)
+	//	*mCam->mMatrixTranslate
+	//	//* mPlayer->mMatrixTranslate
+	//	+ CVector(0.0f, 0.0f, 0.0f);
+	//c = mCam->mPosition + CVector(0.0f, 0.0f, 40.0f)* mPlayer->mMatrixScale   //* mPlayer->mMatrixScale
+	//	* CMatrix().RotateY(mPlayer->mRotation.mY);
+	/*printf("X:%f\n", mPlayer->mColBody.mPosition.mX);
+	printf("Y:%f\n", mPlayer->mColBody.mPosition.mY);
+	printf("Z:%f\n", mPlayer->mColBody.mPosition.mZ);*/
+
 	//上方向を求める
 	u = CVector(0.0f, 1.0f, 0.0f);// *mPlayer->mMatrixRotate;	
 	//カメラの設定
@@ -1248,7 +1260,7 @@ void CSceneRace::RenderMiniMap() {
 void CSceneRace::RenderBackMirror(){
 	glDisable(GL_CULL_FACE);//一時的に両面を描画可能にする
 	glDisable(GL_DEPTH_TEST);
-	glViewport(800 -400 -150-3+39, 400 - 7-3+51, 306-75-2, 206-50-2); //バックミラーの描画エリアの指定
+	glViewport(800 - 400 - 150 - 3 + 39, 400 - 7 - 3 + 51 + 50, 306 - 75 - 2, 206 - 50 - 2); //バックミラーの描画エリアの指定
 	////カメラのパラメータを作成する
 	//CVector be, bc, bu;//視点、注視点、上方向
 	////視点を求める
@@ -1296,10 +1308,10 @@ void CSceneRace::RenderBackMirror(){
 	//2D描画終了
 	End2D();
 
-	glViewport(800 - 400 - 150+38, 400 - 7+50, 300-75, 200-50);
+	glViewport(800 - 400 - 150 + 38, 400 - 7 + 50 + 50, 300 - 75, 200 - 50);
 	//2D描画開始
 	Start2D(0, 800, 0, 600);
-	color[0] = color[1] = color[2] = color[3] = 1.0f;
+	color[0] = color[1] = color[2] = 0.8f;
 	glColor4fv(color);
 	//上記の2D描画範囲の指定値より大きめに白背景を描画する
 	expand = 100;
@@ -1326,6 +1338,7 @@ void CSceneRace::RenderBackMirror(){
 	glPushMatrix();
 	//行列を単位行列にする
 	glLoadIdentity();
+	glViewport(800 - 400 - 150 + 38, 400 - 7 + 50+50, 300 - 75, 200 - 50);
 	//カメラのパラメータを作成する
 	CVector e, c, u;//視点、注視点、上方向
 	//メインカメラと同じ前方視点なはず…
@@ -1350,6 +1363,29 @@ void CSceneRace::RenderBackMirror(){
 	glMultMatrixf(translate);
 	CTaskManager::Get()->Render();
 
+
+	glViewport(250 - 3 + 39, 400+ 188 + 10, 228, 5);
+	//2D描画開始
+	Start2D(0, 800, 0, 600);
+	color[0] = color[1] = color[2] = 0.0f;
+	glColor4fv(color);
+	//上記の2D描画範囲の指定値より大きめに白背景を描画する
+	expand = 100;
+	//白背景のよりも先に黒枠となるものを描画する
+	glBegin(GL_TRIANGLES);//久しぶり
+	glVertex2d(0 - expand, 0 - expand);
+	glVertex2d(800 + expand, 600 + expand);
+	glVertex2d(0 - expand, 600 + expand);
+	glEnd();
+	glBegin(GL_TRIANGLES);
+	glVertex2d(0 - expand, 0 - expand);
+	glVertex2d(800 + expand, 0 - expand);
+	glVertex2d(800 + expand, 600 + expand);
+	glEnd();
+	color[0] = color[1] = color[2] = color[3] = 1.0f;
+	glColor4fv(color);
+	//2D描画終了
+	End2D();
 
 
 	//glViewport(550 - 400 - 150 + 38, 400 - 7 + 50, 300 - 75, 200 - 50);

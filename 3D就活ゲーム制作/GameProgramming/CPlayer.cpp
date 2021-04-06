@@ -58,7 +58,8 @@ CPlayer::CPlayer()
 //車体のY座標は0.0fにしたいんだけど・・・
 //0.0fにしたら車体が浮いてるように見えてしまう
 :mColBody(this, CVector(0.0f, 4.0f + 1.0f, 0.5f), CVector(0.0f, 0.0f, 0.0f), CVector(1.0f, 1.0f, 1.0f), 10.0f*3)
-, mColTire(this, CVector(0.0f, -16.0f+15.0f+1.0f, 0.5f), CVector(0.0f, 0.0f, 0.0f), CVector(1.0f, 1.0f, 1.0f), 10.0f*3)
+, mColTire(this, CVector(0.0f, -16.0f + 15.0f + 1.0f, 0.5f), CVector(0.0f, 0.0f, 0.0f), CVector(1.0f, 1.0f, 1.0f), 10.0f * 3)
+//, mColCamera(this, CVector(0.0f, 17.0f, 40.0f), CVector(0.0f, 0.0f, 0.0f), CVector(1.0f, 1.0f, 1.0f), 15.0f * 1)
 {
 	mpPlayer = this;
 
@@ -111,7 +112,7 @@ CPlayer::CPlayer()
 	}
 	else if (CSceneTitle::mMode == 5){
 		//スタート地点の座標を設定;
-		mStartPoint[0] = -3884.5f;  mStartPoint[1] = 13.5f;  mStartPoint[2] = 15952.5f;
+		mStartPoint[0] = -3755.5f;  mStartPoint[1] = 13.5f;  mStartPoint[2] = 16060.5f;
 		mStartRotation = -145.0f;
 		mRotation.mY = mStartRotation;		
 	}	
@@ -128,6 +129,7 @@ CPlayer::CPlayer()
 
 	mColBody.mTag = CCollider::EBODY;
 	mColTire.mTag = CCollider::ESEARCH;
+	//mColCamera.mTag = CCollider::ECAMERA;
 
 	SoundJump.Load("SE\\jump12.wav");
 	SoundShot.Load("SE\\shot1.wav");
@@ -263,40 +265,40 @@ void CPlayer::Update(){
 		}		
 	}
 
-	//プレイヤーのX角度が0に戻されていく
-	if (mRotation.mX > 0.0f){
-		if (mRotation.mX > FIX_ANGLE_VALUE){
-			mRotation.mX -= FIX_ANGLE_VALUE;
-		}
-		else{
-			mRotation.mX = 0.0f;
-		}
-	}
-	else if (mRotation.mX < 0.0f){
-		if (mRotation.mX < -FIX_ANGLE_VALUE){
-			mRotation.mX += FIX_ANGLE_VALUE;
-		}
-		else{
-			mRotation.mX = 0.0f;
-		}
-	}
-	//プレイヤーのZ角度が0に戻されていく
-	if (mRotation.mZ > 0.0f){
-		if (mRotation.mZ > FIX_ANGLE_VALUE){
-			mRotation.mZ -= FIX_ANGLE_VALUE;
-		}
-		else{
-			mRotation.mZ = 0.0f;
-		}
-	}
-	else if (mRotation.mZ < 0.0f){
-		if (mRotation.mZ < -FIX_ANGLE_VALUE){
-			mRotation.mZ += FIX_ANGLE_VALUE;
-		}
-		else{
-			mRotation.mZ = 0.0f;
-		}
-	}
+	//////プレイヤーのX角度が0に戻されていく
+	////if (mRotation.mX > 0.0f){
+	////	if (mRotation.mX > FIX_ANGLE_VALUE){
+	////		mRotation.mX -= FIX_ANGLE_VALUE;
+	////	}
+	////	else{
+	////		mRotation.mX = 0.0f;
+	////	}
+	////}
+	////else if (mRotation.mX < 0.0f){
+	////	if (mRotation.mX < -FIX_ANGLE_VALUE){
+	////		mRotation.mX += FIX_ANGLE_VALUE;
+	////	}
+	////	else{
+	////		mRotation.mX = 0.0f;
+	////	}
+	////}
+	//////プレイヤーのZ角度が0に戻されていく
+	////if (mRotation.mZ > 0.0f){
+	////	if (mRotation.mZ > FIX_ANGLE_VALUE){
+	////		mRotation.mZ -= FIX_ANGLE_VALUE;
+	////	}
+	////	else{
+	////		mRotation.mZ = 0.0f;
+	////	}
+	////}
+	////else if (mRotation.mZ < 0.0f){
+	////	if (mRotation.mZ < -FIX_ANGLE_VALUE){
+	////		mRotation.mZ += FIX_ANGLE_VALUE;
+	////	}
+	////	else{
+	////		mRotation.mZ = 0.0f;
+	////	}
+	////}
 
 	if (CKey::Push(VK_LEFT) && CanMove){ //ハンドルを左に！
 		//mRotation.mY++;
@@ -368,13 +370,10 @@ void CPlayer::Update(){
 	}
 
 	//mPosition = CVector(mADMoveX, mVelocityJump, mWSMoveZ)  * CMatrix().RotateY(mRotation.mY) * mMatrix;
-
-	/*mPosition = CVector(mADMoveX, mVelocityJump, mWSMoveZ) * CMatrix().RotateY(90) * mMatrix;*/
+	//mPosition = CVector(mADMoveX, mVelocityJump, mWSMoveZ) * CMatrix().RotateY(90) * mMatrix;
 	//mPosition = CVector(mADMoveX, mVelocityJump, mWSMoveZ+mCarSpeed) * CMatrix().RotateY(90) * mMatrix;
-
-	/*常に地面に垂直に落下するようにする(プレイヤーの真下ではない)*/
+	////常に地面に垂直に落下するようにする(プレイヤーの真下ではない)
 	//mPosition = CVector(mADMoveX, mVelocityJump, mWSMoveZ + mCarSpeed) * mMatrix;
-
 	//mPosition = CVector(mADMoveX, 0.0f, mWSMoveZ + mCarSpeed) * mMatrix;
 	mPosition = CVector(mADMoveX, 0.0f, mWSMoveZ + mCarSpeed) * mMatrixRotate * mMatrixTranslate;
 	CCharacter::Update();
@@ -818,6 +817,8 @@ void CPlayer::TaskCollision()
 {
 	mColBody.ChangePriority();
 	mColTire.ChangePriority();
+	//mColCamera.ChangePriority();
 	CollisionManager.Collision(&mColBody);
 	CollisionManager.Collision(&mColTire);
+	//CollisionManager.Collision(&mColCamera);
 }
