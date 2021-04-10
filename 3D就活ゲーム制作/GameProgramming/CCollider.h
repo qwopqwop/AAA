@@ -16,6 +16,7 @@ public:
 		EBODY,//機体
 		ESEARCH,//サーチ
 		ECAMERA,//カメラ
+		ECAMERA_RANGE,//カメラの移動できる範囲
 	};
 	ETag mTag;
 	//コライダタイプ
