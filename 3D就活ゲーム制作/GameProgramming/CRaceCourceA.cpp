@@ -72,6 +72,7 @@ void CRaceCourceA::Init(){
 	mPlayer->mpModel = &mCarWhite;
 	//ƒJƒƒ‰‚Ì¶¬
 	mCam = new CCameraPos();
+	mCam->mpModel = &mCarYellow;
 	//“GÔ‚Ì¶¬
 	for (int i = 0; i < ENEMYS_AMOUNT; i++){
 		mEnemys[i] = new CEnemy();

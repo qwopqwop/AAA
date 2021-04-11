@@ -93,14 +93,13 @@ void CCameraPos::Update(){
 	//	CMatrix().RotateX(0) *
 	//	CMatrix().RotateY(0)
 	//	*mMatrixTranslate;//できてる？
-
 	//mPosition = CVector(0.0f,170.0f,400.0f) * CPlayer::mpPlayer->mMatrixRotate * CPlayer::mpPlayer->mMatrixTranslate;
 	////mPosition.mY += 120.0f;
-	////mPosition.mZ += 100.0f;
-	
+	////mPosition.mZ += 100.0f;	
 	//mPosition = CVector(mADMoveX, 0.0f, mWSMoveZ + mCarSpeed) * mMatrixRotate * mMatrixTranslate;
 	
-	printf(".");//こっちはプレイヤーから距離がかなり離れてても処理をし続けてくれる。
+
+	//printf(".");//こっちはプレイヤーから距離がかなり離れてても処理をし続けてくれる。
 
 	CCharacter::Update();	
 }
@@ -155,10 +154,10 @@ void CCameraPos::Collision(CCollider *mc, CCollider *yc){
 						////		//球同士の衝突判定
 						if (CCollider::Collision(mc, yc, &adjust)==false){
 							//printf("範囲外\n");
-							printf("%f  %f  %f\n", yc->mpParent->mPosition.mX, yc->mpParent->mPosition.mY, yc->mpParent->mPosition.mZ);
+							//printf("%f  %f  %f\n", yc->mpParent->mPosition.mX, yc->mpParent->mPosition.mY, yc->mpParent->mPosition.mZ);
+							
 							/*mPosition = yc->mpParent->mPosition;
 							mPosition.mY += 100.0f;*/
-
 							////位置の更新
 							//mPosition = mPosition - adjust * -1;
 
@@ -169,9 +168,19 @@ void CCameraPos::Collision(CCollider *mc, CCollider *yc){
 							//行列の更新
 							CCharacter::Update();
 
+						/*	mPosition.mX += 1.0f;
+							mPosition.mY += 1.0f;
+							mPosition.mZ += 1.0f;
+							CCharacter::Update();*/
+
+							CVector aio = CVector(0.0f, 0.0f, -1.0f)*CMatrix().RotateY(yc->mpParent->mRotation.mY);
+							mPosition = mPosition + aio;
+							printf("x:%f y:%f z:%f\n", aio.mX, aio.mY, aio.mZ);
+							CCharacter::Update();
+
 							CVector adj2;
 							if (CCollider::Collision(mc, yc, &adj2)){
-								printf("?");
+								//printf("?");
 								mPosition = mPosition - adj2 *-1;
 								//行列の更新
 								CCharacter::Update();
