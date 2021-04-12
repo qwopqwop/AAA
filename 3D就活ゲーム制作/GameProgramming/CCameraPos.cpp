@@ -162,29 +162,50 @@ void CCameraPos::Collision(CCollider *mc, CCollider *yc){
 							//mPosition = mPosition - adjust * -1;
 
 
+
 							mPosition = yc->mpParent->mPosition;
 							mPosition = mPosition - adjust*-1;
 
 							//行列の更新
 							CCharacter::Update();
 
-						/*	mPosition.mX += 1.0f;
+							/*mPosition.mX += 1.0f;
 							mPosition.mY += 1.0f;
 							mPosition.mZ += 1.0f;
 							CCharacter::Update();*/
 
-							CVector aio = CVector(0.0f, 0.0f, -1.0f)*CMatrix().RotateY(yc->mpParent->mRotation.mY);
-							mPosition = mPosition + aio;
+							CVector aio = CVector(0.0f, 0.0f, (mc->mRadius+yc->mRadius) *-1)*CMatrix().RotateY(yc->mpParent->mRotation.mY);
+							mPosition = mPosition + aio;							
+							/*mPosition.mX = mPosition.mX + aio.mX;
+							mPosition.mZ = mPosition.mZ + aio.mZ;*/
+
 							printf("x:%f y:%f z:%f\n", aio.mX, aio.mY, aio.mZ);
 							CCharacter::Update();
+							
 
-							CVector adj2;
-							if (CCollider::Collision(mc, yc, &adj2)){
-								//printf("?");
-								mPosition = mPosition - adj2 *-1;
-								//行列の更新
-								CCharacter::Update();
-							}
+							//CVector adj2;
+							//if (CCollider::Collision(mc, yc, &adj2)){
+							//	//adj2.mY = 0;
+							//	mPosition = mPosition - adj2 *-1 * CMatrix().RotateY(yc->mpParent->mRotation.mY);
+							//	//行列の更新
+							//	CCharacter::Update();
+							//}
+
+
+
+							//CVector adj2;
+							//if (CCollider::Collision(mc, yc, &adj2)){
+							//	//printf("?");
+							//	mPosition = mPosition - adj2 *-1;
+							//	//行列の更新
+							//	CCharacter::Update();
+							//	mPosition.mY = yc->mpParent->mPosition.mY;
+							//	CCharacter::Update();
+							//	printf("1: %f %f %f\n", adjust.mX, adjust.mY, adjust.mZ);
+							//	printf("2: %f %f %f\n", adj2.mX, adj2.mY, adj2.mZ);
+							//	/*mPosition.mY = yc->mpParent->mPosition.mY;
+							//	CCharacter::Update();*/
+							//}
 
 							//mPosition = mPosition - adjust * -1;
 

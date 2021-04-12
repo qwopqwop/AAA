@@ -59,7 +59,7 @@ CPlayer::CPlayer()
 //0.0f‚É‚µ‚½‚çŽÔ‘Ì‚ª•‚‚¢‚Ä‚é‚æ‚¤‚ÉŒ©‚¦‚Ä‚µ‚Ü‚¤
 :mColBody(this, CVector(0.0f, 4.0f + 1.0f, 0.5f), CVector(0.0f, 0.0f, 0.0f), CVector(1.0f, 1.0f, 1.0f), 10.0f*3)
 , mColTire(this, CVector(0.0f, -16.0f + 15.0f + 1.0f, 0.5f), CVector(0.0f, 0.0f, 0.0f), CVector(1.0f, 1.0f, 1.0f), 10.0f * 3)
-, mColCamRange(this, CVector(0.0f, 0.0f, 0.0f), CVector(0.0f, 0.0f, 0.0f), CVector(1.0f, 1.0f, 1.0f), 150.0f)
+//, mColCamRange(this, CVector(0.0f, 20.0f, 0.0f), CVector(0.0f, 0.0f, 0.0f), CVector(1.0f, 1.0f, 1.0f), 50.0f)
 //, mColCamera(this, CVector(0.0f, 17.0f, 40.0f), CVector(0.0f, 0.0f, 0.0f), CVector(1.0f, 1.0f, 1.0f), 15.0f * 1)
 {
 	mpPlayer = this;
@@ -90,6 +90,7 @@ CPlayer::CPlayer()
 	mBoostTime = 0;
 
 	mTag = EPLAYER;
+	//mColCamRange.mTag = CCollider::ECAMERA_RANGE;
 	mJumpPrio = 0;
 
 	if (CSceneTitle::mMode == 3){
@@ -130,7 +131,7 @@ CPlayer::CPlayer()
 
 	mColBody.mTag = CCollider::EBODY;
 	mColTire.mTag = CCollider::ESEARCH;
-	mColCamRange.mTag = CCollider::ECAMERA_RANGE;
+	//mColCamRange.mTag = CCollider::ECAMERA_RANGE;
 	//mColCamera.mTag = CCollider::ECAMERA;
 
 	SoundJump.Load("SE\\jump12.wav");
@@ -819,10 +820,10 @@ void CPlayer::TaskCollision()
 {
 	mColBody.ChangePriority();
 	mColTire.ChangePriority();
-	mColCamRange.ChangePriority();
+	//mColCamRange.ChangePriority();
 	//mColCamera.ChangePriority();
 	CollisionManager.Collision(&mColBody);
 	CollisionManager.Collision(&mColTire);
-	CollisionManager.Collision(&mColCamRange);	
+	//CollisionManager.Collision(&mColCamRange);	
 	//CollisionManager.Collision(&mColCamera);
 }

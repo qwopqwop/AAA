@@ -71,6 +71,7 @@ void CRaceCourceA::Init(){
 	mPlayer = new CPlayer();
 	mPlayer->mpModel = &mCarWhite;
 	//ƒJƒƒ‰‚Ì¶¬
+	mCamRange = new CCameraRange();
 	mCam = new CCameraPos();
 	mCam->mpModel = &mCarYellow;
 	//“GŽÔ‚Ì¶¬

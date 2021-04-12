@@ -732,7 +732,8 @@ void CEnemy::Collision(CCollider *mc, CCollider *yc){
 			if (CCollider::Collision(mc, yc)){
 				//
 				if (mc->mTag == CCollider::EBODY){
-					if (yc->mpParent->mTag == CCharacter::EPLAYER){
+					if (yc->mpParent->mTag == CCharacter::EPLAYER
+						&& yc->mTag == CCollider::EBODY){
 						CVector adjust;//調整用ベクトル
 						////		//球同士の衝突判定
 						if (CCollider::Collision(mc, yc, &adjust)){

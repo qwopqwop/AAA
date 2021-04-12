@@ -4,6 +4,7 @@
 #include "CModel.h"
 #include "CPlayer.h"
 #include "CEnemy.h"
+#include "CCameraRange.h"
 #include "CCameraPos.h"
 #include "CRigidObj.h"
 //CSound.hをインクルードしたら音の再生の動作が軽くなった？
@@ -80,6 +81,7 @@ public:
 
 	CPlayer *mPlayer;
 	CEnemy *mEnemys[ENEMYS_AMOUNT];
+	CCameraRange *mCamRange;
 	CCameraPos *mCam;
 
 	CSound BGM;

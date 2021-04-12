@@ -168,6 +168,9 @@
     <ClCompile Include="CCameraPos.cpp">
       <Filter>ソース ファイル\Lib</Filter>
     </ClCompile>
+    <ClCompile Include="CCameraRange.cpp">
+      <Filter>ソース ファイル\Lib</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CSceneGame.h">
@@ -309,6 +312,9 @@
       <Filter>ソース ファイル\RaceGame\CourceFolder</Filter>
     </ClInclude>
     <ClInclude Include="CCameraPos.h">
+      <Filter>ソース ファイル\Lib</Filter>
+    </ClInclude>
+    <ClInclude Include="CCameraRange.h">
       <Filter>ソース ファイル\Lib</Filter>
     </ClInclude>
   </ItemGroup>
