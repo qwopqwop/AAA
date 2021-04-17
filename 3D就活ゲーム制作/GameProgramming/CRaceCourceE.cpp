@@ -5,6 +5,7 @@
 #include "CObjCheckPoint.h"
 #include "CObjNonCol.h"
 #include "CObjGrass.h"
+#include "CObjJumper.h"
 #include "CSceneTitle.h"
 
 void CRaceCourceE::Init(){
@@ -171,6 +172,8 @@ void CRaceCourceE::Init(){
 	mPlayer = new CPlayer();
 	mPlayer->mpModel = &mCarWhite;
 
+	
+	mCamRange = new CCameraRange();
 	mCam = new CCameraPos();
 
 	//敵車の生成
@@ -239,6 +242,9 @@ void CRaceCourceE::Init(){
 
 	new CObjNonCol(&mSign_Left, CVector(2440.0f, 321.0f, 1432.0f), CVector(0.0f, 33.0f, 0.0f), CVector(4.0f, 4.0f, 4.0f));//標識：左折
 	new CObjNonCol(&mSign_Right, CVector(13277.0f, 12.0f, -6939.0f), CVector(0.0f, 82.3f, 0.0f), CVector(4.0f, 4.0f, 4.0f));//標識：右折
+
+	//ジャンプ台
+	new CObjJumper(&mOnBlock, CVector(9911.0f, -13.1f + 33.0f, 8264.0f), CVector(-30.0f, -114.0f, 0.0f), CVector(77.0f, 5.0f, 50.0f));
 
 	//優先度変更
 	CTaskManager::Get()->ChangePriority(mPlayer, 15);

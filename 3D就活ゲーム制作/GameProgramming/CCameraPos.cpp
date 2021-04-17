@@ -81,27 +81,149 @@ CCameraPos::CCameraPos()
 
 	mColCam.mTag = CCollider::ECAMERA;
 
-	mPosition = CVector(0.0f, 170.0f, 400.0f) * CPlayer::mpPlayer->mMatrixRotate * CPlayer::mpPlayer->mMatrixTranslate;
+	/*mPosition = CVector(0.0f, 170.0f, 400.0f) * CPlayer::mpPlayer->mMatrixRotate * CPlayer::mpPlayer->mMatrixTranslate;
+	mPosition = CCameraRange::mpCameraRange->mPosition;
+	printf("X:%f\nY:%f\nZ:%f\n", mPosition.mX, mPosition.mY, mPosition.mZ);*/
+	mPosition = CPlayer::mpPlayer->mPosition;
+	mPosition = CCameraRange::mpCameraRange->mPosition;
+	//printf("X:%f\nY:%f\nZ:%f\n", mPosition.mX, mPosition.mY, mPosition.mZ);
+	CCharacter::Update();
+	mVCamY = 0;
+
+	//mVPoint = mpPoint->mPosition;//一番最初は分散無し
+	//CPlayer::mpPlayer->mColTire.mPosition;
+	//printf("X:%f\nY:%f\nZ:%f\n", CCameraRange::mpCameraRange->mPosition.mX, CCameraRange::mpCameraRange->mPosition.mY, CCameraRange::mpCameraRange->mPosition.mZ);
+	//CCameraRange::mpCameraRange->mPosition.mX;
 }
 
 void CCameraPos::Update(){	
 	
-	//mPosition = CVector(0.0f, 0.0f, 0.0f) * mMatrixRotate * mMatrixTranslate;
+
+
+	////mPosition = CVector(0.0f, 0.0f, 0.0f) * mMatrixRotate * mMatrixTranslate;
+	////CCharacter::Update();
+	////mPosition = CVector(0.0f, 0.0f, 0.0f) * //mMatrixScale * 
+	////	CMatrix().RotateZ(0) *
+	////	CMatrix().RotateX(0) *
+	////	CMatrix().RotateY(0)
+	////	*mMatrixTranslate;//できてる？
+	////mPosition = CVector(0.0f,170.0f,400.0f) * CPlayer::mpPlayer->mMatrixRotate * CPlayer::mpPlayer->mMatrixTranslate;
+	//////mPosition.mY += 120.0f;
+	//////mPosition.mZ += 100.0f;	
+	////mPosition = CVector(mADMoveX, 0.0f, mWSMoveZ + mCarSpeed) * mMatrixRotate * mMatrixTranslate;	
+	////printf(".");//こっちはプレイヤーから距離がかなり離れてても処理をし続けてくれる。
+
+
+
+	//mVPoint = CCameraRange::mpCameraRange->mPosition;
+
+	//mPosition.mY = CCameraRange::mpCameraRange->mPosition.mY;
 	//CCharacter::Update();
-	//mPosition = CVector(0.0f, 0.0f, 0.0f) * //mMatrixScale * 
-	//	CMatrix().RotateZ(0) *
-	//	CMatrix().RotateX(0) *
-	//	CMatrix().RotateY(0)
-	//	*mMatrixTranslate;//できてる？
-	//mPosition = CVector(0.0f,170.0f,400.0f) * CPlayer::mpPlayer->mMatrixRotate * CPlayer::mpPlayer->mMatrixTranslate;
-	////mPosition.mY += 120.0f;
-	////mPosition.mZ += 100.0f;	
-	//mPosition = CVector(mADMoveX, 0.0f, mWSMoveZ + mCarSpeed) * mMatrixRotate * mMatrixTranslate;
-	
 
-	//printf(".");//こっちはプレイヤーから距離がかなり離れてても処理をし続けてくれる。
+	////ポイントへのベクトルを求める
+	////CVector dir = mpPoint->mPosition - mPosition;
+	//dir = mVPoint - mPosition;
+	////左方向へのベクトルを求める
+	//left = CVector(1.0f, 0.0f, 0.0f) * CMatrix().RotateY(mRotation.mY);
 
-	CCharacter::Update();	
+	///*if (left.Dot(dir) > 0.0f){
+	//	mRotation.mY+=10;		
+	//}
+	//else if (left.Dot(dir) < 0.0f){
+	//	mRotation.mY-=10;
+	//}*/
+	//while (left.Dot(dir) > 0.0f){
+	//	mRotation.mY++;
+	//	left = CVector(1.0f, 0.0f, 0.0f) * CMatrix().RotateY(mRotation.mY);
+	//}
+	//while (left.Dot(dir) < 0.0f){
+	//	mRotation.mY--;
+	//	left = CVector(1.0f, 0.0f, 0.0f) * CMatrix().RotateY(mRotation.mY);
+	//}
+
+	///*while (left.Dot(dir) > 0.0f){
+	//	mVCamY++;
+	//	left = CVector(1.0f, 0.0f, 0.0f) * CMatrix().RotateY(mVCamY);
+	//}
+	//while (left.Dot(dir) < 0.0f){
+	//	mVCamY--;
+	//	left = CVector(1.0f, 0.0f, 0.0f) * CMatrix().RotateY(mVCamY);
+	//}*/
+
+	////mRotation = CCameraRange::mpCameraRange->mRotation;
+	//
+	////printf("%f  %f\n", mVCamY, mRotation.mY - mVCamY);
+
+	//CCharacter::Update();
+
+	////プレイヤーの車のスピードを絶対値に変化
+	//mCameraSpeed = CPlayer::mpPlayer->mCarSpeed;
+	//if (mCameraSpeed < 0.0f){
+	//	mCameraSpeed *= -1;
+	//}
+
+	//mPosition = CVector(0.0f, 0.0f, mCameraSpeed) * mMatrixRotate * mMatrixTranslate;
+	//CCharacter::Update();
+
+
+
+
+
+
+	//mVPoint = CCameraRange::mpCameraRange->mPosition;
+	////mPosition.mY = CCameraRange::mpCameraRange->mPosition.mY;
+	//mRotation = CPlayer::mpPlayer->mRotation;
+	//CCharacter::Update();
+	////ポイントへのベクトルを求める
+	////CVector dir = mpPoint->mPosition - mPosition;
+	//dir = mVPoint - mPosition;
+	////左方向へのベクトルを求める
+	//left = CVector(1.0f, 0.0f, 0.0f) * CMatrix().RotateY(mVCamY);
+	//while (left.Dot(dir) > 0.0f){
+	//	mVCamY++;
+	//	left = CVector(1.0f, 0.0f, 0.0f) * CMatrix().RotateY(mVCamY);
+	//}
+	//while (left.Dot(dir) < 0.0f){
+	//	mVCamY--;
+	//	left = CVector(1.0f, 0.0f, 0.0f) * CMatrix().RotateY(mVCamY);
+	//}
+
+	mVPoint = CCameraRange::mpCameraRange->mPosition;
+	mPosition.mY = CCameraRange::mpCameraRange->mPosition.mY;
+	mRotation = CPlayer::mpPlayer->mRotation;
+	CCharacter::Update();
+	//ポイントへのベクトルを求める
+	//CVector dir = mpPoint->mPosition - mPosition;
+	dir = mVPoint - mPosition;
+	//左方向へのベクトルを求める
+	left = CVector(1.0f, 0.0f, 0.0f) * CMatrix().RotateY(mRotation.mY);
+	while (left.Dot(dir) > 0.0f){
+		mRotation.mY++;
+		left = CVector(1.0f, 0.0f, 0.0f) * CMatrix().RotateY(mRotation.mY);
+	}
+	while (left.Dot(dir) < 0.0f){
+		mRotation.mY--;
+		left = CVector(1.0f, 0.0f, 0.0f) * CMatrix().RotateY(mRotation.mY);
+	}	
+	CCharacter::Update();
+	//プレイヤーの車のスピードを絶対値に変化
+	mCameraSpeed = CPlayer::mpPlayer->mCarSpeed;
+	if (mCameraSpeed < 0.0f){
+		mCameraSpeed *= -1;
+	}
+	mPosition = CVector(0.0f, 0.0f, mCameraSpeed) * mMatrixRotate * mMatrixTranslate;
+	//mPosition = CVector(0.0f, 0.0f, mCameraSpeed) * CCameraRange::mpCameraRange->mMatrixRotate * CCameraRange::mpCameraRange->mMatrixTranslate;  // * mMatrixRotate * mMatrixTranslate;
+	CCharacter::Update();
+
+	//if (CPlayer::mpPlayer->mTurnSpeed > 0.0f){
+	//	mPosition = CVector(0.0f, 0.0f, 5.22f*CPlayer::mpPlayer->mTurnSpeed) * mMatrixRotate * mMatrixTranslate;
+	//}
+	//else if (CPlayer::mpPlayer->mTurnSpeed < 0.0f){
+	//	mPosition = CVector(0.0f, 0.0f, -5.22f*CPlayer::mpPlayer->mTurnSpeed) * mMatrixRotate * mMatrixTranslate;
+	//}
+	////mPosition = CVector(CPlayer::mpPlayer->mADMoveX, 0.0f, 0.0f) * mMatrixRotate * mMatrixTranslate;
+	//CCharacter::Update();
+
 }
 
 void CCameraPos::Collision(CCollider *mc, CCollider *yc){
@@ -140,81 +262,59 @@ void CCameraPos::Collision(CCollider *mc, CCollider *yc){
 			}
 		}
 
-		if (yc->mType == CCollider::ESPHERE){
-			//カメラは車と衝突しない
-			if (mc->mTag == CCollider::ECAMERA){
-				//printf("1");
-				if (yc->mpParent->mTag == CCharacter::EPLAYER){
+		//if (yc->mType == CCollider::ESPHERE){
+		//	//カメラは車と衝突しない
+		//	if (mc->mTag == CCollider::ECAMERA){
+		//		//printf("1");
+		//		if (yc->mpParent->mTag == CCharacter::EPLAYER){
+		//			//printf("2");
+		//			if (yc->mTag == CCollider::ECAMERA_RANGE){
+		//				//printf("3");
+		//				CVector adjust;//調整用ベクトル
+		//				////		//球同士の衝突判定
+		//				if (CCollider::Collision(mc, yc, &adjust)==false){
+		//					//printf("範囲外\n");
+		//					//printf("%f  %f  %f\n", yc->mpParent->mPosition.mX, yc->mpParent->mPosition.mY, yc->mpParent->mPosition.mZ);							
+		//					/*mPosition = yc->mpParent->mPosition;
+		//					mPosition.mY += 100.0f;*/
+		//					////位置の更新
+		//					//mPosition = mPosition - adjust * -1;
+		//					mPosition = yc->mpParent->mPosition;
+		//					mPosition = mPosition - adjust*-1;
+		//					//行列の更新
+		//					CCharacter::Update();
+		//					CVector aio = CVector(0.0f, 0.0f, (mc->mRadius+yc->mRadius) *-1)*CMatrix().RotateY(yc->mpParent->mRotation.mY);
+		//					//CVector aio = CVector(0.0f, 0.0f, (mc->mRadius + yc->mRadius) *-1)*CMatrix().RotateY(mVCamY);
+		//					//
+		//					mPosition = mPosition + aio;
+		//					CCharacter::Update();
+		//					//CVector adj2;
+		//					//if (CCollider::Collision(mc, yc, &adj2)){
+		//					//	//adj2.mY = 0;
+		//					//	mPosition = mPosition - adj2 *-1 * CMatrix().RotateY(yc->mpParent->mRotation.mY);
+		//					//	//行列の更新
+		//					//	CCharacter::Update();
+		//					//}
+		//					//CVector adj2;
+		//					//if (CCollider::Collision(mc, yc, &adj2)){
+		//					//	//printf("?");
+		//					//	mPosition = mPosition - adj2 *-1;
+		//					//	//行列の更新
+		//					//	CCharacter::Update();
+		//					//	mPosition.mY = yc->mpParent->mPosition.mY;
+		//					//	CCharacter::Update();
+		//					//	printf("1: %f %f %f\n", adjust.mX, adjust.mY, adjust.mZ);
+		//					//	printf("2: %f %f %f\n", adj2.mX, adj2.mY, adj2.mZ);
+		//					//	/*mPosition.mY = yc->mpParent->mPosition.mY;
+		//					//	CCharacter::Update();*/
+		//					//}
+		//					//mPosition = mPosition - adjust * -1;							
+		//				}						
+		//			}
+		//		}
+		//	}
+		//}
 
-					//printf("2");
-					if (yc->mTag == CCollider::ECAMERA_RANGE){
-
-						//printf("3");
-						CVector adjust;//調整用ベクトル
-						////		//球同士の衝突判定
-						if (CCollider::Collision(mc, yc, &adjust)==false){
-							//printf("範囲外\n");
-							//printf("%f  %f  %f\n", yc->mpParent->mPosition.mX, yc->mpParent->mPosition.mY, yc->mpParent->mPosition.mZ);
-							
-							/*mPosition = yc->mpParent->mPosition;
-							mPosition.mY += 100.0f;*/
-							////位置の更新
-							//mPosition = mPosition - adjust * -1;
-
-
-
-							mPosition = yc->mpParent->mPosition;
-							mPosition = mPosition - adjust*-1;
-
-							//行列の更新
-							CCharacter::Update();
-
-							/*mPosition.mX += 1.0f;
-							mPosition.mY += 1.0f;
-							mPosition.mZ += 1.0f;
-							CCharacter::Update();*/
-
-							CVector aio = CVector(0.0f, 0.0f, (mc->mRadius+yc->mRadius) *-1)*CMatrix().RotateY(yc->mpParent->mRotation.mY);
-							mPosition = mPosition + aio;							
-							/*mPosition.mX = mPosition.mX + aio.mX;
-							mPosition.mZ = mPosition.mZ + aio.mZ;*/
-
-							printf("x:%f y:%f z:%f\n", aio.mX, aio.mY, aio.mZ);
-							CCharacter::Update();
-							
-
-							//CVector adj2;
-							//if (CCollider::Collision(mc, yc, &adj2)){
-							//	//adj2.mY = 0;
-							//	mPosition = mPosition - adj2 *-1 * CMatrix().RotateY(yc->mpParent->mRotation.mY);
-							//	//行列の更新
-							//	CCharacter::Update();
-							//}
-
-
-
-							//CVector adj2;
-							//if (CCollider::Collision(mc, yc, &adj2)){
-							//	//printf("?");
-							//	mPosition = mPosition - adj2 *-1;
-							//	//行列の更新
-							//	CCharacter::Update();
-							//	mPosition.mY = yc->mpParent->mPosition.mY;
-							//	CCharacter::Update();
-							//	printf("1: %f %f %f\n", adjust.mX, adjust.mY, adjust.mZ);
-							//	printf("2: %f %f %f\n", adj2.mX, adj2.mY, adj2.mZ);
-							//	/*mPosition.mY = yc->mpParent->mPosition.mY;
-							//	CCharacter::Update();*/
-							//}
-
-							//mPosition = mPosition - adjust * -1;
-
-							
-						}
-					}
-				}
-			}
-		}
 		//if (yc->mType == CCollider::ESPHERE){
 		//	if (CCollider::Collision(mc, yc)){				
 		//		//カメラは車と衝突しない

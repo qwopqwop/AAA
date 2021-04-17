@@ -36,7 +36,7 @@ CCameraRange *CCameraRange::mpCameraRange = 0;
 CCameraRange::CCameraRange()
 //車体のY座標は0.0fにしたいんだけど・・・
 //0.0fにしたら車体が浮いてるように見えてしまう
-:mColRange(this, CVector(0.0f, 0.0f, 0.0f), CVector(0.0f, 0.0f, 0.0f), CVector(1.0f, 1.0f, 1.0f), 100.0f)
+:mColRange(this, CVector(0.0f, 0.0f, 0.0f), CVector(0.0f, 0.0f, 0.0f), CVector(1.0f, 1.0f, 1.0f), 40.0f)
 {
 	mpCameraRange = this;
 
@@ -74,11 +74,12 @@ CCameraRange::CCameraRange()
 	//	mRotation.mY = mStartRotation;
 	//}
 	//mPosition = CVector(mStartPoint[0], mStartPoint[1], mStartPoint[2]);
-	CCharacter::Update();
+	
 
 	mColRange.mTag = CCollider::ECAMERA_RANGE;
 
-	mPosition = CVector(0.0f, 170.0f, 400.0f) * CPlayer::mpPlayer->mMatrixRotate * CPlayer::mpPlayer->mMatrixTranslate;
+	mPosition = CVector(0.0f, 17.0f, 40.0f) * CPlayer::mpPlayer->mMatrixScale * CPlayer::mpPlayer->mMatrixRotate * CPlayer::mpPlayer->mMatrixTranslate;
+	CCharacter::Update();
 }
 
 void CCameraRange::Update(){
@@ -96,9 +97,12 @@ void CCameraRange::Update(){
 	//mPosition = CVector(mADMoveX, 0.0f, mWSMoveZ + mCarSpeed) * mMatrixRotate * mMatrixTranslate;
 
 
-	//printf(".");//こっちはプレイヤーから距離がかなり離れてても処理をし続けてくれる。
-	mPosition = CPlayer::mpPlayer->mPosition;
-	mPosition.mY += 100.0f;
+	////printf(".");//こっちはプレイヤーから距離がかなり離れてても処理をし続けてくれる。
+	//mPosition = CPlayer::mpPlayer->mPosition;
+	//mPosition = CVector(0.0f, 170.0f, 400.0f) * CPlayer::mpPlayer->mMatrixRotate * CPlayer::mpPlayer->mMatrixTranslate;
+	////17.0f, -40.0f
+	mPosition = CVector(0.0f, 17.0f, 40.0f) * CPlayer::mpPlayer->mMatrixScale * CPlayer::mpPlayer->mMatrixRotate * CPlayer::mpPlayer->mMatrixTranslate;
+	mRotation = CPlayer::mpPlayer->mRotation;
 	CCharacter::Update();
 }
 

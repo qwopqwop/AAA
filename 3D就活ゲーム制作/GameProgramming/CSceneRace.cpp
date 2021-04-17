@@ -277,6 +277,14 @@ void CSceneRace::Update() {
 			+ CVector(0.0f, 0.0f, 0.0f);
 		c = mPlayer->mPosition + CVector(0.0f, 0.0f, 40.0f)* mPlayer->mMatrixScale   //* mPlayer->mMatrixScale
 			* CMatrix().RotateY(mPlayer->mRotation.mY);
+
+		//e = CVector(0.0f, 17.0f, -40.0f) * CMatrix().RotateY(mCamY)* mPlayer->mMatrixScale   // * mPlayer->mMatrixScale
+		//	* CMatrix().RotateY(mPlayer->mRotation.mY)
+		//	//* mPlayer->mMatrixTranslate
+		//	*CCameraPos::mpCamera->mMatrixTranslate
+		//	+ CVector(0.0f, 0.0f, 0.0f);
+		//c = CCameraPos::mpCamera->mPosition + CVector(0.0f, 0.0f, 40.0f)* mPlayer->mMatrixScale   //* mPlayer->mMatrixScale
+		//	* CMatrix().RotateY(mPlayer->mRotation.mY);
 	}
 	else if (mCamPoV == 2){
 		e = CVector(0.0f, 0.0f + 0.5f, -40.0f) * CMatrix().RotateY(mCamY) * mPlayer->mMatrixScale
@@ -409,6 +417,10 @@ void CSceneRace::Update() {
 	}
 	else{
 		mCamPoV = 1;
+	}
+	//即時トップスピードに
+	if (CKey::Once('G')){
+		mPlayer->mCarSpeed = 20.0f;
 	}
 #endif	
 
@@ -579,13 +591,100 @@ void CSceneRace::Update() {
 
 		//ゴール済みのプレイヤー、ライバルの記録を表示
 		char goaltime[30];
+		char name[8];
 		sprintf(goaltime, "%d YOU  %02d:%02d:%02d", mPlayer->mRank, mPlayer->mGoalTime / 10000 % 100, mPlayer->mGoalTime / 100 % 100, mPlayer->mGoalTime % 100);
 		if (isGoal){
 			CText::DrawString(goaltime, 270, 285 - mPlayer->mRank * 17, 10, 12, 2);
 		}
 		for (int i = 0; i < ENEMYS_AMOUNT; i++){
-			sprintf(goaltime, "%d CPU%d %02d:%02d:%02d", mEnemys[i]->mRank, i + 1, mEnemys[i]->mGoalTime / 10000 % 100, mEnemys[i]->mGoalTime / 100 % 100, mEnemys[i]->mGoalTime % 100);
+			//sprintf(goaltime, "%d CPU%d %02d:%02d:%02d", mEnemys[i]->mRank, i + 1, mEnemys[i]->mGoalTime / 10000 % 100, mEnemys[i]->mGoalTime / 100 % 100, mEnemys[i]->mGoalTime % 100);
+			sprintf(goaltime, "%d      %02d:%02d:%02d", mEnemys[i]->mRank, mEnemys[i]->mGoalTime / 10000 % 100, mEnemys[i]->mGoalTime / 100 % 100, mEnemys[i]->mGoalTime % 100);
+			sprintf(name, "CPU%d", i + 1);
 			if (mEnemys[i]->isEnemyGoaled){
+				//if (i % 8 == 0){
+				//	/*if (i % 8 == 0){
+				//		mEnemys[i]->mpModel = &mCarBlue;
+				//	}
+				//	else if (i % 8 == 1){
+				//		mEnemys[i]->mpModel = &mCarPink;
+				//	}
+				//	else if (i % 8 == 2){
+				//		mEnemys[i]->mpModel = &mCarRed;
+				//	}
+				//	else if (i % 8 == 3){
+				//		mEnemys[i]->mpModel = &mCarGreen;
+				//	}
+				//	else if (i % 8 == 4){
+				//		mEnemys[i]->mpModel = &mCarYellow;
+				//	}
+				//	else if (i % 8 == 5){
+				//		mEnemys[i]->mpModel = &mCarBlack;
+				//	}
+				//	else if (i % 8 == 6){
+				//		mEnemys[i]->mpModel = &mCarGray;
+				//	}
+				//	else if (i % 8 == 7){
+				//		mEnemys[i]->mpModel = &mCarCyan;
+				//	}*/
+				//	color[0] = 0.0f, color[1] = 0.0f, color[2] = 1.0f;
+				//}
+				//else if (i % 8 == 1){
+				//	color[0] = 1.0f, color[1] = 0.0f, color[2] = 1.0f;
+				//}
+				//else if (i % 8 == 2){
+				//	color[0] = 1.0f, color[1] = 0.0f, color[2] = 0.0f;
+				//}
+				//else if (i % 8 == 3){
+				//	color[0] = 0.0f, color[1] = 1.0f, color[2] = 0.0f;
+				//}
+				//else if (i % 8 == 4){
+				//	color[0] = 1.0f, color[1] = 1.0f, color[2] = 0.0f;
+				//}
+				//else if (i % 8 == 5){
+				//	color[0] = 0.0f, color[1] = 0.0f, color[2] = 0.0f;
+				//}
+				//else if (i % 8 == 6){
+				//	color[0] = 0.5f, color[1] = 0.5f, color[2] = 0.5f;
+				//}
+				//else if (i % 8 == 7){
+				//	color[0] = 0.0f, color[1] = 1.0f, color[2] = 1.0f;
+				//}
+				
+				if (mEnemys[i]->mpModel == &mCarRed){
+					color[0] = 1.0f, color[1] = 0.0f, color[2] = 0.0f;
+				}
+				else if (mEnemys[i]->mpModel == &mCarGreen){
+					color[0] = 0.0f, color[1] = 1.0f, color[2] = 0.0f;
+				}
+				else if (mEnemys[i]->mpModel == &mCarBlue){
+					color[0] = 0.0f, color[1] = 0.0f, color[2] = 1.0f;
+				}
+				else if (mEnemys[i]->mpModel == &mCarYellow){
+					color[0] = 1.0f, color[1] = 1.0f, color[2] = 0.0f;
+				}
+				else if (mEnemys[i]->mpModel == &mCarCyan){
+					color[0] = 0.0f, color[1] = 1.0f, color[2] = 1.0f;
+				}								
+				else if (mEnemys[i]->mpModel == &mCarPink){
+					color[0] = 1.0f, color[1] = 0.0f, color[2] = 1.0f;
+				}
+				else if (mEnemys[i]->mpModel == &mCarWhite){
+					color[0] = color[1] = color[2] = 1.0f;
+				}
+				else if (mEnemys[i]->mpModel == &mCarGray){
+					color[0] = color[1] = color[2] = 0.5f;
+				}
+				else if (mEnemys[i]->mpModel == &mCarBlack){
+					color[0] = color[1] = color[2] = 0.0f;
+				}
+				else {
+					color[0] = color[1] = color[2] = 0.75f;
+				}
+				glColor4fv(color);
+				CText::DrawString(name, 270+40, 285 - mEnemys[i]->mRank * 17, 10, 12, 2);
+
+				color[0] = color[1] = color[2] = 1.0f;
+				glColor4fv(color);
 				CText::DrawString(goaltime, 270, 285 - mEnemys[i]->mRank * 17, 10, 12, 2);
 			}			
 		}
