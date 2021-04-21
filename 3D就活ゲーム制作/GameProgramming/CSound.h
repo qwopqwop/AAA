@@ -7,6 +7,7 @@
 #pragma comment(lib,"xaudio2.lib")
 #pragma comment(lib,"winmm.lib")
 
+
 /*
 サウンドクラス
 サウンドファイルを読み込み、再生する。

@@ -78,7 +78,7 @@ CCameraRange::CCameraRange()
 
 	mColRange.mTag = CCollider::ECAMERA_RANGE;
 
-	mPosition = CVector(0.0f, 17.0f, 40.0f) * CPlayer::mpPlayer->mMatrixScale * CPlayer::mpPlayer->mMatrixRotate * CPlayer::mpPlayer->mMatrixTranslate;
+	mPosition = CVector(0.0f, 17.0f, -40.0f * -1) * CPlayer::mpPlayer->mMatrixScale * CPlayer::mpPlayer->mMatrixRotate * CPlayer::mpPlayer->mMatrixTranslate;
 	CCharacter::Update();
 }
 
@@ -95,14 +95,19 @@ void CCameraRange::Update(){
 	////mPosition.mY += 120.0f;
 	////mPosition.mZ += 100.0f;	
 	//mPosition = CVector(mADMoveX, 0.0f, mWSMoveZ + mCarSpeed) * mMatrixRotate * mMatrixTranslate;
+	//////printf(".");//こっちはプレイヤーから距離がかなり離れてても処理をし続けてくれる。
+	////mPosition = CPlayer::mpPlayer->mPosition;
+	////mPosition = CVector(0.0f, 170.0f, 400.0f) * CPlayer::mpPlayer->mMatrixRotate * CPlayer::mpPlayer->mMatrixTranslate;
+	//////17.0f, -40.0f
+	//mPosition = CVector(0.0f, 17.0f, -40.0f * -1) * CPlayer::mpPlayer->mMatrixScale * CPlayer::mpPlayer->mMatrixRotate * CPlayer::mpPlayer->mMatrixTranslate;
+	//mRotation = CPlayer::mpPlayer->mRotation;
+	//CCharacter::Update();
 
-
-	////printf(".");//こっちはプレイヤーから距離がかなり離れてても処理をし続けてくれる。
-	//mPosition = CPlayer::mpPlayer->mPosition;
-	//mPosition = CVector(0.0f, 170.0f, 400.0f) * CPlayer::mpPlayer->mMatrixRotate * CPlayer::mpPlayer->mMatrixTranslate;
-	////17.0f, -40.0f
-	mPosition = CVector(0.0f, 17.0f, 40.0f) * CPlayer::mpPlayer->mMatrixScale * CPlayer::mpPlayer->mMatrixRotate * CPlayer::mpPlayer->mMatrixTranslate;
-	mRotation = CPlayer::mpPlayer->mRotation;
+	
+	mPosition = CVector(0.0f, 17.0f, -40.0f*-1) * CMatrix().RotateY(0)* CPlayer::mpPlayer->mMatrixScale   // * mPlayer->mMatrixScale
+		* CMatrix().RotateY(CPlayer::mpPlayer->mRotation.mY)
+		* CPlayer::mpPlayer->mMatrixTranslate
+		+ CVector(0.0f, 0.0f, 0.0f);
 	CCharacter::Update();
 }
 

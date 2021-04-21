@@ -87,6 +87,7 @@ CCameraPos::CCameraPos()
 	mPosition = CPlayer::mpPlayer->mPosition;
 	mPosition = CCameraRange::mpCameraRange->mPosition;
 	//printf("X:%f\nY:%f\nZ:%f\n", mPosition.mX, mPosition.mY, mPosition.mZ);
+	mRotation = CPlayer::mpPlayer->mRotation;
 	CCharacter::Update();
 	mVCamY = 0;
 
@@ -189,14 +190,14 @@ void CCameraPos::Update(){
 	//}
 
 	mVPoint = CCameraRange::mpCameraRange->mPosition;
-	mPosition.mY = CCameraRange::mpCameraRange->mPosition.mY;
-	mRotation = CPlayer::mpPlayer->mRotation;
+	//mPosition.mY = CCameraRange::mpCameraRange->mPosition.mY;
+	//mRotation = CPlayer::mpPlayer->mRotation;
 	CCharacter::Update();
 	//ポイントへのベクトルを求める
-	//CVector dir = mpPoint->mPosition - mPosition;
-	dir = mVPoint - mPosition;
+	CVector dir = mVPoint - mPosition;
 	//左方向へのベクトルを求める
-	left = CVector(1.0f, 0.0f, 0.0f) * CMatrix().RotateY(mRotation.mY);
+	CVector left = CVector(1.0f, 0.0f, 0.0f) * CMatrix().RotateY(mRotation.mY);
+	CVector up = CVector(0.0f, 1.0f, 0.0f) * CMatrix().RotateX(mRotation.mX) * CMatrix().RotateY(mRotation.mY);
 	while (left.Dot(dir) > 0.0f){
 		mRotation.mY++;
 		left = CVector(1.0f, 0.0f, 0.0f) * CMatrix().RotateY(mRotation.mY);
@@ -204,14 +205,23 @@ void CCameraPos::Update(){
 	while (left.Dot(dir) < 0.0f){
 		mRotation.mY--;
 		left = CVector(1.0f, 0.0f, 0.0f) * CMatrix().RotateY(mRotation.mY);
-	}	
+	}
+	//
+	while (up.Dot(dir) > 0.0f){
+		mRotation.mX--;
+		up = CVector(0.0f, 1.0f, 0.0f) * CMatrix().RotateX(mRotation.mX) * CMatrix().RotateY(mRotation.mY);
+	}
+	while (up.Dot(dir) < 0.0f){
+		mRotation.mX++;
+		up = CVector(0.0f, 1.0f, 0.0f) * CMatrix().RotateX(mRotation.mX) * CMatrix().RotateY(mRotation.mY);
+	}
 	CCharacter::Update();
 	//プレイヤーの車のスピードを絶対値に変化
 	mCameraSpeed = CPlayer::mpPlayer->mCarSpeed;
 	if (mCameraSpeed < 0.0f){
 		mCameraSpeed *= -1;
 	}
-	mPosition = CVector(0.0f, 0.0f, mCameraSpeed) * mMatrixRotate * mMatrixTranslate;
+	mPosition = CVector(0.0f, 0.0f, mCameraSpeed) * mMatrixRotate * mMatrixTranslate;;
 	//mPosition = CVector(0.0f, 0.0f, mCameraSpeed) * CCameraRange::mpCameraRange->mMatrixRotate * CCameraRange::mpCameraRange->mMatrixTranslate;  // * mMatrixRotate * mMatrixTranslate;
 	CCharacter::Update();
 

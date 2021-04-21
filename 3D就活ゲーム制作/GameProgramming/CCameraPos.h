@@ -36,11 +36,14 @@ public:
 	CVector mVPoint;
 	float mVCamY;//カメラの方向
 
-	//ポイントへのベクトルを求める
-	//CVector dir = mpPoint->mPosition - mPosition;
-	CVector dir;
-	//左方向へのベクトルを求める
-	CVector left;
+	////ポイントへのベクトルを求める
+	////CVector dir = mpPoint->mPosition - mPosition;
+	//CVector dir;
+	////左方向へのベクトルを求める
+	//CVector left;
+
+	////上方向へのベクトルを求める
+	//CVector up;
 };
 
 

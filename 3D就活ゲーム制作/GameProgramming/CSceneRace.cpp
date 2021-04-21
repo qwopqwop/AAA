@@ -285,6 +285,12 @@ void CSceneRace::Update() {
 		//	+ CVector(0.0f, 0.0f, 0.0f);
 		//c = CCameraPos::mpCamera->mPosition + CVector(0.0f, 0.0f, 40.0f)* mPlayer->mMatrixScale   //* mPlayer->mMatrixScale
 		//	* CMatrix().RotateY(mPlayer->mRotation.mY);
+
+		//e = CVector(0.0f, 0.0f, 0.0f) * CMatrix().RotateY(mCamY)* mPlayer->mMatrixScale   // * mPlayer->mMatrixScale
+		//	* CMatrix().RotateY(mPlayer->mRotation.mY)
+		//	*CCameraPos::mpCamera->mMatrixTranslate;
+		//c = CCameraPos::mpCamera->mPosition + CVector(0.0f, 0.0f, 40.0f)* mPlayer->mMatrixScale   //* mPlayer->mMatrixScale
+		//	* CMatrix().RotateY(mPlayer->mRotation.mY);
 	}
 	else if (mCamPoV == 2){
 		e = CVector(0.0f, 0.0f + 0.5f, -40.0f) * CMatrix().RotateY(mCamY) * mPlayer->mMatrixScale

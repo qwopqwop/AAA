@@ -171,11 +171,10 @@ void CRaceCourceE::Init(){
 	//プレイヤーの生成
 	mPlayer = new CPlayer();
 	mPlayer->mpModel = &mCarWhite;
-
-	
+	//カメラの生成
 	mCamRange = new CCameraRange();
 	mCam = new CCameraPos();
-
+	mCam->mpModel = &mCarYellow;
 	//敵車の生成
 	for (int i = 0; i < ENEMYS_AMOUNT; i++){
 		mEnemys[i] = new CEnemy();
