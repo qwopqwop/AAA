@@ -174,7 +174,7 @@ void CRaceCourceE::Init(){
 	//ƒJƒƒ‰‚Ì¶¬
 	mCamRange = new CCameraRange();
 	mCam = new CCameraPos();
-	mCam->mpModel = &mCarYellow;
+	//mCam->mpModel = &mCarYellow;
 	//“GÔ‚Ì¶¬
 	for (int i = 0; i < ENEMYS_AMOUNT; i++){
 		mEnemys[i] = new CEnemy();

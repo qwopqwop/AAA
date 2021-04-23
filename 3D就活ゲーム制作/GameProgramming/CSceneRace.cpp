@@ -269,73 +269,80 @@ void CSceneRace::Init() {
 void CSceneRace::Update() {
 	//カメラのパラメータを作成する
 	CVector e, c, u;//視点、注視点、上方向
-	//視点を求める
-	if (mCamPoV == 1){
-		e = CVector(0.0f, 17.0f, -40.0f) * CMatrix().RotateY(mCamY)* mPlayer->mMatrixScale   // * mPlayer->mMatrixScale
-			* CMatrix().RotateY(mPlayer->mRotation.mY)
-			* mPlayer->mMatrixTranslate
-			+ CVector(0.0f, 0.0f, 0.0f);
-		c = mPlayer->mPosition + CVector(0.0f, 0.0f, 40.0f)* mPlayer->mMatrixScale   //* mPlayer->mMatrixScale
-			* CMatrix().RotateY(mPlayer->mRotation.mY);
 
-		//e = CVector(0.0f, 17.0f, -40.0f) * CMatrix().RotateY(mCamY)* mPlayer->mMatrixScale   // * mPlayer->mMatrixScale
-		//	* CMatrix().RotateY(mPlayer->mRotation.mY)
-		//	//* mPlayer->mMatrixTranslate
-		//	*CCameraPos::mpCamera->mMatrixTranslate
-		//	+ CVector(0.0f, 0.0f, 0.0f);
-		//c = CCameraPos::mpCamera->mPosition + CVector(0.0f, 0.0f, 40.0f)* mPlayer->mMatrixScale   //* mPlayer->mMatrixScale
-		//	* CMatrix().RotateY(mPlayer->mRotation.mY);
+	////視点を求める
+	//if (mCamPoV == 1){
+	//	e = CVector(0.0f, 17.0f, -40.0f) * CMatrix().RotateY(mCamY)* mPlayer->mMatrixScale   // * mPlayer->mMatrixScale
+	//		* CMatrix().RotateY(mPlayer->mRotation.mY)
+	//		* mPlayer->mMatrixTranslate
+	//		+ CVector(0.0f, 0.0f, 0.0f);
+	//	c = mPlayer->mPosition + CVector(0.0f, 0.0f, 40.0f)* mPlayer->mMatrixScale   //* mPlayer->mMatrixScale
+	//		* CMatrix().RotateY(mPlayer->mRotation.mY);
+	//	//e = CVector(0.0f, 17.0f, -40.0f) * CMatrix().RotateY(mCamY)* mPlayer->mMatrixScale   // * mPlayer->mMatrixScale
+	//	//	* CMatrix().RotateY(mPlayer->mRotation.mY)
+	//	//	//* mPlayer->mMatrixTranslate
+	//	//	*CCameraPos::mpCamera->mMatrixTranslate
+	//	//	+ CVector(0.0f, 0.0f, 0.0f);
+	//	//c = CCameraPos::mpCamera->mPosition + CVector(0.0f, 0.0f, 40.0f)* mPlayer->mMatrixScale   //* mPlayer->mMatrixScale
+	//	//	* CMatrix().RotateY(mPlayer->mRotation.mY);
+	//	//e = CVector(0.0f, 0.0f, 0.0f) * CMatrix().RotateY(mCamY)* mPlayer->mMatrixScale   // * mPlayer->mMatrixScale
+	//	//	* CMatrix().RotateY(mPlayer->mRotation.mY)
+	//	//	*CCameraPos::mpCamera->mMatrixTranslate;
+	//	//c = CCameraPos::mpCamera->mPosition + CVector(0.0f, 0.0f, 40.0f)* mPlayer->mMatrixScale   //* mPlayer->mMatrixScale
+	//	//	* CMatrix().RotateY(mPlayer->mRotation.mY);
+	//	
+	//}
+	//else if (mCamPoV == 2){
+	//	e = CVector(0.0f, 0.0f + 0.5f, -40.0f) * CMatrix().RotateY(mCamY) * mPlayer->mMatrixScale
+	//		* CMatrix().RotateY(mPlayer->mRotation.mY)
+	//		* mPlayer->mMatrixTranslate
+	//		+ CVector(0.0f, 0.0f, 0.0f);
+	//	////注視点を求める
+	//	//c = mPlayer->mPosition + CVector(0.0f, 0.0f, 40.0f)*mPlayer->mMatrixRotate;
+	//	c = mPlayer->mPosition + CVector(0.0f, 0.0f, 40.0f)* mPlayer->mMatrixScale
+	//		* CMatrix().RotateY(mPlayer->mRotation.mY);
+	//		//* CMatrix().RotateZ(mPlayer->mRotation.mZ);
+	//}
+	//else if (mCamPoV == 3){//後方を映す視点
+	//	e = CVector(0.0f, 17.0f, 40.0f) * CMatrix().RotateY(mCamY) * mPlayer->mMatrixScale
+	//		* CMatrix().RotateY(mPlayer->mRotation.mY)
+	//		* mPlayer->mMatrixTranslate
+	//		+ CVector(0.0f, 0.0f, 0.0f);
+	//	////注視点を求める
+	//	//c = mPlayer->mPosition + CVector(0.0f, 0.0f, 40.0f)*mPlayer->mMatrixRotate;
+	//	c = mPlayer->mPosition + CVector(0.0f, 0.0f, -40.0f)* mPlayer->mMatrixScale
+	//		* CMatrix().RotateY(mPlayer->mRotation.mY);
+	//		//* CMatrix().RotateZ(mPlayer->mRotation.mZ);
+	//}
+	//else{//1～3以外の数値が入っている時はとりあえず前方視点(1と同じ)
+	//	e = CVector(0.0f, 17.0f, -40.0f) * CMatrix().RotateY(mCamY)* mPlayer->mMatrixScale   // * mPlayer->mMatrixScale
+	//		* CMatrix().RotateY(mPlayer->mRotation.mY)
+	//		* mPlayer->mMatrixTranslate
+	//		+ CVector(0.0f, 0.0f, 0.0f);
+	//	c = mPlayer->mPosition + CVector(0.0f, 0.0f, 40.0f)* mPlayer->mMatrixScale   //* mPlayer->mMatrixScale
+	//		* CMatrix().RotateY(mPlayer->mRotation.mY);
+	//}
+	////e = CVector(0.0f, 17.0f, -40.0f) * CMatrix().RotateY(mCamY)* mPlayer->mMatrixScale   // * mPlayer->mMatrixScale
+	////	* CMatrix().RotateY(mPlayer->mRotation.mY)
+	////	*mCam->mMatrixTranslate
+	////	//* mPlayer->mMatrixTranslate
+	////	+ CVector(0.0f, 0.0f, 0.0f);
+	////c = mCam->mPosition + CVector(0.0f, 0.0f, 40.0f)* mPlayer->mMatrixScale   //* mPlayer->mMatrixScale
+	////	* CMatrix().RotateY(mPlayer->mRotation.mY);
+	///*printf("X:%f\n", mPlayer->mColBody.mPosition.mX);
+	//printf("Y:%f\n", mPlayer->mColBody.mPosition.mY);
+	//printf("Z:%f\n", mPlayer->mColBody.mPosition.mZ);*/
+	////上方向を求める
+	//u = CVector(0.0f, 1.0f, 0.0f);// *mPlayer->mMatrixRotate;
 
-		//e = CVector(0.0f, 0.0f, 0.0f) * CMatrix().RotateY(mCamY)* mPlayer->mMatrixScale   // * mPlayer->mMatrixScale
-		//	* CMatrix().RotateY(mPlayer->mRotation.mY)
-		//	*CCameraPos::mpCamera->mMatrixTranslate;
-		//c = CCameraPos::mpCamera->mPosition + CVector(0.0f, 0.0f, 40.0f)* mPlayer->mMatrixScale   //* mPlayer->mMatrixScale
-		//	* CMatrix().RotateY(mPlayer->mRotation.mY);
-	}
-	else if (mCamPoV == 2){
-		e = CVector(0.0f, 0.0f + 0.5f, -40.0f) * CMatrix().RotateY(mCamY) * mPlayer->mMatrixScale
-			* CMatrix().RotateY(mPlayer->mRotation.mY)
-			* mPlayer->mMatrixTranslate
-			+ CVector(0.0f, 0.0f, 0.0f);
-		////注視点を求める
-		//c = mPlayer->mPosition + CVector(0.0f, 0.0f, 40.0f)*mPlayer->mMatrixRotate;
-		c = mPlayer->mPosition + CVector(0.0f, 0.0f, 40.0f)* mPlayer->mMatrixScale
-			* CMatrix().RotateY(mPlayer->mRotation.mY);
-			//* CMatrix().RotateZ(mPlayer->mRotation.mZ);
-	}
-	else if (mCamPoV == 3){//後方を映す視点
-		e = CVector(0.0f, 17.0f, 40.0f) * CMatrix().RotateY(mCamY) * mPlayer->mMatrixScale
-			* CMatrix().RotateY(mPlayer->mRotation.mY)
-			* mPlayer->mMatrixTranslate
-			+ CVector(0.0f, 0.0f, 0.0f);
-		////注視点を求める
-		//c = mPlayer->mPosition + CVector(0.0f, 0.0f, 40.0f)*mPlayer->mMatrixRotate;
-		c = mPlayer->mPosition + CVector(0.0f, 0.0f, -40.0f)* mPlayer->mMatrixScale
-			* CMatrix().RotateY(mPlayer->mRotation.mY);
-			//* CMatrix().RotateZ(mPlayer->mRotation.mZ);
-	}
-	else{//1～3以外の数値が入っている時はとりあえず前方視点(1と同じ)
-		e = CVector(0.0f, 17.0f, -40.0f) * CMatrix().RotateY(mCamY)* mPlayer->mMatrixScale   // * mPlayer->mMatrixScale
-			* CMatrix().RotateY(mPlayer->mRotation.mY)
-			* mPlayer->mMatrixTranslate
-			+ CVector(0.0f, 0.0f, 0.0f);
-		c = mPlayer->mPosition + CVector(0.0f, 0.0f, 40.0f)* mPlayer->mMatrixScale   //* mPlayer->mMatrixScale
-			* CMatrix().RotateY(mPlayer->mRotation.mY);
-	}
-
-	//e = CVector(0.0f, 17.0f, -40.0f) * CMatrix().RotateY(mCamY)* mPlayer->mMatrixScale   // * mPlayer->mMatrixScale
-	//	* CMatrix().RotateY(mPlayer->mRotation.mY)
-	//	*mCam->mMatrixTranslate
-	//	//* mPlayer->mMatrixTranslate
-	//	+ CVector(0.0f, 0.0f, 0.0f);
-	//c = mCam->mPosition + CVector(0.0f, 0.0f, 40.0f)* mPlayer->mMatrixScale   //* mPlayer->mMatrixScale
-	//	* CMatrix().RotateY(mPlayer->mRotation.mY);
-	/*printf("X:%f\n", mPlayer->mColBody.mPosition.mX);
-	printf("Y:%f\n", mPlayer->mColBody.mPosition.mY);
-	printf("Z:%f\n", mPlayer->mColBody.mPosition.mZ);*/
-
-	//上方向を求める
-	u = CVector(0.0f, 1.0f, 0.0f);// *mPlayer->mMatrixRotate;	
+	e = CCameraPos::mpCamera->mPosition;
+	e = CVector(0.0f, 17.0f, -40.0f) * CMatrix().RotateY(mCamY)* mPlayer->mMatrixScale   // * mPlayer->mMatrixScale
+		* CMatrix().RotateY(mPlayer->mRotation.mY)
+		* mPlayer->mMatrixTranslate
+		+ CVector(0.0f, 0.0f, 0.0f);
+	c = mPlayer->mPosition + CVector(0.0f, 0.0f, 40.0f)* mPlayer->mMatrixScale   //* mPlayer->mMatrixScale
+		* CMatrix().RotateY(mPlayer->mRotation.mY);
+	u = CVector(0.0f, 1.0f, 0.0f)*mPlayer->mMatrixRotate;
 	//カメラの設定
 	Camera3D(e.mX, e.mY, e.mZ, c.mX, c.mY, c.mZ, u.mX, u.mY, u.mZ);
 	Camera.mEye = e;

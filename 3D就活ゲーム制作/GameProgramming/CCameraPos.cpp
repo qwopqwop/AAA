@@ -203,7 +203,8 @@ void CCameraPos::Update(){
 		left = CVector(1.0f, 0.0f, 0.0f) * CMatrix().RotateY(mRotation.mY);
 	}
 	while (left.Dot(dir) < 0.0f){
-		mRotation.mY--;
+		mRotation.mY++;
+		//mRotation.mY--;
 		left = CVector(1.0f, 0.0f, 0.0f) * CMatrix().RotateY(mRotation.mY);
 	}
 	//
@@ -271,6 +272,29 @@ void CCameraPos::Collision(CCollider *mc, CCollider *yc){
 				}
 			}
 		}
+
+		//if (yc->mType == CCollider::ESPHERE){
+		//	//カメラは車と衝突しない
+		//	if (mc->mTag == CCollider::ECAMERA){
+		//		if (yc->mpParent->mTag == CCharacter::EPLAYER){
+		//			if (yc->mTag == CCollider::ECAMERA_RANGE){
+		//				CVector adjust;//調整用ベクトル
+		//				////		//球同士の衝突判定
+		//				if (CCollider::Collision(mc, yc, &adjust)==false){
+		//					mPosition = yc->mpParent->mPosition;
+		//					mPosition = mPosition - adjust*-1;
+		//					//行列の更新
+		//					CCharacter::Update();
+		//					CVector aio = CVector(0.0f, 0.0f, (mc->mRadius+yc->mRadius) *-1)*CMatrix().RotateY(mRotation.mY);
+		//					
+		//					mPosition = mPosition + aio;
+		//					CCharacter::Update();													
+		//				}						
+		//			}
+		//		}
+		//	}
+		//}
+
 
 		//if (yc->mType == CCollider::ESPHERE){
 		//	//カメラは車と衝突しない
