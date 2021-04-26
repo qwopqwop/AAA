@@ -119,6 +119,8 @@ public:
 	int mPointCnt;//ポイントのカウンタ
 	//次のポイントまでに出す最高速度
 	float mMaxSpeed_PtoP;
+	//最後にポイントが変わってからの経過時間
+	int mPointTime;
 
 	//コライダ
 	CCollider mSearch;

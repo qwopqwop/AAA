@@ -39,6 +39,7 @@ CEnemy *CEnemy::mpEnemy = 0;
 #define DECELERATE 0.05f*2 //車の減速する量
 #define FIX_ANGLE_VALUE 0.5f*2 //角度が0度に向けて調整される量(主にX・Z用)
 #define JUMPER01_POWER 3.0f //ジャンプ台1でのジャンプ力
+#define RESTART_TIME 30*60 //敵が詰まった時、一定時間経過でリスタートさせる
 
 //#define MAXSPEED 7.0f //車の最高速度
 //#define MAXSPEED_BACK 2.0f //車の後退する最大速度
@@ -114,6 +115,7 @@ CEnemy::CEnemy()
 	isSoundEngine = false;
 	
 	mPointCnt = 0;//最初のポイントを設定
+	mPointTime = 0;//現ポイントに移ってからの経過時間
 	//mpPoint = &mPoint[mPointCnt];//目指すポイントのポインタを設定
 
 	mpPoint = mPoint;
@@ -406,9 +408,9 @@ void CEnemy::Update(){
 		*mMatrixTranslate;//できてる？
 	//mMatrix = mMatrixScale * mMatrixRotate * mMatrixTranslate;
 
-	//コースアウトした時
-	/*※不具合 複数の敵が同時にリスポーン時、一体だけ正常にリスポーンし、他の敵が消える*/
-	if (mPosition.mY < -700.0f){
+	//コースアウトした時、もしくは敵が壁等に引っかかり進めなくなっている時
+	if (mPosition.mY < -700.0f || mPointTime > RESTART_TIME){
+		mPointTime = 0;
 		//落下の勢いを0にする
 		mVelocityJump = 0.0f;
 		//車の速度を0に
@@ -429,18 +431,30 @@ void CEnemy::Update(){
 				//スタートした時の位置、方向に戻される
 				mPosition = CVector(mStartPoint[0], mStartPoint[1], mStartPoint[2]);
 				mRotation.mY = 0.0f;
+				mpPoint = mPoint;
+				mVPoint = mpPoint->mPosition;
 			}
 			else if (mChecks == 1){
 				mPosition = CVector(-80.0f, mStartPoint[1], 2175.0f);
 				mRotation.mY = -55.0f;
+				mpPoint = mPoint3;
+				mVPoint = mpPoint->mPosition;
 			}
 			else if (mChecks == 2){
 				mPosition = CVector(-1620.0f, mStartPoint[1], 450.0f);
 				mRotation.mY = -175.0f;
+				mpPoint = mPoint4;
+				mVPoint = mpPoint->mPosition;
 			}
 			else if (mChecks == 3){
-				mPosition = CVector(-1212.0f, mStartPoint[1], -1616.0f);
+				/*mPosition = CVector(-1412.0f, mStartPoint[1], -1720.0f);
 				mRotation.mY = 120.0f;
+				mpPoint = mPoint5;
+				mVPoint = mpPoint->mPosition;*/
+				mPosition = CVector(-1620.0f, mStartPoint[1], -250.0f);
+				mRotation.mY = -175.0f;
+				mpPoint = mPoint4;
+				mVPoint = mpPoint->mPosition;
 			}
 		}
 		else if (CSceneTitle::mMode == 2){
@@ -556,7 +570,7 @@ void CEnemy::Update(){
 	
 	if (CKey::Push('I')){
 		mpPoint->mRotation.mY++;
-	}
+	}	
 }
 
 void CEnemy::Collision(CCollider *mc, CCollider *yc){
@@ -768,6 +782,8 @@ void CEnemy::Collision(CCollider *mc, CCollider *yc){
 						if (CCollider::Collision(mc, yc, &adjust)){
 							//衝突したポインタと目指しているポインタが同じ時
 							if (yc->mpParent == mpPoint){
+								//ポイント経過時間のリセット
+								mPointTime = 0;
 								//とりあえず先にint付けで生成しておく
 								int r = (mc->mRadius + yc->mRadius) * 0.8f;
 								int gap = (rand() % (r * 2) - r);

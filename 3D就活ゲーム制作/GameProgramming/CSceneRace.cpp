@@ -452,7 +452,12 @@ void CSceneRace::Update() {
 				else{
 					mTime += 1;
 				}				
-			}			
+			}
+			for (int i = 0; i < ENEMYS_AMOUNT; i++){				
+				if (mEnemys[i]->isEnemyGoaled == false){
+					mEnemys[i]->mPointTime++;
+				}
+			}
 		}
 		if (isStartRace){
 			//mTime_Output:レース中に表示されるタイム(ゴール後にタイマー停止)
@@ -573,6 +578,12 @@ void CSceneRace::Update() {
 	char carhandle[33];
 	sprintf(carhandle, "%4.2f", CPlayer::mpPlayer->mTurnSpeed);
 	CText::DrawString(carhandle, 20 + 260, 20, 10, 12);
+
+	/*char pointtime[33];
+	for (int i = 0; i < ENEMYS_AMOUNT; i++){
+		sprintf(pointtime, "%d", mEnemys[i]->mPointTime);
+		CText::DrawString(pointtime, 20 + 230 + i * 6, 120 + i * -12, 5, 6);
+	}	*/
 	
 	//ゴール後に表示される文字
 	if (isGoal){
