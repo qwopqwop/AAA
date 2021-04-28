@@ -203,8 +203,8 @@ void CCameraPos::Update(){
 		left = CVector(1.0f, 0.0f, 0.0f) * CMatrix().RotateY(mRotation.mY);
 	}
 	while (left.Dot(dir) < 0.0f){
-		mRotation.mY++;
-		//mRotation.mY--;
+		//mRotation.mY++;
+		mRotation.mY--;
 		left = CVector(1.0f, 0.0f, 0.0f) * CMatrix().RotateY(mRotation.mY);
 	}
 	//
@@ -235,6 +235,12 @@ void CCameraPos::Update(){
 	////mPosition = CVector(CPlayer::mpPlayer->mADMoveX, 0.0f, 0.0f) * mMatrixRotate * mMatrixTranslate;
 	//CCharacter::Update();
 
+	if (CPlayer::mpPlayer->isRespawn){
+		mPosition = CVector(0.0f, 17.0f, -40.0f) * CPlayer::mpPlayer->mMatrixScale * CPlayer::mpPlayer->mMatrixRotate * CPlayer::mpPlayer->mMatrixTranslate;
+		CCharacter::Update();
+		printf("w\n");
+		CPlayer::mpPlayer->isRespawn = false;
+	}
 }
 
 void CCameraPos::Collision(CCollider *mc, CCollider *yc){

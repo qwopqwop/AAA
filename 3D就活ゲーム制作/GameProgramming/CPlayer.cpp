@@ -82,6 +82,7 @@ CPlayer::CPlayer()
 	mFlyingMode = false;
 
 	CanMove = false;
+	isRespawn = false;
 
 	mChecks = 0;
 
@@ -514,7 +515,7 @@ void CPlayer::Update(){
 			}
 		}
 		mRotation = CVector(0.0f, mStartRotation, 0.0f);
-		
+		isRespawn = true;
 	}
 
 	CCharacter::Update();
@@ -537,6 +538,11 @@ void CPlayer::Update(){
 	//}
 	if (mJumpPrio > 0){
 		mJumpPrio--;
+	}
+
+	if (CKey::Once('L')){
+		mPosition = CVector(0.0f, 100.0f, 0.0f);
+		CCharacter::Update();
 	}
 	
 }

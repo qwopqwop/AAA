@@ -263,6 +263,23 @@ void CSceneRace::Init() {
 
 	//BGMはループ
 	BGM.Repeat();
+
+	//素数かどうかの判定
+	for (int i = 2; i <= 1000; i++){
+		printf("数字：%d　", i);
+		for (int j = 2; j <= i; j++){
+			if (i % j == 0){
+				if (i == j){
+					printf("素数\n");					
+				}
+				else{
+					printf("素数ではない\n");					
+				}
+				break;
+			}
+		}		
+	}
+
 }
 
 
@@ -336,13 +353,13 @@ void CSceneRace::Update() {
 	//u = CVector(0.0f, 1.0f, 0.0f);// *mPlayer->mMatrixRotate;
 
 	e = CCameraPos::mpCamera->mPosition;
-	e = CVector(0.0f, 17.0f, -40.0f) * CMatrix().RotateY(mCamY)* mPlayer->mMatrixScale   // * mPlayer->mMatrixScale
-		* CMatrix().RotateY(mPlayer->mRotation.mY)
-		* mPlayer->mMatrixTranslate
-		+ CVector(0.0f, 0.0f, 0.0f);
+	//e = CVector(0.0f, 17.0f, -40.0f) * CMatrix().RotateY(mCamY)* mPlayer->mMatrixScale   // * mPlayer->mMatrixScale
+	//	* CMatrix().RotateY(mPlayer->mRotation.mY)
+	//	* mPlayer->mMatrixTranslate
+	//	+ CVector(0.0f, 0.0f, 0.0f);
 	c = mPlayer->mPosition + CVector(0.0f, 0.0f, 40.0f)* mPlayer->mMatrixScale   //* mPlayer->mMatrixScale
 		* CMatrix().RotateY(mPlayer->mRotation.mY);
-	u = CVector(0.0f, 1.0f, 0.0f)*mPlayer->mMatrixRotate;
+	u = CVector(0.0f, 1.0f, 0.0f);//*mPlayer->mMatrixRotate;
 	//カメラの設定
 	Camera3D(e.mX, e.mY, e.mZ, c.mX, c.mY, c.mZ, u.mX, u.mY, u.mZ);
 	Camera.mEye = e;
@@ -434,6 +451,10 @@ void CSceneRace::Update() {
 	//即時トップスピードに
 	if (CKey::Once('G')){
 		mPlayer->mCarSpeed = 20.0f;
+	}
+	//
+	if (CKey::Once('V')){
+		mPlayer->mChecks = 3;
 	}
 #endif	
 
@@ -725,7 +746,8 @@ void CSceneRace::Update() {
 	}
 	//2D描画終了
 	End2D();
-
+	
+	//
 	//ゴール地点通過時の処理
 	if (CSceneTitle::mMode == 2){
 		if ((CPlayer::mpPlayer->mPosition.mX > 2216.0f - 222.0f && CPlayer::mpPlayer->mPosition.mX < 2216.0f + 222.0f)
@@ -768,6 +790,7 @@ void CSceneRace::Update() {
 				SoundGoal.Play();
 				//CPlayer::mpPlayer->CanMove = false;//動きストップ
 				CPlayer::mpPlayer->mChecks = 0;
+				CPlayer::mpPlayer->mGoalTime = mTime;
 			}
 			else{
 				mLap++;
@@ -785,6 +808,7 @@ void CSceneRace::Update() {
 					mEnemys[i]->mRank = mRanking;
 					mRanking++;
 					mEnemys[i]->isEnemyGoaled = true;
+					mEnemys[i]->mGoalTime = mTime;
 				}
 				//まだ最終ラップでない場合
 				else{
@@ -836,6 +860,7 @@ void CSceneRace::Update() {
 				SoundGoal.Play();
 				//CPlayer::mpPlayer->CanMove = false;//動きストップ
 				CPlayer::mpPlayer->mChecks = 0;
+				CPlayer::mpPlayer->mGoalTime = mTime;
 			}
 			else{
 				mLap++;
@@ -853,6 +878,7 @@ void CSceneRace::Update() {
 					mEnemys[i]->mRank = mRanking;
 					mRanking++;
 					mEnemys[i]->isEnemyGoaled = true;
+					mEnemys[i]->mGoalTime = mTime;
 				}
 				//まだ最終ラップでない場合
 				else{
@@ -900,6 +926,7 @@ void CSceneRace::Update() {
 				SoundGoal.Play();
 				//CPlayer::mpPlayer->CanMove = false;//動きストップ
 				CPlayer::mpPlayer->mChecks = 0;
+				CPlayer::mpPlayer->mGoalTime = mTime;
 				CPlayer::mpPlayer->isTouchGoal = false;
 			}
 			else{
@@ -919,6 +946,7 @@ void CSceneRace::Update() {
 					mRanking++;
 					mEnemys[i]->isTouchGoal = false;
 					mEnemys[i]->isEnemyGoaled = true;
+					mEnemys[i]->mGoalTime = mTime;
 				}
 				//まだ最終ラップでない場合
 				else{
@@ -1072,6 +1100,39 @@ void CSceneRace::RenderMiniMap() {
 	glPushMatrix();
 	glViewport(600 + 20-30, 450 - 440, 200, 150); //画面の描画エリアの指定
 	glLoadIdentity();
+
+	//一時的に2D視点に変更する
+	glViewport(590, 10, 200, 150);	//画面の描画エリアの指定
+	glMatrixMode(GL_PROJECTION);	//行列をプロジェクションモードへ変更
+	glLoadIdentity();				//行列を初期化
+	gluOrtho2D(-400 / 2, 400 / 2, -300 / 2, 300 / 2);	//2Dの画面を設定
+	//gluPerspective(75.0, 800.0 / 600.0, 1.0, 10000.0);	//3Dの画面を設定
+	glMatrixMode(GL_MODELVIEW);		//行列をモデルビューモードへ変更
+	glLoadIdentity();				//行列を初期化
+
+
+	////2D描画開始
+	//Start2D(0, 800, 0, 600);
+	//float color[] = { 0.0f, 0.0f, 0.7f, 1.0f };
+	//glColor4fv(color);
+	////上記の2D描画範囲の指定値より大きめに白背景を描画する
+	//int expand = 100;
+	////白背景のよりも先に黒枠となるものを描画する
+	//glBegin(GL_TRIANGLES);//久しぶり
+	//glVertex2d(0 - expand, 0 - expand);
+	//glVertex2d(800 + expand, 600 + expand);
+	//glVertex2d(0 - expand, 600 + expand);
+	//glEnd();
+	//glBegin(GL_TRIANGLES);
+	//glVertex2d(0 - expand, 0 - expand);
+	//glVertex2d(800 + expand, 0 - expand);
+	//glVertex2d(800 + expand, 600 + expand);
+	//glEnd();
+	//color[0] = color[1] = color[2] = color[3] = 1.0f;
+	//glColor4fv(color);
+	////2D描画終了
+	//End2D();
+
 	
 	if (CSceneTitle::mMode == 3){
 		gluLookAt(0, 9400, 0, 0, 0, 0, 0, 0, 1);
@@ -1080,7 +1141,17 @@ void CSceneRace::RenderMiniMap() {
 		gluLookAt(0, 7000, 0, 0, 0, 0, 0, 0, 1);
 	}
 	else if (CSceneTitle::mMode == 5){
-		gluLookAt(0, 10000, 0, 0, 0, 0, 0, 0, 1);
+		////2回以上gluLookAtすると1回の時との結果が変わる
+		////gluLookAt(0, 10000, 0, 0, 0, 0, 0, 0, 1);
+		///*gluLookAt(mPlayer->mPosition.mX, 10000, 0, mPlayer->mPosition.mX, 0, 0, 0, 0, 1);
+		//gluLookAt(0, 10000, 0, 0, 0, 0, 0, 0, 1);*/
+		////gluLookAt(mPlayer->mPosition.mX, 7500, mPlayer->mPosition.mZ, mPlayer->mPosition.mX, 0, mPlayer->mPosition.mZ, 0, 0, 1);
+		////gluLookAt(mPlayer->mPosition.mX, mPlayer->mPosition.mY + 5500, mPlayer->mPosition.mZ, mPlayer->mPosition.mX, mPlayer->mPosition.mY + 0, mPlayer->mPosition.mZ, 0, 0, 1);
+		////gluLookAt(0, 0, 0, 0, 0, 0, 0, 1, 0);
+		//////glFrustum(0 + mPlayer->mPosition.mX, 800 / 8 + mPlayer->mPosition.mX, 0 + mPlayer->mPosition.mZ, 600 / 8 + mPlayer->mPosition.mZ, 0.5f, 2.5f);		
+		////glFrustum(0 + mPlayer->mPosition.mX, 800 / 16 + mPlayer->mPosition.mX, 0 + mPlayer->mPosition.mZ, 600 / 16 + mPlayer->mPosition.mZ, 0.5f, 2.5f);
+		//glFrustum(0, 1, 0, 1, 0.5f, 2.5f);
+		gluLookAt(0, 500, 0, 0, 0, 0, 0, 1, 0);
 	}
 	else if (CSceneTitle::mMode == 4){
 		//2D描画開始
@@ -1288,6 +1359,90 @@ void CSceneRace::RenderMiniMap() {
 			* mPlayer->mMatrixTranslate;
 		mCarsol.Render(matplayer);
 	}
+	else if (CSceneTitle::mMode == 5){
+		if (isRendPoint == true){
+			/*デバッグ用*/
+			//設定した敵の目標地点すべてをミニマップ上に描画する
+			CMatrix point;
+			for (int i = 1; i <= 12; i++){//ポイントの数だけ処理実行
+				point = CMatrix().Scale(111.0f, 1.0f, 111.0f)
+					* CMatrix().RotateY(45);
+				//* CEnemy::mPoint->mMatrixTranslate;
+				//1より小さい時は即やめ
+				if (i < 1){
+					break;
+				}
+				if (i == 1){
+					point = point * CEnemy::mPoint->mMatrixTranslate;
+				}
+				else if (i == 2){
+					point = point * CEnemy::mPoint2->mMatrixTranslate;
+				}
+				else if (i == 3){
+					point = point * CEnemy::mPoint3->mMatrixTranslate;
+				}
+				else if (i == 4){
+					point = point * CEnemy::mPoint4->mMatrixTranslate;
+				}
+				else if (i == 5){
+					point = point * CEnemy::mPoint5->mMatrixTranslate;
+				}
+				else if (i == 6){
+					point = point * CEnemy::mPoint6->mMatrixTranslate;
+				}
+				else if (i == 7){
+					point = point * CEnemy::mPoint7->mMatrixTranslate;
+				}
+				else if (i == 8){
+					point = point * CEnemy::mPoint8->mMatrixTranslate;
+				}
+				else if (i == 9){
+					point = point * CEnemy::mPoint9->mMatrixTranslate;
+				}
+				else if (i == 10){
+					point = point * CEnemy::mPoint10->mMatrixTranslate;
+				}
+				else if (i == 11){
+					point = point * CEnemy::mPoint11->mMatrixTranslate;
+				}
+				else if (i == 12){
+					point = point * CEnemy::mPoint12->mMatrixTranslate;
+				}
+				else{
+					break;
+				}
+				mTileWhite.Render(point);
+			}
+		}
+		//ミニマップにゴールアイコンを描画
+		CMatrix matminig;
+		matminig = CMatrix().Scale(25.0f, 1.0f, 25.0f)
+			//* mPlayer->mMatrixRotate
+			* CMatrix().RotateX(0)
+			* CMatrix().RotateY(0)
+			* CMatrix().RotateZ(0)
+			* CMatrix().Translate(2211.0f, 0.0f, -2300.0f);
+		//* CMatrix().Translate(-3200.0f, 0.0f, 341.7f);
+		mMiniGoal.Render(matminig);
+		CMatrix matenemys[ENEMYS_AMOUNT];
+		for (int i = 0; i < ENEMYS_AMOUNT; i++){
+			matenemys[i] = CMatrix().Scale(45.0f, 1.0f, 45.0f) //* mPlayer->mMatrixScale
+				* CMatrix().RotateX(0)
+				* CMatrix().RotateY(mEnemys[i]->mRotation.mY)
+				* CMatrix().RotateZ(0)
+				* mEnemys[i]->mMatrixTranslate;
+			mCarsol_Enemy.Render(matenemys[i]);
+		}
+		//ミニマップ状にプレイヤーを示すカーソルを描画
+		CMatrix matplayer;
+		matplayer = CMatrix().Scale(45.0f, 1.0f, 45.0f) //* mPlayer->mMatrixScale
+			//* mPlayer->mMatrixRotate
+			* CMatrix().RotateX(0)
+			* CMatrix().RotateY(mPlayer->mRotation.mY)
+			* CMatrix().RotateZ(0)
+			* mPlayer->mMatrixTranslate;
+		mCarsol.Render(matplayer);
+	}
 	else{
 		if (isRendPoint == true){
 			/*デバッグ用*/
@@ -1374,10 +1529,18 @@ void CSceneRace::RenderMiniMap() {
 		mCarsol.Render(matplayer);
 	}
 	
-
 	glPopMatrix();
 	glViewport(0, 0, 800, 600); //画面の描画エリアの指定
 	glEnable(GL_DEPTH_TEST);
+
+	////3D視点に戻す
+	//glViewport(0, 0, 800, 600);	//画面の描画エリアの指定
+	//glMatrixMode(GL_PROJECTION);	//行列をプロジェクションモードへ変更
+	//glLoadIdentity();				//行列を初期化
+	////gluOrtho2D(-200 / 2, 200 / 2, -150 / 2, 150 / 2);	//2Dの画面を設定
+	//gluPerspective(75.0, 800.0 / 600.0, 1.0, 10000.0);	//3Dの画面を設定
+	//glMatrixMode(GL_MODELVIEW);		//行列をモデルビューモードへ変更
+	//glLoadIdentity();
 }
 //バックミラーを表示
 void CSceneRace::RenderBackMirror(){

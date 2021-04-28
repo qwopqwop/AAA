@@ -86,6 +86,8 @@ public:
 
 	//コライダの更新
 	void TaskCollision();
+
+	bool isRespawn;
 };
 
 
