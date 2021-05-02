@@ -114,6 +114,11 @@ public:
 	static CPoint *mPoint45;
 	static CPoint *mPoint46;
 	static CPoint *mPoint47;
+	static CPoint *mPoint48;
+	static CPoint *mPoint49;
+	static CPoint *mPoint50;
+	static CPoint *mPoint51;
+	static CPoint *mPoint52;
 	static int mPointSize;//ポイントの数
 	CPoint *mpPoint;//目指すポイント
 	int mPointCnt;//ポイントのカウンタ

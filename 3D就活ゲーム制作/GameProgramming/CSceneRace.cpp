@@ -263,23 +263,6 @@ void CSceneRace::Init() {
 
 	//BGMはループ
 	BGM.Repeat();
-
-	//素数かどうかの判定
-	for (int i = 2; i <= 1000; i++){
-		printf("数字：%d　", i);
-		for (int j = 2; j <= i; j++){
-			if (i % j == 0){
-				if (i == j){
-					printf("素数\n");					
-				}
-				else{
-					printf("素数ではない\n");					
-				}
-				break;
-			}
-		}		
-	}
-
 }
 
 
@@ -353,10 +336,7 @@ void CSceneRace::Update() {
 	//u = CVector(0.0f, 1.0f, 0.0f);// *mPlayer->mMatrixRotate;
 
 	e = CCameraPos::mpCamera->mPosition;
-	//e = CVector(0.0f, 17.0f, -40.0f) * CMatrix().RotateY(mCamY)* mPlayer->mMatrixScale   // * mPlayer->mMatrixScale
-	//	* CMatrix().RotateY(mPlayer->mRotation.mY)
-	//	* mPlayer->mMatrixTranslate
-	//	+ CVector(0.0f, 0.0f, 0.0f);
+	
 	c = mPlayer->mPosition + CVector(0.0f, 0.0f, 40.0f)* mPlayer->mMatrixScale   //* mPlayer->mMatrixScale
 		* CMatrix().RotateY(mPlayer->mRotation.mY);
 	u = CVector(0.0f, 1.0f, 0.0f);//*mPlayer->mMatrixRotate;
@@ -1098,18 +1078,43 @@ void CSceneRace::Update() {
 /* マップ上からの視点 */
 void CSceneRace::RenderMiniMap() {
 	glPushMatrix();
-	glViewport(600 + 20-30, 450 - 440, 200, 150); //画面の描画エリアの指定
+	glViewport(600 + 20 - 30, 450 - 440, 200, 150); //画面の描画エリアの指定
 	glLoadIdentity();
-
 	//一時的に2D視点に変更する
 	glViewport(590, 10, 200, 150);	//画面の描画エリアの指定
 	glMatrixMode(GL_PROJECTION);	//行列をプロジェクションモードへ変更
+	//行列退避
+	glPushMatrix();
 	glLoadIdentity();				//行列を初期化
-	gluOrtho2D(-400 / 2, 400 / 2, -300 / 2, 300 / 2);	//2Dの画面を設定
-	//gluPerspective(75.0, 800.0 / 600.0, 1.0, 10000.0);	//3Dの画面を設定
+	//2D画面の設定変更
+	float size = 20000.0f;//コースの縮尺設定
+	bool canscrollmap = false;//プレイヤーに合わせたマップ移動の有無
+	if (CSceneTitle::mMode == 1){
+		size = 3600.0f;
+	}
+	else if (CSceneTitle::mMode == 2){
+		size = 5600.0f;
+	}
+	else if (CSceneTitle::mMode == 3){
+		size = 7600.0f;
+	}
+	else if (CSceneTitle::mMode == 4){
+		size = 3600.0f;
+	}
+	else if (CSceneTitle::mMode == 5){
+		size = 5500.0f;
+		canscrollmap = true;
+	}
+	//画面比率は800x600→4:3
+	if (canscrollmap){
+		glOrtho(-size*1.33f + mPlayer->mPosition.mX, size*1.33f + mPlayer->mPosition.mX, -size - mPlayer->mPosition.mZ, size - mPlayer->mPosition.mZ, -size, size);//glOrtho(左、右、下、上、手前、奥)
+	}
+	else{
+		glOrtho(-size*1.33f, size*1.33f, -size, size, -size, size);//glOrtho(左、右、下、上、手前、奥)
+	}	
 	glMatrixMode(GL_MODELVIEW);		//行列をモデルビューモードへ変更
 	glLoadIdentity();				//行列を初期化
-
+	glRotatef(90.0f, 1.0f, 0.0f, 0.0f);	//X-Z平面をX-Y平面へ
 
 	////2D描画開始
 	//Start2D(0, 800, 0, 600);
@@ -1131,56 +1136,8 @@ void CSceneRace::RenderMiniMap() {
 	//color[0] = color[1] = color[2] = color[3] = 1.0f;
 	//glColor4fv(color);
 	////2D描画終了
-	//End2D();
-
+	//End2D();	
 	
-	if (CSceneTitle::mMode == 3){
-		gluLookAt(0, 9400, 0, 0, 0, 0, 0, 0, 1);
-	}
-	else if (CSceneTitle::mMode == 2){
-		gluLookAt(0, 7000, 0, 0, 0, 0, 0, 0, 1);
-	}
-	else if (CSceneTitle::mMode == 5){
-		////2回以上gluLookAtすると1回の時との結果が変わる
-		////gluLookAt(0, 10000, 0, 0, 0, 0, 0, 0, 1);
-		///*gluLookAt(mPlayer->mPosition.mX, 10000, 0, mPlayer->mPosition.mX, 0, 0, 0, 0, 1);
-		//gluLookAt(0, 10000, 0, 0, 0, 0, 0, 0, 1);*/
-		////gluLookAt(mPlayer->mPosition.mX, 7500, mPlayer->mPosition.mZ, mPlayer->mPosition.mX, 0, mPlayer->mPosition.mZ, 0, 0, 1);
-		////gluLookAt(mPlayer->mPosition.mX, mPlayer->mPosition.mY + 5500, mPlayer->mPosition.mZ, mPlayer->mPosition.mX, mPlayer->mPosition.mY + 0, mPlayer->mPosition.mZ, 0, 0, 1);
-		////gluLookAt(0, 0, 0, 0, 0, 0, 0, 1, 0);
-		//////glFrustum(0 + mPlayer->mPosition.mX, 800 / 8 + mPlayer->mPosition.mX, 0 + mPlayer->mPosition.mZ, 600 / 8 + mPlayer->mPosition.mZ, 0.5f, 2.5f);		
-		////glFrustum(0 + mPlayer->mPosition.mX, 800 / 16 + mPlayer->mPosition.mX, 0 + mPlayer->mPosition.mZ, 600 / 16 + mPlayer->mPosition.mZ, 0.5f, 2.5f);
-		//glFrustum(0, 1, 0, 1, 0.5f, 2.5f);
-		gluLookAt(0, 500, 0, 0, 0, 0, 0, 1, 0);
-	}
-	else if (CSceneTitle::mMode == 4){
-		//2D描画開始
-		Start2D(0, 800, 0, 600);
-		float color[] = { 0.9f, 0.9f, 0.9f, 1.0f };
-		glColor4fv(color);
-		//上記の2D描画範囲の指定値より大きめに白背景を描画する
-		int expand = 100;
-		//白背景のよりも先に黒枠となるものを描画する
-		glBegin(GL_TRIANGLES);//久しぶり
-		glVertex2d(0 - expand, 0 - expand);
-		glVertex2d(800 + expand, 600 + expand);
-		glVertex2d(0 - expand, 600 + expand);
-		glEnd();
-		glBegin(GL_TRIANGLES);
-		glVertex2d(0 - expand, 0 - expand);
-		glVertex2d(800 + expand, 0 - expand);
-		glVertex2d(800 + expand, 600 + expand);
-		glEnd();
-		color[0] = color[1] = color[2] = color[3] = 1.0f;
-		glColor4fv(color);
-		//2D描画終了
-		End2D();
-		//
-		gluLookAt(0, 3600, 0, 0, 0, 0, 0, 0, 1);
-	}
-	else{
-		gluLookAt(0, 4800, 0, 0, 0, 0, 0, 0, 1);
-	}	
 	glDisable(GL_DEPTH_TEST);
 //	BackGround.Render(CMatrix());
 	//タスクマネージャの描画
@@ -1414,16 +1371,26 @@ void CSceneRace::RenderMiniMap() {
 				mTileWhite.Render(point);
 			}
 		}
+		////ミニマップにゴールアイコンを描画
+		//CMatrix matminig;
+		//matminig = CMatrix().Scale(125.0f, 1.0f, 125.0f)
+		//	//* mPlayer->mMatrixRotate
+		//	* CMatrix().RotateX(0)
+		//	* CMatrix().RotateY(0)
+		//	* CMatrix().RotateZ(0)
+		//	* CMatrix().Translate(-3862.5f, 30.0f, -15925.0f);//
+		//mMiniGoal.Render(matminig);
+
 		//ミニマップにゴールアイコンを描画
 		CMatrix matminig;
-		matminig = CMatrix().Scale(25.0f, 1.0f, 25.0f)
+		matminig = CMatrix().Scale(25.0f, 100.0f, 25.0f)
 			//* mPlayer->mMatrixRotate
 			* CMatrix().RotateX(0)
-			* CMatrix().RotateY(0)
+			* CMatrix().RotateY(-145.3)
 			* CMatrix().RotateZ(0)
-			* CMatrix().Translate(2211.0f, 0.0f, -2300.0f);
-		//* CMatrix().Translate(-3200.0f, 0.0f, 341.7f);
+			* CMatrix().Translate(-3862.5f, 30.0f, 15925.0f);
 		mMiniGoal.Render(matminig);
+
 		CMatrix matenemys[ENEMYS_AMOUNT];
 		for (int i = 0; i < ENEMYS_AMOUNT; i++){
 			matenemys[i] = CMatrix().Scale(45.0f, 1.0f, 45.0f) //* mPlayer->mMatrixScale
@@ -1533,14 +1500,14 @@ void CSceneRace::RenderMiniMap() {
 	glViewport(0, 0, 800, 600); //画面の描画エリアの指定
 	glEnable(GL_DEPTH_TEST);
 
-	////3D視点に戻す
-	//glViewport(0, 0, 800, 600);	//画面の描画エリアの指定
-	//glMatrixMode(GL_PROJECTION);	//行列をプロジェクションモードへ変更
-	//glLoadIdentity();				//行列を初期化
-	////gluOrtho2D(-200 / 2, 200 / 2, -150 / 2, 150 / 2);	//2Dの画面を設定
-	//gluPerspective(75.0, 800.0 / 600.0, 1.0, 10000.0);	//3Dの画面を設定
-	//glMatrixMode(GL_MODELVIEW);		//行列をモデルビューモードへ変更
-	//glLoadIdentity();
+	//3D視点に戻す
+	glViewport(0, 0, 800, 600);	//画面の描画エリアの指定
+	glMatrixMode(GL_PROJECTION);	//行列をプロジェクションモードへ変更
+	glLoadIdentity();				//行列を初期化
+	//gluOrtho2D(-200 / 2, 200 / 2, -150 / 2, 150 / 2);	//2Dの画面を設定
+	gluPerspective(75.0, 800.0 / 600.0, 1.0, 10000.0);	//3Dの画面を設定
+	glMatrixMode(GL_MODELVIEW);		//行列をモデルビューモードへ変更
+	glLoadIdentity();
 }
 //バックミラーを表示
 void CSceneRace::RenderBackMirror(){
@@ -1617,8 +1584,7 @@ void CSceneRace::RenderBackMirror(){
 	glColor4fv(color);
 	//2D描画終了
 	End2D();
-
-
+	
 
 	//行列を退避させる
 	glPushMatrix();

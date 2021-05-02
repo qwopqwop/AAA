@@ -10,6 +10,10 @@
 #include <stdlib.h>
 #include <time.h>
 
+//三角関数関連のインクルード
+#include <math.h>
+#define PI 3.141592
+
 //衝突時のエフェクト追加
 #include "CEffect.h"
 extern std::shared_ptr<CTexture> TextureExp;
@@ -180,22 +184,103 @@ void CEnemy::Update(){
 		}
 	}
 	else if (CSceneTitle::mMode == 5){
-		if (mpPoint == mPoint24){
+		/*if (mpPoint == mPoint25){
 			mMaxSpeed_PtoP = 10.0f;
-		}
-		else if (mpPoint == mPoint25){
-			mMaxSpeed_PtoP = 5.0f;
 		}
 		else if (mpPoint == mPoint26){
 			mMaxSpeed_PtoP = 5.0f;
 		}
-		else if (mpPoint == mPoint34){
-			mMaxSpeed_PtoP = 17.0f;
+		else if (mpPoint == mPoint27){
+			mMaxSpeed_PtoP = 5.0f;
 		}
 		else if (mpPoint == mPoint35){
+			mMaxSpeed_PtoP = 17.0f;
+		}
+		else if (mpPoint == mPoint36){
 			mMaxSpeed_PtoP = 15.0f;
 		}
-		
+		else if (mpPoint == mPoint){
+			mMaxSpeed_PtoP = 19.0f;
+		}
+		else if (mpPoint == mPoint2){
+			mMaxSpeed_PtoP = 17.0f;
+		}
+		else if (mpPoint == mPoint3){
+			mMaxSpeed_PtoP = 19.0f;
+		}
+		else if (mpPoint == mPoint5){
+			mMaxSpeed_PtoP = 15.0f;
+		}
+		else if (mpPoint == mPoint6){
+			mMaxSpeed_PtoP = 14.0f;
+		}
+		else if (mpPoint == mPoint7){
+			mMaxSpeed_PtoP = 16.5f;
+		}
+		else if (mpPoint == mPoint9){
+			mMaxSpeed_PtoP = 17.5f;
+		}
+		else if (mpPoint == mPoint10){
+			mMaxSpeed_PtoP = 15.0f;
+		}
+		else if (mpPoint == mPoint11){
+			mMaxSpeed_PtoP = 15.0f;
+		}*/
+		if (mpPoint == mPoint){
+			mMaxSpeed_PtoP = 19.0f;
+		}
+		else if (mpPoint == mPoint2){
+			mMaxSpeed_PtoP = 17.0f;
+		}
+		else if (mpPoint == mPoint3){
+			mMaxSpeed_PtoP = 15.0f;
+		}
+		else if (mpPoint == mPoint4){
+			mMaxSpeed_PtoP = 15.0f;
+		}
+		else if (mpPoint == mPoint8){
+			mMaxSpeed_PtoP = 16.0f;
+		}
+		else if (mpPoint == mPoint9){
+			mMaxSpeed_PtoP = 9.5f;
+		}
+		else if (mpPoint == mPoint10){
+			mMaxSpeed_PtoP = 17.0f;
+		}
+		else if (mpPoint == mPoint11){
+			mMaxSpeed_PtoP = 11.0f;
+		}
+		else if (mpPoint == mPoint12){
+			mMaxSpeed_PtoP = 12.0f;
+		}
+		else if (mpPoint == mPoint13){
+			mMaxSpeed_PtoP = 14.0f;
+		}
+		else if (mpPoint == mPoint14){
+			mMaxSpeed_PtoP = 14.0f;
+		}
+		else if (mpPoint == mPoint15){
+			mMaxSpeed_PtoP = 13.0f;
+		}
+		else if (mpPoint == mPoint16){
+			mMaxSpeed_PtoP = 15.0f;
+		}
+		else if (mpPoint == mPoint29){
+			mMaxSpeed_PtoP = 10.0f;
+		}
+		else if (mpPoint == mPoint30){
+			mMaxSpeed_PtoP = 5.0f;
+		}
+		else if (mpPoint == mPoint31){
+			mMaxSpeed_PtoP = 5.0f;
+		}
+		else if (mpPoint == mPoint39){
+			mMaxSpeed_PtoP = 17.0f;
+		}
+		else if (mpPoint == mPoint40){
+			mMaxSpeed_PtoP = 15.0f;
+		}
+
 		else{
 			mMaxSpeed_PtoP = 20.0f;
 		}
@@ -527,19 +612,19 @@ void CEnemy::Update(){
 			else if (mChecks == 1){
 				mPosition = CVector(-16054.4f, 4915.0f, -2180.0f);
 				mRotation.mY = -174.6f;
-				mpPoint = mPoint16;
+				mpPoint = mPoint21;
 				mVPoint = mpPoint->mPosition;
 			}
 			else if (mChecks == 2){
 				mPosition = CVector(4680.0f, 13.5f, -2027.0f);
 				mRotation.mY = 147.2f;
-				mpPoint = mPoint27;
+				mpPoint = mPoint32;
 				mVPoint = mpPoint->mPosition;
 			}
 			else if (mChecks == 3){
 				mPosition = CVector(14809.0f, 13.5f, 4270.0f);
 				mRotation.mY = -9.5f;
-				mpPoint = mPoint31;
+				mpPoint = mPoint36;
 				mVPoint = mpPoint->mPosition;
 			}
 		}
@@ -704,6 +789,36 @@ void CEnemy::Collision(CCollider *mc, CCollider *yc){
 							mRotation.mX--;
 							}*/
 
+							/*１．斜面の法線ベクトルからY軸ベクトルを求めます。　済
+							２．車体の進行方向から、Z軸ベクトルを求めます。  済??
+							３．Y軸ベクトルとZ軸ベクトルの外積を計算し、X軸ベクトルを求めます。
+							４．X軸ベクトルとY軸ベクトルの外積を計算し、Z軸ベクトルを求めます。
+							５．Z軸ベクトルからX軸の回転値を求めます。              okか…？
+							６．Z軸ベクトルからY軸の回転値を求めます。              okか…？
+							７．X軸ベクトルとY軸ベクトルからZ軸の回転値を求めます。 okか…？
+							８．求めた回転値を車体に適用します。                    okか…？*/
+							CVector v[3], sv, ev;
+							//各コライダの頂点をワールド座標へ変換
+							v[0] = yc->mV[0] * yc->mMatrix * yc->mpParent->mMatrix;
+							v[1] = yc->mV[1] * yc->mMatrix * yc->mpParent->mMatrix;
+							v[2] = yc->mV[2] * yc->mMatrix * yc->mpParent->mMatrix;
+							//面の法線を、外積を正規化して求める
+							// 1.斜面の法線ベクトルからY軸ベクトルを求める
+							CVector normal = (v[1] - v[0]).Cross(v[2] - v[0]).Normalize();  //法線ベクトルは取れてるかも？
+							// 2.車体の進行方向から、Z軸ベクトルを求める
+							CVector preZvec = CVector(0.0f, 0.0f, 1.0f) * mMatrixRotate;
+							// 3.Y軸ベクトルとZ軸ベクトルの外積を計算し、X軸ベクトルを求める
+							CVector Xvec = (normal).Cross(preZvec).Normalize();
+							// 4.X軸ベクトルとY軸ベクトルの外積を計算し、Z軸ベクトルを求める
+							CVector Zvec = (Xvec).Cross(normal).Normalize();//？？？？？？？？？？？								
+							// 5～7.回転値を求める
+							float rad = asin(Zvec.mY);//5.
+							float rotX = rad * 180 / PI * -1;//X軸は反転
+							float rotY = atan2(Zvec.mX, Zvec.mZ) * 180 / PI;//6.
+							float rotZ = atan2(Xvec.mY, normal.mY) * 180 / PI;//7.
+							// 8.求めた回転値を車体に適用
+							mRotation = CVector(rotX, rotY, rotZ);
+
 							//int rotateofycmx = yc->mpParent->mRotation.mX;
 							//rotateofycmx %= 360; //-360度から360度までの数値に変換
 							////-235=125 300=-60 -180度未満か、180度以上の角度は
@@ -800,164 +915,88 @@ void CEnemy::Collision(CCollider *mc, CCollider *yc){
 									r = (mc->mRadius + yc->mRadius) * 0.2f;
 									gap = (rand() % (r * 2) - r);
 								}
-								//次のポイントのポインタを設定
-								if (mpPoint == mPoint){
-									mVPoint = mPoint2->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-									mpPoint = mPoint2;
-								}
-								else if(mpPoint==mPoint2){
-									mVPoint = mPoint3->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-									mpPoint = mPoint3;
-								}
-								else if (mpPoint == mPoint3){
-									mVPoint = mPoint4->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-									mpPoint = mPoint4;
-								}
-								else if (mpPoint == mPoint4){
-									mVPoint = mPoint5->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-									mpPoint = mPoint5;
-								}
-								else if (mpPoint == mPoint5){
-									mVPoint = mPoint6->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-									mpPoint = mPoint6;
-								}
-								else if (mpPoint == mPoint6){
-									mVPoint = mPoint7->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-									mpPoint = mPoint7;
-								}
-								else if (mpPoint == mPoint7){
-									mVPoint = mPoint8->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-									mpPoint = mPoint8;
-								}
-								else if (mpPoint == mPoint8){
-									mVPoint = mPoint9->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-									mpPoint = mPoint9;
-								}
-								else if (mpPoint == mPoint9){
-									mVPoint = mPoint10->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-									mpPoint = mPoint10;
-								}
-								else if (mpPoint == mPoint10){
-									mVPoint = mPoint11->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-									mpPoint = mPoint11;
-								}
-								else if (mpPoint == mPoint11){
-									mVPoint = mPoint12->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-									mpPoint = mPoint12;
-								}
-								else if (mpPoint == mPoint12){
-									//コース2or3を走行中かで分岐する
-									if (CSceneTitle::mMode == 2 || CSceneTitle::mMode == 3 || CSceneTitle::mMode == 5){
-										mVPoint = mPoint13->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
+
+								//コース5は分散無しの地点あり
+								if (CSceneTitle::mMode == 5){
+									//次のポイントのポインタを設定
+									if (mpPoint == mPoint){
+										mVPoint = mPoint2->mPosition;
+										mpPoint = mPoint2;
+									}
+									else if (mpPoint == mPoint2){
+										mVPoint = mPoint3->mPosition;
+										mpPoint = mPoint3;
+									}
+									else if (mpPoint == mPoint3){
+										mVPoint = mPoint4->mPosition;
+										mpPoint = mPoint4;
+									}
+									else if (mpPoint == mPoint4){
+										mVPoint = mPoint5->mPosition;
+										mpPoint = mPoint5;
+									}
+									else if (mpPoint == mPoint5){
+										mVPoint = mPoint6->mPosition;
+										mpPoint = mPoint6;
+									}
+									else if (mpPoint == mPoint6){
+										mVPoint = mPoint7->mPosition;
+										mpPoint = mPoint7;
+									}
+									else if (mpPoint == mPoint7){
+										mVPoint = mPoint8->mPosition;
+										mpPoint = mPoint8;
+									}
+									else if (mpPoint == mPoint8){
+										mVPoint = mPoint9->mPosition;
+										mpPoint = mPoint9;
+									}
+									else if (mpPoint == mPoint9){
+										mVPoint = mPoint10->mPosition;
+										mpPoint = mPoint10;
+									}
+									else if (mpPoint == mPoint10){
+										mVPoint = mPoint11->mPosition;
+										mpPoint = mPoint11;
+									}
+									else if (mpPoint == mPoint11){
+										mVPoint = mPoint12->mPosition;
+										mpPoint = mPoint12;
+									}
+									else if (mpPoint == mPoint12){
+										mVPoint = mPoint13->mPosition;
 										mpPoint = mPoint13;
 									}
-									else{
-										mVPoint = mPoint->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-										mpPoint = mPoint;//ポイント1に戻ってループする
-									}									
-								}
-								//コース2
-								else if (CSceneTitle::mMode == 2){
-									if (mpPoint == mPoint13){
-										mVPoint = mPoint14->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
+									else if (mpPoint == mPoint13){
+										mVPoint = mPoint14->mPosition;
 										mpPoint = mPoint14;
 									}
 									else if (mpPoint == mPoint14){
-										mVPoint = mPoint15->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
+										mVPoint = mPoint15->mPosition;
 										mpPoint = mPoint15;
 									}
 									else if (mpPoint == mPoint15){
-										mVPoint = mPoint16->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
+										mVPoint = mPoint16->mPosition;
 										mpPoint = mPoint16;
 									}
 									else if (mpPoint == mPoint16){
-										mVPoint = mPoint17->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
+										mVPoint = mPoint17->mPosition;
 										mpPoint = mPoint17;
 									}
 									else if (mpPoint == mPoint17){
-										mVPoint = mPoint->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-										mpPoint = mPoint;
-									}
-								}
-								//コース3ではポインタの数が拡張される
-								else if (CSceneTitle::mMode == 3){
-									if (mpPoint == mPoint13){
-										mVPoint = mPoint14->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-										mpPoint = mPoint14;
-									}
-									else if (mpPoint == mPoint14){
-										mVPoint = mPoint15->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-										mpPoint = mPoint15;
-									}
-									else if (mpPoint == mPoint15){
-										mVPoint = mPoint16->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-										mpPoint = mPoint16;
-									}
-									else if (mpPoint == mPoint16){
-										mVPoint = mPoint17->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-										mpPoint = mPoint17;
-									}
-									else if (mpPoint == mPoint17){
-										mVPoint = mPoint18->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
+										mVPoint = mPoint18->mPosition;
 										mpPoint = mPoint18;
 									}
 									else if (mpPoint == mPoint18){
-										mVPoint = mPoint19->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
+										mVPoint = mPoint19->mPosition;
 										mpPoint = mPoint19;
 									}
 									else if (mpPoint == mPoint19){
-										mVPoint = mPoint20->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
+										mVPoint = mPoint20->mPosition;
 										mpPoint = mPoint20;
 									}
 									else if (mpPoint == mPoint20){
-										mVPoint = mPoint21->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-										mpPoint = mPoint21;
-									}
-									else if (mpPoint == mPoint21){
-										mVPoint = mPoint22->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-										mpPoint = mPoint22;
-									}
-									else if (mpPoint == mPoint22){
-										mVPoint = mPoint23->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-										mpPoint = mPoint23;
-									}
-									else if (mpPoint == mPoint23){
-										mVPoint = mPoint->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-										mpPoint = mPoint;
-									}
-								}
-								//コース5ではポインタの数が拡張される
-								else if (CSceneTitle::mMode == 5){
-									if (mpPoint == mPoint13){
-										mVPoint = mPoint14->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-										mpPoint = mPoint14;
-									}
-									else if (mpPoint == mPoint14){
-										mVPoint = mPoint15->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-										mpPoint = mPoint15;
-									}
-									else if (mpPoint == mPoint15){
-										mVPoint = mPoint16->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-										mpPoint = mPoint16;
-									}
-									else if (mpPoint == mPoint16){
-										mVPoint = mPoint17->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-										mpPoint = mPoint17;
-									}
-									else if (mpPoint == mPoint17){
-										mVPoint = mPoint18->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-										mpPoint = mPoint18;
-									}
-									else if (mpPoint == mPoint18){
-										mVPoint = mPoint19->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-										mpPoint = mPoint19;
-									}
-									else if (mpPoint == mPoint19){
-										mVPoint = mPoint20->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-										mpPoint = mPoint20;
-									}
-									else if (mpPoint == mPoint20){
-										mVPoint = mPoint21->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
+										mVPoint = mPoint21->mPosition;
 										mpPoint = mPoint21;
 									}
 									else if (mpPoint == mPoint21){
@@ -979,8 +1018,6 @@ void CEnemy::Collision(CCollider *mc, CCollider *yc){
 									else if (mpPoint == mPoint25){
 										mVPoint = mPoint26->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
 										mpPoint = mPoint26;
-
-										printf("next->26\n");
 									}
 									else if (mpPoint == mPoint26){
 										mVPoint = mPoint27->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
@@ -997,19 +1034,14 @@ void CEnemy::Collision(CCollider *mc, CCollider *yc){
 									else if (mpPoint == mPoint29){
 										mVPoint = mPoint30->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
 										mpPoint = mPoint30;
-										printf("next->30\n");
 									}
 									else if (mpPoint == mPoint30){
 										mVPoint = mPoint31->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
 										mpPoint = mPoint31;
-
-										printf("next->31\n");
 									}
 									else if (mpPoint == mPoint31){
 										mVPoint = mPoint32->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
 										mpPoint = mPoint32;
-
-										printf("next->32\n");
 									}
 									else if (mpPoint == mPoint32){
 										mVPoint = mPoint33->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
@@ -1042,14 +1074,11 @@ void CEnemy::Collision(CCollider *mc, CCollider *yc){
 									else if (mpPoint == mPoint39){
 										mVPoint = mPoint40->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
 										mpPoint = mPoint40;
-
-										printf("next->40\n");
 									}
 									else if (mpPoint == mPoint40){
 										mVPoint = mPoint41->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
 										mpPoint = mPoint41;
 									}
-
 									else if (mpPoint == mPoint41){
 										mVPoint = mPoint42->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
 										mpPoint = mPoint42;
@@ -1075,10 +1104,315 @@ void CEnemy::Collision(CCollider *mc, CCollider *yc){
 										mpPoint = mPoint47;
 									}
 									else if (mpPoint == mPoint47){
-										mVPoint = mPoint->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
+										mVPoint = mPoint48->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
+										mpPoint = mPoint48;
+									}
+									else if (mpPoint == mPoint48){
+										mVPoint = mPoint49->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
+										mpPoint = mPoint49;
+									}
+									else if (mpPoint == mPoint49){
+										mVPoint = mPoint50->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
+										mpPoint = mPoint50;
+									}
+									else if (mpPoint == mPoint50){
+										mVPoint = mPoint51->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
+										mpPoint = mPoint51;
+									}
+									else if (mpPoint == mPoint51){
+										mVPoint = mPoint52->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
+										mpPoint = mPoint52;
+									}
+									else if (mpPoint == mPoint52){
+										mVPoint = mPoint->mPosition;
 										mpPoint = mPoint;
 									}
 								}
+								else{
+									//次のポイントのポインタを設定
+									if (mpPoint == mPoint){
+										mVPoint = mPoint2->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
+										mpPoint = mPoint2;
+									}
+									else if (mpPoint == mPoint2){
+										mVPoint = mPoint3->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
+										mpPoint = mPoint3;
+									}
+									else if (mpPoint == mPoint3){
+										mVPoint = mPoint4->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
+										mpPoint = mPoint4;
+									}
+									else if (mpPoint == mPoint4){
+										mVPoint = mPoint5->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
+										mpPoint = mPoint5;
+									}
+									else if (mpPoint == mPoint5){
+										mVPoint = mPoint6->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
+										mpPoint = mPoint6;
+									}
+									else if (mpPoint == mPoint6){
+										mVPoint = mPoint7->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
+										mpPoint = mPoint7;
+									}
+									else if (mpPoint == mPoint7){
+										mVPoint = mPoint8->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
+										mpPoint = mPoint8;
+									}
+									else if (mpPoint == mPoint8){
+										mVPoint = mPoint9->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
+										mpPoint = mPoint9;
+									}
+									else if (mpPoint == mPoint9){
+										mVPoint = mPoint10->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
+										mpPoint = mPoint10;
+									}
+									else if (mpPoint == mPoint10){
+										mVPoint = mPoint11->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
+										mpPoint = mPoint11;
+									}
+									else if (mpPoint == mPoint11){
+										mVPoint = mPoint12->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
+										mpPoint = mPoint12;
+									}
+									else if (mpPoint == mPoint12){
+										//コース2or3を走行中かで分岐する
+										if (CSceneTitle::mMode == 2 || CSceneTitle::mMode == 3 || CSceneTitle::mMode == 5){
+											mVPoint = mPoint13->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
+											mpPoint = mPoint13;
+										}
+										else{
+											mVPoint = mPoint->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
+											mpPoint = mPoint;//ポイント1に戻ってループする
+										}
+									}
+									//コース2
+									else if (CSceneTitle::mMode == 2){
+										if (mpPoint == mPoint13){
+											mVPoint = mPoint14->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
+											mpPoint = mPoint14;
+										}
+										else if (mpPoint == mPoint14){
+											mVPoint = mPoint15->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
+											mpPoint = mPoint15;
+										}
+										else if (mpPoint == mPoint15){
+											mVPoint = mPoint16->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
+											mpPoint = mPoint16;
+										}
+										else if (mpPoint == mPoint16){
+											mVPoint = mPoint17->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
+											mpPoint = mPoint17;
+										}
+										else if (mpPoint == mPoint17){
+											mVPoint = mPoint->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
+											mpPoint = mPoint;
+										}
+									}
+									//コース3ではポインタの数が拡張される
+									else if (CSceneTitle::mMode == 3){
+										if (mpPoint == mPoint13){
+											mVPoint = mPoint14->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
+											mpPoint = mPoint14;
+										}
+										else if (mpPoint == mPoint14){
+											mVPoint = mPoint15->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
+											mpPoint = mPoint15;
+										}
+										else if (mpPoint == mPoint15){
+											mVPoint = mPoint16->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
+											mpPoint = mPoint16;
+										}
+										else if (mpPoint == mPoint16){
+											mVPoint = mPoint17->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
+											mpPoint = mPoint17;
+										}
+										else if (mpPoint == mPoint17){
+											mVPoint = mPoint18->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
+											mpPoint = mPoint18;
+										}
+										else if (mpPoint == mPoint18){
+											mVPoint = mPoint19->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
+											mpPoint = mPoint19;
+										}
+										else if (mpPoint == mPoint19){
+											mVPoint = mPoint20->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
+											mpPoint = mPoint20;
+										}
+										else if (mpPoint == mPoint20){
+											mVPoint = mPoint21->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
+											mpPoint = mPoint21;
+										}
+										else if (mpPoint == mPoint21){
+											mVPoint = mPoint22->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
+											mpPoint = mPoint22;
+										}
+										else if (mpPoint == mPoint22){
+											mVPoint = mPoint23->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
+											mpPoint = mPoint23;
+										}
+										else if (mpPoint == mPoint23){
+											mVPoint = mPoint->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
+											mpPoint = mPoint;
+										}
+									}
+									//コース5ではポインタの数が拡張される
+									else if (CSceneTitle::mMode == 5){
+										if (mpPoint == mPoint13){
+											mVPoint = mPoint14->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
+											mpPoint = mPoint14;
+										}
+										else if (mpPoint == mPoint14){
+											mVPoint = mPoint15->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
+											mpPoint = mPoint15;
+										}
+										else if (mpPoint == mPoint15){
+											mVPoint = mPoint16->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
+											mpPoint = mPoint16;
+										}
+										else if (mpPoint == mPoint16){
+											mVPoint = mPoint17->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
+											mpPoint = mPoint17;
+										}
+										else if (mpPoint == mPoint17){
+											mVPoint = mPoint18->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
+											mpPoint = mPoint18;
+										}
+										else if (mpPoint == mPoint18){
+											mVPoint = mPoint19->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
+											mpPoint = mPoint19;
+										}
+										else if (mpPoint == mPoint19){
+											mVPoint = mPoint20->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
+											mpPoint = mPoint20;
+										}
+										else if (mpPoint == mPoint20){
+											mVPoint = mPoint21->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
+											mpPoint = mPoint21;
+										}
+										else if (mpPoint == mPoint21){
+											mVPoint = mPoint22->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
+											mpPoint = mPoint22;
+										}
+										else if (mpPoint == mPoint22){
+											mVPoint = mPoint23->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
+											mpPoint = mPoint23;
+										}
+										else if (mpPoint == mPoint23){
+											mVPoint = mPoint24->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
+											mpPoint = mPoint24;
+										}
+										else if (mpPoint == mPoint24){
+											mVPoint = mPoint25->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
+											mpPoint = mPoint25;
+										}
+										else if (mpPoint == mPoint25){
+											mVPoint = mPoint26->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
+											mpPoint = mPoint26;
+
+											printf("next->26\n");
+										}
+										else if (mpPoint == mPoint26){
+											mVPoint = mPoint27->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
+											mpPoint = mPoint27;
+										}
+										else if (mpPoint == mPoint27){
+											mVPoint = mPoint28->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
+											mpPoint = mPoint28;
+										}
+										else if (mpPoint == mPoint28){
+											mVPoint = mPoint29->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
+											mpPoint = mPoint29;
+										}
+										else if (mpPoint == mPoint29){
+											mVPoint = mPoint30->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
+											mpPoint = mPoint30;
+											printf("next->30\n");
+										}
+										else if (mpPoint == mPoint30){
+											mVPoint = mPoint31->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
+											mpPoint = mPoint31;
+
+											printf("next->31\n");
+										}
+										else if (mpPoint == mPoint31){
+											mVPoint = mPoint32->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
+											mpPoint = mPoint32;
+
+											printf("next->32\n");
+										}
+										else if (mpPoint == mPoint32){
+											mVPoint = mPoint33->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
+											mpPoint = mPoint33;
+										}
+										else if (mpPoint == mPoint33){
+											mVPoint = mPoint34->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
+											mpPoint = mPoint34;
+										}
+										else if (mpPoint == mPoint34){
+											mVPoint = mPoint35->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
+											mpPoint = mPoint35;
+										}
+										else if (mpPoint == mPoint35){
+											mVPoint = mPoint36->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
+											mpPoint = mPoint36;
+										}
+										else if (mpPoint == mPoint36){
+											mVPoint = mPoint37->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
+											mpPoint = mPoint37;
+										}
+										else if (mpPoint == mPoint37){
+											mVPoint = mPoint38->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
+											mpPoint = mPoint38;
+										}
+										else if (mpPoint == mPoint38){
+											mVPoint = mPoint39->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
+											mpPoint = mPoint39;
+										}
+										else if (mpPoint == mPoint39){
+											mVPoint = mPoint40->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
+											mpPoint = mPoint40;
+
+											printf("next->40\n");
+										}
+										else if (mpPoint == mPoint40){
+											mVPoint = mPoint41->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
+											mpPoint = mPoint41;
+										}
+
+										else if (mpPoint == mPoint41){
+											mVPoint = mPoint42->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
+											mpPoint = mPoint42;
+										}
+										else if (mpPoint == mPoint42){
+											mVPoint = mPoint43->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
+											mpPoint = mPoint43;
+										}
+										else if (mpPoint == mPoint43){
+											mVPoint = mPoint44->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
+											mpPoint = mPoint44;
+										}
+										else if (mpPoint == mPoint44){
+											mVPoint = mPoint45->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
+											mpPoint = mPoint45;
+										}
+										else if (mpPoint == mPoint45){
+											mVPoint = mPoint46->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
+											mpPoint = mPoint46;
+										}
+										else if (mpPoint == mPoint46){
+											mVPoint = mPoint47->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
+											mpPoint = mPoint47;
+										}
+										else if (mpPoint == mPoint47){
+											mVPoint = mPoint48->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
+											mpPoint = mPoint48;
+										}
+										else if (mpPoint == mPoint48){
+											mVPoint = mPoint->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
+											mpPoint = mPoint;
+										}
+									}
+								}								
 							}
 						}
 					}
@@ -1147,5 +1481,10 @@ CPoint *CEnemy::mPoint44;
 CPoint *CEnemy::mPoint45;
 CPoint *CEnemy::mPoint46;
 CPoint *CEnemy::mPoint47;
+CPoint *CEnemy::mPoint48;
+CPoint *CEnemy::mPoint49;
+CPoint *CEnemy::mPoint50;
+CPoint *CEnemy::mPoint51;
+CPoint *CEnemy::mPoint52;
 
 int CEnemy::mPointSize = 0;
