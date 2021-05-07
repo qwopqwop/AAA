@@ -275,10 +275,16 @@ void CEnemy::Update(){
 			mMaxSpeed_PtoP = 5.0f;
 		}
 		else if (mpPoint == mPoint39){
-			mMaxSpeed_PtoP = 17.0f;
+			mMaxSpeed_PtoP = 16.0f;
 		}
 		else if (mpPoint == mPoint40){
+			mMaxSpeed_PtoP = 13.0f;
+		}
+		else if (mpPoint == mPoint41){
 			mMaxSpeed_PtoP = 15.0f;
+		}
+		else if (mpPoint == mPoint42){
+			mMaxSpeed_PtoP = 12.5f;
 		}
 
 		else{
@@ -624,7 +630,7 @@ void CEnemy::Update(){
 			else if (mChecks == 3){
 				mPosition = CVector(14809.0f, 13.5f, 4270.0f);
 				mRotation.mY = -9.5f;
-				mpPoint = mPoint36;
+				mpPoint = mPoint37;
 				mVPoint = mpPoint->mPosition;
 			}
 		}
@@ -1124,6 +1130,10 @@ void CEnemy::Collision(CCollider *mc, CCollider *yc){
 										mpPoint = mPoint52;
 									}
 									else if (mpPoint == mPoint52){
+										mVPoint = mPoint53->mPosition;
+										mpPoint = mPoint53;
+									}
+									else if (mpPoint == mPoint53){
 										mVPoint = mPoint->mPosition;
 										mpPoint = mPoint;
 									}
@@ -1486,5 +1496,6 @@ CPoint *CEnemy::mPoint49;
 CPoint *CEnemy::mPoint50;
 CPoint *CEnemy::mPoint51;
 CPoint *CEnemy::mPoint52;
+CPoint *CEnemy::mPoint53;
 
 int CEnemy::mPointSize = 0;
