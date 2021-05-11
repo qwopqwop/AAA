@@ -480,7 +480,8 @@ void CSceneRace::Update() {
 	RenderMiniMap();
 	//バックミラーの描画
 	if (isRender_BackMirror){
-		RenderBackMirror();
+		RenderWhite();
+		//RenderBackMirror();
 	}
 
 	//2D描画開始
@@ -1539,53 +1540,11 @@ void CSceneRace::RenderBackMirror(){
 	//Camera3D(be.mX, be.mY, be.mZ, bc.mX, bc.mY, bc.mZ, bu.mX, bu.mY, bu.mZ);
 	//Camera.mEye = be;
 	
-	//2D描画開始
-	Start2D(0, 800, 0, 600);
 	float color[] = { 0.0f, 0.0f, 0.0f, 1.0f };
-	glColor4fv(color);
-	//上記の2D描画範囲の指定値より大きめに白背景を描画する
+	//glColor4fv(color);
+	////上記の2D描画範囲の指定値より大きめに白背景を描画する
 	int expand = 100;
-	//白背景のよりも先に黒枠となるものを描画する
-	glBegin(GL_TRIANGLES);//久しぶり
-	glVertex2d(0 - expand, 0 - expand);
-	glVertex2d(800 + expand, 600 + expand);
-	glVertex2d(0 - expand, 600 + expand);
-	glEnd();
-	glBegin(GL_TRIANGLES);
-	glVertex2d(0 - expand, 0 - expand);
-	glVertex2d(800 + expand, 0 - expand);
-	glVertex2d(800 + expand, 600 + expand);
-	glEnd();
-	color[0] = color[1] = color[2] = color[3] = 1.0f;
-	glColor4fv(color);
-	//2D描画終了
-	End2D();
-
-	glViewport(800 - 400 - 150 + 38, 400 - 7 + 50 + 50, 300 - 75, 200 - 50);
-	//2D描画開始
-	Start2D(0, 800, 0, 600);
-	color[0] = color[1] = color[2] = 0.8f;
-	glColor4fv(color);
-	//上記の2D描画範囲の指定値より大きめに白背景を描画する
-	expand = 100;
-	//白背景を"先に"描画する
-	glBegin(GL_TRIANGLES);//久しぶり
-	glVertex2d(0 - expand, 0 - expand);
-	glVertex2d(800 + expand, 600 + expand);
-	glVertex2d(0 - expand, 600 + expand);
-	glEnd();
-	glBegin(GL_TRIANGLES);
-	glVertex2d(0 - expand, 0 - expand);
-	glVertex2d(800 + expand, 0 - expand);
-	glVertex2d(800 + expand, 600 + expand);
-	glEnd();
-
-	color[0] = color[1] = color[2] = color[3] = 1.0f;
-	glColor4fv(color);
-	//2D描画終了
-	End2D();
 	
-
 	//行列を退避させる
 	glPushMatrix();
 	//行列を単位行列にする
@@ -1615,7 +1574,78 @@ void CSceneRace::RenderBackMirror(){
 	glMultMatrixf(translate);
 	CTaskManager::Get()->Render();
 
+	glEnable(GL_DEPTH_TEST);
+	glViewport(0, 0, 800, 600); //画面の描画エリアをメインの画面に戻す
+	glEnable(GL_CULL_FACE);//表面のみの描画に戻す
 
+	//行列を戻す
+	glPopMatrix();
+}
+
+
+void CSceneRace::Render(){
+	//空
+}
+
+void CBackMirror::Render(){
+	//CSceneRace::Update();
+}
+
+
+void CSceneRace::RenderWhite(){
+	glDisable(GL_CULL_FACE);//一時的に両面を描画可能にする
+	glDisable(GL_DEPTH_TEST);
+	glViewport(800 - 400 - 150 - 3 + 39, 400 - 7 - 3 + 51 + 50, 306 - 75 - 2, 206 - 50 - 2); //バックミラーの描画エリアの指定
+
+	//2D描画開始
+	Start2D(0, 800, 0, 600);
+	float color[] = { 0.0f, 0.0f, 0.0f, 1.0f };
+	glColor4fv(color);
+	//上記の2D描画範囲の指定値より大きめに白背景を描画する
+	int expand = 100; color[3] = 0.0f;
+	//白背景のよりも先に黒枠となるものを描画する
+	glBegin(GL_TRIANGLES);//久しぶり
+	glVertex2d(0 - expand, 0 - expand);
+	glVertex2d(800 + expand, 600 + expand);
+	glVertex2d(0 - expand, 600 + expand);
+	glEnd();
+	glBegin(GL_TRIANGLES);
+	glVertex2d(0 - expand, 0 - expand);
+	glVertex2d(800 + expand, 0 - expand);
+	glVertex2d(800 + expand, 600 + expand);
+	glEnd();
+	color[0] = color[1] = color[2] = color[3] = 1.0f;
+	glColor4fv(color);
+	//2D描画終了
+	End2D();
+
+	glViewport(800 - 400 - 150 + 38, 400 - 7 + 50 + 50, 300 - 75, 200 - 50);
+	//2D描画開始
+	Start2D(0, 800, 0, 600);
+	color[0] = color[1] = color[2] = 0.8f;color[3] = 0.0f;
+	glColor4fv(color);
+	//上記の2D描画範囲の指定値より大きめに白背景を描画する
+	expand = 100;
+	//白背景を"先に"描画する
+	glBegin(GL_TRIANGLES);//久しぶり
+	glVertex2d(0 - expand, 0 - expand);
+	glVertex2d(800 + expand, 600 + expand);
+	glVertex2d(0 - expand, 600 + expand);
+	glEnd();
+	glBegin(GL_TRIANGLES);
+	glVertex2d(0 - expand, 0 - expand);
+	glVertex2d(800 + expand, 0 - expand);
+	glVertex2d(800 + expand, 600 + expand);
+	glEnd();
+
+	color[0] = color[1] = color[2] = color[3] = 1.0f;
+	glColor4fv(color);
+	//2D描画終了
+	End2D();
+
+	//ここでバックミラーの移る風景を描画する
+	RenderBackMirror();
+	
 	glViewport(250 - 3 + 39, 400+ 188 + 10, 228, 5);
 	//2D描画開始
 	Start2D(0, 800, 0, 600);
@@ -1639,53 +1669,6 @@ void CSceneRace::RenderBackMirror(){
 	//2D描画終了
 	End2D();
 
-
-	//glViewport(550 - 400 - 150 + 38, 400 - 7 + 50, 300 - 75, 200 - 50);
-	////2D描画開始
-	//Start2D(0, 800, 0, 600);
-	//color[0] = color[1] = color[2] = color[3] = 1.0f;
-	//glColor4fv(color);
-	////上記の2D描画範囲の指定値より大きめに白背景を描画する
-	//expand = 100;
-	////白背景を"先に"描画する
-	//glBegin(GL_TRIANGLES);//久しぶり
-	//glVertex2d(0 - expand, 0 - expand);
-	//glVertex2d(800 + expand, 600 + expand);
-	//glVertex2d(0 - expand, 600 + expand);
-	//glEnd();
-	//glBegin(GL_TRIANGLES);
-	//glVertex2d(0 - expand, 0 - expand);
-	//glVertex2d(800 + expand, 0 - expand);
-	//glVertex2d(800 + expand, 600 + expand);
-	//glEnd();
-	//color[0] = color[1] = color[2] = color[3] = 1.0f;
-	//glColor4fv(color);
-	////2D描画終了
-	//End2D();
-	////行列を退避させる
-	//glPushMatrix();
-	////行列を単位行列にする
-	//glLoadIdentity();
-	//
-	//glViewport(550 - 400 - 150 + 38, 400 - 7 + 50, 300 - 75, 200 - 50);
-	////メインカメラと同じ前方視点なはず…
-	//e = CVector(0.0f, 17.0f + 13.0f, 40.0f - 41.0f) * CMatrix().RotateY(mCamY)* mPlayer->mMatrixScale
-	//	* CMatrix().RotateY(mPlayer->mRotation.mY)
-	//	* mPlayer->mMatrixTranslate;
-	//c = mPlayer->mPosition + CVector(0.0f, 17.0f + 12.8f, 40.0f - 42.0f)* mPlayer->mMatrixScale
-	//	* CMatrix().RotateY(mPlayer->mRotation.mY);
-	//u = CVector(0.0f, 1.0f, 0.0f);
-	////カメラののX座標を反転させる	
-	//e = e * CMatrix().Scale(-1.0f, 1.0f, 1.0f);
-	//c = c * CMatrix().Scale(-1.0f, 1.0f, 1.0f);
-	//u = u * CMatrix().Scale(-1.0f, 1.0f, 1.0f);
-	////バックミラーのカメラの設定
-	//gluLookAt(e.mX, e.mY, e.mZ, c.mX, c.mY, c.mZ, u.mX, u.mY, u.mZ);
-	//translate[5] = 0;
-	//glMultMatrixf(translate);
-	//CTaskManager::Get()->Render();
-	
-	
 	glEnable(GL_DEPTH_TEST);
 	glViewport(0, 0, 800, 600); //画面の描画エリアをメインの画面に戻す
 	glEnable(GL_CULL_FACE);//表面のみの描画に戻す
@@ -1693,6 +1676,7 @@ void CSceneRace::RenderBackMirror(){
 	//行列を戻す
 	glPopMatrix();
 }
+
 //次のシーンの取得
 CScene::EScene CSceneRace::GetNextScene(){
 	return mScene;

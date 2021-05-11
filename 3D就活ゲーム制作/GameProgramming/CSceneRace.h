@@ -29,6 +29,10 @@ public:
 	void RenderMiniMap();
 	//バックミラーの描画
 	void RenderBackMirror();
+	//空のRenderメソッドをオーバーライド
+	void Render();
+	//空のRenderメソッドをオーバーライド
+	void RenderWhite();
 	
 	CModel mSky;
 	CModel mRock;
@@ -173,4 +177,14 @@ public:
 
 	CModel mSumpluuu;
 };
+
+class CBackMirror : public CSceneRace {
+public:
+	////初期化処理のオーバーライド
+	//void Init();
+	////更新処理のオーバーライド
+	//void Update();
+	void Render();
+};
+
 #endif

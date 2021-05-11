@@ -60,8 +60,8 @@ public:
 		CText::DrawString("Push Enter Key", 200, 177, 16, 16);
 		//
 		if (mSelectScene_Level == 1){
-			CText::DrawString("[", 66 + mVariable2 * 250, 300 + mVariable1 * 50, 20, 30, 2);
-			CText::DrawString("]", 262 + mVariable2 * 250, 300 + mVariable1 * 50, 20, 30, 2);
+			CText::DrawString("[", 66 + mVariable2 * 250, 284 + mVariable1 * 50, 20, 30, 2);
+			CText::DrawString("]", 262 + mVariable2 * 250, 284 + mVariable1 * 50, 20, 30, 2);
 		}
 		if (mSelectScene_Level == 2 && mStart == false){
 			if (mDifficulty == 1){
