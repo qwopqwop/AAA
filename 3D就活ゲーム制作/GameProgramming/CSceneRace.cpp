@@ -102,10 +102,6 @@ void CSceneRace::Init() {
 	mWater.Load("cube.obj", "water_sumple.mtl");
 
 
-	//ƒoƒl‚Ì“Ç‚İ‚İ
-	mSpringS.Load("‚Î‚Ë.obj", "cube.mtl");
-	mSpringL.Load("‚Î‚ËL‚Ñ.obj", "cube.mtl");
-
 	//°ƒ^ƒCƒ‹‚Ì“Ç‚İ‚İ
 	mTileBlack.Load("cube.obj", "material\\racing_mat\\tile_black.mtl");
 	mTileWhite.Load("cube.obj", "material\\racing_mat\\tile_white.mtl");
@@ -159,8 +155,6 @@ void CSceneRace::Init() {
 	mSign_Left.Load("material\\racing_mat\\stage5\\Sign_TurnLeft.obj", "material\\racing_mat\\stage5\\Sign_TurnLeft.mtl");
 	mSign_Right.Load("material\\racing_mat\\stage5\\Sign_TurnLeft.obj", "material\\racing_mat\\stage5\\Sign_TurnRight.mtl");
 
-	mSumpluuu.Load("material\\sunsunsumple.obj", "material\\racing_mat\\single_color\\white.mtl");
-	
 	//Å¶‚Ì“Ç‚İ‚İ
 	mGrass01.Load("material\\racing_mat\\GrassNew01.obj", "material\\racing_mat\\GrassNew01.mtl");
 	//ò(•Ç)‚Ì“Ç‚İ‚İ
@@ -480,8 +474,7 @@ void CSceneRace::Update() {
 	RenderMiniMap();
 	//ƒoƒbƒNƒ~ƒ‰[‚Ì•`‰æ
 	if (isRender_BackMirror){
-		RenderWhite();
-		//RenderBackMirror();
+		RenderBackMirror();
 	}
 
 	//2D•`‰æŠJn
@@ -1540,10 +1533,57 @@ void CSceneRace::RenderBackMirror(){
 	//Camera3D(be.mX, be.mY, be.mZ, bc.mX, bc.mY, bc.mZ, bu.mX, bu.mY, bu.mZ);
 	//Camera.mEye = be;
 	
+
+	//2D•`‰æŠJn
+	Start2D(0, 800, 0, 600);
 	float color[] = { 0.0f, 0.0f, 0.0f, 1.0f };
-	//glColor4fv(color);
-	////ã‹L‚Ì2D•`‰æ”ÍˆÍ‚Ìw’è’l‚æ‚è‘å‚«‚ß‚É”’”wŒi‚ğ•`‰æ‚·‚é
-	int expand = 100;
+	glColor4fv(color);
+	//ã‹L‚Ì2D•`‰æ”ÍˆÍ‚Ìw’è’l‚æ‚è‘å‚«‚ß‚É”’”wŒi‚ğ•`‰æ‚·‚é
+	int expand = 100; color[3] = 0.0f;
+	//”’”wŒi‚Ì‚æ‚è‚àæ‚É•˜g‚Æ‚È‚é‚à‚Ì‚ğ•`‰æ‚·‚é
+	glBegin(GL_TRIANGLES);//‹v‚µ‚Ô‚è
+	glVertex2d(0 - expand, 0 - expand);
+	glVertex2d(800 + expand, 600 + expand);
+	glVertex2d(0 - expand, 600 + expand);
+	glEnd();
+	glBegin(GL_TRIANGLES);
+	glVertex2d(0 - expand, 0 - expand);
+	glVertex2d(800 + expand, 0 - expand);
+	glVertex2d(800 + expand, 600 + expand);
+	glEnd();
+	color[0] = color[1] = color[2] = color[3] = 1.0f;
+	glColor4fv(color);
+	//2D•`‰æI—¹
+	End2D();
+
+	glViewport(800 - 400 - 150 + 38, 400 - 7 + 50 + 50, 300 - 75, 200 - 50);
+	//2D•`‰æŠJn
+	Start2D(0, 800, 0, 600);
+	color[0] = color[1] = color[2] = 0.8f; color[3] = 0.0f;
+	glColor4fv(color);
+	//ã‹L‚Ì2D•`‰æ”ÍˆÍ‚Ìw’è’l‚æ‚è‘å‚«‚ß‚É”’”wŒi‚ğ•`‰æ‚·‚é
+	expand = 100;
+	//”’”wŒi‚ğ"æ‚É"•`‰æ‚·‚é
+	glBegin(GL_TRIANGLES);//‹v‚µ‚Ô‚è
+	glVertex2d(0 - expand, 0 - expand);
+	glVertex2d(800 + expand, 600 + expand);
+	glVertex2d(0 - expand, 600 + expand);
+	glEnd();
+	glBegin(GL_TRIANGLES);
+	glVertex2d(0 - expand, 0 - expand);
+	glVertex2d(800 + expand, 0 - expand);
+	glVertex2d(800 + expand, 600 + expand);
+	glEnd();
+
+	color[0] = color[1] = color[2] = color[3] = 1.0f;
+	glColor4fv(color);
+	//2D•`‰æI—¹
+	End2D();
+
+	//float color[] = { 0.0f, 0.0f, 0.0f, 1.0f };
+	////glColor4fv(color);
+	//////ã‹L‚Ì2D•`‰æ”ÍˆÍ‚Ìw’è’l‚æ‚è‘å‚«‚ß‚É”’”wŒi‚ğ•`‰æ‚·‚é
+	//int expand = 100;
 	
 	//s—ñ‚ğ‘Ş”ğ‚³‚¹‚é
 	glPushMatrix();
@@ -1574,79 +1614,7 @@ void CSceneRace::RenderBackMirror(){
 	glMultMatrixf(translate);
 	CTaskManager::Get()->Render();
 
-	glEnable(GL_DEPTH_TEST);
-	glViewport(0, 0, 800, 600); //‰æ–Ê‚Ì•`‰æƒGƒŠƒA‚ğƒƒCƒ“‚Ì‰æ–Ê‚É–ß‚·
-	glEnable(GL_CULL_FACE);//•\–Ê‚Ì‚İ‚Ì•`‰æ‚É–ß‚·
-
-	//s—ñ‚ğ–ß‚·
-	glPopMatrix();
-}
-
-
-void CSceneRace::Render(){
-	//‹ó
-}
-
-void CBackMirror::Render(){
-	//CSceneRace::Update();
-}
-
-
-void CSceneRace::RenderWhite(){
-	glDisable(GL_CULL_FACE);//ˆê“I‚É—¼–Ê‚ğ•`‰æ‰Â”\‚É‚·‚é
-	glDisable(GL_DEPTH_TEST);
-	glViewport(800 - 400 - 150 - 3 + 39, 400 - 7 - 3 + 51 + 50, 306 - 75 - 2, 206 - 50 - 2); //ƒoƒbƒNƒ~ƒ‰[‚Ì•`‰æƒGƒŠƒA‚Ìw’è
-
-	//2D•`‰æŠJn
-	Start2D(0, 800, 0, 600);
-	float color[] = { 0.0f, 0.0f, 0.0f, 1.0f };
-	glColor4fv(color);
-	//ã‹L‚Ì2D•`‰æ”ÍˆÍ‚Ìw’è’l‚æ‚è‘å‚«‚ß‚É”’”wŒi‚ğ•`‰æ‚·‚é
-	int expand = 100; color[3] = 0.0f;
-	//”’”wŒi‚Ì‚æ‚è‚àæ‚É•˜g‚Æ‚È‚é‚à‚Ì‚ğ•`‰æ‚·‚é
-	glBegin(GL_TRIANGLES);//‹v‚µ‚Ô‚è
-	glVertex2d(0 - expand, 0 - expand);
-	glVertex2d(800 + expand, 600 + expand);
-	glVertex2d(0 - expand, 600 + expand);
-	glEnd();
-	glBegin(GL_TRIANGLES);
-	glVertex2d(0 - expand, 0 - expand);
-	glVertex2d(800 + expand, 0 - expand);
-	glVertex2d(800 + expand, 600 + expand);
-	glEnd();
-	color[0] = color[1] = color[2] = color[3] = 1.0f;
-	glColor4fv(color);
-	//2D•`‰æI—¹
-	End2D();
-
-	glViewport(800 - 400 - 150 + 38, 400 - 7 + 50 + 50, 300 - 75, 200 - 50);
-	//2D•`‰æŠJn
-	Start2D(0, 800, 0, 600);
-	color[0] = color[1] = color[2] = 0.8f;color[3] = 0.0f;
-	glColor4fv(color);
-	//ã‹L‚Ì2D•`‰æ”ÍˆÍ‚Ìw’è’l‚æ‚è‘å‚«‚ß‚É”’”wŒi‚ğ•`‰æ‚·‚é
-	expand = 100;
-	//”’”wŒi‚ğ"æ‚É"•`‰æ‚·‚é
-	glBegin(GL_TRIANGLES);//‹v‚µ‚Ô‚è
-	glVertex2d(0 - expand, 0 - expand);
-	glVertex2d(800 + expand, 600 + expand);
-	glVertex2d(0 - expand, 600 + expand);
-	glEnd();
-	glBegin(GL_TRIANGLES);
-	glVertex2d(0 - expand, 0 - expand);
-	glVertex2d(800 + expand, 0 - expand);
-	glVertex2d(800 + expand, 600 + expand);
-	glEnd();
-
-	color[0] = color[1] = color[2] = color[3] = 1.0f;
-	glColor4fv(color);
-	//2D•`‰æI—¹
-	End2D();
-
-	//‚±‚±‚ÅƒoƒbƒNƒ~ƒ‰[‚ÌˆÚ‚é•—Œi‚ğ•`‰æ‚·‚é
-	RenderBackMirror();
-	
-	glViewport(250 - 3 + 39, 400+ 188 + 10, 228, 5);
+	glViewport(250 - 3 + 39, 400 + 188 + 10, 228, 5);
 	//2D•`‰æŠJn
 	Start2D(0, 800, 0, 600);
 	color[0] = color[1] = color[2] = 0.0f;
@@ -1676,7 +1644,6 @@ void CSceneRace::RenderWhite(){
 	//s—ñ‚ğ–ß‚·
 	glPopMatrix();
 }
-
 //Ÿ‚ÌƒV[ƒ“‚Ìæ“¾
 CScene::EScene CSceneRace::GetNextScene(){
 	return mScene;

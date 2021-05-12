@@ -28,8 +28,6 @@ extern CSound SoundCollisionSmall;
 extern CSound SoundRespawn;
 extern CSound SoundRespawn2;
 
-int CEnemy::RenderType;
-
 CEnemy *CEnemy::mpEnemy = 0;
 
 #define G (9.8f / 90.0f)//重力加速度//60.0f
@@ -83,9 +81,7 @@ CEnemy::CEnemy()
 	else if (CSceneTitle::mDifficulty == 3){
 		mCPULevelSpeed = 0.0f;
 	}
-
-	//mRotation.mY = -90;
-
+	
 	mCanJump = false;
 	CanMove = false;
 
@@ -102,8 +98,6 @@ CEnemy::CEnemy()
 
 	mPosition = CVector(mStartPoint[0], mStartPoint[1], mStartPoint[2]);
 	CCharacter::Update();
-
-	RenderType = 0;//描画処理 0:ゲーム画面  1:ミニマップ
 
 	mColBody.mTag = CCollider::EBODY;
 	mColTire.mTag = CCollider::ESEARCH;
@@ -184,48 +178,6 @@ void CEnemy::Update(){
 		}
 	}
 	else if (CSceneTitle::mMode == 5){
-		/*if (mpPoint == mPoint25){
-			mMaxSpeed_PtoP = 10.0f;
-		}
-		else if (mpPoint == mPoint26){
-			mMaxSpeed_PtoP = 5.0f;
-		}
-		else if (mpPoint == mPoint27){
-			mMaxSpeed_PtoP = 5.0f;
-		}
-		else if (mpPoint == mPoint35){
-			mMaxSpeed_PtoP = 17.0f;
-		}
-		else if (mpPoint == mPoint36){
-			mMaxSpeed_PtoP = 15.0f;
-		}
-		else if (mpPoint == mPoint){
-			mMaxSpeed_PtoP = 19.0f;
-		}
-		else if (mpPoint == mPoint2){
-			mMaxSpeed_PtoP = 17.0f;
-		}
-		else if (mpPoint == mPoint3){
-			mMaxSpeed_PtoP = 19.0f;
-		}
-		else if (mpPoint == mPoint5){
-			mMaxSpeed_PtoP = 15.0f;
-		}
-		else if (mpPoint == mPoint6){
-			mMaxSpeed_PtoP = 14.0f;
-		}
-		else if (mpPoint == mPoint7){
-			mMaxSpeed_PtoP = 16.5f;
-		}
-		else if (mpPoint == mPoint9){
-			mMaxSpeed_PtoP = 17.5f;
-		}
-		else if (mpPoint == mPoint10){
-			mMaxSpeed_PtoP = 15.0f;
-		}
-		else if (mpPoint == mPoint11){
-			mMaxSpeed_PtoP = 15.0f;
-		}*/
 		if (mpPoint == mPoint){
 			mMaxSpeed_PtoP = 19.0f;
 		}
@@ -274,16 +226,22 @@ void CEnemy::Update(){
 		else if (mpPoint == mPoint31){
 			mMaxSpeed_PtoP = 5.0f;
 		}
-		else if (mpPoint == mPoint39){
-			mMaxSpeed_PtoP = 16.0f;
+		else if (mpPoint == mPoint35){
+			mMaxSpeed_PtoP = 19.0f;
+		}
+		else if (mpPoint == mPoint36){
+			mMaxSpeed_PtoP = 18.0f;
 		}
 		else if (mpPoint == mPoint40){
-			mMaxSpeed_PtoP = 13.0f;
+			mMaxSpeed_PtoP = 16.0f;
 		}
 		else if (mpPoint == mPoint41){
-			mMaxSpeed_PtoP = 15.0f;
+			mMaxSpeed_PtoP = 13.0f;
 		}
 		else if (mpPoint == mPoint42){
+			mMaxSpeed_PtoP = 15.0f;
+		}
+		else if (mpPoint == mPoint43){
 			mMaxSpeed_PtoP = 12.5f;
 		}
 
@@ -630,7 +588,7 @@ void CEnemy::Update(){
 			else if (mChecks == 3){
 				mPosition = CVector(14809.0f, 13.5f, 4270.0f);
 				mRotation.mY = -9.5f;
-				mpPoint = mPoint37;
+				mpPoint = mPoint38;
 				mVPoint = mpPoint->mPosition;
 			}
 		}
@@ -783,65 +741,7 @@ void CEnemy::Collision(CCollider *mc, CCollider *yc){
 						else{
 							mVelocityJump = 0;
 							mCanJump = true;
-
-							/*yc->mV[0] = yc->mV[0] + CVector(0.0f, 0.5f, 0.0f);
-							yc->mV[1] = yc->mV[1] + CVector(0.0f, 0.5f, 0.0f);
-							yc->mV[2] = yc->mV[2] + CVector(0.0f, 0.5f, 0.0f);*/
-
-							/*if (mRotation.mX < yc->mpParent->mRotation.mX){
-							mRotation.mX++;
-							}
-							else if (mRotation.mX > yc->mpParent->mRotation.mX){
-							mRotation.mX--;
-							}*/
-
-							/*１．斜面の法線ベクトルからY軸ベクトルを求めます。　済
-							２．車体の進行方向から、Z軸ベクトルを求めます。  済??
-							３．Y軸ベクトルとZ軸ベクトルの外積を計算し、X軸ベクトルを求めます。
-							４．X軸ベクトルとY軸ベクトルの外積を計算し、Z軸ベクトルを求めます。
-							５．Z軸ベクトルからX軸の回転値を求めます。              okか…？
-							６．Z軸ベクトルからY軸の回転値を求めます。              okか…？
-							７．X軸ベクトルとY軸ベクトルからZ軸の回転値を求めます。 okか…？
-							８．求めた回転値を車体に適用します。                    okか…？*/
-							CVector v[3], sv, ev;
-							//各コライダの頂点をワールド座標へ変換
-							v[0] = yc->mV[0] * yc->mMatrix * yc->mpParent->mMatrix;
-							v[1] = yc->mV[1] * yc->mMatrix * yc->mpParent->mMatrix;
-							v[2] = yc->mV[2] * yc->mMatrix * yc->mpParent->mMatrix;
-							//面の法線を、外積を正規化して求める
-							// 1.斜面の法線ベクトルからY軸ベクトルを求める
-							CVector normal = (v[1] - v[0]).Cross(v[2] - v[0]).Normalize();  //法線ベクトルは取れてるかも？
-							// 2.車体の進行方向から、Z軸ベクトルを求める
-							CVector preZvec = CVector(0.0f, 0.0f, 1.0f) * mMatrixRotate;
-							// 3.Y軸ベクトルとZ軸ベクトルの外積を計算し、X軸ベクトルを求める
-							CVector Xvec = (normal).Cross(preZvec).Normalize();
-							// 4.X軸ベクトルとY軸ベクトルの外積を計算し、Z軸ベクトルを求める
-							CVector Zvec = (Xvec).Cross(normal).Normalize();//？？？？？？？？？？？								
-							// 5～7.回転値を求める
-							float rad = asin(Zvec.mY);//5.
-							float rotX = rad * 180 / PI * -1;//X軸は反転
-							float rotY = atan2(Zvec.mX, Zvec.mZ) * 180 / PI;//6.
-							float rotZ = atan2(Xvec.mY, normal.mY) * 180 / PI;//7.
-							// 8.求めた回転値を車体に適用
-							mRotation = CVector(rotX, rotY, rotZ);
-
-							//int rotateofycmx = yc->mpParent->mRotation.mX;
-							//rotateofycmx %= 360; //-360度から360度までの数値に変換
-							////-235=125 300=-60 -180度未満か、180度以上の角度は
-							//if (rotateofycmx < -180){
-							//	rotateofycmx += 360;
-							//}
-							//else if (rotateofycmx >= 180){
-							//	rotateofycmx -= 360;
-							//}
-							//mRotation.mX = rotateofycmx;
-							////if (mRotation.mX < yc->mpParent->mRotation.mX){
-							////	mRotation.mX = yc->mpParent->mRotation.mX;
-							////}
-							////else if (mRotation.mX > yc->mpParent->mRotation.mX){
-							////	mRotation.mX = yc->mpParent->mRotation.mX;
-							////}
-							////mRotation = yc->mpParent->mRotation;
+							mRotation = CCollider::CalculateEulerAngle(mc, yc, mMatrixRotate, PI);
 						}
 					}
 					
@@ -1130,10 +1030,14 @@ void CEnemy::Collision(CCollider *mc, CCollider *yc){
 										mpPoint = mPoint52;
 									}
 									else if (mpPoint == mPoint52){
-										mVPoint = mPoint53->mPosition;
+										mVPoint = mPoint53->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
 										mpPoint = mPoint53;
 									}
 									else if (mpPoint == mPoint53){
+										mVPoint = mPoint54->mPosition;
+										mpPoint = mPoint54;
+									}
+									else if (mpPoint == mPoint54){
 										mVPoint = mPoint->mPosition;
 										mpPoint = mPoint;
 									}
@@ -1497,5 +1401,4 @@ CPoint *CEnemy::mPoint50;
 CPoint *CEnemy::mPoint51;
 CPoint *CEnemy::mPoint52;
 CPoint *CEnemy::mPoint53;
-
-int CEnemy::mPointSize = 0;
+CPoint *CEnemy::mPoint54;

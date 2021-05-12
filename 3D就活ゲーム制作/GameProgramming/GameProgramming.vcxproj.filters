@@ -25,7 +25,7 @@
     <Filter Include="ソース ファイル\RaceGame\TemporaryFolder">
       <UniqueIdentifier>{f9f00719-0209-4630-9464-3be405b239b6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\RaceGame\WallFloor">
+    <Filter Include="ソース ファイル\RaceGame\ObjectFolder">
       <UniqueIdentifier>{d8286d00-78a8-407a-8e3d-a5b11d88dac7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -139,25 +139,25 @@
       <Filter>ソース ファイル\RaceGame\CourceFolder</Filter>
     </ClCompile>
     <ClCompile Include="CObjWall.cpp">
-      <Filter>ソース ファイル\RaceGame\WallFloor</Filter>
+      <Filter>ソース ファイル\RaceGame\ObjectFolder</Filter>
     </ClCompile>
     <ClCompile Include="CObjFloor.cpp">
-      <Filter>ソース ファイル\RaceGame\WallFloor</Filter>
+      <Filter>ソース ファイル\RaceGame\ObjectFolder</Filter>
     </ClCompile>
     <ClCompile Include="CObjBoost.cpp">
-      <Filter>ソース ファイル\RaceGame\WallFloor</Filter>
+      <Filter>ソース ファイル\RaceGame\ObjectFolder</Filter>
     </ClCompile>
     <ClCompile Include="CObjGrass.cpp">
-      <Filter>ソース ファイル\RaceGame\WallFloor</Filter>
+      <Filter>ソース ファイル\RaceGame\ObjectFolder</Filter>
     </ClCompile>
     <ClCompile Include="CObjCheckPoint.cpp">
-      <Filter>ソース ファイル\RaceGame\WallFloor</Filter>
+      <Filter>ソース ファイル\RaceGame\ObjectFolder</Filter>
     </ClCompile>
     <ClCompile Include="CObjNonCol.cpp">
-      <Filter>ソース ファイル\RaceGame\WallFloor</Filter>
+      <Filter>ソース ファイル\RaceGame\ObjectFolder</Filter>
     </ClCompile>
     <ClCompile Include="CObjJumper.cpp">
-      <Filter>ソース ファイル\RaceGame\WallFloor</Filter>
+      <Filter>ソース ファイル\RaceGame\ObjectFolder</Filter>
     </ClCompile>
     <ClCompile Include="CRaceCourceE.cpp">
       <Filter>ソース ファイル\RaceGame\CourceFolder</Filter>
@@ -285,25 +285,25 @@
       <Filter>ソース ファイル\RaceGame\CourceFolder</Filter>
     </ClInclude>
     <ClInclude Include="CObjWall.h">
-      <Filter>ソース ファイル\RaceGame\WallFloor</Filter>
+      <Filter>ソース ファイル\RaceGame\ObjectFolder</Filter>
     </ClInclude>
     <ClInclude Include="CObjFloor.h">
-      <Filter>ソース ファイル\RaceGame\WallFloor</Filter>
+      <Filter>ソース ファイル\RaceGame\ObjectFolder</Filter>
     </ClInclude>
     <ClInclude Include="CObjBoost.h">
-      <Filter>ソース ファイル\RaceGame\WallFloor</Filter>
+      <Filter>ソース ファイル\RaceGame\ObjectFolder</Filter>
     </ClInclude>
     <ClInclude Include="CObjGrass.h">
-      <Filter>ソース ファイル\RaceGame\WallFloor</Filter>
+      <Filter>ソース ファイル\RaceGame\ObjectFolder</Filter>
     </ClInclude>
     <ClInclude Include="CObjCheckPoint.h">
-      <Filter>ソース ファイル\RaceGame\WallFloor</Filter>
+      <Filter>ソース ファイル\RaceGame\ObjectFolder</Filter>
     </ClInclude>
     <ClInclude Include="CObjNonCol.h">
-      <Filter>ソース ファイル\RaceGame\WallFloor</Filter>
+      <Filter>ソース ファイル\RaceGame\ObjectFolder</Filter>
     </ClInclude>
     <ClInclude Include="CObjJumper.h">
-      <Filter>ソース ファイル\RaceGame\WallFloor</Filter>
+      <Filter>ソース ファイル\RaceGame\ObjectFolder</Filter>
     </ClInclude>
     <ClInclude Include="CRaceCourceE.h">
       <Filter>ソース ファイル\RaceGame\CourceFolder</Filter>

@@ -7,18 +7,19 @@
 #include "CPoint.h"
 
 class CEnemy :public CCharacter{
+private:
+	//プレイヤーの体の当たり判定
+	CCollider mColBody;
+	//プレイヤーのタイヤの当たり判定
+	CCollider mColTire;
+protected:
 public:
 	static CEnemy*mpEnemy;
 	//デフォルトコンストラクタ
 	CEnemy();
 
 	//更新
-	void Update();
-
-	//プレイヤーの体の当たり判定
-	CCollider mColBody;
-	//プレイヤーのタイヤの当たり判定
-	CCollider mColTire;
+	void Update();	
 
 	//衝突処理
 	void Collision(CCollider *mc, CCollider *yc);
@@ -60,8 +61,6 @@ public:
 
 	bool CanMove;//プレイヤーが操作可能か否か(カウントダウン前・ゴール後などは否)
 
-	static int RenderType;//ゲーム画面の描画とミニマップの描画を分ける変数
-
 	//コライダの更新
 	void TaskCollision();
 
@@ -89,7 +88,6 @@ public:
 	static CPoint *mPoint21;
 	static CPoint *mPoint22;
 	static CPoint *mPoint23;
-	//
 	static CPoint *mPoint24;
 	static CPoint *mPoint25;
 	static CPoint *mPoint26;
@@ -120,7 +118,7 @@ public:
 	static CPoint *mPoint51;
 	static CPoint *mPoint52;
 	static CPoint *mPoint53;
-	static int mPointSize;//ポイントの数
+	static CPoint *mPoint54;
 	CPoint *mpPoint;//目指すポイント
 	int mPointCnt;//ポイントのカウンタ
 	//次のポイントまでに出す最高速度

@@ -14,7 +14,6 @@ void CRaceCourceF::Init(){
 
 	//敵のポイント(目的地)の設定
 	if (CSceneTitle::mDifficulty == 1){//難易度：EASY
-		CEnemy::mPointSize = 22;//ポイント数の設定
 		CEnemy::mPoint = new CPoint(CVector(3217.0f, 140.0f, -325.0f), 200.0f);
 		CEnemy::mPoint3 = new CPoint(CVector(4547.0f, 140.0f, -3971.0f), 200.0f);
 		CEnemy::mPoint2 = new CPoint(CVector(4980.0f, 130.0f, -1621.0f), 200.0f);
@@ -39,7 +38,6 @@ void CRaceCourceF::Init(){
 		CEnemy::mPoint22 = new CPoint(CVector(151.5f, 30.0f, 52.0f), 100.0f);
 	}
 	else if (CSceneTitle::mDifficulty == 2){//難易度：NORMAL
-		CEnemy::mPointSize = 23;//ポイント数の設定
 		CEnemy::mPoint = new CPoint(CVector(2767.0f, 140.0f, -137.0f), 100.0f);
 		CEnemy::mPoint2 = new CPoint(CVector(3914.0f, 140.0f, -647.0f), 100.0f);
 		CEnemy::mPoint3 = new CPoint(CVector(4923.0f, 130.0f, -1705.0f), 100.0f);
@@ -65,7 +63,6 @@ void CRaceCourceF::Init(){
 		CEnemy::mPoint23 = new CPoint(CVector(151.5f, 30.0f - 100.0f, 52.0f), 100.0f);
 	}
 	else if (CSceneTitle::mDifficulty == 3){//難易度：HARD
-		CEnemy::mPointSize = 22;//ポイント数の設定
 		CEnemy::mPoint = new CPoint(CVector(3217.0f, 140.0f, -325.0f), 200.0f);
 		CEnemy::mPoint3 = new CPoint(CVector(4547.0f, 140.0f, -3971.0f), 200.0f);
 		CEnemy::mPoint2 = new CPoint(CVector(4980.0f, 130.0f, -1621.0f), 200.0f);
