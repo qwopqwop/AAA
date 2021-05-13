@@ -146,25 +146,6 @@ CPlayer::CPlayer()
 }
 
 void CPlayer::Update(){
-	if (CKey::Push('Q')){//‚Å‚Î
-		mRotation.mY++;
-	}
-	if (CKey::Push('E')){//‚Â‚®
-		mRotation.mY--;
-	}
-	if (CKey::Push('Z')){//‚Å‚Î
-		mRotation.mX+=10;
-	}
-	if (CKey::Push('X')){//‚Â‚®
-		mRotation.mX-=10;
-	}
-	if (CKey::Push('C')){//‚Å‚Î
-		mRotation.mZ += 10;
-	}
-	if (CKey::Push('V')){//‚Â‚®
-		mRotation.mZ-=10;
-	}
-
 	if (CKey::Once(' ')){//ƒNƒ‰ƒNƒVƒ‡ƒ“‚ð–Â‚ç‚·
 		SoundHorn.Play();
 		mBuzzerCount++;
