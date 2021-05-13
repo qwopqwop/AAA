@@ -89,8 +89,7 @@ void CCameraPos::Update(){
 	if (mCameraSpeed < 0.0f){
 		mCameraSpeed *= -1;
 	}
-	mPosition = CVector(0.0f, 0.0f, mCameraSpeed) * mMatrixRotate * mMatrixTranslate;;
-	//mPosition = CVector(0.0f, 0.0f, mCameraSpeed) * CCameraRange::mpCameraRange->mMatrixRotate * CCameraRange::mpCameraRange->mMatrixTranslate;  // * mMatrixRotate * mMatrixTranslate;
+	mPosition = CVector(0.0f, 0.0f, mCameraSpeed) * mMatrixRotate * mMatrixTranslate;
 	CCharacter::Update();
 
 	if (CPlayer::mpPlayer->isRespawn){

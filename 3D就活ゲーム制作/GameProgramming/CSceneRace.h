@@ -9,7 +9,6 @@
 #include "CRigidObj.h"
 //CSound.hをインクルードしたら音の再生の動作が軽くなった？
 #include "CSound.h"
-#include "CSceneGame.h"
 
 #define ENEMYS_AMOUNT 7-2 //0以下には設定できない
 /*
@@ -29,7 +28,7 @@ public:
 	void RenderMiniMap();
 	//バックミラーの描画
 	void RenderBackMirror();
-	
+
 	CModel mSky;
 	CModel mRock;
 	CModel mRover;
@@ -73,7 +72,7 @@ public:
 	CSound SoundStart;
 	CSound SoundGoal;
 	
-	float mCamY;//プレイヤーの周りをグルグル(水平方向に)
+	float mCamY;//プレイヤーの周りを回転(水平方向に)
 	
 
 	//スタート前のカウントダウン

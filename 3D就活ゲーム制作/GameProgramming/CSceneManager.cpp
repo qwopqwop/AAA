@@ -1,6 +1,4 @@
 #include "CSceneManager.h"
-#include "CSceneGame.h"
-#include "CSceneGameStage2.h"
 #include "CSceneRace.h"
 #include "CRaceCourceA.h"
 #include "CRaceCourceB.h"
@@ -50,18 +48,6 @@ void CSceneManager::Update() {
 		delete mpScene;//今のシーン削除
 		//該当するシーンを生成
 		switch (mScene){
-		case CScene::ESTAGE1:
-			mpScene = new CSceneGame();
-			mpScene->Init();
-			break;
-		case CScene::ESTAGE2:
-			mpScene = new CSceneGameStage2();
-			mpScene->Init();
-			break;
-		/*case CScene::ERACE1:
-			mpScene = new CSceneRace();
-			mpScene->Init();
-			break;*/
 		case CScene::ERACE1:
 			mpScene = new CRaceCourceA();
 			mpScene->Init();

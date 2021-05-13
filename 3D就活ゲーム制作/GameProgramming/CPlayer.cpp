@@ -25,8 +25,6 @@ extern CSound SoundEngine;
 extern CSound SoundHorn;
 extern CSound SoundCollision;
 extern CSound SoundCollisionSmall;
-extern CSound SoundRespawn;
-extern CSound SoundRespawn2;
 
 CPlayer *CPlayer::mpPlayer = 0;
 
@@ -138,15 +136,11 @@ CPlayer::CPlayer()
 	SoundEngine.Load("SE\\SNES-Racing01-02.wav");
 	SoundEngine_Turf.Load("SE\\SNES-Racing02-02.wav");
 	SoundHorn.Load("SE\\car-horn1.wav");
-	ShutUp.Load("SE\\Hanzawa's_SHOUT_UP!.wav");	
 	SoundCollision.Load("SE\\bomb1.wav");
 	SoundCollisionSmall.Load("SE\\SNES-Racing01-10(Collision).wav");
-	SoundRespawn.Load("SE\\nc31154.wav");
-	SoundRespawn2.Load("SE\\nc55733.wav");
 	
 	
 	isSoundEngine = false;
-	//SoundEngine.Repeat();
 	isTouchGoal = false;
 	mGoalTime = 0; mRank = 1;
 }
@@ -174,10 +168,6 @@ void CPlayer::Update(){
 	if (CKey::Once(' ')){//クラクションを鳴らす
 		SoundHorn.Play();
 		mBuzzerCount++;
-		if (mBuzzerCount > 0 && mBuzzerCount % 7 == 0){
-			ShutUp.Play();
-			mBuzzerCount = 0;
-		}
 	}
 
 	
@@ -265,41 +255,6 @@ void CPlayer::Update(){
 		}		
 	}
 
-	//////プレイヤーのX角度が0に戻されていく
-	////if (mRotation.mX > 0.0f){
-	////	if (mRotation.mX > FIX_ANGLE_VALUE){
-	////		mRotation.mX -= FIX_ANGLE_VALUE;
-	////	}
-	////	else{
-	////		mRotation.mX = 0.0f;
-	////	}
-	////}
-	////else if (mRotation.mX < 0.0f){
-	////	if (mRotation.mX < -FIX_ANGLE_VALUE){
-	////		mRotation.mX += FIX_ANGLE_VALUE;
-	////	}
-	////	else{
-	////		mRotation.mX = 0.0f;
-	////	}
-	////}
-	//////プレイヤーのZ角度が0に戻されていく
-	////if (mRotation.mZ > 0.0f){
-	////	if (mRotation.mZ > FIX_ANGLE_VALUE){
-	////		mRotation.mZ -= FIX_ANGLE_VALUE;
-	////	}
-	////	else{
-	////		mRotation.mZ = 0.0f;
-	////	}
-	////}
-	////else if (mRotation.mZ < 0.0f){
-	////	if (mRotation.mZ < -FIX_ANGLE_VALUE){
-	////		mRotation.mZ += FIX_ANGLE_VALUE;
-	////	}
-	////	else{
-	////		mRotation.mZ = 0.0f;
-	////	}
-	////}
-
 	if (CKey::Push(VK_LEFT) && CanMove){ //ハンドルを左に！
 		//mRotation.mY++;
 		if (mTurnSpeed>=0.0f&&mTurnSpeed<0.5f){
@@ -369,12 +324,6 @@ void CPlayer::Update(){
 		}
 	}
 
-	//mPosition = CVector(mADMoveX, mVelocityJump, mWSMoveZ)  * CMatrix().RotateY(mRotation.mY) * mMatrix;
-	//mPosition = CVector(mADMoveX, mVelocityJump, mWSMoveZ) * CMatrix().RotateY(90) * mMatrix;
-	//mPosition = CVector(mADMoveX, mVelocityJump, mWSMoveZ+mCarSpeed) * CMatrix().RotateY(90) * mMatrix;
-	////常に地面に垂直に落下するようにする(プレイヤーの真下ではない)
-	//mPosition = CVector(mADMoveX, mVelocityJump, mWSMoveZ + mCarSpeed) * mMatrix;
-	//mPosition = CVector(mADMoveX, 0.0f, mWSMoveZ + mCarSpeed) * mMatrix;
 	mPosition = CVector(mADMoveX, 0.0f, mWSMoveZ + mCarSpeed) * mMatrixRotate * mMatrixTranslate;
 	CCharacter::Update();
 	//Y方向(重力)は分ける
@@ -383,8 +332,7 @@ void CPlayer::Update(){
 		CMatrix().RotateZ(0) *
 		CMatrix().RotateX(0) *
 		CMatrix().RotateY(0)
-		*mMatrixTranslate;//できてる？
-	//mMatrix = mMatrixScale * mMatrixRotate * mMatrixTranslate;
+		*mMatrixTranslate;
 
 	//転落してしまった時(Rキーで即リスタート)
 	if (mPosition.mY < -700.0f || CKey::Once('R')){
@@ -392,48 +340,6 @@ void CPlayer::Update(){
 		mVelocityJump = 0.0f;
 		//車の速度を0に
 		mCarSpeed = 0.0f;
-		////リスタート時の効果音
-		//int sr = rand()%2;
-		//if (sr == 0){
-		//	SoundRespawn.Play();
-		//}
-		//else{
-		//	SoundRespawn2.Play();
-		//}
-		//mRespawnCount++;
-		//int respawntext = 0;
-		////5回目までは煽られない
-		//if (mRespawnCount <= 5){
-		//	respawntext = 0;
-		//}
-		//else if (mRespawnCount <= 10){
-		//	respawntext = rand() % 2;
-		//}
-		//else{
-		//	respawntext = rand() % 3;
-		//}
-		////リスポーンしすぎると煽られます
-		//if (respawntext == 0){
-		//	printf("%d-%d\n", 33 * mRespawnCount, 4 * mRespawnCount);
-		//}
-		//else if (respawntext == 1){
-		//	printf("(笑)\n");
-		//}
-		//else if (respawntext == 2){
-		//	if (mRespawnCount < 20){
-		//		printf("^^;\n");
-		//	}
-		//	else if (mRespawnCount < 30){
-		//		printf("^^;;;;;\n");
-		//	}
-		//	else if (mRespawnCount < 50){
-		//		printf("^^;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;\n");
-		//	}
-		//	else{
-		//		printf("^^;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;\n");
-		//	}
-		//}
-
 		if (CSceneTitle::mMode == 2){
 			if (mChecks == 0){
 				//スタート時の位置、方向に戻される
@@ -518,20 +424,6 @@ void CPlayer::Update(){
 	
 	//重力の影響を反映する
 	mVelocityJump -= G;
-	//if (CKey::Once('K')){
-	//	if (mCanJump){
-	//		//ボート乗船時はジャンプ不可
-	//		if (mHaveBoat){
-	//		}
-	//		else{
-	//			mCanJump = false;
-	//			mVelocityJump = mJumpV0;
-	//			mJumpPrio = 2;
-	//			////ジャンプ音再生
-	//			SoundJump.Play();
-	//		}
-	//	}
-	//}
 	if (mJumpPrio > 0){
 		mJumpPrio--;
 	}

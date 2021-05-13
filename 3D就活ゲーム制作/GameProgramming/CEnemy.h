@@ -47,8 +47,6 @@ public:
 	bool isSoundEngine;
 	CSound SoundCollision;
 	CSound SoundCollisionSmall;
-	CSound SoundRespawn;
-	CSound SoundRespawn2;
 	int mRespawnCount;
 
 	float mStartPoint[3];//{ X,Y,Z }
@@ -137,11 +135,7 @@ public:
 	int mGoalTime;
 	int mRank;
 
-	//ポイントへのベクトルを求める
-	//CVector dir = mpPoint->mPosition - mPosition;
-	CVector dir;
-	//左方向へのベクトルを求める
-	CVector left;
+	
 };
 
 

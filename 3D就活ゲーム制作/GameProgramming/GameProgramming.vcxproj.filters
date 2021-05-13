@@ -33,9 +33,6 @@
     <ClCompile Include="main.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="CSceneGame.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="CBillBoard.cpp">
       <Filter>ソース ファイル\Lib</Filter>
     </ClCompile>
@@ -105,9 +102,6 @@
     <ClCompile Include="CBullet.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="CSceneGameStage2.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="CSound.cpp">
       <Filter>ソース ファイル\Lib</Filter>
     </ClCompile>
@@ -173,9 +167,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="CSceneGame.h">
-      <Filter>ソース ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="main.h">
       <Filter>ソース ファイル</Filter>
     </ClInclude>
@@ -252,9 +243,6 @@
       <Filter>ソース ファイル</Filter>
     </ClInclude>
     <ClInclude Include="CBullet.h">
-      <Filter>ソース ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="CSceneGameStage2.h">
       <Filter>ソース ファイル</Filter>
     </ClInclude>
     <ClInclude Include="CSceneRace.h">
