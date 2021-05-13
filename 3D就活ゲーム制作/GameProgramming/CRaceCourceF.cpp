@@ -87,7 +87,7 @@ void CRaceCourceF::Init(){
 		CEnemy::mPoint22 = new CPoint(CVector(151.5f, 30.0f, 52.0f), 100.0f);
 	}
 	else{
-		//隠しHARDの予定
+		//VERYHARD
 	}
 	//プレイヤーの生成
 	mPlayer = new CPlayer();
@@ -122,9 +122,7 @@ void CRaceCourceF::Init(){
 		else if (i % 8 == 7){
 			mEnemys[i]->mpModel = &mCarCyan;
 		}
-		//初期の配置座標を設定する
-		//mStartPoint[0] = 0.0f;  mStartPoint[1] = -13.538f;  mStartPoint[2] = 0.0f;
-		//mStartRotation = 90.0f;
+		//初期配置座標を設定する
 		mEnemys[i]->mPosition = CVector(0.0f - 30.0f - 80.0f*i, -13.538f, 0.0f);
 		mEnemys[i]->mRotation.mY = 90.0f;
 		if (i % 2 == 0){
@@ -138,10 +136,6 @@ void CRaceCourceF::Init(){
 	new CObjCheckPoint(&mCheckPoint, CVector(1127.4f, -100.0f, -5054.0f), CVector(0.0f, 0.0f, 0.0f), CVector(220.0f, 200.0f, 220.0f), 1);
 	new CObjCheckPoint(&mCheckPoint, CVector(777.0f, -100.0f, 1925.0f), CVector(0.0f, 0.0f, 0.0f), CVector(220.0f, 200.0f, 220.0f), 2);
 	new CObjCheckPoint(&mCheckPoint, CVector(-5861.0f, -300.0f, 1165.0f), CVector(0.0f, 0.0f, 0.0f), CVector(220.0f, 200.0f, 220.0f), 3);
-	//コースの生成
-	new CObjFloor(&mCource03Road, CVector(0.0f, 5.0f - 373.0f, -350.0f), CVector(), CVector(40.0f, 20.0f, 40.0f));
-	new CObjWall(&mCource03Wall, CVector(0.0f, 5.0f - 373.0f, -350.0f), CVector(), CVector(40.0f, 20.0f, 40.0f));
-	new CObjWall(&mCource03Fence, CVector(0.0f, 5.0f - 373.0f, -350.0f), CVector(), CVector(40.0f, 20.0f, 40.0f));
 	//ゴール地点
 	new CObjNonCol(&mMiniGoal, CVector(140.0f, -159.0f, 90.0f - 30.0f), CVector(0.0f, 90.0f, 0.0f), CVector(5.1f, 10.0f, 5.1f));
 

@@ -656,10 +656,7 @@ void CPlayer::Collision(CCollider *mc, CCollider *yc){
 									if (mCarSpeed > 2.0f){
 										mCarSpeed = 2.0f;
 									}
-								}
-								//mCarSpeed = -mCarSpeed * 1.0;
-								//mVelocityJump = 2.0f;
-								
+								}								
 							}
 							else if(yc->mpParent->mTag == CCharacter::EJUMPER){//ジャンプ台に接触した時
 								//mVelocityJump = 0; 
@@ -694,16 +691,6 @@ void CPlayer::Collision(CCollider *mc, CCollider *yc){
 					}
 				}
 			}
-
-			
-
-			
-			/*if(yc->mpParent->mTag == CCharacter::ESPRING){
-				mJumpV0 = 2.3f;
-			}*/
-			/*if (CItem::mpItem->mItemNumber == 2){
-				mJumpV0 = 2.3f;
-			}*/
 		}
 		if (yc->mType == CCollider::ESPHERE){
 			if (CCollider::Collision(mc, yc)){
@@ -744,23 +731,8 @@ void CPlayer::Collision(CCollider *mc, CCollider *yc){
 				
 			}
 		}
-
 		break;
 	}
-
-	////球コラと三角形の時
-	//if (mc->mType == CCollider::ESPHERE && yc->mType == CCollider::ETRIANGLE){
-	//	CVector adjust;//調整用ベクトル
-	//	//コライダのmとyが衝突しているか判定
-	//	//三角形と球の衝突判定
-	//	if (CCollider::CollisionTriangleSphere(yc, mc, &adjust)){
-	//		//位置の更新
-	//		mPosition = mPosition - adjust * -1;
-	//		//行列の更新
-	//		CCharacter::Update();
-	//	}
-	//}
-
 }
 
 

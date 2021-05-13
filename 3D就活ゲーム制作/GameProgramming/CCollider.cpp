@@ -385,14 +385,13 @@ CVector CCollider::CalculateEulerAngle(CCollider *m, CCollider *y, CMatrix matri
 	v[2] = y->mV[2] * y->mMatrix * y->mpParent->mMatrix;
 	//面の法線を、外積を正規化して求める
 	// 1.斜面の法線ベクトルからY軸ベクトルを求める
-	CVector normal = (v[1] - v[0]).Cross(v[2] - v[0]).Normalize();  //法線ベクトルは取れてるかも？
+	CVector normal = (v[1] - v[0]).Cross(v[2] - v[0]).Normalize();
 	// 2.車体の進行方向から、Z軸ベクトルを求める
 	CVector preZvec = CVector(0.0f, 0.0f, 1.0f) * matrixrotate;
-			//m->mMatrixRotate;
 	// 3.Y軸ベクトルとZ軸ベクトルの外積を計算し、X軸ベクトルを求める
 	CVector Xvec = (normal).Cross(preZvec).Normalize();
 	// 4.X軸ベクトルとY軸ベクトルの外積を計算し、Z軸ベクトルを求める
-	CVector Zvec = (Xvec).Cross(normal).Normalize();//？？？？？？？？？？？								
+	CVector Zvec = (Xvec).Cross(normal).Normalize();				
 	// 5～7.回転値を求める
 	float rad = asin(Zvec.mY);//5.
 	float rotX = rad * 180 / pi * -1;//X軸は反転

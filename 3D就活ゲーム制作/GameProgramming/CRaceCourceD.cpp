@@ -102,14 +102,6 @@ void CRaceCourceD::Init(){
 		mEnemys[i]->CCharacter::Update();
 	}
 
-	////借り物//敵がコースに近づくと重くなる…
-	//new CObj(&mCource04, CVector(-360.0f, 5.0f - 33.0f, -230.0f), CVector(), CVector(5110.0f, 5110.0f, 5110.0f), 1);
-
-	//こっちは自作
-	/*new CObj(&mCource04Water, CVector(0.0f, -60.0f - 33.0f, 0.0f), CVector(), CVector(100.0f, 100.0f, 100.0f), 99);
-	new CObj(&mCource04A, CVector(0.0f, -60.0f - 33.0f, 0.0f), CVector(), CVector(40.0f, 40.0f, 40.0f), 1);*/
-//	new CObjNonCol(&mCource04Water, CVector(0.0f, 0.0f, 0.0f), CVector(), CVector(100.0f, 100.0f, 100.0f));
-
 	int ess[3][4][5] = {
 		{
 			{ 00, 00, 00, 00, 21 },

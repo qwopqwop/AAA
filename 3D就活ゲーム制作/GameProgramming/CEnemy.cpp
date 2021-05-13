@@ -43,11 +43,11 @@ CEnemy *CEnemy::mpEnemy = 0;
 #define JUMPER01_POWER 3.0f //ジャンプ台1でのジャンプ力
 #define RESTART_TIME 30*60 //敵が詰まった時、一定時間経過でリスタートさせる
 
+//旧速度設定
 //#define MAXSPEED 7.0f //車の最高速度
 //#define MAXSPEED_BACK 2.0f //車の後退する最大速度
 //#define CAR_POWER 0.1f //1フレーム辺りの車の加速していく量
 //#define CAR_BREAK_POWER 0.05f //前進中のブレーキの強さ
-//
 //#define DECELERATE 0.1f //車の減速する量
 //#define FIX_ANGLE_VALUE 0.5f //角度が0度に向けて調整される量(主にX・Z用)
 
@@ -1222,8 +1222,6 @@ void CEnemy::Collision(CCollider *mc, CCollider *yc){
 										else if (mpPoint == mPoint25){
 											mVPoint = mPoint26->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
 											mpPoint = mPoint26;
-
-											printf("next->26\n");
 										}
 										else if (mpPoint == mPoint26){
 											mVPoint = mPoint27->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
@@ -1240,19 +1238,14 @@ void CEnemy::Collision(CCollider *mc, CCollider *yc){
 										else if (mpPoint == mPoint29){
 											mVPoint = mPoint30->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
 											mpPoint = mPoint30;
-											printf("next->30\n");
 										}
 										else if (mpPoint == mPoint30){
 											mVPoint = mPoint31->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
 											mpPoint = mPoint31;
-
-											printf("next->31\n");
 										}
 										else if (mpPoint == mPoint31){
 											mVPoint = mPoint32->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
 											mpPoint = mPoint32;
-
-											printf("next->32\n");
 										}
 										else if (mpPoint == mPoint32){
 											mVPoint = mPoint33->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
@@ -1285,8 +1278,6 @@ void CEnemy::Collision(CCollider *mc, CCollider *yc){
 										else if (mpPoint == mPoint39){
 											mVPoint = mPoint40->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
 											mpPoint = mPoint40;
-
-											printf("next->40\n");
 										}
 										else if (mpPoint == mPoint40){
 											mVPoint = mPoint41->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;

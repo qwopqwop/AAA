@@ -50,7 +50,6 @@ public:
 	CModel mCube2;//透明度100％
 	CModel mCube3;//窓のような色、半透明で水色
 	CModel mCheckPoint;//ポリゴン1枚のみ、透明
-	CModel mWater;//水タイル
 	CModel mTileBlack;//黒い床
 	CModel mTileWhite;//白い床
 	CModel mCarsol;//矢印(ミニマップ)
@@ -58,11 +57,9 @@ public:
 	CModel mMiniGoal;//ゴールIcon(ミニマップ)
 	CModel mCource01;//コース01
 	CModel mGrass01;//芝生01
-	CModel mFence01;//柵
 	CModel mRWTile;//芝生とアスファルトの境目
 	CModel mFenceTop;//柵の上面
 	CModel mFenceSide;//柵の側面
-	CModel mStuff;//内側の柵の空間を詰める物
 	CModel mPole;//ポール
 	CModel mDashBoard;//加速床
 
@@ -93,8 +90,7 @@ public:
 	int mCamPoV;
 
 	int mTextBlinkTime;
-	
-	
+		
 	bool isPause;
 
 	int mRanking;
@@ -105,16 +101,13 @@ public:
 	bool mPutCol;//当たり判定の描画のON・OFF
 	bool isRendPoint;//中間地点がミニマップに表示されるか
 
-	//コース2～4のモデル
+	//コース2,3のモデル
 	CModel mCource02Road;
 	CModel mCource02Wall;
 	CModel mCource02Jump;
 	CModel mCource03Road;
 	CModel mCource03Wall;
 	CModel mCource03Fence;
-	CModel mCource04;
-	CModel mCource04Water;
-	CModel mCource04A;
 
 	CModel mJumper01;//ジャンプ台
 	//平たいる
@@ -155,15 +148,6 @@ public:
 	//標識
 	CModel mSign_Left;
 	CModel mSign_Right;
-};
-
-class CBackMirror : public CSceneRace {
-public:
-	////初期化処理のオーバーライド
-	//void Init();
-	////更新処理のオーバーライド
-	//void Update();
-	void Render();
 };
 
 #endif
