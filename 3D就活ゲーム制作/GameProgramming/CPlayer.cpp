@@ -236,6 +236,19 @@ void CPlayer::Update(){
 		}		
 	}
 
+	if (CKey::Push('Z')){
+		mRotation.mX+=6;
+	}
+	if (CKey::Push('X')){
+		mRotation.mX-=6;
+	}
+	if (CKey::Push('C')){
+		mRotation.mZ+=6;
+	}
+	if (CKey::Push('V')){
+		mRotation.mZ-=6;
+	}
+
 	if (CKey::Push(VK_LEFT) && CanMove){ //ƒnƒ“ƒhƒ‹‚ð¶‚ÉI
 		//mRotation.mY++;
 		if (mTurnSpeed>=0.0f&&mTurnSpeed<0.5f){

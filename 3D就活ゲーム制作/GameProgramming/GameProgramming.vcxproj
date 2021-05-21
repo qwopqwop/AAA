@@ -117,6 +117,7 @@
     <ClCompile Include="CRigidObj.cpp" />
     <ClCompile Include="CRock.cpp" />
     <ClCompile Include="CScene.cpp" />
+    <ClCompile Include="CSceneEditor.cpp" />
     <ClCompile Include="CSceneManager.cpp" />
     <ClCompile Include="CItem.cpp" />
     <ClCompile Include="CSceneRace.cpp" />
@@ -164,6 +165,7 @@
     <ClInclude Include="CRigidObj.h" />
     <ClInclude Include="CRock.h" />
     <ClInclude Include="CScene.h" />
+    <ClInclude Include="CSceneEditor.h" />
     <ClInclude Include="CSceneManager.h" />
     <ClInclude Include="CSceneRace.h" />
     <ClInclude Include="CSceneTitle.h" />

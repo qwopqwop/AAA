@@ -22,6 +22,7 @@ public:
 		ERACE4, //コース4
 		ERACE5, //コース5
 		ERACE6, //コース4
+		EEDIT,  //エディタ画面
 		ETITLE, //タイトル画面
 	};
 	//次のシーンの取得

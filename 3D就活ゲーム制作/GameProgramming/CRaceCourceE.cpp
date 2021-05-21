@@ -15,6 +15,7 @@ void CRaceCourceE::Init(){
 	CSceneRace::Init();
 
 	//敵の目標地点の生成
+	CEnemy::mPointSize = 54;//ポイント数の設定
 	CEnemy::mPoint = new CPoint(CVector(-5492.0f, 130.0f, 13030.0f), 100.0f);
 	CEnemy::mPoint2 = new CPoint(CVector(-4879.0f, 500.0f, 11355.0f), 100.0f);
 	CEnemy::mPoint3 = new CPoint(CVector(-4254.0f, 555.0f, 10627.0f), 100.0f);

@@ -37,7 +37,7 @@ int CSceneRace::mBestTime = 0;
 int CSceneRace::mRecord_A = 10000;
 int CSceneRace::mRecord_B = 13000;
 int CSceneRace::mRecord_C = 22000;
-int CSceneRace::mRecord_D = 30000;
+int CSceneRace::mRecord_D = 460000;
 int CSceneRace::mRecord_E = 40000;
 int CSceneRace::mRecord_F = 43300;
 
@@ -46,6 +46,7 @@ int CSceneRace::mRecord_F = 43300;
 #define SCREENSIZE_Y 600
 //描画エリアの指定(左端のX座標,下端のY座標,幅,高さ)
 #define MINIMAP_AREA 590,10,200,150
+#define MINIMAP_AREA_EDITMODE 0,0,800,600
 #define BACKMIRROR_FRAME_AREA 286,491,229,154
 #define BACKMIRROR_BG_WHITE_AREA 288,493,225,150
 #define BACKMIRROR_VIEW_AREA 288,493,225,150
@@ -172,7 +173,6 @@ void CSceneRace::Init() {
 	else if (CSceneTitle::mMode == 6){
 		//
 	}
-
 
 	//ステージ1BGMの読み込み
 	if (CSceneTitle::mMode == 1){
@@ -349,12 +349,12 @@ void CSceneRace::Update() {
 	if (CKey::Once('2')){//Playerの座標を出力する
 		printf("X:%f Y:%f Z:%f\n", CPlayer::mpPlayer->mPosition.mX, CPlayer::mpPlayer->mPosition.mY, CPlayer::mpPlayer->mPosition.mZ);
 	}
-	if (CKey::Once('3')){//強制的に的の残数を0にする(本来の的は消えない)
-		for (int i = 0; i < ENEMYS_AMOUNT; i++){
-			printf("X:%f Y:%f Z:%f\n", mEnemys[i]->mPosition.mX, mEnemys[i]->mPosition.mY, mEnemys[i]->mPosition.mZ);
-		}
-		//CItem::mTargetAmount = 0;
-	}
+	//if (CKey::Once('3')){//強制的に的の残数を0にする(本来の的は消えない)
+	//	for (int i = 0; i < ENEMYS_AMOUNT; i++){
+	//		printf("X:%f Y:%f Z:%f\n", mEnemys[i]->mPosition.mX, mEnemys[i]->mPosition.mY, mEnemys[i]->mPosition.mZ);
+	//	}
+	//	//CItem::mTargetAmount = 0;
+	//}
 	if (CKey::Once('4')){//バックミラーのON・OFF切り替え
 		isRender_BackMirror = !isRender_BackMirror;
 	}
@@ -372,13 +372,13 @@ void CSceneRace::Update() {
 			CPlayer::mpPlayer->mFlyingMode = true;
 		}
 	}
-	if (CKey::Once('8')){
-		//敵車すべてのmVPointの値を出力
-		for (int i = 0; i < ENEMYS_AMOUNT; i++){
-			//printf("mEnemys[%d]->mVPoint…X:%.1f Y:%.1f Z:%.1f\n", i, mEnemys[i]->mVPoint.mX, mEnemys[i]->mVPoint.mX, mEnemys[i]->mVPoint.mZ);
-			printf("mEnemys[%d]の中間地点…%d  %d週目\n", i, mEnemys[i]->mChecks, mEnemys[i]->mEnemyLap);
-		}
-	}
+	//if (CKey::Once('8')){
+	//	//敵車すべてのmVPointの値を出力
+	//	for (int i = 0; i < ENEMYS_AMOUNT; i++){
+	//		//printf("mEnemys[%d]->mVPoint…X:%.1f Y:%.1f Z:%.1f\n", i, mEnemys[i]->mVPoint.mX, mEnemys[i]->mVPoint.mX, mEnemys[i]->mVPoint.mZ);
+	//		printf("mEnemys[%d]の中間地点…%d  %d週目\n", i, mEnemys[i]->mChecks, mEnemys[i]->mEnemyLap);
+	//	}
+	//}
 	if (CKey::Once('9')){
 		if (mPutCol){
 			mPutCol = false;
@@ -391,6 +391,7 @@ void CSceneRace::Update() {
 		//衝突判定の描画
 		CollisionManager.Render();
 	}
+	//GetNearestColor(1,2);
 
 	//敵の中継地点の表示ON・OFF切り替え
 	if (CKey::Once('O')){		
@@ -438,9 +439,9 @@ void CSceneRace::Update() {
 				}
 				else{
 					mTime += 1;
-				}				
+				}
 			}
-			for (int i = 0; i < ENEMYS_AMOUNT; i++){				
+			for (int i = 0; i < ENEMYS_AMOUNT; i++){
 				if (mEnemys[i]->isEnemyGoaled == false){
 					mEnemys[i]->mPointTime++;
 				}
@@ -459,15 +460,15 @@ void CSceneRace::Update() {
 					mTime_Output += 1;
 				}
 			}
-		}		
+		}
 	}
-	
-	//ミニマップの描画
-	RenderMiniMap();
 	//バックミラーの描画
 	if (isRender_BackMirror){
 		RenderBackMirror();
 	}
+	//ミニマップの描画
+	RenderMiniMap();
+	
 
 	//2D描画開始
 	Start2D(0, 800, 0, 600);
@@ -515,6 +516,7 @@ void CSceneRace::Update() {
 		}
 		mFrame = 0;
 	}
+
 	//カウントダウン表示
 	char mcountd[7];
 	//残り3秒までの間、表示
@@ -523,17 +525,24 @@ void CSceneRace::Update() {
 		CText::DrawString(mcountd, 400, 300, 25, 30);
 	}
 	else if (mCountDown == 0){
-		CText::DrawString("GO!", 400-40, 300, 25, 30);
+		CText::DrawString("GO!", 400 - 40, 300, 25, 30);
 		CPlayer::mpPlayer->CanMove = true;
 		for (int i = 0; i < ENEMYS_AMOUNT; i++){
 			mEnemys[i]->CanMove = true;
 		}
 	}
-
 	char lap[19];
 	sprintf(lap, "LAP%d/%d", mLap, mMaxLap);
 	CText::DrawString(lap, 20, 500, 10, 12, 2);
-
+	//プレイヤーの車の速度表示
+	char carspeed[33];
+	sprintf(carspeed, "SPEED:%4.1f", CPlayer::mpPlayer->mCarSpeed);
+	CText::DrawString(carspeed, 20 + 580, 20, 10, 12);
+	////敵の速度表示(デバッグ用)
+	//char enecarspeed[33];
+	//sprintf(enecarspeed, "SPEED:%4.1f", mEnemys[0]->mCarSpeed);
+	//CText::DrawString(enecarspeed, 20 + 560, 20+25, 10, 12);
+	
 	//ゴール後、継続して実行する処理
 	if (mLap == mMaxLap && isStartRace == false && isGoal){
 		//60fで一巡
@@ -555,13 +564,6 @@ void CSceneRace::Update() {
 			}
 		}
 	}
-	char carspeed[33];
-	sprintf(carspeed, "SPEED:%4.1f", CPlayer::mpPlayer->mCarSpeed);
-	CText::DrawString(carspeed, 20+580, 20, 10, 12);
-	////敵の速度表示(デバッグ用)
-	//char enecarspeed[33];
-	//sprintf(enecarspeed, "SPEED:%4.1f", mEnemys[0]->mCarSpeed);
-	//CText::DrawString(enecarspeed, 20 + 560, 20+25, 10, 12);
 	
 	//ゴール後に表示される文字
 	if (isGoal){
@@ -957,7 +959,7 @@ void CSceneRace::Update() {
 }
 
 /* マップ上からの視点 */
-void CSceneRace::RenderMiniMap() {
+void CSceneRace::RenderMiniMap() {	
 	glPushMatrix();
 	glLoadIdentity();
 	//一時的に2D視点に変更する
@@ -1409,9 +1411,11 @@ void CSceneRace::RenderBackMirror(){
 	CVector e, c, u;//視点、注視点、上方向
 	e = CVector(0.0f, 17.0f + 13.0f, 40.0f - 41.0f) * CMatrix().RotateY(mCamY)* mPlayer->mMatrixScale
 		* CMatrix().RotateY(mPlayer->mRotation.mY)
+		//* mPlayer->mMatrixRotate
 		* mPlayer->mMatrixTranslate;
-	c = mPlayer->mPosition + CVector(0.0f, 17.0f + 12.8f, 40.0f - 42.0f)* mPlayer->mMatrixScale
+	c = mPlayer->mPosition + CVector(0.0f, 17.0f + 13.0f, 40.0f - 42.0f)* mPlayer->mMatrixScale
 		* CMatrix().RotateY(mPlayer->mRotation.mY);
+		//* mPlayer->mMatrixRotate;
 	u = CVector(0.0f, 1.0f, 0.0f);
 	//カメラののX座標を反転させる	
 	e = e * CMatrix().Scale(-1.0f, 1.0f, 1.0f);

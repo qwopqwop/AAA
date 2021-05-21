@@ -63,6 +63,8 @@ public:
 	void TaskCollision();
 
 	//誘導ポイント//中心、全エネミー共通のポイント
+	static CPoint *mPointss[54];
+
 	static CPoint *mPoint;
 	static CPoint *mPoint2;
 	static CPoint *mPoint3;
@@ -134,8 +136,14 @@ public:
 	bool isEnemyGoaled;
 	int mGoalTime;
 	int mRank;
-
 	
+	CPoint* GetNextPoint(CPoint *current_point, bool iscurrentpointlast);
+	//現在の地点,誤差の有無,現在の目標地点が最後のポイントか
+	void SetNextPoint(CPoint *current_point, int gap_amount, bool iscurrentpointlast);
+	
+	int PointNumber(CPoint *current_point);
+
+	static int mPointSize;
 };
 
 

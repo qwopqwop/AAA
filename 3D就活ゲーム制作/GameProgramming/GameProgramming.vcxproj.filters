@@ -28,6 +28,9 @@
     <Filter Include="ソース ファイル\RaceGame\ObjectFolder">
       <UniqueIdentifier>{d8286d00-78a8-407a-8e3d-a5b11d88dac7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\RaceGame\EditorFolder">
+      <UniqueIdentifier>{9e749ff7-e9d7-436f-b4ff-937417429d9a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -164,6 +167,9 @@
     </ClCompile>
     <ClCompile Include="CCameraRange.cpp">
       <Filter>ソース ファイル\Lib</Filter>
+    </ClCompile>
+    <ClCompile Include="CSceneEditor.cpp">
+      <Filter>ソース ファイル\RaceGame\EditorFolder</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -304,6 +310,9 @@
     </ClInclude>
     <ClInclude Include="CCameraRange.h">
       <Filter>ソース ファイル\Lib</Filter>
+    </ClInclude>
+    <ClInclude Include="CSceneEditor.h">
+      <Filter>ソース ファイル\RaceGame\EditorFolder</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
