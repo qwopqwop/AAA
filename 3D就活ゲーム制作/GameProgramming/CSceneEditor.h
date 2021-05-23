@@ -1,0 +1,159 @@
+//#ifndef CSCENEEDITOR_H
+//#define CSCENEEDITOR_H
+//
+//#include "CModel.h"
+//#include "CSceneRace.h"
+//
+//class CSceneEditor : public CSceneRace {
+//public:
+//	//初期化処理のオーバーライド
+//	void Init();
+//	//更新処理のオーバーライド
+//	void Update();
+//};
+//
+//#endif
+
+
+#ifndef CSCENEEDITOR_H
+#define CSCENEEDITOR_H
+#include "CScene.h"
+#include "CModel.h"
+#include "CPlayer.h"
+#include "CEnemy.h"
+#include "CCameraRange.h"
+#include "CCameraPos.h"
+#include "CRigidObj.h"
+//CSound.hをインクルードしたら音の再生の動作が軽くなった？
+#include "CSound.h"
+
+//#define ENEMYS_AMOUNT 7-2 //0以下には設定できない
+/*
+ゲームのシーン
+*/
+class CSceneEditor : public CScene {
+public:
+	//次のシーンの取得
+	EScene GetNextScene();
+
+	~CSceneEditor();
+	//初期化処理のオーバーライド
+	void Init();
+	//更新処理のオーバーライド
+	void Update();
+	//ミニマップ関連の処理
+	void RenderMiniMap();
+	//バックミラーの描画
+	void RenderBackMirror();
+
+	CModel mSky;
+	CModel mRock;
+	CModel mRover;
+	CModel mCarRed;
+	CModel mCarBlue;
+	CModel mCarGreen;
+	CModel mCarYellow;
+	CModel mCarPink;
+	CModel mCarCyan;
+	CModel mCarWhite;
+	CModel mCarBlack;
+	CModel mCarGray;
+	CModel mCube;
+	CModel mPlane;
+	CModel mStairs;//階段
+	CModel mTarget;//的
+	CModel mOnBlock;//OFFになると消える
+	CModel mCube2;//透明度100％
+	CModel mCube3;//窓のような色、半透明で水色
+	CModel mCheckPoint;//ポリゴン1枚のみ、透明
+	CModel mTileBlack;//黒い床
+	CModel mTileWhite;//白い床
+	CModel mCarsol;//矢印(ミニマップ)
+	CModel mCarsol_Enemy;//敵の矢印(ミニマップ)
+	CModel mMiniGoal;//ゴールIcon(ミニマップ)
+	CModel mCource01;//コース01
+	CModel mGrass01;//芝生01
+	CModel mRWTile;//芝生とアスファルトの境目
+	CModel mFenceTop;//柵の上面
+	CModel mFenceSide;//柵の側面
+	CModel mPole;//ポール
+	CModel mDashBoard;//加速床
+
+	CPlayer *mPlayer;
+	//CEnemy *mEnemys[ENEMYS_AMOUNT];
+	CCameraRange *mCamRange;
+	CCameraPos *mCam;
+
+	CSound BGM;
+	CSound SoundCountDown;
+	CSound SoundStart;
+	CSound SoundGoal;
+
+	float mCamY;//プレイヤーの周りを回転(水平方向に)
+
+	int mCamPoV;
+
+	int mTextBlinkTime;
+
+	bool isPause;
+
+	//int mRanking;
+	//int mAfterGoalTime;
+
+	////デバッグコマンド用の変数
+	//bool isRender_BackMirror;//バックミラー表示のON・OFF
+	bool mPutCol;//当たり判定の描画のON・OFF
+	bool isRendPoint;//中間地点がミニマップに表示されるか
+
+	//コース2,3のモデル
+	CModel mCource02Road;
+	CModel mCource02Wall;
+	CModel mCource02Jump;
+	CModel mCource03Road;
+	CModel mCource03Wall;
+	CModel mCource03Fence;
+
+	CModel mJumper01;//ジャンプ台
+	//平たいる
+	CModel mTile_Curve01_Floor;
+	CModel mTile_Curve02_Floor;
+	CModel mTile_Curve03_Floor;
+	CModel mTile_Curve04_Floor;
+	CModel mTile_Straight01_Floor;
+	CModel mTile_Straight02_Floor;
+	CModel mTile_Curve01_Wall;
+	CModel mTile_Curve02_Wall;
+	CModel mTile_Curve03_Wall;
+	CModel mTile_Curve04_Wall;
+	CModel mTile_Straight01_Wall;
+	CModel mTile_Straight02_Wall;
+	//坂系
+	CModel mTile_Slope01_Floor;
+	CModel mTile_Slope02_Floor;
+	CModel mTile_Slope03_Floor;
+	CModel mTile_Slope04_Floor;
+	CModel mTile_Slope01_Wall;
+	CModel mTile_Slope02_Wall;
+	CModel mTile_Slope03_Wall;
+	CModel mTile_Slope04_Wall;
+	//でかめのタイル
+	CModel mTile_Wide_Floor;
+	CModel mTile_Wide_Wall;
+	CModel mBlock_Floor;
+	CModel mBlock_Wall;
+	//コース5のモデル
+	CModel mCource05Mountain;
+	CModel mCource05Wall;
+	CModel mCource05Road;
+	CModel mCource05Lake;
+	CModel mCource05Grass_Floor;
+	CModel mCource05Grass_Wall;
+	CModel mCource05GoalTile;
+	//標識
+	CModel mSign_Left;
+	CModel mSign_Right;
+};
+
+
+
+#endif
