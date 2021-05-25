@@ -1332,241 +1332,248 @@ void CEnemy::SetNextPoint(CPoint *current_point, int gap_amount, bool iscurrentp
 	}		
 }
 
+//CPoint* CEnemy::GetNextPoint(CPoint *current_point, bool iscurrentpointlast){
+//	//次のポイントのポインタを設定
+//	CPoint *nextpoint = 0;
+//	
+//	int pt_num = 1;
+//	for (int i = 0; i < mPointSize; i++){
+//		//pt_num++;
+//	}	
+//	if (mpPoint == mPoint){
+//		nextpoint = mPoint2;
+//		pt_num = 2;
+//	}
+//	else if (mpPoint == mPoint2){
+//		nextpoint = mPoint3;
+//		pt_num = 3;
+//	}
+//	else if (mpPoint == mPoint3){
+//		nextpoint = mPoint4;
+//		pt_num = 4;
+//	}
+//	else if (mpPoint == mPoint4){
+//		nextpoint = mPoint5;
+//		pt_num = 5;
+//	}
+//	else if (mpPoint == mPoint5){
+//		nextpoint = mPoint6;
+//		pt_num = 6;
+//	}
+//	else if (mpPoint == mPoint6){
+//		nextpoint = mPoint7;
+//		pt_num = 7;
+//	}
+//	else if (mpPoint == mPoint7){
+//		nextpoint = mPoint8;
+//		pt_num = 8;
+//	}
+//	else if (mpPoint == mPoint8){
+//		nextpoint = mPoint9;
+//		pt_num = 9;
+//	}
+//	else if (mpPoint == mPoint9){
+//		nextpoint = mPoint10;
+//		pt_num = 10;
+//	}
+//	else if (mpPoint == mPoint10){
+//		nextpoint = mPoint11;
+//		pt_num = 11;
+//	}
+//	else if (mpPoint == mPoint11){
+//		nextpoint = mPoint12;
+//		pt_num = 12;
+//	}
+//	else if (mpPoint == mPoint12){
+//		nextpoint = mPoint13;
+//		pt_num = 13;
+//	}
+//	else if (mpPoint == mPoint13){
+//		nextpoint = mPoint14;
+//		pt_num = 14;
+//	}
+//	else if (mpPoint == mPoint14){
+//		nextpoint = mPoint15;
+//		pt_num = 15;
+//	}
+//	else if (mpPoint == mPoint15){
+//		nextpoint = mPoint16;
+//		pt_num = 16;
+//	}
+//	else if (mpPoint == mPoint16){
+//		nextpoint = mPoint17;
+//		pt_num = 17;
+//	}
+//	else if (mpPoint == mPoint17){
+//		nextpoint = mPoint18;
+//		pt_num = 18;
+//	}
+//	else if (mpPoint == mPoint18){
+//		nextpoint = mPoint19;
+//		pt_num = 19;
+//	}
+//	else if (mpPoint == mPoint19){
+//		nextpoint = mPoint20;
+//		pt_num = 20;
+//	}
+//	else if (mpPoint == mPoint20){
+//		nextpoint = mPoint21;
+//		pt_num = 21;
+//	}
+//	else if (mpPoint == mPoint21){
+//		nextpoint = mPoint22;
+//		pt_num = 22;
+//	}
+//	else if (mpPoint == mPoint22){
+//		nextpoint = mPoint23;
+//		pt_num = 23;
+//	}
+//	else if (mpPoint == mPoint23){
+//		nextpoint = mPoint24;
+//		pt_num = 24;
+//	}
+//	else if (mpPoint == mPoint24){
+//		nextpoint = mPoint25;
+//		pt_num = 25;
+//	}
+//	else if (mpPoint == mPoint25){
+//		nextpoint = mPoint26;
+//		pt_num = 26;
+//	}
+//	else if (mpPoint == mPoint26){
+//		nextpoint = mPoint27;
+//		pt_num = 27;
+//	}
+//	else if (mpPoint == mPoint27){
+//		nextpoint = mPoint28;
+//		pt_num = 28;
+//	}
+//	else if (mpPoint == mPoint28){
+//		nextpoint = mPoint29;
+//		pt_num = 29;
+//	}
+//	else if (mpPoint == mPoint29){
+//		nextpoint = mPoint30;
+//		pt_num = 30;
+//	}
+//	else if (mpPoint == mPoint30){
+//		nextpoint = mPoint31;
+//		pt_num = 31;
+//	}
+//	else if (mpPoint == mPoint31){
+//		nextpoint = mPoint32;
+//		pt_num = 32;
+//	}
+//	else if (mpPoint == mPoint32){
+//		nextpoint = mPoint33;
+//		pt_num = 33;
+//	}
+//	else if (mpPoint == mPoint33){
+//		nextpoint = mPoint34;
+//		pt_num = 34;
+//	}
+//	else if (mpPoint == mPoint34){
+//		nextpoint = mPoint35;
+//		pt_num = 35;
+//	}
+//	else if (mpPoint == mPoint35){
+//		nextpoint = mPoint36;
+//		pt_num = 36;
+//	}
+//	else if (mpPoint == mPoint36){
+//		nextpoint = mPoint37;
+//		pt_num = 37;
+//	}
+//	else if (mpPoint == mPoint37){
+//		nextpoint = mPoint38;
+//		pt_num = 38;
+//	}
+//	else if (mpPoint == mPoint38){
+//		nextpoint = mPoint39;
+//		pt_num = 39;
+//	}
+//	else if (mpPoint == mPoint39){
+//		nextpoint = mPoint40;
+//		pt_num = 40;
+//	}
+//	else if (mpPoint == mPoint40){
+//		nextpoint = mPoint41;
+//		pt_num = 41;
+//	}
+//	else if (mpPoint == mPoint41){
+//		nextpoint = mPoint42;
+//		pt_num = 42;
+//	}
+//	else if (mpPoint == mPoint42){
+//		nextpoint = mPoint43;
+//		pt_num = 43;
+//	}
+//	else if (mpPoint == mPoint43){
+//		nextpoint = mPoint44;
+//		pt_num = 44;
+//	}
+//	else if (mpPoint == mPoint44){
+//		nextpoint = mPoint45;
+//		pt_num = 45;
+//	}
+//	else if (mpPoint == mPoint45){
+//		nextpoint = mPoint46;
+//		pt_num = 46;
+//	}
+//	else if (mpPoint == mPoint46){
+//		nextpoint = mPoint47;
+//		pt_num = 47;
+//	}
+//	else if (mpPoint == mPoint47){
+//		nextpoint = mPoint48;
+//		pt_num = 48;
+//	}
+//	else if (mpPoint == mPoint48){
+//		nextpoint = mPoint49;
+//		pt_num = 49;
+//	}
+//	else if (mpPoint == mPoint49){
+//		nextpoint = mPoint50;
+//		pt_num = 50;
+//	}
+//	else if (mpPoint == mPoint50){
+//		nextpoint = mPoint51;
+//		pt_num = 51;
+//	}
+//	else if (mpPoint == mPoint51){
+//		nextpoint = mPoint52;
+//		pt_num = 52;
+//	}
+//	else if (mpPoint == mPoint52){
+//		nextpoint = mPoint53;
+//		pt_num = 53;
+//	}
+//	else if (mpPoint == mPoint53){
+//		nextpoint = mPoint54;
+//		pt_num = 54;
+//	}
+//	else if (mpPoint == mPoint54){
+//		nextpoint = mPoint;
+//		pt_num = 55;
+//	}
+//	else{
+//		nextpoint = mPoint;
+//	}
+//
+//	if (pt_num > mPointSize){
+//		printf("数：%d\n", pt_num);
+//		nextpoint = mPoint;
+//	}
+//
+//	return nextpoint;
+//}
+
+////次のポイントの取得
+//修正例
 CPoint* CEnemy::GetNextPoint(CPoint *current_point, bool iscurrentpointlast){
-	//次のポイントのポインタを設定
-	CPoint *nextpoint = 0;
-	
-	int pt_num = 1;
-	for (int i = 0; i < mPointSize; i++){
-		//pt_num++;
-	}	
-	if (mpPoint == mPoint){
-		nextpoint = mPoint2;
-		pt_num = 2;
-	}
-	else if (mpPoint == mPoint2){
-		nextpoint = mPoint3;
-		pt_num = 3;
-	}
-	else if (mpPoint == mPoint3){
-		nextpoint = mPoint4;
-		pt_num = 4;
-	}
-	else if (mpPoint == mPoint4){
-		nextpoint = mPoint5;
-		pt_num = 5;
-	}
-	else if (mpPoint == mPoint5){
-		nextpoint = mPoint6;
-		pt_num = 6;
-	}
-	else if (mpPoint == mPoint6){
-		nextpoint = mPoint7;
-		pt_num = 7;
-	}
-	else if (mpPoint == mPoint7){
-		nextpoint = mPoint8;
-		pt_num = 8;
-	}
-	else if (mpPoint == mPoint8){
-		nextpoint = mPoint9;
-		pt_num = 9;
-	}
-	else if (mpPoint == mPoint9){
-		nextpoint = mPoint10;
-		pt_num = 10;
-	}
-	else if (mpPoint == mPoint10){
-		nextpoint = mPoint11;
-		pt_num = 11;
-	}
-	else if (mpPoint == mPoint11){
-		nextpoint = mPoint12;
-		pt_num = 12;
-	}
-	else if (mpPoint == mPoint12){
-		nextpoint = mPoint13;
-		pt_num = 13;
-	}
-	else if (mpPoint == mPoint13){
-		nextpoint = mPoint14;
-		pt_num = 14;
-	}
-	else if (mpPoint == mPoint14){
-		nextpoint = mPoint15;
-		pt_num = 15;
-	}
-	else if (mpPoint == mPoint15){
-		nextpoint = mPoint16;
-		pt_num = 16;
-	}
-	else if (mpPoint == mPoint16){
-		nextpoint = mPoint17;
-		pt_num = 17;
-	}
-	else if (mpPoint == mPoint17){
-		nextpoint = mPoint18;
-		pt_num = 18;
-	}
-	else if (mpPoint == mPoint18){
-		nextpoint = mPoint19;
-		pt_num = 19;
-	}
-	else if (mpPoint == mPoint19){
-		nextpoint = mPoint20;
-		pt_num = 20;
-	}
-	else if (mpPoint == mPoint20){
-		nextpoint = mPoint21;
-		pt_num = 21;
-	}
-	else if (mpPoint == mPoint21){
-		nextpoint = mPoint22;
-		pt_num = 22;
-	}
-	else if (mpPoint == mPoint22){
-		nextpoint = mPoint23;
-		pt_num = 23;
-	}
-	else if (mpPoint == mPoint23){
-		nextpoint = mPoint24;
-		pt_num = 24;
-	}
-	else if (mpPoint == mPoint24){
-		nextpoint = mPoint25;
-		pt_num = 25;
-	}
-	else if (mpPoint == mPoint25){
-		nextpoint = mPoint26;
-		pt_num = 26;
-	}
-	else if (mpPoint == mPoint26){
-		nextpoint = mPoint27;
-		pt_num = 27;
-	}
-	else if (mpPoint == mPoint27){
-		nextpoint = mPoint28;
-		pt_num = 28;
-	}
-	else if (mpPoint == mPoint28){
-		nextpoint = mPoint29;
-		pt_num = 29;
-	}
-	else if (mpPoint == mPoint29){
-		nextpoint = mPoint30;
-		pt_num = 30;
-	}
-	else if (mpPoint == mPoint30){
-		nextpoint = mPoint31;
-		pt_num = 31;
-	}
-	else if (mpPoint == mPoint31){
-		nextpoint = mPoint32;
-		pt_num = 32;
-	}
-	else if (mpPoint == mPoint32){
-		nextpoint = mPoint33;
-		pt_num = 33;
-	}
-	else if (mpPoint == mPoint33){
-		nextpoint = mPoint34;
-		pt_num = 34;
-	}
-	else if (mpPoint == mPoint34){
-		nextpoint = mPoint35;
-		pt_num = 35;
-	}
-	else if (mpPoint == mPoint35){
-		nextpoint = mPoint36;
-		pt_num = 36;
-	}
-	else if (mpPoint == mPoint36){
-		nextpoint = mPoint37;
-		pt_num = 37;
-	}
-	else if (mpPoint == mPoint37){
-		nextpoint = mPoint38;
-		pt_num = 38;
-	}
-	else if (mpPoint == mPoint38){
-		nextpoint = mPoint39;
-		pt_num = 39;
-	}
-	else if (mpPoint == mPoint39){
-		nextpoint = mPoint40;
-		pt_num = 40;
-	}
-	else if (mpPoint == mPoint40){
-		nextpoint = mPoint41;
-		pt_num = 41;
-	}
-	else if (mpPoint == mPoint41){
-		nextpoint = mPoint42;
-		pt_num = 42;
-	}
-	else if (mpPoint == mPoint42){
-		nextpoint = mPoint43;
-		pt_num = 43;
-	}
-	else if (mpPoint == mPoint43){
-		nextpoint = mPoint44;
-		pt_num = 44;
-	}
-	else if (mpPoint == mPoint44){
-		nextpoint = mPoint45;
-		pt_num = 45;
-	}
-	else if (mpPoint == mPoint45){
-		nextpoint = mPoint46;
-		pt_num = 46;
-	}
-	else if (mpPoint == mPoint46){
-		nextpoint = mPoint47;
-		pt_num = 47;
-	}
-	else if (mpPoint == mPoint47){
-		nextpoint = mPoint48;
-		pt_num = 48;
-	}
-	else if (mpPoint == mPoint48){
-		nextpoint = mPoint49;
-		pt_num = 49;
-	}
-	else if (mpPoint == mPoint49){
-		nextpoint = mPoint50;
-		pt_num = 50;
-	}
-	else if (mpPoint == mPoint50){
-		nextpoint = mPoint51;
-		pt_num = 51;
-	}
-	else if (mpPoint == mPoint51){
-		nextpoint = mPoint52;
-		pt_num = 52;
-	}
-	else if (mpPoint == mPoint52){
-		nextpoint = mPoint53;
-		pt_num = 53;
-	}
-	else if (mpPoint == mPoint53){
-		nextpoint = mPoint54;
-		pt_num = 54;
-	}
-	else if (mpPoint == mPoint54){
-		nextpoint = mPoint;
-		pt_num = 55;
-	}
-	else{
-		nextpoint = mPoint;
-	}
-
-	if (pt_num > mPointSize){
-		printf("数：%d\n", pt_num);
-		nextpoint = mPoint;
-	}
-
-	return nextpoint;
+	return current_point->GetNextPoint();
 }
+
 
 //mPoint2なら2、とmPoint～～の整数部分の値を返す
 int CEnemy::PointNumber(CPoint *current_point){
