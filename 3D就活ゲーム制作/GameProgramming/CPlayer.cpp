@@ -256,27 +256,69 @@ void CPlayer::Update(){
 		mRotation.mZ-=6;
 	}
 
+	/*if (mCarSpeed >= 0.0f){
+		mTurnSpeed;
+		mCarSpeed / MAXSPEED + mBoostMaxSpeed;
+	}*/
+
 	if (CKey::Push(VK_LEFT) && CanMove){ //ハンドルを左に！
-		//mRotation.mY++;
-		if (mTurnSpeed>=0.0f&&mTurnSpeed<0.5f){
-			mTurnSpeed = 0.5f;
+		////mRotation.mY++;
+		//if (mTurnSpeed>=0.0f&&mTurnSpeed<0.5f){
+		//	mTurnSpeed = 0.5f;
+		//}
+		//if (mTurnSpeed < 0.0f){
+		//	mTurnSpeed += 0.11f;
+		//	//mTurnSpeed += 0.08f;
+		//}
+		//mTurnSpeed += 0.04f;
+		////mTurnSpeed += 0.02f;
+		/*バック中は逆方向に曲がる*/
+		if (mCarSpeed > 0.0f){
+			if (mTurnSpeed >= 0.0f&&mTurnSpeed<0.5f){
+				mTurnSpeed = 0.5f;
+			}
+			if (mTurnSpeed < 0.0f){
+				mTurnSpeed += 0.11f;
+			}
+			mTurnSpeed += 0.04f;
 		}
-		if (mTurnSpeed < 0.0f){
-			mTurnSpeed += 0.11f;
-			//mTurnSpeed += 0.08f;
+		else if (mCarSpeed < 0.0f){
+			if (mTurnSpeed >= 0.0f&&mTurnSpeed<0.5f){
+				mTurnSpeed = -0.5f;
+			}
+			if (mTurnSpeed < 0.0f){
+				mTurnSpeed += -0.11f;
+			}
+			mTurnSpeed += -0.04f;
 		}
-		mTurnSpeed += 0.04f;
-		//mTurnSpeed += 0.02f;
 	}
 	else if (CKey::Push(VK_RIGHT) && CanMove){//ハンドルを右に！
-		//mRotation.mY--;
-		if (mTurnSpeed <= 0.0f&&mTurnSpeed>-0.5f){
+		/*if (mTurnSpeed <= 0.0f&&mTurnSpeed>-0.5f){
 			mTurnSpeed = -0.5f;
 		}
 		if (mTurnSpeed > 0.0f){
 			mTurnSpeed -= 0.11f;
 		}
-		mTurnSpeed -= 0.04f;
+		mTurnSpeed -= 0.04f;*/
+		/*バック中は逆方向に曲がる*/
+		if (mCarSpeed > 0.0f){
+			if (mTurnSpeed <= 0.0f&&mTurnSpeed>-0.5f){
+				mTurnSpeed = -0.5f;
+			}
+			if (mTurnSpeed > 0.0f){
+				mTurnSpeed -= 0.11f;
+			}
+			mTurnSpeed -= 0.04f;
+		}
+		else if(mCarSpeed < 0.0f){
+			if (mTurnSpeed <= 0.0f&&mTurnSpeed>-0.5f){
+				mTurnSpeed = 0.5f;
+			}
+			if (mTurnSpeed > 0.0f){
+				mTurnSpeed -= -0.11f;
+			}
+			mTurnSpeed -= -0.04f;
+		}
 	}
 	else{
 		if (mTurnSpeed > 0.0f){
@@ -295,7 +337,19 @@ void CPlayer::Update(){
 	else if (mTurnSpeed < -1.0f){
 		mTurnSpeed = -1.0f;
 	}
-	mRotation.mY += mTurnSpeed;
+	float turnspd = mTurnSpeed;
+	if (mCarSpeed > -4.0f && mCarSpeed < 4.0f){
+		if (mCarSpeed >= 0.0f){
+			turnspd = mTurnSpeed * mCarSpeed / 4.0f;
+		}
+		else{
+			turnspd = mTurnSpeed * -mCarSpeed / 4.0f;
+		}		
+	}
+	else{
+		turnspd = mTurnSpeed;
+	}
+	mRotation.mY += turnspd;
 	
 	if (mRotation.mZ > 180){
 		mRotation.mZ = -180;

@@ -533,8 +533,7 @@ void CSceneEditor::Update() {
 	}
 	//2D描画終了
 	End2D();
-
-	
+		
 	//ポーズ中Escキー押下→タイトル画面移行
 	if (isPause){
 		if (CKey::Once(VK_BACK) || CKey::Once(VK_ESCAPE)){
