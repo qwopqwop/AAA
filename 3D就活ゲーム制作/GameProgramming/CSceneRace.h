@@ -29,6 +29,9 @@ public:
 	//バックミラーの描画
 	void RenderBackMirror();
 
+	
+
+
 	CModel mSky;
 	CModel mRock;
 	CModel mRover;
@@ -148,5 +151,14 @@ public:
 	CModel mSign_Left;
 	CModel mSign_Right;
 };
+
+//class CBackMirror : public CScene {
+//public:
+//	void Init();
+//	//更新処理のオーバーライド
+//	void Update();
+//	//ミニマップ関連の処理
+//	void RenderMiniMap();
+//};
 
 #endif

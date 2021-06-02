@@ -171,6 +171,9 @@
     <ClCompile Include="CSceneEditor.cpp">
       <Filter>ソース ファイル\RaceGame\EditorFolder</Filter>
     </ClCompile>
+    <ClCompile Include="CRenderTexture.cpp">
+      <Filter>ソース ファイル\RaceGame\TemporaryFolder</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -313,6 +316,9 @@
     </ClInclude>
     <ClInclude Include="CSceneEditor.h">
       <Filter>ソース ファイル\RaceGame\EditorFolder</Filter>
+    </ClInclude>
+    <ClInclude Include="CRenderTexture.h">
+      <Filter>ソース ファイル\RaceGame\TemporaryFolder</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
