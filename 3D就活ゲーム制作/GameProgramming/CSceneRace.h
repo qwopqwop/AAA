@@ -11,6 +11,7 @@
 #include "CSound.h"
 
 #define ENEMYS_AMOUNT 7-2 //0以下には設定できない
+
 /*
 ゲームのシーン
 */
@@ -151,14 +152,4 @@ public:
 	CModel mSign_Left;
 	CModel mSign_Right;
 };
-
-//class CBackMirror : public CScene {
-//public:
-//	void Init();
-//	//更新処理のオーバーライド
-//	void Update();
-//	//ミニマップ関連の処理
-//	void RenderMiniMap();
-//};
-
 #endif
