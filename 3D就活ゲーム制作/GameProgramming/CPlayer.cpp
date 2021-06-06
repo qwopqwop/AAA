@@ -153,11 +153,11 @@ CPlayer::CPlayer()
 }
 
 void CPlayer::Update(){
-	if (CKey::Once(' ')){//クラクションを鳴らす
-		SoundHorn.Play();
-		mBuzzerCount++;
-	}
-
+	////クラクションを鳴らす
+	//if (CKey::Once(' ')){
+	//	SoundHorn.Play();
+	//	mBuzzerCount++;
+	//}
 	
 	//飛行モード有効時(デバッグ用)
 	if (mFlyingMode){

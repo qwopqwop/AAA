@@ -135,6 +135,35 @@ void CRaceCourceB::Init(){
 	for (int i = 0; i < ENEMYS_AMOUNT; i++){
 		CTaskManager::Get()->ChangePriority(mEnemys[i], 15);
 	}
+	for (int i = 0; i < ENEMYS_AMOUNT; i++){
+		if (mEnemys[i]->mpModel == &mCarRed){
+			printf("CPU%d RED\n", i + 1);
+		}
+		else if (mEnemys[i]->mpModel == &mCarBlue){
+			printf("CPU%d BLUE\n", i + 1);
+		}
+		else if (mEnemys[i]->mpModel == &mCarBlack){
+			printf("CPU%d BLACK\n", i + 1);
+		}
+		else if (mEnemys[i]->mpModel == &mCarCyan){
+			printf("CPU%d CYAN\n", i + 1);
+		}
+		else if (mEnemys[i]->mpModel == &mCarGreen){
+			printf("CPU%d GREEN\n", i + 1);
+		}
+		else if (mEnemys[i]->mpModel == &mCarGray){
+			printf("CPU%d GRAY\n", i + 1);
+		}
+		else if (mEnemys[i]->mpModel == &mCarPink){
+			printf("CPU%d PINK\n", i + 1);
+		}
+		else if (mEnemys[i]->mpModel == &mCarWhite){
+			printf("CPU%d WHITE\n", i + 1);
+		}
+		else if (mEnemys[i]->mpModel == &mCarYellow){
+			printf("CPU%d YELLOW\n", i + 1);
+		}
+	}
 }
 void CRaceCourceB::Update(){
 	CSceneRace::Update();

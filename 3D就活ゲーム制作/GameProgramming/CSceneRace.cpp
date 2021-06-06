@@ -49,9 +49,7 @@ int CSceneRace::mRecord_F = 43300;
 #define SCREENSIZE_Y 600
 //描画エリアの指定(左端のX座標,下端のY座標,幅,高さ)
 #define MINIMAP_AREA 590,10,200,150
-#define MINIMAP_AREA_EDITMODE 0,0,800,600
 #define BACKMIRROR_FRAME_AREA 286,491,229,154
-#define BACKMIRROR_BG_WHITE_AREA 288,493,225,150
 #define BACKMIRROR_VIEW_AREA 288,493,225,150
 #define BACKMIRROR_EXTRAFRAME_AREA 286,598,228,5
 
@@ -1384,24 +1382,43 @@ void CSceneRace::RenderBackMirror()
 	
 	//レンダーテクスチャ開始
 	mRenderTexture.Start();
-
-	//オブジェクトの描画	CTaskManager::Get()->Render();
+	//オブジェクトの描画
 	CTaskManager::Get()->Render();
-
 	//レンダーテクスチャ終了
 	mRenderTexture.End();
 
-	//バックミラー描画開始
-	//バックミラー描画エリアの指定
-	glViewport(BACKMIRROR_VIEW_AREA);
-
+	//バックミラーのフレーム部分の範囲	
+	glViewport(BACKMIRROR_FRAME_AREA);
 	//2D描画開始
 	Start2D(-1, 1, -1, 1);
+	float color[] = { 0.0f, 0.0f, 0.0f, 1.0f };
+	glColor4fv(color);
+	//上記の2D描画範囲の指定値より大きめに白背景を描画する
+	int expand = 100; color[3] = 0.0f;
+	//白背景のよりも先に黒枠となるものを描画する
+	glBegin(GL_TRIANGLES);
+	glVertex2d(0 - expand, 0 - expand);
+	glVertex2d(800 + expand, 600 + expand);
+	glVertex2d(0 - expand, 600 + expand);
+	glEnd();
+	glBegin(GL_TRIANGLES);
+	glVertex2d(0 - expand, 0 - expand);
+	glVertex2d(800 + expand, 0 - expand);
+	glVertex2d(800 + expand, 600 + expand);
+	glEnd();
+	color[0] = color[1] = color[2] = color[3] = 1.0f;
+	glColor4fv(color);
+	//2D描画終了
+	End2D();
+
+	//バックミラーに映る景色を描画エリアの指定
+	glViewport(BACKMIRROR_VIEW_AREA);
+	//2D描画開始
+	Start2D(-1, 1, -1, 1);	
 	// テクスチャマッピングを有効にする
 	glEnable(GL_TEXTURE_2D);
 	//レンダーテクスチャのテクスチャをバインドする
-	glBindTexture(GL_TEXTURE_2D, mRenderTexture.GetTexture());
-
+	glBindTexture(GL_TEXTURE_2D, mRenderTexture.GetTexture());	
 	// 正方形を描く
 	glColor3d(1.0, 1.0, 1.0);
 	glBegin(GL_TRIANGLE_FAN);
@@ -1414,7 +1431,30 @@ void CSceneRace::RenderBackMirror()
 	glTexCoord2d(1.0, 1.0);
 	glVertex2d(-1.0, 1.0);
 	glEnd();
+	//2D描画終了
+	End2D();
 
+	//見切れた黒枠の部分を補完する
+	glViewport(BACKMIRROR_EXTRAFRAME_AREA);
+	//2D描画開始
+	Start2D(0, SCREENSIZE_X, 0, SCREENSIZE_Y);
+	color[0] = color[1] = color[2] = 0.0f;
+	glColor4fv(color);
+	//上記の2D描画範囲の指定値より大きめに白背景を描画する
+	expand = 100;
+	//見切れた黒枠の部分を描画する
+	glBegin(GL_TRIANGLES);
+	glVertex2d(0 - expand, 0 - expand);
+	glVertex2d(SCREENSIZE_X + expand, SCREENSIZE_Y + expand);
+	glVertex2d(0 - expand, SCREENSIZE_Y + expand);
+	glEnd();
+	glBegin(GL_TRIANGLES);
+	glVertex2d(0 - expand, 0 - expand);
+	glVertex2d(SCREENSIZE_X + expand, 0 - expand);
+	glVertex2d(SCREENSIZE_X + expand, SCREENSIZE_Y + expand);
+	glEnd();
+	color[0] = color[1] = color[2] = color[3] = 1.0f;
+	glColor4fv(color);
 	//2D描画終了
 	End2D();
 
@@ -1424,7 +1464,6 @@ void CSceneRace::RenderBackMirror()
 
 	//画面の描画エリアをメインの画面に戻す	glViewport
 	glViewport(0, 0, SCREENSIZE_X, SCREENSIZE_Y); //画面の描画エリアをメインの画面に戻す
-	//	glEnable(GL_CULL_FACE);//表面のみの描画に戻す
 
 	//行列を戻す
 	glPopMatrix();
