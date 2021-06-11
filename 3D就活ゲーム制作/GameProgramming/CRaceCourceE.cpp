@@ -2,6 +2,7 @@
 #include "CObj.h"
 #include "CObjWall.h"
 #include "CObjFloor.h"
+#include "CRoadManager.h"
 #include "CObjCheckPoint.h"
 #include "CObjNonCol.h"
 #include "CObjGrass.h"
@@ -140,7 +141,9 @@ void CRaceCourceE::Init(){
 	//コース全体のサイズ感を設定
 	float mtsize = 35.0f;
 	float height = 11.0f;
-	new CObjFloor(&mCource05Road, CVector(0.0f, 21.0f, 0.0f), CVector(), CVector(mtsize, height, mtsize));//
+	//new CObjFloor(&mCource05Road, CVector(0.0f, 21.0f, 0.0f), CVector(), CVector(mtsize, height, mtsize));
+	new CRoadManager(&mCource05Road, CVector(0.0f, 21.0f, 0.0f), CVector(), CVector(mtsize, height, mtsize),mPlayer->mPosition, CVector(0.0f, 0.0f, -1.0f));//
+
 	new CObjWall(&mCource05Wall, CVector(0.0f, 21.0f, 0.0f), CVector(), CVector(mtsize, height, mtsize));//
 	new CObjGrass(&mCource05Mountain, CVector(0.0f, 21.0f, 0.0f), CVector(), CVector(mtsize, height, mtsize));//
 	new CObjGrass(&mCource05Grass_Floor, CVector(0.0f, 20.0f, 0.0f), CVector(), CVector(mtsize, 30.0f, mtsize));
