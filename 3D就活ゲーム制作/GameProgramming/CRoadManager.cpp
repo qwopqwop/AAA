@@ -34,22 +34,25 @@ void CRoadManager::Init(CModel* pmodel, const CVector& pos, const CVector& rot, 
 		printf("mVertexNum : %f\n", pmodel->mMaterials[i].mVertexNum);
 	}
 
-
 	////（３）三角形ポリゴンの各頂点にmMatrixを掛けてワールド座標を求め、三角形の重心の座標を求める
 	////各コライダの頂点をワールド座標へ変換//参考
 	//v[0] = y->mV[0] * y->mMatrix * y->mpParent->mMatrix;
 	//v[1] = y->mV[1] * y->mMatrix * y->mpParent->mMatrix;
 	//v[2] = y->mV[2] * y->mMatrix * y->mpParent->mMatrix;
-	int men = 0;
+	int polynum = 0;
 	for (int i = 0; i < triangle_size; i++){
-		polygonarray[i] * mMatrix;
-		men++;
-		printf("%4d  ",men);
-		printf("%f, %f, %f\n", polygonarray[i].mX, polygonarray[i].mY, polygonarray[i].mZ);
+		CVector v[3], sv;
+		v[0] = pmodel->mTriangles[i].mV[0] * mMatrix;
+		v[1] = pmodel->mTriangles[i].mV[1] * mMatrix;
+		v[2] = pmodel->mTriangles[i].mV[2] * mMatrix;
+		sv = CVector((v[0].mX + v[1].mX + v[2].mX) / 3.0f, (v[0].mY + v[1].mY + v[2].mY) / 3.0f, (v[0].mZ + v[1].mZ + v[2].mZ) / 3.0f);
+
+		//（４）配列のベクトルの値に、三角形ポリゴンの重心座標を代入していく
+		polygonarray[i] = sv;
+		polynum++;
+		printf("%4d  　", polynum);
+		printf("%13f, %13f, %13f\n", polygonarray[i].mX, polygonarray[i].mY, polygonarray[i].mZ);
 	}
-
-	//（４）配列のベクトルの値に、三角形ポリゴンの重心座標を代入していく
-
 
 	//実装２　先頭データの探索
 	//重心座標の配列から、スタート位置に最も近い重心を求める。
@@ -72,4 +75,6 @@ void CRoadManager::Init(CModel* pmodel, const CVector& pos, const CVector& rot, 
 
 	////最初の目標を設定
 	//CEnemy::mPoint = 最後のCPointのポインタの次ポインタ;
+
+	delete[] polygonarray;
 }
