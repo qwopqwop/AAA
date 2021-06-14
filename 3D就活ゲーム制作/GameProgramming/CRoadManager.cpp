@@ -29,17 +29,16 @@ void CRoadManager::Init(CModel* pmodel, const CVector& pos, const CVector& rot, 
 	//（２）ポリゴンの数分ベクトルの配列を作成する。
 	CVector *polygonarray;
 	polygonarray = new CVector[triangle_size];
-	printf("pmodel->mpVertex[0] = %f\n", pmodel->mpVertex[0]);
+	/*printf("pmodel->mpVertex[0] = %f\n", pmodel->mpVertex[0]);
 	for (int i = 0; i < pmodel->mMaterials.size(); i++){
 		printf("mVertexNum : %f\n", pmodel->mMaterials[i].mVertexNum);
-	}
+	}*/
 
 	////（３）三角形ポリゴンの各頂点にmMatrixを掛けてワールド座標を求め、三角形の重心の座標を求める
 	////各コライダの頂点をワールド座標へ変換//参考
 	//v[0] = y->mV[0] * y->mMatrix * y->mpParent->mMatrix;
 	//v[1] = y->mV[1] * y->mMatrix * y->mpParent->mMatrix;
 	//v[2] = y->mV[2] * y->mMatrix * y->mpParent->mMatrix;
-	int polynum = 0;
 	for (int i = 0; i < triangle_size; i++){
 		CVector v[3], sv;
 		v[0] = pmodel->mTriangles[i].mV[0] * mMatrix;
@@ -49,18 +48,103 @@ void CRoadManager::Init(CModel* pmodel, const CVector& pos, const CVector& rot, 
 
 		//（４）配列のベクトルの値に、三角形ポリゴンの重心座標を代入していく
 		polygonarray[i] = sv;
-		polynum++;
-		printf("%4d  　", polynum);
+		printf("%4d  　", i + 1);
 		printf("%13f, %13f, %13f\n", polygonarray[i].mX, polygonarray[i].mY, polygonarray[i].mZ);
 	}
+
 
 	//実装２　先頭データの探索
 	//重心座標の配列から、スタート位置に最も近い重心を求める。
 	//求めた重心と配列の先頭を入れ替える。
+	CVector spos = startPos;
+	CVector vdist;
+	CVector nearestvec = CVector(0.0f, 0.0f, 0.0f);
+	int nearest_arraynum;
+	for (int i = 0; i < triangle_size; i++){
+		
+		vdist = spos - polygonarray[i];
+		//一番最初の重心座標は無条件に最も近いことにする
+		if (i == 0){
+			nearestvec = vdist;
+			printf("%4d番目  距離：%8.2f\n", i, vdist.Length());
+			nearest_arraynum = i;
+		}
+		else{
+			if (vdist.Length() < nearestvec.Length()){
+				printf("%4d番目  距離：%8.2f\n", i, vdist.Length());
+				nearestvec = vdist;
+				nearest_arraynum = i;
+			}
+		}
+	}
+	printf("最も近い座標の配列…%4d番目の配列\n", nearest_arraynum);
+	printf("距離：%8.2f\n", nearestvec.Length());
+	printf("距離：%8.2f\n", (spos - polygonarray[nearest_arraynum]).Length());
+	//求めた重心と配列の先頭を入れ替える。
+	CVector temp = polygonarray[0];
+	polygonarray[0] = polygonarray[nearest_arraynum];
+	polygonarray[nearest_arraynum] = temp;	
+	printf("---変換後---\n");
+	printf("%4d：距離：%8.2f\n", 0,(spos - polygonarray[0]).Length());
+	printf("%4d：距離：%8.2f\n", nearest_arraynum, (spos - polygonarray[nearest_arraynum]).Length());
+	////各コライダの中心座標を求める
+	////原点×コライダの変換行列×親の変換行列
+	//CVector mpos = CVector() * m->mMatrix * m->mpParent->mMatrix;
+	//CVector ypos = CVector() * y->mMatrix * y->mpParent->mMatrix;
+	////中心から中心へのベクトルを求める
+	//mpos = mpos - ypos;
+	////中心の距離が半径の合計より小さいと衝突
+	//if (m->mRadius + y->mRadius > mpos.Length()) {
+	//	if (mpos.Length() == 0){
+	//		//完全に同じ座標の時は半径の和の分、上に移動させる
+	//		*a = CVector(0.0f, 1.0f, 0.0f) * (m->mRadius + y->mRadius);//CVector(0.0f, 0.1f, 0.0f);
+	//	}
+	//	else{
+	//		*a = mpos.Normalize() * (m->mRadius + y->mRadius - mpos.Length());
+	//	}
+	//}
 
 	//実装３　2番目データの探索
 	//重心座標の2番目以降の配列について、先頭のデータから進行方向にある重心の中で、
 	//最も先頭に近い重心を探し、配列の2番目と入れ替える。
+	////ポイントへのベクトルを求める
+	//CVector dir = mVPoint - mPosition;
+	////左方向へのベクトルを求める
+	//CVector left = CVector(1.0f, 0.0f, 0.0f) * CMatrix().RotateY(mRotation.mY);
+	//left.Dot(dir)
+
+	CVector poly_forward = foward;
+	float sdot = 0;
+	int sArraynum = 0;
+	for (int i = 0; i < triangle_size; i++){
+		CVector dir = polygonarray[i] - polygonarray[0];
+		//printf("内積：%8.2f\n", polygonarray[i].Dot(polygonarray[i] - polygonarray[0]));
+		printf("[%4d]の内積：%8.2f", i, poly_forward.Dot(polygonarray[i] - polygonarray[0]));
+
+		if (poly_forward.Dot(polygonarray[i] - polygonarray[0]) > 0){
+			printf(" 　候補\n");
+			if (sdot == 0 || sdot > poly_forward.Dot(polygonarray[i] - polygonarray[0])){
+				sdot = poly_forward.Dot(polygonarray[i] - polygonarray[0]);
+				sArraynum = i;
+			}
+			
+		}
+		else{
+			printf("\n");
+		}
+	}
+	//[490]か[492]辺りが2番目になるはず…？
+	printf("[%d] %f\n", sArraynum, sdot);
+	temp = polygonarray[1];
+	polygonarray[1] = polygonarray[sArraynum];
+	polygonarray[sArraynum] = temp;
+	printf("---さらに変換後---\n");
+	/*for (int i = 0; i < triangle_size; i++){
+		printf("%4d：距離：%8.2f\n", i, (spos - polygonarray[i]).Length());
+	}*/
+	printf("%4d：距離：%8.2f\n", nearest_arraynum, (spos - polygonarray[nearest_arraynum]).Length());
+	printf("%4d：距離：%8.2f\n", sArraynum, (spos - polygonarray[sArraynum]).Length());
+	
 
 	//実装４　3番目以降のデータの並び変え
 	//配列の3番目以降について以下の手順で並び変える
