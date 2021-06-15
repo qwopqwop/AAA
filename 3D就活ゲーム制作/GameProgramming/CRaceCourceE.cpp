@@ -155,6 +155,7 @@ void CRaceCourceE::Init(){
 
 	//ジャンプ台
 	new CObjJumper(&mOnBlock, CVector(9911.0f, -13.1f + 33.0f, 8264.0f), CVector(-30.0f, -114.0f, 0.0f), CVector(77.0f, 5.0f, 50.0f));
+	new CObjJumper(&mOnBlock, CVector(8333.0f, -13.1f + 33.0f, 8282.0f), CVector(-30.0f, -70.0f, 0.0f), CVector(77.0f, 5.0f, 50.0f));
 
 	//優先度変更
 	CTaskManager::Get()->ChangePriority(mPlayer, 15);
