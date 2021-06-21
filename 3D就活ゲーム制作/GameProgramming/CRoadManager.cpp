@@ -154,7 +154,8 @@ void CRoadManager::Init(CModel* pmodel, const CVector& pos, const CVector& rot, 
 		}		
 	}
 	////最初に生成したポインタの次ポインタの設定
-	first->Set(center, 100.0f, next);
+	first->Set(first->mPosition, 120, next);
+	//first->Set(center, 100.0f, next);
 	//最初の目標を設定
 	CEnemy::mPoint = next->GetNextPoint();
 
