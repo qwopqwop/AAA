@@ -146,11 +146,11 @@ void CRoadManager::Init(CModel* pmodel, const CVector& pos, const CVector& rot, 
 		center = (polygonarray[i] + polygonarray[i - 1]) * (1.0f / 2.0f);
 		//printf("X:%10.2f  Y:%10.2f  Z:%10.2f\n", center.mX, center.mY, center.mZ);
 		if (isfirst){
-			first = next = new CPoint(center, 100.0f, nullptr);
+			first = next = new CPoint(center, 120.0f, nullptr);
 			isfirst = false;
 		}
 		else{
-			next = new CPoint(center, 100.0f, next);
+			next = new CPoint(center, 120.0f, next);
 		}		
 	}
 	////最初に生成したポインタの次ポインタの設定

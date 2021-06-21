@@ -245,13 +245,35 @@ void CEnemy::Update(){
 		mMaxSpeed_PtoP = 20.0f;
 		}		*/
 
+		////速度調整
+		////次のポイントから次の次のポイントへのベクトル
+		//CVector vNext = mpPoint->GetNextPoint()->mPosition - mpPoint->mPosition;
+		////現在の向き
+		//CVector vFoward = CVector(0.0f, 0.0f, 1.0f) * mMatrixRotate;
+		////内積から曲がり具合を求める(0:90°　1.0：真っすぐ）
+		//float corve = vFoward.Dot(vNext.Normalize());
+		////速度上限の計算
+		//mMaxSpeed_PtoP = MAXSPEED * corve;
+		////スピードの最低値
+		//if (mMaxSpeed_PtoP < 1.0f)
+		//{
+		//	mMaxSpeed_PtoP = 1.0f;
+		//}
+
 		//速度調整
 		//次のポイントから次の次のポイントへのベクトル
-		CVector vNext = mpPoint->GetNextPoint()->mPosition - mpPoint->mPosition;
+		CVector vNext = mpPoint->GetNextPoint()->mPosition - mPosition;
 		//現在の向き
-		CVector vFoward = CVector(0.0f, 0.0f, 1.0f) * mMatrixRotate;
+		CVector vLeft = CVector(1.0f, 0.0f, 0.0f) * mMatrixRotate;
 		//内積から曲がり具合を求める(0:90°　1.0：真っすぐ）
-		float corve = vFoward.Dot(vNext.Normalize());
+		float corve = abs(vLeft.Dot(vNext.Normalize()));
+
+		if (corve > 0.6f){
+			corve = 0.05f;
+		}
+		else if (corve < 0.5f){
+			corve = 1.0f;
+		}
 		//速度上限の計算
 		mMaxSpeed_PtoP = MAXSPEED * corve;
 		//スピードの最低値
@@ -259,6 +281,7 @@ void CEnemy::Update(){
 		{
 			mMaxSpeed_PtoP = 1.0f;
 		}
+
 	}
 	else{
 		mMaxSpeed_PtoP = 20.0f;
@@ -386,6 +409,11 @@ void CEnemy::Update(){
 	else if (mTurnSpeed < -1.0f){
 		mTurnSpeed = -1.0f;
 	}
+
+	if (mMaxSpeed_PtoP<1.0f){
+		mTurnSpeed *= 2.0f;//あるとコースアウトしない！？
+	}
+
 	mRotation.mY += mTurnSpeed;
 
 	if (mRotation.mZ > 180){

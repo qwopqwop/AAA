@@ -4,7 +4,9 @@
 #include "CModel.h"
 #include "CSceneRace.h"
 
-class CRaceCourceB : public CSceneRace {
+#include "CSceneShadowMap.h"
+
+class CRaceCourceB : public CSceneShadowMap {
 public:
 	//初期化処理のオーバーライド
 	void Init();

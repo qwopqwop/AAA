@@ -30,8 +30,8 @@ public:
 	//バックミラーの描画
 	void RenderBackMirror();
 
-	
-
+	//影の描画
+	void RenderShadow();
 
 	CModel mSky;
 	CModel mRock;
@@ -70,6 +70,9 @@ public:
 	CEnemy *mEnemys[ENEMYS_AMOUNT];
 	CCameraRange *mCamRange;
 	CCameraPos *mCam;
+
+	/*CObj* mpGround;
+	GLuint mDepthTextureID;*/
 
 	CSound BGM;
 	CSound SoundCountDown;

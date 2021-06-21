@@ -51,14 +51,14 @@ void CSceneManager::Update() {
 		delete mpScene;//今のシーン削除
 		//該当するシーンを生成
 		switch (mScene){
-		case CScene::ERACE1:
+		/*case CScene::ERACE1:
 			mpScene = new CRaceCourceA();
 			mpScene->Init();
-			break;
-		/*case CScene::ERACE1:
+			break;*/
+		case CScene::ERACE1:
 			mpScene = new CSceneShadowMap();
 			mpScene->Init();
-			break;*/
+			break;
 		case CScene::ERACE2:
 			mpScene = new CRaceCourceB();
 			mpScene->Init();

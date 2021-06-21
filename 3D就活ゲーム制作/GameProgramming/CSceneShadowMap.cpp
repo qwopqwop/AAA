@@ -83,7 +83,9 @@ void CSceneShadowMap::Init()
 
 void CSceneShadowMap::Update()
 {
-	mpPlayer->mRotation.mY++;
+	mpPlayer->mRotation.mY += 7;
+	mpPlayer->mRotation.mX += 7;
+	mpPlayer->mRotation.mZ += 7;
 	CTaskManager::Get()->Update();
 	Camera3D(90.0f, 50.0f, 90.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f);
 
