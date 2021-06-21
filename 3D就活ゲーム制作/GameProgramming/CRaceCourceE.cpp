@@ -76,6 +76,7 @@ void CRaceCourceE::Init(){
 	next = CEnemy::mPoint = new CPoint(CVector(-5492.0f, 130.0f, 13030.0f), 100.0f, next);
 	//最初に生成したポインタの次ポインタの設定
 	first->Set(CVector(-3543.0f, 64.0f, 16338.0f), 100.0f, next);
+	//first->Set(first->mPosition, 120, next);
 
 	//プレイヤーの生成
 	mPlayer = new CPlayer();

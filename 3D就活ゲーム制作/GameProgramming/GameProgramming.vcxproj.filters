@@ -177,6 +177,9 @@
     <ClCompile Include="CRoadManager.cpp">
       <Filter>ソース ファイル\RaceGame\TemporaryFolder</Filter>
     </ClCompile>
+    <ClCompile Include="CSceneShadowMap.cpp">
+      <Filter>ソース ファイル\RaceGame\TemporaryFolder</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -324,6 +327,9 @@
       <Filter>ソース ファイル\RaceGame\TemporaryFolder</Filter>
     </ClInclude>
     <ClInclude Include="CRoadManager.h">
+      <Filter>ソース ファイル\RaceGame\TemporaryFolder</Filter>
+    </ClInclude>
+    <ClInclude Include="CSceneShadowMap.h">
       <Filter>ソース ファイル\RaceGame\TemporaryFolder</Filter>
     </ClInclude>
   </ItemGroup>

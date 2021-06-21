@@ -10,6 +10,8 @@
 #include "CSceneTitle.h"
 #include "CTaskManager.h"
 
+#include "CSceneShadowMap.h"
+
 CSceneManager SceneManager;
 
 CScene::EScene mScene;
@@ -53,6 +55,10 @@ void CSceneManager::Update() {
 			mpScene = new CRaceCourceA();
 			mpScene->Init();
 			break;
+		/*case CScene::ERACE1:
+			mpScene = new CSceneShadowMap();
+			mpScene->Init();
+			break;*/
 		case CScene::ERACE2:
 			mpScene = new CRaceCourceB();
 			mpScene->Init();

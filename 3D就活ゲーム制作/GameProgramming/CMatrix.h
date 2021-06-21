@@ -34,6 +34,10 @@ public:
 	//CMatrix * CMatrix ‚Ì‰‰ZŒ‹‰Ê‚ğ•Ô‚·
 	CMatrix operator*(const CMatrix &m);
 
+	//‹ts—ñ‚Ìæ“¾
+	CMatrix GetInverse(void);
+	//CMatrix * ¬” ‚Ì‰‰ZŒ‹‰Ê‚ğ•Ô‚·
+	CMatrix operator*(const float& f) const;
 };
 
 #endif

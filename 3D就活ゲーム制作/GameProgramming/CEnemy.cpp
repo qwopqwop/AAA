@@ -175,7 +175,7 @@ void CEnemy::Update(){
 		}
 	}
 	else if (CSceneTitle::mMode == 5){
-		if (mpPoint == mPoint){
+		/*if (mpPoint == mPoint){
 		mMaxSpeed_PtoP = 19.0f;
 		}
 		else if (mpPoint == mPoint2){
@@ -243,11 +243,28 @@ void CEnemy::Update(){
 		}
 		else{
 		mMaxSpeed_PtoP = 20.0f;
-		}		
+		}		*/
+
+		//速度調整
+		//次のポイントから次の次のポイントへのベクトル
+		CVector vNext = mpPoint->GetNextPoint()->mPosition - mpPoint->mPosition;
+		//現在の向き
+		CVector vFoward = CVector(0.0f, 0.0f, 1.0f) * mMatrixRotate;
+		//内積から曲がり具合を求める(0:90°　1.0：真っすぐ）
+		float corve = vFoward.Dot(vNext.Normalize());
+		//速度上限の計算
+		mMaxSpeed_PtoP = MAXSPEED * corve;
+		//スピードの最低値
+		if (mMaxSpeed_PtoP < 1.0f)
+		{
+			mMaxSpeed_PtoP = 1.0f;
+		}
 	}
 	else{
 		mMaxSpeed_PtoP = 20.0f;
 	}
+
+	
 
 
 	//ポイントへのベクトルを求める
