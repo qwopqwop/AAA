@@ -13,8 +13,8 @@ CSceneShadowMap::~CSceneShadowMap()
 void CSceneShadowMap::Init()
 {
 
-	//シーンの設定
-	mScene = ERACE1;
+	////シーンの設定
+	//mScene = ERACE1;
 
 	mRover.Load("Rover1.obj", "material\\racing_mat\\single_color\\white.mtl");//プレイヤー
 	//地面の読み込み
@@ -84,8 +84,6 @@ void CSceneShadowMap::Init()
 void CSceneShadowMap::Update()
 {
 	mpPlayer->mRotation.mY += 7;
-	mpPlayer->mRotation.mX += 7;
-	mpPlayer->mRotation.mZ += 7;
 	CTaskManager::Get()->Update();
 	Camera3D(90.0f, 50.0f, 90.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f);
 

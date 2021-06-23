@@ -150,6 +150,9 @@ void CRoadManager::Init(CModel* pmodel, const CVector& pos, const CVector& rot, 
 			isfirst = false;
 		}
 		else{
+			/*if ((next->mPosition - center).Length() > 240.0f){
+				next = new CPoint(center, 120.0f, next);
+			}		*/	
 			next = new CPoint(center, 120.0f, next);
 		}		
 	}

@@ -410,8 +410,8 @@ void CEnemy::Update(){
 		mTurnSpeed = -1.0f;
 	}
 
-	if (mMaxSpeed_PtoP<1.0f){
-		mTurnSpeed *= 2.0f;//あるとコースアウトしない！？
+	if (mMaxSpeed_PtoP<2.0f){
+		mTurnSpeed *= 2.0f;//あるとコースアウトしない？
 	}
 
 	mRotation.mY += mTurnSpeed;

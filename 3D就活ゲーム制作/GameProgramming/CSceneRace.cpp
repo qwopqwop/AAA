@@ -1,3 +1,5 @@
+#include "glew.h"
+
 #include "CSceneRace.h"
 //
 #include "CSceneTitle.h"
@@ -52,6 +54,9 @@ int CSceneRace::mRecord_F = 43300;
 #define BACKMIRROR_FRAME_AREA 286,491,229,154
 #define BACKMIRROR_VIEW_AREA 288,493,225,150
 #define BACKMIRROR_EXTRAFRAME_AREA 286,598,228,5
+
+#define TEXWIDTH (800)
+#define TEXHEIGHT (600)
 
 CRenderTexture mRenderTexture;
 
@@ -257,64 +262,63 @@ void CSceneRace::Init() {
 
 
 	mRenderTexture.Init();
+	
 
+	//Shadow Map ************************************
 
+	/* テクスチャユニット１をDepthテクスチャで使用 */
+	glActiveTexture(GL_TEXTURE1);
+	//テクスチャの生成
+	glGenTextures(1, &mDepthTextureID);
+	//使用するテクスチャのバインド
+	glBindTexture(GL_TEXTURE_2D, mDepthTextureID);
 
-	////Shadow Map ************************************
+	/* Depthテクスチャの割り当て */
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, TEXWIDTH, TEXHEIGHT, 0,
+		GL_DEPTH_COMPONENT, GL_UNSIGNED_BYTE, 0);
 
-	///* テクスチャユニット１をDepthテクスチャで使用 */
-	//glActiveTexture(GL_TEXTURE1);
-	////テクスチャの生成
-	//glGenTextures(1, &mDepthTextureID);
-	////使用するテクスチャのバインド
-	//glBindTexture(GL_TEXTURE_2D, mDepthTextureID);
+	/* テクスチャを拡大・縮小する方法の指定 */
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 
-	///* Depthテクスチャの割り当て */
-	//glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, TEXWIDTH, TEXHEIGHT, 0,
-	//	GL_DEPTH_COMPONENT, GL_UNSIGNED_BYTE, 0);
+	/* テクスチャの繰り返し方法の指定 */
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
 
-	///* テクスチャを拡大・縮小する方法の指定 */
-	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	/* 書き込むポリゴンのテクスチャ座標値のＲとテクスチャとの比較を行うようにする */
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_MODE, GL_COMPARE_R_TO_TEXTURE);
 
-	///* テクスチャの繰り返し方法の指定 */
-	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
-	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+	/* もしＲの値がテクスチャの値以下なら真（つまり日向） */
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_FUNC, GL_LEQUAL);
 
-	///* 書き込むポリゴンのテクスチャ座標値のＲとテクスチャとの比較を行うようにする */
-	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_MODE, GL_COMPARE_R_TO_TEXTURE);
+	/* 比較の結果を輝度値として得る */
+	glTexParameteri(GL_TEXTURE_2D, GL_DEPTH_TEXTURE_MODE, GL_LUMINANCE);
 
-	///* もしＲの値がテクスチャの値以下なら真（つまり日向） */
-	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_FUNC, GL_LEQUAL);
+	/* テクスチャ座標に視点座標系における物体の座標値を用いる */
+	glTexGeni(GL_S, GL_TEXTURE_GEN_MODE, GL_EYE_LINEAR);
+	glTexGeni(GL_T, GL_TEXTURE_GEN_MODE, GL_EYE_LINEAR);
+	glTexGeni(GL_R, GL_TEXTURE_GEN_MODE, GL_EYE_LINEAR);
+	glTexGeni(GL_Q, GL_TEXTURE_GEN_MODE, GL_EYE_LINEAR);
 
-	///* 比較の結果を輝度値として得る */
-	//glTexParameteri(GL_TEXTURE_2D, GL_DEPTH_TEXTURE_MODE, GL_LUMINANCE);
+	/* 生成したテクスチャ座標をそのまま (S, T, R, Q) に使う */
+	static const GLdouble genfunc[][4] = {
+		{ 1.0, 0.0, 0.0, 0.0 },
+		{ 0.0, 1.0, 0.0, 0.0 },
+		{ 0.0, 0.0, 1.0, 0.0 },
+		{ 0.0, 0.0, 0.0, 1.0 },
+	};
 
-	///* テクスチャ座標に視点座標系における物体の座標値を用いる */
-	//glTexGeni(GL_S, GL_TEXTURE_GEN_MODE, GL_EYE_LINEAR);
-	//glTexGeni(GL_T, GL_TEXTURE_GEN_MODE, GL_EYE_LINEAR);
-	//glTexGeni(GL_R, GL_TEXTURE_GEN_MODE, GL_EYE_LINEAR);
-	//glTexGeni(GL_Q, GL_TEXTURE_GEN_MODE, GL_EYE_LINEAR);
+	glTexGendv(GL_S, GL_EYE_PLANE, genfunc[0]);
+	glTexGendv(GL_T, GL_EYE_PLANE, genfunc[1]);
+	glTexGendv(GL_R, GL_EYE_PLANE, genfunc[2]);
+	glTexGendv(GL_Q, GL_EYE_PLANE, genfunc[3]);
 
-	///* 生成したテクスチャ座標をそのまま (S, T, R, Q) に使う */
-	//static const GLdouble genfunc[][4] = {
-	//	{ 1.0, 0.0, 0.0, 0.0 },
-	//	{ 0.0, 1.0, 0.0, 0.0 },
-	//	{ 0.0, 0.0, 1.0, 0.0 },
-	//	{ 0.0, 0.0, 0.0, 1.0 },
-	//};
+	//テクスチャの解除
+	glBindTexture(GL_TEXTURE_2D, 0);
+	//テクスチャユニットを0に戻す
+	glActiveTexture(GL_TEXTURE0);
 
-	//glTexGendv(GL_S, GL_EYE_PLANE, genfunc[0]);
-	//glTexGendv(GL_T, GL_EYE_PLANE, genfunc[1]);
-	//glTexGendv(GL_R, GL_EYE_PLANE, genfunc[2]);
-	//glTexGendv(GL_Q, GL_EYE_PLANE, genfunc[3]);
-
-	////テクスチャの解除
-	//glBindTexture(GL_TEXTURE_2D, 0);
-	////テクスチャユニットを0に戻す
-	//glActiveTexture(GL_TEXTURE0);
-
-	////************************************ Shadow Map
+	//************************************ Shadow Map
 }
 
 
@@ -400,6 +404,9 @@ void CSceneRace::Update() {
 	if (isPause == false){
 		CTaskManager::Get()->Update();
 	}
+
+	RenderShadow();
+
 	CTaskManager::Get()->Render();	
 	//衝突処理
 	CTaskManager::Get()->TaskCollision();
@@ -1529,141 +1536,157 @@ void CSceneRace::RenderBackMirror()
 
 //影の描画
 void CSceneRace::RenderShadow(){
-	////Shadow Map ************************************
+	/*for (int i = 0; i < 1; i++){
+		int ho = rand() % 2;
+		if (ho == 1){
+			for (int j = 0; j < 30; j++){
+				printf("　");
+			}
+		}
+		else{
+			for (int j = 0; j < 30; j++){
+				printf("■");
+			}
+		}
+	}*/
+	
+	
 
-	//GLint	viewport[4]; //ビューポートの保存用
-	//CMatrix	modelview; //モデルビュー変換行列の保存用
-	//CMatrix	projection; //透視変換行列の保存用
+	//Shadow Map ************************************
 
-	///*
-	//** 第１ステップ：デプステクスチャの作成
-	//*/
+	GLint	viewport[4]; //ビューポートの保存用
+	CMatrix	modelview; //モデルビュー変換行列の保存用
+	CMatrix	projection; //透視変換行列の保存用
 
-	///* デプスバッファをクリアする */
-	//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	/*
+	** 第１ステップ：デプステクスチャの作成
+	*/
 
-	///* 現在のビューポートを保存しておく */
-	//glGetIntegerv(GL_VIEWPORT, viewport);
+	/* デプスバッファをクリアする */
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	///* ビューポートをテクスチャのサイズに設定する */
-	//glViewport(0, 0, TEXWIDTH, TEXHEIGHT);
+	/* 現在のビューポートを保存しておく */
+	glGetIntegerv(GL_VIEWPORT, viewport);
 
-	///* 透視変換行列を設定する */
-	//glMatrixMode(GL_PROJECTION); //透視変換行列に切り替え
-	//glPushMatrix(); //現在の設定はスタックに保存
-	//glLoadIdentity(); //行列の初期化
+	/* ビューポートをテクスチャのサイズに設定する */
+	glViewport(0, 0, TEXWIDTH, TEXHEIGHT);
 
-	///* Depthテクスチャの透視変換行列を保存しておく */
-	//gluPerspective(75.0, (GLdouble)TEXWIDTH / (GLdouble)TEXHEIGHT, 1.0, 100000.0);
-	//glGetFloatv(GL_PROJECTION_MATRIX, projection.mM[0]); //透視変換行列の保存
+	/* 透視変換行列を設定する */
+	glMatrixMode(GL_PROJECTION); //透視変換行列に切り替え
+	glPushMatrix(); //現在の設定はスタックに保存
+	glLoadIdentity(); //行列の初期化
 
-	//GLfloat lightpos[] = { 0.0f, 200.0f, 200.0f, 0.0f }; //ライトの位置データ
-	///* 光源位置を視点としシーンが視野に収まるようモデルビュー変換行列を設定する */
-	//glMatrixMode(GL_MODELVIEW); //モデルビュー行列に切り替え
-	//glPushMatrix(); //現在の設定はスタックに保存
-	//glLoadIdentity(); //行列の初期化
-	////ライト位置から見るように行列を設定する
-	//gluLookAt(lightpos[0], lightpos[1], lightpos[2], lightpos[0] - 1, 0, lightpos[2] - 1, 0.0, 1.0, 0.0);
-	///* 設定したモデルビュー変換行列を保存しておく */
-	//glGetFloatv(GL_MODELVIEW_MATRIX, modelview.mM[0]);
+	/* Depthテクスチャの透視変換行列を保存しておく */
+	gluPerspective(75.0, (GLdouble)TEXWIDTH / (GLdouble)TEXHEIGHT, 1.0, 100000.0);
+	glGetFloatv(GL_PROJECTION_MATRIX, projection.mM[0]); //透視変換行列の保存
 
-	///* デプスバッファの内容だけを取得するのでフレームバッファには書き込まない */
-	//glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
+	GLfloat lightpos[] = { 0.0f, 200.0f, 200.0f, 0.0f }; //ライトの位置データ
+	/* 光源位置を視点としシーンが視野に収まるようモデルビュー変換行列を設定する */
+	glMatrixMode(GL_MODELVIEW); //モデルビュー行列に切り替え
+	glPushMatrix(); //現在の設定はスタックに保存
+	glLoadIdentity(); //行列の初期化
+	//ライト位置から見るように行列を設定する
+	gluLookAt(lightpos[0], lightpos[1], lightpos[2], lightpos[0] - 1, 0, lightpos[2] - 1, 0.0, 1.0, 0.0);
+	/* 設定したモデルビュー変換行列を保存しておく */
+	glGetFloatv(GL_MODELVIEW_MATRIX, modelview.mM[0]);
 
-	///* したがって陰影付けも不要なのでライティングをオフにする */
-	//glDisable(GL_LIGHTING);
+	/* デプスバッファの内容だけを取得するのでフレームバッファには書き込まない */
+	glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
 
-	///* デプスバッファには背面のポリゴンの奥行きを記録するようにする */
-	//glCullFace(GL_FRONT);
-	////************************************ Shadow Map
+	/* したがって陰影付けも不要なのでライティングをオフにする */
+	glDisable(GL_LIGHTING);
 
-	////Depthテクスチャを作成する描画
-	//CTaskManager::Get()->Render();
+	/* デプスバッファには背面のポリゴンの奥行きを記録するようにする */
+	glCullFace(GL_FRONT);
+	//************************************ Shadow Map
 
-	////Shadow Map ************************************
-	///* テクスチャユニット１に切り替える */
-	//glActiveTexture(GL_TEXTURE1);
-	//glBindTexture(GL_TEXTURE_2D, mDepthTextureID);
-	///* デプスバッファの内容をテクスチャメモリに転送する */
-	//glCopyTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, 0, 0, TEXWIDTH, TEXHEIGHT);
+	//Depthテクスチャを作成する描画
+	CTaskManager::Get()->Render();
 
-	///* 通常の描画の設定に戻す */
-	//glViewport(viewport[0], viewport[1], viewport[2], viewport[3]);
+	//Shadow Map ************************************
+	/* テクスチャユニット１に切り替える */
+	glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_2D, mDepthTextureID);
+	/* デプスバッファの内容をテクスチャメモリに転送する */
+	glCopyTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, 0, 0, TEXWIDTH, TEXHEIGHT);
 
-	//glMatrixMode(GL_PROJECTION); //透視変換行列に切り替え
-	//glPopMatrix(); //設定をスタックから戻す
+	/* 通常の描画の設定に戻す */
+	glViewport(viewport[0], viewport[1], viewport[2], viewport[3]);
 
-	//glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
-	//glEnable(GL_LIGHTING);
-	//glCullFace(GL_BACK);
+	glMatrixMode(GL_PROJECTION); //透視変換行列に切り替え
+	glPopMatrix(); //設定をスタックから戻す
 
-	///*
-	//** 第２ステップ：全体の描画
-	//*/
+	glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
+	glEnable(GL_LIGHTING);
+	glCullFace(GL_BACK);
 
-	///* フレームバッファとデプスバッファをクリアする */
-	//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	/*
+	** 第２ステップ：全体の描画
+	*/
 
-	///* モデルビュー変換行列の設定 */
-	//glMatrixMode(GL_MODELVIEW); //モデルビュー行列に切り替え
-	//glPopMatrix(); //スタックから元に戻す
-	///* モデルビュー変換行列を保存しておく */
-	//CMatrix modelviewCamera;
-	//glGetFloatv(GL_MODELVIEW_MATRIX, modelviewCamera.mM[0]);
+	/* フレームバッファとデプスバッファをクリアする */
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	///* 光源の位置を設定する */
-	////glLightfv(GL_LIGHT0, GL_POSITION, lightpos);
+	/* モデルビュー変換行列の設定 */
+	glMatrixMode(GL_MODELVIEW); //モデルビュー行列に切り替え
+	glPopMatrix(); //スタックから元に戻す
+	/* モデルビュー変換行列を保存しておく */
+	CMatrix modelviewCamera;
+	glGetFloatv(GL_MODELVIEW_MATRIX, modelviewCamera.mM[0]);
 
-	///* テクスチャ変換行列を設定する */
-	//glMatrixMode(GL_TEXTURE);
-	//glLoadIdentity();
+	/* 光源の位置を設定する */
+	//glLightfv(GL_LIGHT0, GL_POSITION, lightpos);
 
-	///* テクスチャ座標の [-1,1] の範囲を [0,1] の範囲に収める */
-	//glTranslated(0.5, 0.5, 0.5);
-	//glScaled(0.5, 0.5, 0.5);
-	///* テクスチャのモデルビュー変換行列と透視変換行列の積をかける */
-	//glMultMatrixf(projection.mM[0]);
-	//glMultMatrixf(modelview.mM[0]);
+	/* テクスチャ変換行列を設定する */
+	glMatrixMode(GL_TEXTURE);
+	glLoadIdentity();
 
-	///* 現在のモデルビュー変換の逆変換をかけておく */
-	//glMultMatrixf(modelviewCamera.GetInverse().mM[0]);
+	/* テクスチャ座標の [-1,1] の範囲を [0,1] の範囲に収める */
+	glTranslated(0.5, 0.5, 0.5);
+	glScaled(0.5, 0.5, 0.5);
+	/* テクスチャのモデルビュー変換行列と透視変換行列の積をかける */
+	glMultMatrixf(projection.mM[0]);
+	glMultMatrixf(modelview.mM[0]);
 
-	///* モデルビュー変換行列に戻す */
-	//glMatrixMode(GL_MODELVIEW);
+	/* 現在のモデルビュー変換の逆変換をかけておく */
+	glMultMatrixf(modelviewCamera.GetInverse().mM[0]);
 
-	///* テクスチャマッピングとテクスチャ座標の自動生成を有効にする */
-	//glEnable(GL_TEXTURE_2D);
-	//glEnable(GL_TEXTURE_GEN_S);
-	//glEnable(GL_TEXTURE_GEN_T);
-	//glEnable(GL_TEXTURE_GEN_R);
-	//glEnable(GL_TEXTURE_GEN_Q);
+	/* モデルビュー変換行列に戻す */
+	glMatrixMode(GL_MODELVIEW);
 
-	//const GLfloat lightcol[] = { 1.0f, 1.0f, 1.0f, 1.0f };
-	///* 光源の明るさを日向の部分での明るさに設定 */
-	//glLightfv(GL_LIGHT0, GL_DIFFUSE, lightcol);
-	//glLightfv(GL_LIGHT0, GL_SPECULAR, lightcol);
-	////************************************ Shadow Map
+	/* テクスチャマッピングとテクスチャ座標の自動生成を有効にする */
+	glEnable(GL_TEXTURE_2D);
+	glEnable(GL_TEXTURE_GEN_S);
+	glEnable(GL_TEXTURE_GEN_T);
+	glEnable(GL_TEXTURE_GEN_R);
+	glEnable(GL_TEXTURE_GEN_Q);
+
+	const GLfloat lightcol[] = { 1.0f, 1.0f, 1.0f, 1.0f };
+	/* 光源の明るさを日向の部分での明るさに設定 */
+	glLightfv(GL_LIGHT0, GL_DIFFUSE, lightcol);
+	glLightfv(GL_LIGHT0, GL_SPECULAR, lightcol);
+	//************************************ Shadow Map
 
 	////影の描画
 	//mpGround->Render();
 
-	////Shadow Map ************************************
-	///* テクスチャマッピングとテクスチャ座標の自動生成を無効にする */
-	//glDisable(GL_TEXTURE_GEN_S);
-	//glDisable(GL_TEXTURE_GEN_T);
-	//glDisable(GL_TEXTURE_GEN_R);
-	//glDisable(GL_TEXTURE_GEN_Q);
-	//glDisable(GL_TEXTURE_2D);
-	////テクスチャを解除する
-	//glBindTexture(GL_TEXTURE_2D, 0);
-	///* テクスチャ変換行列を設定する */
-	//glMatrixMode(GL_TEXTURE);
-	//glLoadIdentity();
+	//Shadow Map ************************************
+	/* テクスチャマッピングとテクスチャ座標の自動生成を無効にする */
+	glDisable(GL_TEXTURE_GEN_S);
+	glDisable(GL_TEXTURE_GEN_T);
+	glDisable(GL_TEXTURE_GEN_R);
+	glDisable(GL_TEXTURE_GEN_Q);
+	glDisable(GL_TEXTURE_2D);
+	//テクスチャを解除する
+	glBindTexture(GL_TEXTURE_2D, 0);
+	/* テクスチャ変換行列を設定する */
+	glMatrixMode(GL_TEXTURE);
+	glLoadIdentity();
 
-	//glMatrixMode(GL_MODELVIEW);
+	glMatrixMode(GL_MODELVIEW);
 
-	//glActiveTexture(GL_TEXTURE0);
-	////************************************ Shadow Map
+	glActiveTexture(GL_TEXTURE0);
+	//************************************ Shadow Map
 }
 
 //次のシーンの取得

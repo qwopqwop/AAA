@@ -29,9 +29,12 @@ public:
 	void RenderMiniMap();
 	//バックミラーの描画
 	void RenderBackMirror();
-
+	
 	//影の描画
 	void RenderShadow();
+	//CObj* mpPlayer;
+	//CObj *mpGround;
+	GLuint mDepthTextureID;
 
 	CModel mSky;
 	CModel mRock;
