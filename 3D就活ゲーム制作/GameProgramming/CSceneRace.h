@@ -10,7 +10,11 @@
 //CSound.hをインクルードしたら音の再生の動作が軽くなった？
 #include "CSound.h"
 
+#include "CObjFloor.h"
+
 #define ENEMYS_AMOUNT 7-2 //0以下には設定できない
+
+#define GROUND_AMOUNT 8
 
 /*
 ゲームのシーン
@@ -157,5 +161,12 @@ public:
 	//標識
 	CModel mSign_Left;
 	CModel mSign_Right;
+
+	/*CObj *mpGround = NULL;
+	CObj *mpGround2 = NULL;
+	CObj *mpGround3 = NULL;
+	CObj *mpGround4 = NULL;
+	CObj *mpGround5 = NULL;*/
+	CObj *mpGrounds[GROUND_AMOUNT];
 };
 #endif

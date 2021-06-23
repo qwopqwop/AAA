@@ -68,6 +68,9 @@ CSceneRace::~CSceneRace() {
 
 void CSceneRace::Init() {
 	
+	for (int i = 0; i < GROUND_AMOUNT; i++){
+		mpGrounds[i] = NULL;
+	}
 
 	//的の残数の初期化
 	CItem::mTargetAmount = 0;
@@ -1581,6 +1584,23 @@ void CSceneRace::RenderShadow(){
 	glGetFloatv(GL_PROJECTION_MATRIX, projection.mM[0]); //透視変換行列の保存
 
 	GLfloat lightpos[] = { 0.0f, 200.0f, 200.0f, 0.0f }; //ライトの位置データ
+	lightpos[2] = 0.0f; //ライトの位置データ
+	if (CSceneTitle::mMode == 1){
+		lightpos[1] = 2000.0f; //ライトの位置データ
+	}
+	else if (CSceneTitle::mMode == 2){
+		lightpos[1] = 10000.0f; //ライトの位置データ
+	}
+	else if (CSceneTitle::mMode == 5){
+		lightpos[1] = 24000.0f; //ライトの位置データ
+	}
+	else{
+		//光源が遠いほど影の画質が粗くなってしまう
+	}	
+	//lightpos[0] = mPlayer->mPosition.mX; //ライトの位置データ
+	//lightpos[1] = mPlayer->mPosition.mY+1200.0f; //ライトの位置データ
+	//lightpos[2] = mPlayer->mPosition.mZ; //ライトの位置データ
+
 	/* 光源位置を視点としシーンが視野に収まるようモデルビュー変換行列を設定する */
 	glMatrixMode(GL_MODELVIEW); //モデルビュー行列に切り替え
 	glPushMatrix(); //現在の設定はスタックに保存
@@ -1667,8 +1687,26 @@ void CSceneRace::RenderShadow(){
 	glLightfv(GL_LIGHT0, GL_SPECULAR, lightcol);
 	//************************************ Shadow Map
 
-	////影の描画
-	//mpGround->Render();
+	
+	//影の描画
+	/*mpGround->Render();
+	if (mpGround2 != NULL){
+		mpGround2->Render();
+	}
+	if (mpGround3 != NULL){
+		mpGround3->Render();
+	}
+	if (mpGround4 != NULL){
+		mpGround4->Render();
+	}
+	if (mpGround5 != NULL){
+		mpGround5->Render();
+	}*/
+	for (int i = 0; i < GROUND_AMOUNT; i++){
+		if (mpGrounds[i] != NULL){
+			mpGrounds[i]->Render();
+		}
+	}
 
 	//Shadow Map ************************************
 	/* テクスチャマッピングとテクスチャ座標の自動生成を無効にする */
