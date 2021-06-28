@@ -3,13 +3,13 @@
 #include "CEnemy.h"
 
 //CRoadManager(モデルデータのポインタ,位置,回転,拡大縮小,スタート位置,進行方向)
-CRoadManager::CRoadManager(CModel *model, const CVector& position, const CVector& rotation, const CVector& scale, const CVector& startPos, const CVector& foward)
+CRoadManager::CRoadManager(CModel *model, const CVector& position, const CVector& rotation, const CVector& scale, const CVector& startPos, const CVector& foward, const float radius)
 : CObjFloor(model, position, rotation, scale)
 {
-	Init(model, position, rotation, scale, startPos, foward);
+	Init(model, position, rotation, scale, startPos, foward, radius);
 }
 
-void CRoadManager::Init(CModel* pmodel, const CVector& pos, const CVector& rot, const CVector& scale, const CVector& startPos, const CVector& foward)
+void CRoadManager::Init(CModel* pmodel, const CVector& pos, const CVector& rot, const CVector& scale, const CVector& startPos, const CVector& foward, const float radius)
 {
 	//mMatrixの更新
 	mPosition = pos;
@@ -17,6 +17,7 @@ void CRoadManager::Init(CModel* pmodel, const CVector& pos, const CVector& rot, 
 	mScale = scale;
 	CCharacter::Update();
 
+	float rad = radius;
 	
 	//実装１　三角形ポリゴンの重心座標を求めて配列にする
 	//（１）pmodelから三角形ポリゴンの数を取得する
@@ -146,19 +147,21 @@ void CRoadManager::Init(CModel* pmodel, const CVector& pos, const CVector& rot, 
 		center = (polygonarray[i] + polygonarray[i - 1]) * (1.0f / 2.0f);
 		//printf("X:%10.2f  Y:%10.2f  Z:%10.2f\n", center.mX, center.mY, center.mZ);
 		if (isfirst){
-			first = next = new CPoint(center, 120.0f, nullptr);
+			/*first = next = new CPoint(center, 120.0f, nullptr);*/
+			first = next = new CPoint(center, rad, nullptr);
 			isfirst = false;
 		}
 		else{
 			/*if ((next->mPosition - center).Length() > 240.0f){
 				next = new CPoint(center, 120.0f, next);
 			}		*/	
-			next = new CPoint(center, 120.0f, next);
+			//next = new CPoint(center, 120.0f, next);
+			next = new CPoint(center, rad, next);
 		}		
 	}
 	////最初に生成したポインタの次ポインタの設定
-	first->Set(first->mPosition, 120, next);
-	//first->Set(center, 100.0f, next);
+	/*first->Set(first->mPosition, 120, next);*/
+	first->Set(first->mPosition, rad, next);
 	//最初の目標を設定
 	CEnemy::mPoint = next->GetNextPoint();
 

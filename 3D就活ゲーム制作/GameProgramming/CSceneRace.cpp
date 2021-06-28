@@ -1586,7 +1586,7 @@ void CSceneRace::RenderShadow(){
 	GLfloat lightpos[] = { 0.0f, 200.0f, 200.0f, 0.0f }; //ライトの位置データ
 	lightpos[2] = 0.0f; //ライトの位置データ
 	if (CSceneTitle::mMode == 1){
-		lightpos[1] = 2000.0f; //ライトの位置データ
+		lightpos[1] = 2000.0f*2; //ライトの位置データ
 	}
 	else if (CSceneTitle::mMode == 2){
 		lightpos[1] = 10000.0f; //ライトの位置データ
@@ -1596,10 +1596,11 @@ void CSceneRace::RenderShadow(){
 	}
 	else{
 		//光源が遠いほど影の画質が粗くなってしまう
-	}	
-	//lightpos[0] = mPlayer->mPosition.mX; //ライトの位置データ
-	//lightpos[1] = mPlayer->mPosition.mY+1200.0f; //ライトの位置データ
-	//lightpos[2] = mPlayer->mPosition.mZ; //ライトの位置データ
+	}
+
+	lightpos[0] = mPlayer->mPosition.mX; //ライトの位置データ
+	lightpos[1] = mPlayer->mPosition.mY+1400.0f; //ライトの位置データ
+	lightpos[2] = mPlayer->mPosition.mZ; //ライトの位置データ
 
 	/* 光源位置を視点としシーンが視野に収まるようモデルビュー変換行列を設定する */
 	glMatrixMode(GL_MODELVIEW); //モデルビュー行列に切り替え
