@@ -114,6 +114,8 @@ public:
 	bool mPutCol;//当たり判定の描画のON・OFF
 	bool isRendPoint;//中間地点がミニマップに表示されるか
 
+	bool isEnableShadow;
+
 	//コース2,3のモデル
 	CModel mCource02Road;
 	CModel mCource02Wall;

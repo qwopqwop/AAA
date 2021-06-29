@@ -260,6 +260,9 @@ void CSceneRace::Init() {
 	//初期状態ではポーズ状態無効
 	isPause = false;
 
+	//影の描画のON・OFF
+	isEnableShadow = true;
+
 	//BGMはループ
 	BGM.Repeat();
 
@@ -498,6 +501,9 @@ void CSceneRace::Update() {
 	//
 	if (CKey::Once('V')){
 		mPlayer->mChecks = 3;
+	}
+	if (CKey::Once('S')){
+		isEnableShadow = !isEnableShadow;
 	}
 #endif	
 
@@ -1689,25 +1695,28 @@ void CSceneRace::RenderShadow(){
 	//************************************ Shadow Map
 
 	
-	//影の描画
-	/*mpGround->Render();
-	if (mpGround2 != NULL){
+	if (isEnableShadow){
+		//影の描画
+		/*mpGround->Render();
+		if (mpGround2 != NULL){
 		mpGround2->Render();
-	}
-	if (mpGround3 != NULL){
+		}
+		if (mpGround3 != NULL){
 		mpGround3->Render();
-	}
-	if (mpGround4 != NULL){
+		}
+		if (mpGround4 != NULL){
 		mpGround4->Render();
-	}
-	if (mpGround5 != NULL){
+		}
+		if (mpGround5 != NULL){
 		mpGround5->Render();
-	}*/
-	for (int i = 0; i < GROUND_AMOUNT; i++){
-		if (mpGrounds[i] != NULL){
-			mpGrounds[i]->Render();
+		}*/
+		for (int i = 0; i < GROUND_AMOUNT; i++){
+			if (mpGrounds[i] != NULL){
+				mpGrounds[i]->Render();
+			}
 		}
 	}
+	
 
 	//Shadow Map ************************************
 	/* テクスチャマッピングとテクスチャ座標の自動生成を無効にする */
