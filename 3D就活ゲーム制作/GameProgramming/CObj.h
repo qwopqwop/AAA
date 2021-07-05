@@ -9,10 +9,8 @@ public:
 	//コライダの追加
 	CCollider *mpCollider;
 	//コンストラクタで初期設定
-	CObj(CModel*model, const CVector &position, const CVector &rotation, const CVector &scale, bool hascollider = true);
+	CObj(CModel*model, const CVector &position, const CVector &rotation, const CVector &scale, bool hascollider = true, bool hasshadow = true);
 	~CObj();
-
-	int mObjNumber;
 
 	void Update();
 };

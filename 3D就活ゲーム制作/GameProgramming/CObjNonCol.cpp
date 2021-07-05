@@ -5,6 +5,6 @@
 CObjNonCol::CObjNonCol(CModel *model, const CVector &position, const CVector &rotation, const CVector &scale)
 :CObj(model, position, rotation, scale, false)
 {
-	//コライダ無し、ステージの飾りつけに。
+	//コライダが無いため、主にステージの装飾に利用される。
 	mTag = ENONE;
 }

@@ -14,7 +14,7 @@
 
 #define ENEMYS_AMOUNT 7-2 //0à»â∫Ç…ÇÕê›íËÇ≈Ç´Ç»Ç¢
 
-#define GROUND_AMOUNT 8
+#define GROUND_AMOUNT 8+92
 
 /*
 ÉQÅ[ÉÄÇÃÉVÅ[Éì
@@ -36,7 +36,6 @@ public:
 	
 	//âeÇÃï`âÊ
 	void RenderShadow();
-	//CObj* mpPlayer;
 	//CObj *mpGround;
 	GLuint mDepthTextureID;
 
@@ -165,10 +164,7 @@ public:
 	CModel mSign_Right;
 
 	/*CObj *mpGround = NULL;
-	CObj *mpGround2 = NULL;
-	CObj *mpGround3 = NULL;
-	CObj *mpGround4 = NULL;
-	CObj *mpGround5 = NULL;*/
+	CObj *mpGround2 = NULL;*/
 	CObj *mpGrounds[GROUND_AMOUNT];
 };
 #endif

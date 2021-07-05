@@ -107,7 +107,6 @@ void CSceneRace::Init() {
 	//床タイルの読み込み
 	mTileBlack.Load("cube.obj", "material\\racing_mat\\tile_black.mtl");
 	mTileWhite.Load("cube.obj", "material\\racing_mat\\tile_white.mtl");
-	mRWTile.Load("material\\racing_mat\\NewNewR-W.obj", "material\\racing_mat\\NewNewR-W.mtl");
 	//立方体の読み込み
 	mCube.Load("cube.obj", "material\\cube.mtl");//白
 	mCube2.Load("cube.obj", "cube2.mtl");//透明
@@ -135,6 +134,9 @@ void CSceneRace::Init() {
 		mGrass01.Load("material\\racing_mat\\GrassNew01.obj", "material\\racing_mat\\GrassNew01.mtl");//芝生
 		mFenceTop.Load("material\\racing_mat\\FenceTopNew.obj", "material\\racing_mat\\FenceTopNew.mtl");//柵(上面)
 		mFenceSide.Load("material\\racing_mat\\FenceSideNew.obj", "material\\racing_mat\\FenceSideNew.mtl");//柵(壁)
+
+		mRWTile.Load("material\\racing_mat\\NewNewR-W.obj", "material\\racing_mat\\NewNewR-W.mtl");
+		//mRWTile.Load("material\\racing_mat\\NewNewR-W.obj", "material\\racing_mat\\single_color\\white.mtl");
 	}
 	else if (CSceneTitle::mMode == 2){
 		mCource02Road.Load("material\\racing_mat\\cource2nd\\cource02road.obj", "material\\racing_mat\\cource2nd\\cource02road.mtl");
@@ -399,7 +401,7 @@ void CSceneRace::Update() {
 
 	e = CCameraPos::mpCamera->mPosition;
 	
-	c = mPlayer->mPosition + CVector(0.0f, 0.0f, 40.0f)* mPlayer->mMatrixScale   //* mPlayer->mMatrixScale
+	c = mPlayer->mPosition + CVector(0.0f, 0.0f, 35.0f)* mPlayer->mMatrixScale   //* mPlayer->mMatrixScale
 		* CMatrix().RotateY(mPlayer->mRotation.mY);
 	u = CVector(0.0f, 1.0f, 0.0f);//*mPlayer->mMatrixRotate;
 	//カメラの設定
@@ -1443,7 +1445,7 @@ void CSceneRace::RenderBackMirror()
 	glLoadIdentity();
 	//カメラの設定
 	CVector e, c, u;//視点、注視点、上方向
-	e = CVector(0.0f, 17.0f + 13.0f, 40.0f - 41.0f) * CMatrix().RotateY(mCamY)* mPlayer->mMatrixScale
+	e = CVector(0.0f, 17.0f + 13.0f, 35.0f - 36.0f) * CMatrix().RotateY(mCamY)* mPlayer->mMatrixScale
 		* CMatrix().RotateY(mPlayer->mRotation.mY)
 		//* mPlayer->mMatrixRotate
 		* mPlayer->mMatrixTranslate;
@@ -1559,6 +1561,15 @@ void CSceneRace::RenderShadow(){
 		}
 	}*/
 	
+	//CModel *mod = mpGrounds[3]->mpModel;
+	//mpGrounds[3]->mpModel = NULL;
+	//if (isEnableShadow){
+	//	/*CModel *mod = mpGrounds[3]->mpModel;
+	//	mpGrounds[3]->mpModel = NULL;*/
+	//}
+	//else{
+	//	mpGrounds[3]->mpModel = mod;
+	//}
 	
 
 	//Shadow Map ************************************
@@ -1695,24 +1706,15 @@ void CSceneRace::RenderShadow(){
 	//************************************ Shadow Map
 
 	
+	//影の描画
 	if (isEnableShadow){
-		//影の描画
-		/*mpGround->Render();
-		if (mpGround2 != NULL){
-		mpGround2->Render();
-		}
-		if (mpGround3 != NULL){
-		mpGround3->Render();
-		}
-		if (mpGround4 != NULL){
-		mpGround4->Render();
-		}
-		if (mpGround5 != NULL){
-		mpGround5->Render();
-		}*/
 		for (int i = 0; i < GROUND_AMOUNT; i++){
 			if (mpGrounds[i] != NULL){
+				//テクスチャユニット0に切り替える
+				glActiveTexture(GL_TEXTURE0);
 				mpGrounds[i]->Render();
+				//テクスチャユニット1に切り替える
+				glActiveTexture(GL_TEXTURE1);
 			}
 		}
 	}
@@ -1735,6 +1737,10 @@ void CSceneRace::RenderShadow(){
 
 	glActiveTexture(GL_TEXTURE0);
 	//************************************ Shadow Map
+
+
+	//mpGrounds[3]->mpModel = mod;	
+	////mpGrounds[3]->mpModel = &mCarWhite;
 }
 
 //次のシーンの取得
