@@ -35,8 +35,9 @@ void CRaceCourceA::Init(){
 	//最初に生成したポインタの次ポインタの設定
 	first->Set(CVector(340.0f, 30.0f, -1182.0f), 500.0f, next);
 
+	
 	//プレイヤーの生成
-	mPlayer = new CPlayer();
+	mCarShadow[0] = mPlayer = new CPlayer();
 	mPlayer->mpModel = &mCarWhite;
 	//カメラの生成
 	mCamRange = new CCameraRange();
@@ -83,9 +84,14 @@ void CRaceCourceA::Init(){
 	}
 	/*透明度の高い物から先に描画する*/
 	//中間地点(順に通らないと1周したことにならないし、順番を飛ばしてもいけない)
-	new CObjCheckPoint(&mCheckPoint, CVector(50.0f, 15.0f, 2500.0f), CVector(-90.0f, 0.0f, -50.0f), CVector(2000.0f, 31.0f, 255.0f), 1);
-	new CObjCheckPoint(&mCheckPoint, CVector(-1800.0f, 15.0f, 20.0f), CVector(-90.0f, 180.0f, 0.0f), CVector(750.0f, 31.0f, 255.0f), 2);
-	new CObjCheckPoint(&mCheckPoint, CVector(-1100.0f, 15.0f, -2000.0f), CVector(-90.0f, 0.0f, 110.0f), CVector(750.0f, 31.0f, 255.0f), 3);
+	mpGrounds[95] = new CObjCheckPoint(&mCheckPoint, CVector(50.0f, 15.0f, 2500.0f), CVector(-90.0f, 0.0f, -50.0f), CVector(2000.0f, 31.0f, 255.0f), 1);
+	mpGrounds[96] = new CObjCheckPoint(&mCheckPoint, CVector(-1800.0f, 15.0f, 20.0f), CVector(-90.0f, 180.0f, 0.0f), CVector(750.0f, 31.0f, 255.0f), 2);
+	mpGrounds[97] = new CObjCheckPoint(&mCheckPoint, CVector(-1100.0f, 15.0f, -2000.0f), CVector(-90.0f, 0.0f, 110.0f), CVector(750.0f, 31.0f, 255.0f), 3);
+
+	/*mpGrounds[98] = new CObjCheckPoint(&mCube, CVector(0.0f, 55.0f, 0.0f), CVector(0.0f, 0.0f, 0.0f), CVector(250.0f, 41.0f, 250.0f), 11);
+	mpGrounds[99] = new CObjFloor(&mCube3, CVector(0.0f, 555.0f, 510.0f), CVector(0.0f, 0.0f, 0.0f), CVector(250.0f, 41.0f, 250.0f));*/
+	//CObjCheckPointのようにRender()を空オーバーライドして透明にした場合：　テクスチャに影は反映されず、そのモデルは影にもならない
+	//透明なテクスチャを使用した場合：　テクスチャに影が反映される(影の濃さ＝テクスチャの不透明度)、そのモデルの影も発生する
 
 	//ここから
 	//新・コースの生成
@@ -99,19 +105,21 @@ void CRaceCourceA::Init(){
 		mpGrounds[2] = new CObjFloor(&mFenceTop, CVector(-360.0f, -70.0f - 35.0f, 230.0f), CVector(), CVector(50.0f, 5.5f + 1.5f, 50.0f));
 		mpGrounds[5] = new CObjWall(&mFenceSide, CVector(-360.0f, -70.0f - 35.0f, 230.0f), CVector(), CVector(50.0f, 5.5f + 1.5f, 50.0f));
 		//道路と芝生の境目のタイルを生成(当たり判定無し)
-		mpGrounds[93] = new CObjNonCol(&mRWTile, CVector(-360.0f, 5.0f - 33.0f + 0.05f, 230.0f), CVector(), CVector(50.0f, 2.0f, 50.0f));
+		mpGrounds[93] = new CObjNonCol(&mCurb01, CVector(-360.0f, 5.0f - 33.0f + 0.05f, 230.0f), CVector(), CVector(50.0f, 2.0f, 50.0f));
 	}
 	//白・黒タイルでゴール示唆
-	for (int i = 0; i < 40; i++){
-		if (i % 2 == 0){
-			new CObjNonCol(&mTileBlack, CVector(170.0f + 20.0f*i, -13.1f + 0.5f, -20.0f), CVector(0.0f, 0.0f, 0.0f), CVector(10.0f, 1.0f, 10.0f));//黒タイル
-			mpGrounds[10 + i] = new CObjNonCol(&mTileWhite, CVector(170.0f + 20.0f*i, -13.1f + 0.5f, -20.0f + 20.0f), CVector(0.0f, 0.0f, 0.0f), CVector(10.0f, 1.0f, 10.0f));//白タイル
-		}
-		else{
-			new CObjNonCol(&mTileBlack, CVector(170.0f + 20.0f*i, -13.1f + 0.5f, -20.0f + 20.0f), CVector(0.0f, 0.0f, 0.0f), CVector(10.0f, 1.0f, 10.0f));//黒タイル
-			mpGrounds[10 + i] = new CObjNonCol(&mTileWhite, CVector(170.0f + 20.0f*i, -13.1f + 0.5f, -20.0f), CVector(0.0f, 0.0f, 0.0f), CVector(10.0f, 1.0f, 10.0f));//白タイル
-		}
-	}
+	mpGrounds[10] = new CObjNonCol(&mGoalTile01, CVector(170.0f + 590.0f + 0.0f, -13.1f + 5.5f, -10.0f), CVector(0.0f, 0.0f, 0.0f), CVector(10.0f, 1.0f, 10.0f));
+	mpGrounds[11] = new CObjNonCol(&mGoalTile01, CVector(170.0f + 190.0f + 0.0f, -13.1f + 5.5f, -10.0f), CVector(0.0f, 0.0f, 0.0f), CVector(10.0f, 1.0f, 10.0f));
+	//for (int i = 0; i < 40; i++){
+	//	if (i % 2 == 0){
+	//		new CObjNonCol(&mTileBlack, CVector(170.0f + 20.0f*i, -13.1f + 0.5f, -20.0f), CVector(0.0f, 0.0f, 0.0f), CVector(10.0f, 1.0f, 10.0f));//黒タイル
+	//		mpGrounds[10 + i] = new CObjNonCol(&mTileWhite, CVector(170.0f + 20.0f*i, -13.1f + 0.5f, -20.0f + 20.0f), CVector(0.0f, 0.0f, 0.0f), CVector(10.0f, 1.0f, 10.0f));//白タイル
+	//	}
+	//	else{
+	//		new CObjNonCol(&mTileBlack, CVector(170.0f + 20.0f*i, -13.1f + 0.5f, -20.0f + 20.0f), CVector(0.0f, 0.0f, 0.0f), CVector(10.0f, 1.0f, 10.0f));//黒タイル
+	//		mpGrounds[10 + i] = new CObjNonCol(&mTileWhite, CVector(170.0f + 20.0f*i, -13.1f + 0.5f, -20.0f), CVector(0.0f, 0.0f, 0.0f), CVector(10.0f, 1.0f, 10.0f));//白タイル
+	//	}
+	//}
 	//ゴール(ゲート側)
 	for (int i = 0; i < 20; i++){
 		if (i % 2 == 0){
@@ -123,6 +131,9 @@ void CRaceCourceA::Init(){
 			new CObjNonCol(&mTileWhite, CVector(170.0f + 40.0f*i + 5.0f + 10.0f, 110.0f + 200.0f - 5.0f - 10.0f - 20.0f - 10.0f, -14.0f), CVector(90.0f, 0.0f, 0.0f), CVector(20.0f, 4.9f, 20.0f));//白タイル
 		}
 	}
+
+	
+	
 	//ゲートの柱部分
 	new CObjWall(&mPole, CVector(170.0f + 20.0f * -1 + 5.0f + 5.0f, -13.1f - 10.0f, -10.0f), CVector(0.0f, 0.0f, 0.0f), CVector(10.0f, 174.0f, 10.0f));
 	new CObjWall(&mPole, CVector(170.0f + 20.0f * 40 + 5.0f - 5.0f, -13.1f - 10.0f, -10.0f), CVector(0.0f, 0.0f, 0.0f), CVector(10.0f, 174.0, 10.0f));

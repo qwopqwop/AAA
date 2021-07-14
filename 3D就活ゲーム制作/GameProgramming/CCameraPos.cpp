@@ -10,6 +10,7 @@
 #include <math.h>
 
 #define PI 3.141592
+#define CAMERA_DISTANCE (302.0f)
 
 CCameraPos *CCameraPos::mpCamera = 0;
 
@@ -90,6 +91,11 @@ void CCameraPos::Update(){
 		mCameraSpeed *= -1;
 	}
 	mPosition = CVector(0.0f, 0.0f, mCameraSpeed) * mMatrixRotate * mMatrixTranslate;
+	CCharacter::Update();
+
+	//カメラとプレイヤーの距離を一定にする
+	dir = (mPosition - CPlayer::mpPlayer->mPosition).Normalize() * CAMERA_DISTANCE;
+	mPosition = CPlayer::mpPlayer->mPosition + dir;
 	CCharacter::Update();
 
 	if (CPlayer::mpPlayer->isRespawn){

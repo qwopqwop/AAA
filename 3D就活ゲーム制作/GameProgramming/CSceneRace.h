@@ -14,7 +14,7 @@
 
 #define ENEMYS_AMOUNT 7-2 //0以下には設定できない
 
-#define GROUND_AMOUNT 8+92
+#define GROUND_AMOUNT 128
 
 /*
 ゲームのシーン
@@ -36,7 +36,6 @@ public:
 	
 	//影の描画
 	void RenderShadow();
-	//CObj *mpGround;
 	GLuint mDepthTextureID;
 
 	CModel mSky;
@@ -66,7 +65,8 @@ public:
 	CModel mMiniGoal;//ゴールIcon(ミニマップ)
 	CModel mCource01;//コース01
 	CModel mGrass01;//芝生01
-	CModel mRWTile;//芝生とアスファルトの境目
+	CModel mGoalTile01;
+	CModel mCurb01;//紅白の縁石
 	CModel mFenceTop;//柵の上面
 	CModel mFenceSide;//柵の側面
 	CModel mPole;//ポール
@@ -77,16 +77,16 @@ public:
 	CCameraRange *mCamRange;
 	CCameraPos *mCam;
 
-	/*CObj* mpGround;
-	GLuint mDepthTextureID;*/
-
 	CSound BGM;
 	CSound SoundCountDown;
 	CSound SoundStart;
 	CSound SoundGoal;
+	CSound SoundMoveCarsol;
+	CSound SoundDecide;
+	CSound SoundPauseOn;
+	CSound SoundPauseOff;
 	
-	float mCamY;//プレイヤーの周りを回転(水平方向に)
-	
+	float mCamY;//プレイヤーの周りを回転(水平方向に)	
 
 	//スタート前のカウントダウン
 	int mFrame;
@@ -104,16 +104,24 @@ public:
 	int mTextBlinkTime;
 		
 	bool isPause;
+	int mPause_SelectCarsol;
+	int mPause_OptionCarsol;
+	enum EPauseScreen{
+		EPAUSE,//ポーズ画面(選択肢がresume,option,quit)
+		EOPTION,//オプション画面(設定を変更できる画面)
+	};
+	EPauseScreen mPauseScreen;
 
 	int mRanking;
 	int mAfterGoalTime;
 
 	//デバッグコマンド用の変数
-	bool isRender_BackMirror;//バックミラー表示のON・OFF
 	bool mPutCol;//当たり判定の描画のON・OFF
 	bool isRendPoint;//中間地点がミニマップに表示されるか
 
-	bool isEnableShadow;
+	static bool isEnableShadow;//影の描画の有無
+	static bool isEnableMiniMap;//ミニマップ表示のON・OFF
+	static bool isEnableBackMirror;//バックミラー表示のON・OFF
 
 	//コース2,3のモデル
 	CModel mCource02Road;
@@ -163,8 +171,11 @@ public:
 	CModel mSign_Left;
 	CModel mSign_Right;
 
-	/*CObj *mpGround = NULL;
-	CObj *mpGround2 = NULL;*/
 	CObj *mpGrounds[GROUND_AMOUNT];
+	CCharacter *mCarShadow[ENEMYS_AMOUNT+1];
+	bool isEnableShadow_Cource;
+	bool isEnableShadow_Car;
+
+	int ShadowNumber;
 };
 #endif

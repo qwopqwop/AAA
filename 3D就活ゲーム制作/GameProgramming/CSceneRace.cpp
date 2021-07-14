@@ -36,6 +36,11 @@ extern CSound SoundCountDown;
 extern CSound SoundStart;
 extern CSound SoundGoal;
 
+extern CSound SoundMoveCarsol;
+extern CSound SoundDecide;
+extern CSound SoundPauseOn;
+extern CSound SoundPauseOff;
+
 
 //ここのmBestTimeの値は関係ない(mRecord_ の値を入れるため)
 int CSceneRace::mBestTime = 0;
@@ -45,6 +50,11 @@ int CSceneRace::mRecord_C = 22000;
 int CSceneRace::mRecord_D = 460000;
 int CSceneRace::mRecord_E = 40000;
 int CSceneRace::mRecord_F = 43300;
+
+//オプション画面から変更ができる変数
+bool CSceneRace::isEnableShadow = true;//影
+bool CSceneRace::isEnableMiniMap = true;//ミニマップ
+bool CSceneRace::isEnableBackMirror = true;//バックミラー
 
 //画面サイズは800x600を想定
 #define SCREENSIZE_X 800
@@ -71,6 +81,11 @@ void CSceneRace::Init() {
 	for (int i = 0; i < GROUND_AMOUNT; i++){
 		mpGrounds[i] = NULL;
 	}
+
+	for (int i = 0; i < ENEMYS_AMOUNT + 1; i++){//+1はプレイヤー分
+		mCarShadow[i] = NULL;
+	}
+	
 
 	//的の残数の初期化
 	CItem::mTargetAmount = 0;
@@ -134,9 +149,8 @@ void CSceneRace::Init() {
 		mGrass01.Load("material\\racing_mat\\GrassNew01.obj", "material\\racing_mat\\GrassNew01.mtl");//芝生
 		mFenceTop.Load("material\\racing_mat\\FenceTopNew.obj", "material\\racing_mat\\FenceTopNew.mtl");//柵(上面)
 		mFenceSide.Load("material\\racing_mat\\FenceSideNew.obj", "material\\racing_mat\\FenceSideNew.mtl");//柵(壁)
-
-		mRWTile.Load("material\\racing_mat\\NewNewR-W.obj", "material\\racing_mat\\NewNewR-W.mtl");
-		//mRWTile.Load("material\\racing_mat\\NewNewR-W.obj", "material\\racing_mat\\single_color\\white.mtl");
+		mCurb01.Load("material\\racing_mat\\Curb01.obj", "material\\racing_mat\\Curb01.mtl");//紅白タイル
+		mGoalTile01.Load("material\\racing_mat\\cource01_goaltile.obj", "material\\racing_mat\\cource01_goaltile.mtl");//＝白黒タイル
 	}
 	else if (CSceneTitle::mMode == 2){
 		mCource02Road.Load("material\\racing_mat\\cource2nd\\cource02road.obj", "material\\racing_mat\\cource2nd\\cource02road.mtl");
@@ -219,6 +233,11 @@ void CSceneRace::Init() {
 	SoundStart.Load("SE\\Countdown01-6.wav");
 	SoundGoal.Load("SE\\tm2_whistle000.wav");
 
+	SoundMoveCarsol.Load("SE\\Carsol2.wav");
+	SoundDecide.Load("SE\\Decision_Small(SF).wav");
+	SoundPauseOn.Load("SE\\button79.wav");
+	SoundPauseOff.Load("SE\\button80.wav");
+
 	//カメラ視点のY座標
 	mCamY = 0.0f;
 	//衝突判定の描画(デバッグ用)
@@ -254,16 +273,21 @@ void CSceneRace::Init() {
 	//カメラ視点
 	mCamPoV = 1;
 
-	//バックミラーの描画
-	isRender_BackMirror = true;
 
 	//初期状態では敵の目標地点は描画しない
 	isRendPoint = false;
 	//初期状態ではポーズ状態無効
 	isPause = false;
+	mPause_SelectCarsol = 1;
+	mPause_OptionCarsol = 1;
 
-	//影の描画のON・OFF
-	isEnableShadow = true;
+	mPauseScreen = EPAUSE;
+
+	isEnableShadow_Cource = true;//ゲーム内での切り替え不可
+	isEnableShadow_Car = false;//現時点では非表示推奨
+
+	ShadowNumber = 0;
+	printf("影No.%d\n", ShadowNumber);
 
 	//BGMはループ
 	BGM.Repeat();
@@ -437,7 +461,7 @@ void CSceneRace::Update() {
 	//	//CItem::mTargetAmount = 0;
 	//}
 	if (CKey::Once('4')){//バックミラーのON・OFF切り替え
-		isRender_BackMirror = !isRender_BackMirror;
+		isEnableBackMirror = !isEnableBackMirror;
 	}
 	if (CKey::Push('5')){
 		printf("%f:%f:%f\n", CPlayer::mpPlayer->mRotation.mX, CPlayer::mpPlayer->mRotation.mY, CPlayer::mpPlayer->mRotation.mZ);
@@ -547,12 +571,14 @@ void CSceneRace::Update() {
 		}
 	}
 	//バックミラーの描画
-	if (isRender_BackMirror){
-		RenderBackMirror();
-		
+	if (isEnableBackMirror){
+		RenderBackMirror();		
 	}
 	//ミニマップの描画
-	RenderMiniMap();
+	if (isEnableMiniMap){
+		RenderMiniMap();
+	}
+	
 	
 
 	//2D描画開始
@@ -734,9 +760,122 @@ void CSceneRace::Update() {
 	
 	//ポーズ中に表示される文字
 	if (isPause){
-		CText::DrawString("PAUSE", 280, 300, 10*3, 12*3, 3);		
-		CText::DrawString("P - Resume", 290, 200, 10, 12, 2);
-		CText::DrawString("Esc - Back to Title", 250, 170, 10, 12, 2);
+
+		if (mPauseScreen == EOPTION){
+			CText::DrawString("OPTION", 280-30, 300, 10 * 3, 12 * 3, 3);
+
+			CText::DrawString("Shadow", 260, 200, 10, 12, 2);
+			CText::DrawString("BackMirror", 260, 170, 10, 12, 2);
+			CText::DrawString("MiniMap", 260, 140, 10, 12, 2);
+
+			if (mPause_OptionCarsol == 4){
+				CText::DrawString("[", 373, 230 - 30 * mPause_OptionCarsol-10, 14, 21, 1);
+				CText::DrawString("]", 432, 230 - 30 * mPause_OptionCarsol-10, 14, 21, 1);
+			}
+			else{
+				CText::DrawString("[", 493, 230 - 30 * mPause_OptionCarsol, 14, 21, 1);
+				CText::DrawString("]", 547, 230 - 30 * mPause_OptionCarsol, 14, 21, 1);
+			}
+			
+			for (int i = 1; i <= 4; i++){
+				if (mPause_OptionCarsol == i){
+					color[0] = color[1] = color[2] = 1.0f;
+				}
+				else{
+					color[0] = color[1] = color[2] = 0.5f;
+				}
+				glColor4fv(color);
+
+				if (i == 1){
+					if (isEnableShadow){
+						CText::DrawString("ON", 510, 200, 10, 12, 2);
+					}
+					else{
+						CText::DrawString("OFF", 502, 200, 10, 12, 2);
+					}
+				}
+				else if (i == 2){
+					if (isEnableBackMirror){
+						CText::DrawString("ON", 510, 170, 10, 12, 2);
+					}
+					else{
+						CText::DrawString("OFF", 502, 170, 10, 12, 2);
+					}
+					//CText::DrawString("ON", 440, 170, 10, 12, 2);
+				}
+				else if (i == 3){
+					if (isEnableMiniMap){
+						CText::DrawString("ON", 510, 140, 10, 12, 2);
+					}
+					else{
+						CText::DrawString("OFF", 502, 140, 10, 12, 2);
+					}
+					//CText::DrawString("ON", 440, 140, 10, 12, 2);
+				}
+				/*if (i == 1){
+					CText::DrawString("OFF", 520, 200, 10, 12, 2);
+				}
+				else if (i == 2){
+					CText::DrawString("OFF", 520, 170, 10, 12, 2);
+				}
+				else if (i == 3){
+					CText::DrawString("OFF", 520, 140, 10, 12, 2);
+				}
+				if (i <= 3){
+					CText::DrawString("/", 490, 230 - 30 * i, 10, 12, 2);
+				}*/
+				
+				if (i == 4){
+					CText::DrawString("OK", 390, 100, 13, 15, 2);
+				}
+			}
+
+			color[0] = color[1] = color[2] = 1.0f;
+			glColor4fv(color);
+		}
+		else if (mPauseScreen == EPAUSE){
+			//CText::DrawString("O", 400, 200, 80, 50, 1);
+
+			/*CText::DrawString("PAUSE", 280, 300, 10*3, 12*3, 3);
+			CText::DrawString("P - Resume", 290, 200, 10, 12, 2);
+			CText::DrawString("Esc - Back to Title", 250, 170, 10, 12, 2);*/
+
+			CText::DrawString("[", 336, 230 - 30 * mPause_SelectCarsol, 14, 21, 1);
+			CText::DrawString("]", 462, 230 - 30 * mPause_SelectCarsol, 14, 21, 1);
+
+			/*int ca = rand() % 6;
+			if (ca < 1){
+			mPause_SelectNum = rand() % 3 + 1;
+			}*/
+
+			CText::DrawString("PAUSE", 280, 300, 10 * 3, 12 * 3, 3);
+			for (int i = 1; i <= 3; i++){
+				if (mPause_SelectCarsol == i){
+					color[0] = color[1] = color[2] = 1.0f;
+				}
+				else{
+					color[0] = color[1] = color[2] = 0.5f;
+				}
+				glColor4fv(color);
+
+				if (i == 1){
+					CText::DrawString("Resume", 350, 200, 10, 12, 2);
+				}
+				else if (i == 2){
+					CText::DrawString("Option", 350, 170, 10, 12, 2);
+				}
+				else if (i == 3){
+					CText::DrawString("Quit", 370, 140, 10, 12, 2);
+				}
+
+			}
+
+			color[0] = color[1] = color[2] = 1.0f;
+			glColor4fv(color);
+		}
+
+		
+
 	}
 	//2D描画終了
 	End2D();
@@ -1019,8 +1158,17 @@ void CSceneRace::Update() {
 			//ゴール後は切り替え不可
 			if (isGoal)return;
 
+			if (isPause&&mPauseScreen == EOPTION)return;
+
 			//ポーズのON・OFF切り替え
 			isPause = !isPause;
+			mPause_SelectCarsol = 1;
+			if (isPause){
+				SoundPauseOn.Play();
+			}
+			else{
+				SoundPauseOff.Play();
+			}
 		}		
 	}
 
@@ -1034,9 +1182,81 @@ void CSceneRace::Update() {
 	}
 	//ポーズ中Escキー押下→タイトル画面移行
 	if (isPause){
-		if (CKey::Once(VK_BACK) || CKey::Once(VK_ESCAPE)){
-			//次のシーンはゲーム
-			mScene = ETITLE;
+		//ポーズの中で、設定画面を開いている時
+		if (mPauseScreen == EOPTION){
+			//↑キー
+			if (CKey::Once(VK_UP)){
+				if (mPause_OptionCarsol > 1){
+					mPause_OptionCarsol--;
+					SoundMoveCarsol.Play();
+				}
+			}
+			//↓キー
+			if (CKey::Once(VK_DOWN)){
+				if (mPause_OptionCarsol < 4){
+					mPause_OptionCarsol++;
+					SoundMoveCarsol.Play();
+				}
+			}
+			//Enterキー
+			if (CKey::Once(VK_RETURN)){
+				//影の描画のON・OFF
+				if (mPause_OptionCarsol == 1){
+					isEnableShadow = !isEnableShadow;
+				}
+				//バックミラー表示のON・OFF
+				if (mPause_OptionCarsol == 2){
+					isEnableBackMirror = !isEnableBackMirror;
+				}
+				//ミニマップ表示のON・OFF
+				if (mPause_OptionCarsol == 3){
+					isEnableMiniMap = !isEnableMiniMap;
+				}
+				////スピードメーター表示のON・OFF
+				//if (mPause_OptionCarsol == 3){
+				//	isEnableMiniMap = !isEnableMiniMap;
+				//}
+				//設定画面を閉じる
+				if (mPause_OptionCarsol == 4){
+					mPauseScreen = EPAUSE;
+				}
+				SoundDecide.Play();
+			}
+		}
+		else{
+			//↑キー
+			if (CKey::Once(VK_UP)){
+				if (mPause_SelectCarsol > 1){
+					mPause_SelectCarsol--;
+					SoundMoveCarsol.Play();
+				}
+			}
+			//↓キー
+			if (CKey::Once(VK_DOWN)){
+				if (mPause_SelectCarsol < 3){
+					mPause_SelectCarsol++;
+					SoundMoveCarsol.Play();
+				}
+			}
+			//Enterキー
+			if (CKey::Once(VK_RETURN)){
+				if (mPause_SelectCarsol == 1){
+					//ポーズ解除
+					isPause = !isPause;
+					mPause_SelectCarsol = 1;
+					SoundPauseOff.Play();
+				}
+				else if (mPause_SelectCarsol == 2){
+					//オプション画面表示
+					mPauseScreen = EOPTION;
+					SoundDecide.Play();
+				}
+				else if (mPause_SelectCarsol == 3){
+					//SoundDecide.Play();//すぐ戻るので鳴らない
+					//タイトル画面に戻る
+					mScene = ETITLE;
+				}
+			}			
 		}
 	}
 
@@ -1708,15 +1928,30 @@ void CSceneRace::RenderShadow(){
 	
 	//影の描画
 	if (isEnableShadow){
-		for (int i = 0; i < GROUND_AMOUNT; i++){
-			if (mpGrounds[i] != NULL){
-				//テクスチャユニット0に切り替える
-				glActiveTexture(GL_TEXTURE0);
-				mpGrounds[i]->Render();
-				//テクスチャユニット1に切り替える
-				glActiveTexture(GL_TEXTURE1);
+		//コースの影の描画
+		if (isEnableShadow_Cource){
+			for (int i = 0; i < GROUND_AMOUNT; i++){
+				if (mpGrounds[i] != NULL){
+					//テクスチャユニット0に切り替える
+					glActiveTexture(GL_TEXTURE0);
+					mpGrounds[i]->Render();
+					//テクスチャユニット1に切り替える
+					glActiveTexture(GL_TEXTURE1);
+				}
 			}
 		}
+		//車の影を設定
+		if (isEnableShadow_Car){
+			for (int i = 0; i < ENEMYS_AMOUNT + 1; i++){
+				if (mCarShadow[i] != NULL){
+					//テクスチャユニット0に切り替える
+					glActiveTexture(GL_TEXTURE0);
+					mCarShadow[i]->Render();
+					//テクスチャユニット1に切り替える
+					glActiveTexture(GL_TEXTURE1);
+				}
+			}
+		}		
 	}
 	
 
@@ -1737,10 +1972,6 @@ void CSceneRace::RenderShadow(){
 
 	glActiveTexture(GL_TEXTURE0);
 	//************************************ Shadow Map
-
-
-	//mpGrounds[3]->mpModel = mod;	
-	////mpGrounds[3]->mpModel = &mCarWhite;
 }
 
 //次のシーンの取得
