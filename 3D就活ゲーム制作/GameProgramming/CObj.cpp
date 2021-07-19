@@ -21,8 +21,7 @@ CObj::CObj(CModel *model, const CVector &position, const CVector &rotation, cons
 
 	if (hascollider == false){
 		//当たり判定を生成しない
-		//これにより当たり判定の数を増やすほど処理が重くなることが実証された
-		//逆に当たり判定を増やさなければいいので、必要ない当たり判定はどんどんカットしていくよ。
+		//当たり判定の数を抑えるほど、処理を軽量化できる
 	}
 	else{
 		CCharacter::Update();

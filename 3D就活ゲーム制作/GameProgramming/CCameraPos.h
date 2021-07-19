@@ -20,7 +20,7 @@ public:
 	void Collision(CCollider *mc, CCollider *yc);
 
 	float mCameraSpeed;
-	bool CanMove;//プレイヤーが操作可能か否か(カウントダウン前・ゴール後などは否)
+	bool CanMove;//プレイヤーが操作可能か(カウントダウン前が不可)
 	
 	//コライダの更新
 	void TaskCollision();

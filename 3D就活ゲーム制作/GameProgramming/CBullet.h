@@ -33,8 +33,6 @@ public:
 	void Collision(CCollider *m, CCollider *y);
 
 	static CModel mBullet;
-
-	//mBullet.Load("èeíe.obj", "èeíe.mtl");
 };
 
 #endif

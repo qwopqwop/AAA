@@ -29,34 +29,21 @@ extern CSound SoundCollisionSmall;
 CPlayer *CPlayer::mpPlayer = 0;
 
 #define G (9.8f / 90.0f)//重力加速度//60.0f
-#define JUMPV0 (4.0f*4.0f)//ジャンプ初速//4.0f
+#define JUMPV0 (16.0f)//ジャンプ初速//4.0f
 
 #define MAXSPEED 20.0f //4.5f+3.0f *5//車の最高速度
-#define MAXSPEED_BACK 1.0f*2 *2//車の後退する最大速度
-#define CAR_POWER 0.05f*2 //*2//1フレーム辺りの車の加速していく量
-#define CAR_BREAK_POWER 0.025f*2 *2//前進中のブレーキの強さ
-//#define MAXSPEED_LIMITUP 10.0f //ブースト中の最高速度の上限突破量
+#define MAXSPEED_BACK 4.0f//車の後退する最大速度
+#define CAR_POWER 0.1f //*2//1フレーム辺りの車の加速していく量
+#define CAR_BREAK_POWER 0.1f//前進中のブレーキの強さ
 
-#define DECELERATE 0.05f*2 //車の減速する量
-#define FIX_ANGLE_VALUE 0.5f*2 //角度が0度に向けて調整される量(主にX・Z用)
+#define DECELERATE 0.1f //車の減速する量
+#define FIX_ANGLE_VALUE 1.0f //角度が0度に向けて調整される量(主にX・Z用)
 
 #define JUMPER01_POWER 3.0f;//ジャンプ台1によるジャンプの強さ
 
-//#define MAXSPEED 7.0f //車の最高速度
-//#define MAXSPEED_BACK 2.0f //車の後退する最大速度
-//#define CAR_POWER 0.1f //1フレーム辺りの車の加速していく量
-//#define CAR_BREAK_POWER 0.05f //前進中のブレーキの強さ
-//
-//#define DECELERATE 0.1f //車の減速する量
-//#define FIX_ANGLE_VALUE 0.5f //角度が0度に向けて調整される量(主にX・Z用)
-
 CPlayer::CPlayer()
-//車体のY座標は0.0fにしたいんだけど・・・
-//0.0fにしたら車体が浮いてるように見えてしまう
 :mColBody(this, CVector(0.0f, 4.0f + 1.0f, 0.5f), CVector(0.0f, 0.0f, 0.0f), CVector(1.0f, 1.0f, 1.0f), 10.0f*3)
 , mColTire(this, CVector(0.0f, -16.0f + 15.0f + 1.0f, 0.5f), CVector(0.0f, 0.0f, 0.0f), CVector(1.0f, 1.0f, 1.0f), 10.0f * 3)
-//, mColCamRange(this, CVector(0.0f, 20.0f, 0.0f), CVector(0.0f, 0.0f, 0.0f), CVector(1.0f, 1.0f, 1.0f), 50.0f)
-//, mColCamera(this, CVector(0.0f, 17.0f, 40.0f), CVector(0.0f, 0.0f, 0.0f), CVector(1.0f, 1.0f, 1.0f), 15.0f * 1)
 {
 	mpPlayer = this;
 
@@ -68,7 +55,6 @@ CPlayer::CPlayer()
 	mADMoveX = 0.0f;  mWSMoveZ = 0.0f;
 	mCarSpeed = 0.0f;//車の速度の初期化
 	mTurnSpeed = 0.0f;
-	mBuzzerCount = 0;//ブザーを鳴らした回数
 	mRespawnCount = 0;//リスポーンした回数
 
 	mCanJump = false;
@@ -87,7 +73,6 @@ CPlayer::CPlayer()
 	mBoostTime = 0;
 
 	mTag = EPLAYER;
-	//mColCamRange.mTag = CCollider::ECAMERA_RANGE;
 	mJumpPrio = 0;
 
 	if (CSceneTitle::mMode == 3){
@@ -133,8 +118,6 @@ CPlayer::CPlayer()
 	
 	mColBody.mTag = CCollider::EBODY;
 	mColTire.mTag = CCollider::ESEARCH;
-	//mColCamRange.mTag = CCollider::ECAMERA_RANGE;
-	//mColCamera.mTag = CCollider::ECAMERA;
 
 	SoundJump.Load("SE\\jump12.wav");
 	SoundShot.Load("SE\\shot1.wav");
@@ -153,12 +136,6 @@ CPlayer::CPlayer()
 }
 
 void CPlayer::Update(){
-	////クラクションを鳴らす
-	//if (CKey::Once(' ')){
-	//	SoundHorn.Play();
-	//	mBuzzerCount++;
-	//}
-	
 	//飛行モード有効時(デバッグ用)
 	if (mFlyingMode){
 		if (CKey::Push('W')){
@@ -242,36 +219,8 @@ void CPlayer::Update(){
 			}
 		}		
 	}
-
-	if (CKey::Push('Z')){
-		mRotation.mX+=6;
-	}
-	if (CKey::Push('X')){
-		mRotation.mX-=6;
-	}
-	if (CKey::Push('C')){
-		mRotation.mZ+=6;
-	}
-	if (CKey::Push('V')){
-		mRotation.mZ-=6;
-	}
-
-	/*if (mCarSpeed >= 0.0f){
-		mTurnSpeed;
-		mCarSpeed / MAXSPEED + mBoostMaxSpeed;
-	}*/
-
+	
 	if (CKey::Push(VK_LEFT) && CanMove){ //ハンドルを左に！
-		////mRotation.mY++;
-		//if (mTurnSpeed>=0.0f&&mTurnSpeed<0.5f){
-		//	mTurnSpeed = 0.5f;
-		//}
-		//if (mTurnSpeed < 0.0f){
-		//	mTurnSpeed += 0.11f;
-		//	//mTurnSpeed += 0.08f;
-		//}
-		//mTurnSpeed += 0.04f;
-		////mTurnSpeed += 0.02f;
 		/*バック中は逆方向に曲がる*/
 		if (mCarSpeed > 0.0f){
 			if (mTurnSpeed >= 0.0f&&mTurnSpeed<0.5f){
@@ -293,13 +242,7 @@ void CPlayer::Update(){
 		}
 	}
 	else if (CKey::Push(VK_RIGHT) && CanMove){//ハンドルを右に！
-		/*if (mTurnSpeed <= 0.0f&&mTurnSpeed>-0.5f){
-			mTurnSpeed = -0.5f;
-		}
-		if (mTurnSpeed > 0.0f){
-			mTurnSpeed -= 0.11f;
-		}
-		mTurnSpeed -= 0.04f;*/
+		
 		/*バック中は逆方向に曲がる*/
 		if (mCarSpeed > 0.0f){
 			if (mTurnSpeed <= 0.0f&&mTurnSpeed>-0.5f){

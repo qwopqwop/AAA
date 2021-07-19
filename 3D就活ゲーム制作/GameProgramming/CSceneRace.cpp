@@ -55,6 +55,7 @@ int CSceneRace::mRecord_F = 43300;
 bool CSceneRace::isEnableShadow = true;//影
 bool CSceneRace::isEnableMiniMap = true;//ミニマップ
 bool CSceneRace::isEnableBackMirror = true;//バックミラー
+bool CSceneRace::isEnableSpeedometer = true;//速度計
 
 //画面サイズは800x600を想定
 #define SCREENSIZE_X 800
@@ -81,12 +82,10 @@ void CSceneRace::Init() {
 	for (int i = 0; i < GROUND_AMOUNT; i++){
 		mpGrounds[i] = NULL;
 	}
-
 	for (int i = 0; i < ENEMYS_AMOUNT + 1; i++){//+1はプレイヤー分
 		mCarShadow[i] = NULL;
 	}
 	
-
 	//的の残数の初期化
 	CItem::mTargetAmount = 0;
 
@@ -273,7 +272,6 @@ void CSceneRace::Init() {
 	//カメラ視点
 	mCamPoV = 1;
 
-
 	//初期状態では敵の目標地点は描画しない
 	isRendPoint = false;
 	//初期状態ではポーズ状態無効
@@ -285,13 +283,9 @@ void CSceneRace::Init() {
 
 	isEnableShadow_Cource = true;//ゲーム内での切り替え不可
 	isEnableShadow_Car = false;//現時点では非表示推奨
-
-	ShadowNumber = 0;
-	printf("影No.%d\n", ShadowNumber);
-
+	
 	//BGMはループ
 	BGM.Repeat();
-
 
 	mRenderTexture.Init();
 	
@@ -358,73 +352,7 @@ void CSceneRace::Update() {
 	//カメラのパラメータを作成する
 	CVector e, c, u;//視点、注視点、上方向
 
-	////視点を求める
-	//if (mCamPoV == 1){
-	//	e = CVector(0.0f, 17.0f, -40.0f) * CMatrix().RotateY(mCamY)* mPlayer->mMatrixScale   // * mPlayer->mMatrixScale
-	//		* CMatrix().RotateY(mPlayer->mRotation.mY)
-	//		* mPlayer->mMatrixTranslate
-	//		+ CVector(0.0f, 0.0f, 0.0f);
-	//	c = mPlayer->mPosition + CVector(0.0f, 0.0f, 40.0f)* mPlayer->mMatrixScale   //* mPlayer->mMatrixScale
-	//		* CMatrix().RotateY(mPlayer->mRotation.mY);
-	//	//e = CVector(0.0f, 17.0f, -40.0f) * CMatrix().RotateY(mCamY)* mPlayer->mMatrixScale   // * mPlayer->mMatrixScale
-	//	//	* CMatrix().RotateY(mPlayer->mRotation.mY)
-	//	//	//* mPlayer->mMatrixTranslate
-	//	//	*CCameraPos::mpCamera->mMatrixTranslate
-	//	//	+ CVector(0.0f, 0.0f, 0.0f);
-	//	//c = CCameraPos::mpCamera->mPosition + CVector(0.0f, 0.0f, 40.0f)* mPlayer->mMatrixScale   //* mPlayer->mMatrixScale
-	//	//	* CMatrix().RotateY(mPlayer->mRotation.mY);
-	//	//e = CVector(0.0f, 0.0f, 0.0f) * CMatrix().RotateY(mCamY)* mPlayer->mMatrixScale   // * mPlayer->mMatrixScale
-	//	//	* CMatrix().RotateY(mPlayer->mRotation.mY)
-	//	//	*CCameraPos::mpCamera->mMatrixTranslate;
-	//	//c = CCameraPos::mpCamera->mPosition + CVector(0.0f, 0.0f, 40.0f)* mPlayer->mMatrixScale   //* mPlayer->mMatrixScale
-	//	//	* CMatrix().RotateY(mPlayer->mRotation.mY);
-	//	
-	//}
-	//else if (mCamPoV == 2){
-	//	e = CVector(0.0f, 0.0f + 0.5f, -40.0f) * CMatrix().RotateY(mCamY) * mPlayer->mMatrixScale
-	//		* CMatrix().RotateY(mPlayer->mRotation.mY)
-	//		* mPlayer->mMatrixTranslate
-	//		+ CVector(0.0f, 0.0f, 0.0f);
-	//	////注視点を求める
-	//	//c = mPlayer->mPosition + CVector(0.0f, 0.0f, 40.0f)*mPlayer->mMatrixRotate;
-	//	c = mPlayer->mPosition + CVector(0.0f, 0.0f, 40.0f)* mPlayer->mMatrixScale
-	//		* CMatrix().RotateY(mPlayer->mRotation.mY);
-	//		//* CMatrix().RotateZ(mPlayer->mRotation.mZ);
-	//}
-	//else if (mCamPoV == 3){//後方を映す視点
-	//	e = CVector(0.0f, 17.0f, 40.0f) * CMatrix().RotateY(mCamY) * mPlayer->mMatrixScale
-	//		* CMatrix().RotateY(mPlayer->mRotation.mY)
-	//		* mPlayer->mMatrixTranslate
-	//		+ CVector(0.0f, 0.0f, 0.0f);
-	//	////注視点を求める
-	//	//c = mPlayer->mPosition + CVector(0.0f, 0.0f, 40.0f)*mPlayer->mMatrixRotate;
-	//	c = mPlayer->mPosition + CVector(0.0f, 0.0f, -40.0f)* mPlayer->mMatrixScale
-	//		* CMatrix().RotateY(mPlayer->mRotation.mY);
-	//		//* CMatrix().RotateZ(mPlayer->mRotation.mZ);
-	//}
-	//else{//1～3以外の数値が入っている時はとりあえず前方視点(1と同じ)
-	//	e = CVector(0.0f, 17.0f, -40.0f) * CMatrix().RotateY(mCamY)* mPlayer->mMatrixScale   // * mPlayer->mMatrixScale
-	//		* CMatrix().RotateY(mPlayer->mRotation.mY)
-	//		* mPlayer->mMatrixTranslate
-	//		+ CVector(0.0f, 0.0f, 0.0f);
-	//	c = mPlayer->mPosition + CVector(0.0f, 0.0f, 40.0f)* mPlayer->mMatrixScale   //* mPlayer->mMatrixScale
-	//		* CMatrix().RotateY(mPlayer->mRotation.mY);
-	//}
-	////e = CVector(0.0f, 17.0f, -40.0f) * CMatrix().RotateY(mCamY)* mPlayer->mMatrixScale   // * mPlayer->mMatrixScale
-	////	* CMatrix().RotateY(mPlayer->mRotation.mY)
-	////	*mCam->mMatrixTranslate
-	////	//* mPlayer->mMatrixTranslate
-	////	+ CVector(0.0f, 0.0f, 0.0f);
-	////c = mCam->mPosition + CVector(0.0f, 0.0f, 40.0f)* mPlayer->mMatrixScale   //* mPlayer->mMatrixScale
-	////	* CMatrix().RotateY(mPlayer->mRotation.mY);
-	///*printf("X:%f\n", mPlayer->mColBody.mPosition.mX);
-	//printf("Y:%f\n", mPlayer->mColBody.mPosition.mY);
-	//printf("Z:%f\n", mPlayer->mColBody.mPosition.mZ);*/
-	////上方向を求める
-	//u = CVector(0.0f, 1.0f, 0.0f);// *mPlayer->mMatrixRotate;
-
 	e = CCameraPos::mpCamera->mPosition;
-	
 	c = mPlayer->mPosition + CVector(0.0f, 0.0f, 35.0f)* mPlayer->mMatrixScale   //* mPlayer->mMatrixScale
 		* CMatrix().RotateY(mPlayer->mRotation.mY);
 	u = CVector(0.0f, 1.0f, 0.0f);//*mPlayer->mMatrixRotate;
@@ -448,18 +376,11 @@ void CSceneRace::Update() {
 	//デバッグ用
 #ifdef _DEBUG
 	if (CKey::Once('1')){
-		printf("%d\n", CItem::mTargetAmount);
 		printf("ベストタイム:%d\n", mBestTime);
 	}
 	if (CKey::Once('2')){//Playerの座標を出力する
 		printf("X:%f Y:%f Z:%f\n", CPlayer::mpPlayer->mPosition.mX, CPlayer::mpPlayer->mPosition.mY, CPlayer::mpPlayer->mPosition.mZ);
 	}
-	//if (CKey::Once('3')){//強制的に的の残数を0にする(本来の的は消えない)
-	//	for (int i = 0; i < ENEMYS_AMOUNT; i++){
-	//		printf("X:%f Y:%f Z:%f\n", mEnemys[i]->mPosition.mX, mEnemys[i]->mPosition.mY, mEnemys[i]->mPosition.mZ);
-	//	}
-	//	//CItem::mTargetAmount = 0;
-	//}
 	if (CKey::Once('4')){//バックミラーのON・OFF切り替え
 		isEnableBackMirror = !isEnableBackMirror;
 	}
@@ -477,13 +398,6 @@ void CSceneRace::Update() {
 			CPlayer::mpPlayer->mFlyingMode = true;
 		}
 	}
-	//if (CKey::Once('8')){
-	//	//敵車すべてのmVPointの値を出力
-	//	for (int i = 0; i < ENEMYS_AMOUNT; i++){
-	//		//printf("mEnemys[%d]->mVPoint…X:%.1f Y:%.1f Z:%.1f\n", i, mEnemys[i]->mVPoint.mX, mEnemys[i]->mVPoint.mX, mEnemys[i]->mVPoint.mZ);
-	//		printf("mEnemys[%d]の中間地点…%d  %d週目\n", i, mEnemys[i]->mChecks, mEnemys[i]->mEnemyLap);
-	//	}
-	//}
 	if (CKey::Once('9')){
 		if (mPutCol){
 			mPutCol = false;
@@ -527,9 +441,6 @@ void CSceneRace::Update() {
 	//
 	if (CKey::Once('V')){
 		mPlayer->mChecks = 3;
-	}
-	if (CKey::Once('S')){
-		isEnableShadow = !isEnableShadow;
 	}
 #endif	
 
@@ -648,12 +559,11 @@ void CSceneRace::Update() {
 	//プレイヤーの車の速度表示
 	char carspeed[33];
 	sprintf(carspeed, "SPEED:%4.1f", CPlayer::mpPlayer->mCarSpeed);
-	CText::DrawString(carspeed, 20 + 580, 20, 10, 12);
-	////敵の速度表示(デバッグ用)
-	//char enecarspeed[33];
-	//sprintf(enecarspeed, "SPEED:%4.1f", mEnemys[0]->mCarSpeed);
-	//CText::DrawString(enecarspeed, 20 + 560, 20+25, 10, 12);
+	if (isEnableSpeedometer){
+		CText::DrawString(carspeed, 20 + 580, 20, 10, 12);
+	}
 	
+
 	//ゴール後、継続して実行する処理
 	if (mLap == mMaxLap && isStartRace == false && isGoal){
 		//60fで一巡
@@ -767,8 +677,9 @@ void CSceneRace::Update() {
 			CText::DrawString("Shadow", 260, 200, 10, 12, 2);
 			CText::DrawString("BackMirror", 260, 170, 10, 12, 2);
 			CText::DrawString("MiniMap", 260, 140, 10, 12, 2);
+			CText::DrawString("Speedometer", 260, 110, 10, 12, 2);
 
-			if (mPause_OptionCarsol == 4){
+			if (mPause_OptionCarsol == 5){
 				CText::DrawString("[", 373, 230 - 30 * mPause_OptionCarsol-10, 14, 21, 1);
 				CText::DrawString("]", 432, 230 - 30 * mPause_OptionCarsol-10, 14, 21, 1);
 			}
@@ -777,7 +688,7 @@ void CSceneRace::Update() {
 				CText::DrawString("]", 547, 230 - 30 * mPause_OptionCarsol, 14, 21, 1);
 			}
 			
-			for (int i = 1; i <= 4; i++){
+			for (int i = 1; i <= 5; i++){
 				if (mPause_OptionCarsol == i){
 					color[0] = color[1] = color[2] = 1.0f;
 				}
@@ -812,6 +723,15 @@ void CSceneRace::Update() {
 					}
 					//CText::DrawString("ON", 440, 140, 10, 12, 2);
 				}
+				else if (i == 4){
+					if (isEnableSpeedometer){
+						CText::DrawString("ON", 510, 110, 10, 12, 2);
+					}
+					else{
+						CText::DrawString("OFF", 502, 110, 10, 12, 2);
+					}
+					//CText::DrawString("ON", 440, 140, 10, 12, 2);
+				}
 				/*if (i == 1){
 					CText::DrawString("OFF", 520, 200, 10, 12, 2);
 				}
@@ -825,8 +745,8 @@ void CSceneRace::Update() {
 					CText::DrawString("/", 490, 230 - 30 * i, 10, 12, 2);
 				}*/
 				
-				if (i == 4){
-					CText::DrawString("OK", 390, 100, 13, 15, 2);
+				if (i == 5){
+					CText::DrawString("OK", 390, 70, 13, 15, 2);
 				}
 			}
 
@@ -1193,7 +1113,7 @@ void CSceneRace::Update() {
 			}
 			//↓キー
 			if (CKey::Once(VK_DOWN)){
-				if (mPause_OptionCarsol < 4){
+				if (mPause_OptionCarsol < 5){
 					mPause_OptionCarsol++;
 					SoundMoveCarsol.Play();
 				}
@@ -1213,11 +1133,11 @@ void CSceneRace::Update() {
 					isEnableMiniMap = !isEnableMiniMap;
 				}
 				////スピードメーター表示のON・OFF
-				//if (mPause_OptionCarsol == 3){
-				//	isEnableMiniMap = !isEnableMiniMap;
-				//}
-				//設定画面を閉じる
 				if (mPause_OptionCarsol == 4){
+					isEnableSpeedometer = !isEnableSpeedometer;
+				}
+				//設定画面を閉じる
+				if (mPause_OptionCarsol == 5){
 					mPauseScreen = EPAUSE;
 				}
 				SoundDecide.Play();
@@ -1676,8 +1596,16 @@ void CSceneRace::RenderBackMirror()
 	//バックミラーのカメラの設定
 	gluLookAt(e.mX, e.mY, e.mZ, c.mX, c.mY, c.mZ, u.mX, u.mY, u.mZ);
 	
+	
+
 	//レンダーテクスチャ開始
 	mRenderTexture.Start();
+
+	//バックミラーの描画
+	if (isEnableShadow){
+		RenderShadow();
+	}
+
 	//オブジェクトの描画
 	CTaskManager::Get()->Render();
 	//レンダーテクスチャ終了

@@ -14,8 +14,7 @@ public:
 
 	//シーンの識別子
 	enum EScene{
-		ESTAGE1, //チュートリアルSTAGE
-		ESTAGE2, //本番STAGE
+		ETITLE, //タイトル画面
 		ERACE1, //コース1
 		ERACE2, //コース2
 		ERACE3, //コース3
@@ -23,7 +22,6 @@ public:
 		ERACE5, //コース5
 		ERACE6, //コース4
 		EEDIT,  //エディタ画面
-		ETITLE, //タイトル画面
 	};
 	//次のシーンの取得
 	EScene mScene;

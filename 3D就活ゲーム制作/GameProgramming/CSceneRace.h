@@ -122,6 +122,7 @@ public:
 	static bool isEnableShadow;//影の描画の有無
 	static bool isEnableMiniMap;//ミニマップ表示のON・OFF
 	static bool isEnableBackMirror;//バックミラー表示のON・OFF
+	static bool isEnableSpeedometer;//速度計のON・OFF
 
 	//コース2,3のモデル
 	CModel mCource02Road;
@@ -175,7 +176,5 @@ public:
 	CCharacter *mCarShadow[ENEMYS_AMOUNT+1];
 	bool isEnableShadow_Cource;
 	bool isEnableShadow_Car;
-
-	int ShadowNumber;
 };
 #endif

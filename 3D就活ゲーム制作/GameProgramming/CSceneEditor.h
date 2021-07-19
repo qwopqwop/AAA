@@ -1,20 +1,3 @@
-//#ifndef CSCENEEDITOR_H
-//#define CSCENEEDITOR_H
-//
-//#include "CModel.h"
-//#include "CSceneRace.h"
-//
-//class CSceneEditor : public CSceneRace {
-//public:
-//	//初期化処理のオーバーライド
-//	void Init();
-//	//更新処理のオーバーライド
-//	void Update();
-//};
-//
-//#endif
-
-
 #ifndef CSCENEEDITOR_H
 #define CSCENEEDITOR_H
 #include "CScene.h"
@@ -27,9 +10,8 @@
 //CSound.hをインクルードしたら音の再生の動作が軽くなった？
 #include "CSound.h"
 
-//#define ENEMYS_AMOUNT 7-2 //0以下には設定できない
 /*
-ゲームのシーン
+エディター画面
 */
 class CSceneEditor : public CScene {
 public:
@@ -97,11 +79,6 @@ public:
 
 	bool isPause;
 
-	//int mRanking;
-	//int mAfterGoalTime;
-
-	////デバッグコマンド用の変数
-	//bool isRender_BackMirror;//バックミラー表示のON・OFF
 	bool mPutCol;//当たり判定の描画のON・OFF
 	bool isRendPoint;//中間地点がミニマップに表示されるか
 

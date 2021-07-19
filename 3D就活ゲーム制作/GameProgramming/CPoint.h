@@ -7,17 +7,6 @@
 ポイントクラス
 敵機などの目標にする
 */
-//class CPoint : public CCharacter{
-//public:
-//	CCollider mCollider; //コライダの追加
-//	CPoint();
-//	//設定
-//	//Set(位置, 半径)
-//	void Set(const CVector &pos, float r);
-//
-//	CPoint(const CVector &pos, float r);
-//};
-
 class CPoint : public CCharacter{
 	CCollider mCollider; //コライダの追加
 	CPoint* mpNext;	//次のポイント

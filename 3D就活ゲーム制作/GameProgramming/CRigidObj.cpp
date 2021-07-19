@@ -5,24 +5,6 @@ CRigidObj *CRigidObj::mpRigObj = 0;
 
 #define G (9.8f / 120.0f)//重力加速度//60.0f
 
-//CRigidObj::CRigidObj()
-////:mColBody(this, CVector(0.0f, 4.0f + 1.0f, 0.5f), CVector(0.0f, 0.0f, 0.0f), CVector(1.0f, 1.0f, 1.0f), 10.0f)
-//{
-//	mpRigObj = this;
-//
-//	//mScale = CVector(2.5f, 2.5f, 2.5f);
-//	mVelocity = 0.0f;
-//	mJumpPrio = 0;
-//	//CanMove = false;
-//
-//	//mTag = EPLAYER;
-//	//CCharacter::Update();
-//
-//	//mColBody.mTag = CCollider::EBODY;
-//
-//}
-
-
 //コンストラクタ
 //model:モデルのポインタ position:位置 rotation:回転 scale:拡縮
 CRigidObj::CRigidObj(CModel *model, const CVector &position, const CVector &rotation, const CVector &scale)

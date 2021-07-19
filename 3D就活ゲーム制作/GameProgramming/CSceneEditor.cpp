@@ -70,13 +70,6 @@ void CSceneEditor::Init() {
 	//的の残数の初期化
 	CItem::mTargetAmount = 0;
 
-	////爆発テクスチャの読み込み
-	//TextureExp->Load("exp.tga");
-	////衝突テクスチャの読み込み
-	//TextureHit->Load("effect\\[Attack]Hit01_panop.tga");
-	////加速テクスチャの読み込み
-	//TextureBoost->Load("effect\\boost01.tga");
-
 	//テキストフォントの読み込みと設定
 	CText::mFont.Load("FontG.tga");
 	CText::mFont.SetRowCol(1, 4096 / 64);
@@ -333,68 +326,6 @@ void CSceneEditor::Update() {
 	//カメラのパラメータを作成する
 	CVector e, c, u;//視点、注視点、上方向
 
-	////視点を求める
-	//if (mCamPoV == 1){
-	//	e = CVector(0.0f, 17.0f, -40.0f) * CMatrix().RotateY(mCamY)* mPlayer->mMatrixScale   // * mPlayer->mMatrixScale
-	//		* CMatrix().RotateY(mPlayer->mRotation.mY)
-	//		* mPlayer->mMatrixTranslate
-	//		+ CVector(0.0f, 0.0f, 0.0f);
-	//	c = mPlayer->mPosition + CVector(0.0f, 0.0f, 40.0f)* mPlayer->mMatrixScale   //* mPlayer->mMatrixScale
-	//		* CMatrix().RotateY(mPlayer->mRotation.mY);
-	//	//e = CVector(0.0f, 17.0f, -40.0f) * CMatrix().RotateY(mCamY)* mPlayer->mMatrixScale   // * mPlayer->mMatrixScale
-	//	//	* CMatrix().RotateY(mPlayer->mRotation.mY)
-	//	//	//* mPlayer->mMatrixTranslate
-	//	//	*CCameraPos::mpCamera->mMatrixTranslate
-	//	//	+ CVector(0.0f, 0.0f, 0.0f);
-	//	//c = CCameraPos::mpCamera->mPosition + CVector(0.0f, 0.0f, 40.0f)* mPlayer->mMatrixScale   //* mPlayer->mMatrixScale
-	//	//	* CMatrix().RotateY(mPlayer->mRotation.mY);
-	//	//e = CVector(0.0f, 0.0f, 0.0f) * CMatrix().RotateY(mCamY)* mPlayer->mMatrixScale   // * mPlayer->mMatrixScale
-	//	//	* CMatrix().RotateY(mPlayer->mRotation.mY)
-	//	//	*CCameraPos::mpCamera->mMatrixTranslate;
-	//	//c = CCameraPos::mpCamera->mPosition + CVector(0.0f, 0.0f, 40.0f)* mPlayer->mMatrixScale   //* mPlayer->mMatrixScale
-	//	//	* CMatrix().RotateY(mPlayer->mRotation.mY);
-	//	
-	//}
-	//else if (mCamPoV == 2){
-	//	e = CVector(0.0f, 0.0f + 0.5f, -40.0f) * CMatrix().RotateY(mCamY) * mPlayer->mMatrixScale
-	//		* CMatrix().RotateY(mPlayer->mRotation.mY)
-	//		* mPlayer->mMatrixTranslate
-	//		+ CVector(0.0f, 0.0f, 0.0f);
-	//	////注視点を求める
-	//	//c = mPlayer->mPosition + CVector(0.0f, 0.0f, 40.0f)*mPlayer->mMatrixRotate;
-	//	c = mPlayer->mPosition + CVector(0.0f, 0.0f, 40.0f)* mPlayer->mMatrixScale
-	//		* CMatrix().RotateY(mPlayer->mRotation.mY);
-	//		//* CMatrix().RotateZ(mPlayer->mRotation.mZ);
-	//}
-	//else if (mCamPoV == 3){//後方を映す視点
-	//	e = CVector(0.0f, 17.0f, 40.0f) * CMatrix().RotateY(mCamY) * mPlayer->mMatrixScale
-	//		* CMatrix().RotateY(mPlayer->mRotation.mY)
-	//		* mPlayer->mMatrixTranslate
-	//		+ CVector(0.0f, 0.0f, 0.0f);
-	//	////注視点を求める
-	//	//c = mPlayer->mPosition + CVector(0.0f, 0.0f, 40.0f)*mPlayer->mMatrixRotate;
-	//	c = mPlayer->mPosition + CVector(0.0f, 0.0f, -40.0f)* mPlayer->mMatrixScale
-	//		* CMatrix().RotateY(mPlayer->mRotation.mY);
-	//		//* CMatrix().RotateZ(mPlayer->mRotation.mZ);
-	//}
-	//else{//1～3以外の数値が入っている時はとりあえず前方視点(1と同じ)
-	//	e = CVector(0.0f, 17.0f, -40.0f) * CMatrix().RotateY(mCamY)* mPlayer->mMatrixScale   // * mPlayer->mMatrixScale
-	//		* CMatrix().RotateY(mPlayer->mRotation.mY)
-	//		* mPlayer->mMatrixTranslate
-	//		+ CVector(0.0f, 0.0f, 0.0f);
-	//	c = mPlayer->mPosition + CVector(0.0f, 0.0f, 40.0f)* mPlayer->mMatrixScale   //* mPlayer->mMatrixScale
-	//		* CMatrix().RotateY(mPlayer->mRotation.mY);
-	//}
-	////e = CVector(0.0f, 17.0f, -40.0f) * CMatrix().RotateY(mCamY)* mPlayer->mMatrixScale   // * mPlayer->mMatrixScale
-	////	* CMatrix().RotateY(mPlayer->mRotation.mY)
-	////	*mCam->mMatrixTranslate
-	////	//* mPlayer->mMatrixTranslate
-	////	+ CVector(0.0f, 0.0f, 0.0f);
-	////c = mCam->mPosition + CVector(0.0f, 0.0f, 40.0f)* mPlayer->mMatrixScale   //* mPlayer->mMatrixScale
-	////	* CMatrix().RotateY(mPlayer->mRotation.mY);
-	////上方向を求める
-	//u = CVector(0.0f, 1.0f, 0.0f);// *mPlayer->mMatrixRotate;
-
 	//e = CCameraPos::mpCamera->mPosition;
 	e = CVector(0.0f, 17.0f, -40.0f) * CMatrix().RotateY(mCamY)* mPlayer->mMatrixScale   // * mPlayer->mMatrixScale
 				* CMatrix().RotateY(mPlayer->mRotation.mY)
@@ -420,22 +351,9 @@ void CSceneEditor::Update() {
 
 	//デバッグ用
 #ifdef _DEBUG
-	/*if (CKey::Once('1')){
-		printf("%d\n", CItem::mTargetAmount);
-		printf("ベストタイム:%d\n", mBestTime);
-	}*/
 	if (CKey::Once('2')){//Playerの座標を出力する
 		printf("X:%f Y:%f Z:%f\n", CPlayer::mpPlayer->mPosition.mX, CPlayer::mpPlayer->mPosition.mY, CPlayer::mpPlayer->mPosition.mZ);
 	}
-	//if (CKey::Once('3')){//強制的に的の残数を0にする(本来の的は消えない)
-	//	for (int i = 0; i < ENEMYS_AMOUNT; i++){
-	//		printf("X:%f Y:%f Z:%f\n", mEnemys[i]->mPosition.mX, mEnemys[i]->mPosition.mY, mEnemys[i]->mPosition.mZ);
-	//	}
-	//	//CItem::mTargetAmount = 0;
-	//}
-	//if (CKey::Once('4')){//バックミラーのON・OFF切り替え
-	//	isRender_BackMirror = !isRender_BackMirror;
-	//}
 	if (CKey::Push('5')){
 		printf("%f:%f:%f\n", CPlayer::mpPlayer->mRotation.mX, CPlayer::mpPlayer->mRotation.mY, CPlayer::mpPlayer->mRotation.mZ);
 	}
@@ -450,13 +368,6 @@ void CSceneEditor::Update() {
 			CPlayer::mpPlayer->mFlyingMode = true;
 		}
 	}
-	//if (CKey::Once('8')){
-	//	//敵車すべてのmVPointの値を出力
-	//	for (int i = 0; i < ENEMYS_AMOUNT; i++){
-	//		//printf("mEnemys[%d]->mVPoint…X:%.1f Y:%.1f Z:%.1f\n", i, mEnemys[i]->mVPoint.mX, mEnemys[i]->mVPoint.mX, mEnemys[i]->mVPoint.mZ);
-	//		printf("mEnemys[%d]の中間地点…%d  %d週目\n", i, mEnemys[i]->mChecks, mEnemys[i]->mEnemyLap);
-	//	}
-	//}
 	if (CKey::Once('9')){
 		if (mPutCol){
 			mPutCol = false;
@@ -469,7 +380,6 @@ void CSceneEditor::Update() {
 		//衝突判定の描画
 		CollisionManager.Render();
 	}
-	//GetNearestColor(1,2);
 
 	//敵の中継地点の表示ON・OFF切り替え
 	if (CKey::Once('O')){
@@ -506,11 +416,6 @@ void CSceneEditor::Update() {
 	if (CKey::Once('P')){
 		isPause = !isPause;
 	}
-
-	////バックミラーの描画
-	//if (isRender_BackMirror){
-	//	RenderBackMirror();
-	//}
 	//ミニマップの描画
 	RenderMiniMap();
 
@@ -541,7 +446,6 @@ void CSceneEditor::Update() {
 			mScene = ETITLE;
 		}
 	}
-
 	return;
 }
 
@@ -639,15 +543,6 @@ void CSceneEditor::RenderMiniMap() {
 		* CMatrix().RotateZ(0)
 		* CMatrix().Translate(550.0f, 0.0f, -10.0f);
 	mMiniGoal.Render(matminig);
-	//CMatrix matenemys[ENEMYS_AMOUNT];
-	//for (int i = 0; i < ENEMYS_AMOUNT; i++){
-	//	matenemys[i] = CMatrix().Scale(35.0f, 1.0f, 35.0f) //* mPlayer->mMatrixScale
-	//		* CMatrix().RotateX(0)
-	//		* CMatrix().RotateY(mEnemys[i]->mRotation.mY)
-	//		* CMatrix().RotateZ(0)
-	//		* mEnemys[i]->mMatrixTranslate;
-	//	mCarsol_Enemy.Render(matenemys[i]);
-	//}
 	//ミニマップ状にプレイヤーを示すカーソルを描画
 	CMatrix matplayer;
 	matplayer = CMatrix().Scale(35.0f, 1.0f, 35.0f) //* mPlayer->mMatrixScale
@@ -674,116 +569,6 @@ void CSceneEditor::RenderMiniMap() {
 	glMatrixMode(GL_MODELVIEW);		//行列をモデルビューモードへ変更
 	glLoadIdentity();
 }
-////バックミラーを表示
-//void CSceneEditor::RenderBackMirror(){
-//	glDisable(GL_CULL_FACE);//一時的に両面を描画可能にする
-//	glDisable(GL_DEPTH_TEST);
-//	glViewport(BACKMIRROR_FRAME_AREA);
-//	//2D描画開始
-//	Start2D(0, 800, 0, 600);
-//	float color[] = { 0.0f, 0.0f, 0.0f, 1.0f };
-//	glColor4fv(color);
-//	//上記の2D描画範囲の指定値より大きめに白背景を描画する
-//	int expand = 100; color[3] = 0.0f;
-//	//白背景のよりも先に黒枠となるものを描画する
-//	glBegin(GL_TRIANGLES);
-//	glVertex2d(0 - expand, 0 - expand);
-//	glVertex2d(800 + expand, 600 + expand);
-//	glVertex2d(0 - expand, 600 + expand);
-//	glEnd();
-//	glBegin(GL_TRIANGLES);
-//	glVertex2d(0 - expand, 0 - expand);
-//	glVertex2d(800 + expand, 0 - expand);
-//	glVertex2d(800 + expand, 600 + expand);
-//	glEnd();
-//	color[0] = color[1] = color[2] = color[3] = 1.0f;
-//	glColor4fv(color);
-//	//2D描画終了
-//	End2D();
-//
-//	glViewport(BACKMIRROR_BG_WHITE_AREA);
-//	//2D描画開始
-//	Start2D(0, SCREENSIZE_X, 0, SCREENSIZE_Y);
-//	color[0] = color[1] = color[2] = 0.8f; color[3] = 0.0f;
-//	glColor4fv(color);
-//	//上記の2D描画範囲の指定値より大きめに白背景を描画する
-//	expand = 100;
-//	//白背景を"先に"描画する
-//	glBegin(GL_TRIANGLES);//久しぶり
-//	glVertex2d(0 - expand, 0 - expand);
-//	glVertex2d(SCREENSIZE_X + expand, SCREENSIZE_Y + expand);
-//	glVertex2d(0 - expand, 600 + expand);
-//	glEnd();
-//	glBegin(GL_TRIANGLES);
-//	glVertex2d(0 - expand, 0 - expand);
-//	glVertex2d(SCREENSIZE_X + expand, 0 - expand);
-//	glVertex2d(SCREENSIZE_X + expand, SCREENSIZE_Y + expand);
-//	glEnd();
-//	color[0] = color[1] = color[2] = color[3] = 1.0f;
-//	glColor4fv(color);
-//	//2D描画終了
-//	End2D();
-//
-//	//行列を退避させる
-//	glPushMatrix();
-//	//行列を単位行列にする
-//	glLoadIdentity();
-//	glViewport(BACKMIRROR_VIEW_AREA);
-//	//カメラのパラメータを作成する
-//	CVector e, c, u;//視点、注視点、上方向
-//	e = CVector(0.0f, 17.0f + 13.0f, 40.0f - 41.0f) * CMatrix().RotateY(mCamY)* mPlayer->mMatrixScale
-//		* CMatrix().RotateY(mPlayer->mRotation.mY)
-//		* mPlayer->mMatrixTranslate;
-//	c = mPlayer->mPosition + CVector(0.0f, 17.0f + 12.8f, 40.0f - 42.0f)* mPlayer->mMatrixScale
-//		* CMatrix().RotateY(mPlayer->mRotation.mY);
-//	u = CVector(0.0f, 1.0f, 0.0f);
-//	//カメラののX座標を反転させる	
-//	e = e * CMatrix().Scale(-1.0f, 1.0f, 1.0f);
-//	c = c * CMatrix().Scale(-1.0f, 1.0f, 1.0f);
-//	u = u * CMatrix().Scale(-1.0f, 1.0f, 1.0f);
-//	//バックミラーのカメラの設定
-//	gluLookAt(e.mX, e.mY, e.mZ, c.mX, c.mY, c.mZ, u.mX, u.mY, u.mZ);
-//	GLfloat translate[] = {
-//		-1, 0, 0, 0,
-//		0, 1, 0, 0,
-//		0, 0, 1, 0,
-//		0, 0, 0, 1
-//	};
-//	glMultMatrixf(translate);
-//	CTaskManager::Get()->Render();
-//
-//	//黒枠の見切れの補完
-//	glViewport(BACKMIRROR_EXTRAFRAME_AREA);
-//	//2D描画開始
-//	Start2D(0, SCREENSIZE_X, 0, SCREENSIZE_Y);
-//	color[0] = color[1] = color[2] = 0.0f;
-//	glColor4fv(color);
-//	//上記の2D描画範囲の指定値より大きめに白背景を描画する
-//	expand = 100;
-//	//風景の上に黒枠を描画する
-//	glBegin(GL_TRIANGLES);
-//	glVertex2d(0 - expand, 0 - expand);
-//	glVertex2d(SCREENSIZE_X + expand, SCREENSIZE_Y + expand);
-//	glVertex2d(0 - expand, SCREENSIZE_Y + expand);
-//	glEnd();
-//	glBegin(GL_TRIANGLES);
-//	glVertex2d(0 - expand, 0 - expand);
-//	glVertex2d(SCREENSIZE_X + expand, 0 - expand);
-//	glVertex2d(SCREENSIZE_X + expand, SCREENSIZE_Y + expand);
-//	glEnd();
-//	color[0] = color[1] = color[2] = color[3] = 1.0f;
-//	glColor4fv(color);
-//	//2D描画終了
-//	End2D();
-//
-//	glEnable(GL_DEPTH_TEST);
-//	glViewport(0, 0, SCREENSIZE_X, SCREENSIZE_Y); //画面の描画エリアをメインの画面に戻す
-//	glEnable(GL_CULL_FACE);//表面のみの描画に戻す
-//
-//	//行列を戻す
-//	glPopMatrix();
-//}
-//次のシーンの取得
 CScene::EScene CSceneEditor::GetNextScene(){
 	return mScene;
 }

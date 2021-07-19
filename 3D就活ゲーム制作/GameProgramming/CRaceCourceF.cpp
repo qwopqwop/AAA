@@ -131,7 +131,7 @@ void CRaceCourceF::Init(){
 		mEnemys[i]->CCharacter::Update();
 	}
 
-	printf("開発中\n");
+	printf("※開発中\n");
 	//中間地点(順に通らないと1周したことにならないし、順番を飛ばしてもいけない)
 	new CObjCheckPoint(&mCheckPoint, CVector(1127.4f, -100.0f, -5054.0f), CVector(0.0f, 0.0f, 0.0f), CVector(220.0f, 200.0f, 220.0f), 1);
 	new CObjCheckPoint(&mCheckPoint, CVector(777.0f, -100.0f, 1925.0f), CVector(0.0f, 0.0f, 0.0f), CVector(220.0f, 200.0f, 220.0f), 2);

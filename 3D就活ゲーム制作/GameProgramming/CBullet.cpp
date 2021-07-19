@@ -14,13 +14,6 @@ void CBullet::Set(float w, float d){
 }
 
 //更新
-
-//void CBullet::Update(){
-//	CCharacter::Update();
-//	//位置更新
-//	mPosition = CVector(0.0f, 0.0f, 1.0f)* mMatrix;
-//	//mPosition.mZ += 1.0f;
-//}
 void CBullet::Update(){
 	//生存時間の判定
 	if (mLife-- > 0){
@@ -53,7 +46,6 @@ CVector(1.0f, 1.0f, 1.0f), 0.1f)
 
 	mCollider.mTag = CCollider::EBODY;
 	mTag = EBULLET;
-	//mCollider.mTag = CCollider::EBODY;
 }
 
 //衝突処理

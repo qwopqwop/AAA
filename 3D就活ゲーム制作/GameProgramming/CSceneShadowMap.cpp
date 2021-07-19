@@ -12,7 +12,6 @@ CSceneShadowMap::~CSceneShadowMap()
 
 void CSceneShadowMap::Init()
 {
-
 	////ƒV[ƒ“‚Ìİ’è
 	//mScene = ERACE1;
 

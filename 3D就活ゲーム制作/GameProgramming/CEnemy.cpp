@@ -29,26 +29,18 @@ extern CSound SoundCollisionSmall;
 CEnemy *CEnemy::mpEnemy = 0;
 int CEnemy::mPointSize = 0;
 
-#define G (9.8f / 90.0f)//重力加速度//60.0f
-#define JUMPV0 (4.0f*4.0f)//ジャンプ初速//4.0f
+#define G (9.8f / 90.0f)//重力加速度
+#define JUMPV0 (16.0f)//ジャンプ初速
 
-#define MAXSPEED 20.0f //4.5f+3.0f//-0.5f//車の最高速度 //一応プレイヤーが追いつける程度に最高速は少し低め
-#define MAXSPEED_BACK 1.0f*2 *2//車の後退する最大速度
-#define CAR_POWER 0.05f*2 //*2//1フレーム辺りの車の加速していく量
-#define CAR_BREAK_POWER 0.025f*2 *2//前進中のブレーキの強さ
+#define MAXSPEED 20.0f//車の最高速度 //一応プレイヤーが追いつける程度に最高速は少し低め
+#define MAXSPEED_BACK 4.0f//車の後退する最大速度
+#define CAR_POWER 0.1f//1フレーム辺りの車の加速していく量
+#define CAR_BREAK_POWER 0.1f//前進中のブレーキの強さ
 
-#define DECELERATE 0.05f*2 //車の減速する量
-#define FIX_ANGLE_VALUE 0.5f*2 //角度が0度に向けて調整される量(主にX・Z用)
+#define DECELERATE 0.1f //車の減速する量
+#define FIX_ANGLE_VALUE 1.0f //角度が0度に向けて調整される量(回転値X,Z用)
 #define JUMPER01_POWER 3.0f //ジャンプ台1でのジャンプ力
-#define RESTART_TIME 30*60 //敵が詰まった時、一定時間経過でリスタートさせる
-
-//旧速度設定
-//#define MAXSPEED 7.0f //車の最高速度
-//#define MAXSPEED_BACK 2.0f //車の後退する最大速度
-//#define CAR_POWER 0.1f //1フレーム辺りの車の加速していく量
-//#define CAR_BREAK_POWER 0.05f //前進中のブレーキの強さ
-//#define DECELERATE 0.1f //車の減速する量
-//#define FIX_ANGLE_VALUE 0.5f //角度が0度に向けて調整される量(主にX・Z用)
+#define RESTART_TIME 30*60 //敵が詰まった時、一定時間経過でリスタートさせる(秒数*60fps)
 
 CEnemy::CEnemy()
 //車体のY座標は0.0fにしたいんだけど・・・

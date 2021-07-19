@@ -42,7 +42,6 @@ void CRaceCourceA::Init(){
 	//カメラの生成
 	mCamRange = new CCameraRange();
 	mCam = new CCameraPos();
-	//mCam->mpModel = &mCarYellow;
 	//コースの生成//ここを床と壁で分割して処理を分ける
 	mpGrounds[0] = new CObjFloor(&mCource01, CVector(-360.0f, 5.0f - 33.0f, 230.0f), CVector(), CVector(50.0f, 2.0f, 50.0f));
 //	mpGrounds[0] = new CRoadManager(&mCource01, CVector(-360.0f, 5.0f - 33.0f, 230.0f), CVector(), CVector(50.0f, 2.0f, 50.0f));
@@ -83,18 +82,12 @@ void CRaceCourceA::Init(){
 		mEnemys[i]->CCharacter::Update();
 	}
 	/*透明度の高い物から先に描画する*/
-	//中間地点(順に通らないと1周したことにならないし、順番を飛ばしてもいけない)
+	//中間地点(1周と判定されるには順番通りに通過する必要がある)
 	mpGrounds[95] = new CObjCheckPoint(&mCheckPoint, CVector(50.0f, 15.0f, 2500.0f), CVector(-90.0f, 0.0f, -50.0f), CVector(2000.0f, 31.0f, 255.0f), 1);
 	mpGrounds[96] = new CObjCheckPoint(&mCheckPoint, CVector(-1800.0f, 15.0f, 20.0f), CVector(-90.0f, 180.0f, 0.0f), CVector(750.0f, 31.0f, 255.0f), 2);
 	mpGrounds[97] = new CObjCheckPoint(&mCheckPoint, CVector(-1100.0f, 15.0f, -2000.0f), CVector(-90.0f, 0.0f, 110.0f), CVector(750.0f, 31.0f, 255.0f), 3);
 
-	/*mpGrounds[98] = new CObjCheckPoint(&mCube, CVector(0.0f, 55.0f, 0.0f), CVector(0.0f, 0.0f, 0.0f), CVector(250.0f, 41.0f, 250.0f), 11);
-	mpGrounds[99] = new CObjFloor(&mCube3, CVector(0.0f, 555.0f, 510.0f), CVector(0.0f, 0.0f, 0.0f), CVector(250.0f, 41.0f, 250.0f));*/
-	//CObjCheckPointのようにRender()を空オーバーライドして透明にした場合：　テクスチャに影は反映されず、そのモデルは影にもならない
-	//透明なテクスチャを使用した場合：　テクスチャに影が反映される(影の濃さ＝テクスチャの不透明度)、そのモデルの影も発生する
-
-	//ここから
-	//新・コースの生成
+	//コースの生成
 	for (int i = 0; i < 1; i++){
 		////コースの生成//ここを床と壁で分割して処理を分ける
 		//mpGrounds[0] = new CObjFloor(&mCource01, CVector(-360.0f, 5.0f - 33.0f, 230.0f), CVector(), CVector(50.0f, 2.0f, 50.0f));
@@ -110,16 +103,6 @@ void CRaceCourceA::Init(){
 	//白・黒タイルでゴール示唆
 	mpGrounds[10] = new CObjNonCol(&mGoalTile01, CVector(170.0f + 590.0f + 0.0f, -13.1f + 5.5f, -10.0f), CVector(0.0f, 0.0f, 0.0f), CVector(10.0f, 1.0f, 10.0f));
 	mpGrounds[11] = new CObjNonCol(&mGoalTile01, CVector(170.0f + 190.0f + 0.0f, -13.1f + 5.5f, -10.0f), CVector(0.0f, 0.0f, 0.0f), CVector(10.0f, 1.0f, 10.0f));
-	//for (int i = 0; i < 40; i++){
-	//	if (i % 2 == 0){
-	//		new CObjNonCol(&mTileBlack, CVector(170.0f + 20.0f*i, -13.1f + 0.5f, -20.0f), CVector(0.0f, 0.0f, 0.0f), CVector(10.0f, 1.0f, 10.0f));//黒タイル
-	//		mpGrounds[10 + i] = new CObjNonCol(&mTileWhite, CVector(170.0f + 20.0f*i, -13.1f + 0.5f, -20.0f + 20.0f), CVector(0.0f, 0.0f, 0.0f), CVector(10.0f, 1.0f, 10.0f));//白タイル
-	//	}
-	//	else{
-	//		new CObjNonCol(&mTileBlack, CVector(170.0f + 20.0f*i, -13.1f + 0.5f, -20.0f + 20.0f), CVector(0.0f, 0.0f, 0.0f), CVector(10.0f, 1.0f, 10.0f));//黒タイル
-	//		mpGrounds[10 + i] = new CObjNonCol(&mTileWhite, CVector(170.0f + 20.0f*i, -13.1f + 0.5f, -20.0f), CVector(0.0f, 0.0f, 0.0f), CVector(10.0f, 1.0f, 10.0f));//白タイル
-	//	}
-	//}
 	//ゴール(ゲート側)
 	for (int i = 0; i < 20; i++){
 		if (i % 2 == 0){
@@ -130,10 +113,7 @@ void CRaceCourceA::Init(){
 			new CObjNonCol(&mTileBlack, CVector(170.0f + 40.0f*i + 5.0f + 10.0f, 110.0f + 10.0f + 200.0f - 5.0f - 10.0f, -14.0f), CVector(90.0f, 0.0f, 0.0f), CVector(20.0f, 4.9f, 20.0f));//黒タイル
 			new CObjNonCol(&mTileWhite, CVector(170.0f + 40.0f*i + 5.0f + 10.0f, 110.0f + 200.0f - 5.0f - 10.0f - 20.0f - 10.0f, -14.0f), CVector(90.0f, 0.0f, 0.0f), CVector(20.0f, 4.9f, 20.0f));//白タイル
 		}
-	}
-
-	
-	
+	}	
 	//ゲートの柱部分
 	new CObjWall(&mPole, CVector(170.0f + 20.0f * -1 + 5.0f + 5.0f, -13.1f - 10.0f, -10.0f), CVector(0.0f, 0.0f, 0.0f), CVector(10.0f, 174.0f, 10.0f));
 	new CObjWall(&mPole, CVector(170.0f + 20.0f * 40 + 5.0f - 5.0f, -13.1f - 10.0f, -10.0f), CVector(0.0f, 0.0f, 0.0f), CVector(10.0f, 174.0, 10.0f));
@@ -142,7 +122,6 @@ void CRaceCourceA::Init(){
 	mpGrounds[52] = new CObjBoost(&mDashBoard, CVector(-1500.0f, -13.1f + 3.0f, -50.0f), CVector(0.0f, 0.0f, 0.0f), CVector(2.0f, 2.0f, 2.0f));
 	//ジャンプ台
 	mpGrounds[53] = new CObjJumper(&mOnBlock, CVector(240.0f, -13.1f + 3.0f, 1110.0f), CVector(-30.0f, 0.0f, 0.0f), CVector(77.0f, 5.0f, 50.0f));
-	//ここまでがmpGroundにあたる
 
 	//優先度変更
 	CTaskManager::Get()->ChangePriority(mPlayer, 15);

@@ -16,11 +16,8 @@ CMaterial::CMaterial()
 void CMaterial::Enabled() {
 	//アルファブレンドを有効にする
 	glEnable(GL_BLEND);
-	//ブレンド方法を指定
+	//ブレンド方法を指定(アルファブレンド)
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-	////加算ブレンドさせたいマテリアルはこっちで指定
-	//glBlendFunc(GL_ONE, GL_ONE);
 
 	//拡散光の設定
 	glMaterialfv(GL_FRONT, GL_DIFFUSE, mDiffuse);

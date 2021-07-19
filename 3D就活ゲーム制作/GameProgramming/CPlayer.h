@@ -52,7 +52,6 @@ public:
 	CSound SoundEngine_Turf;//芝生の上では別の音が鳴る仕様
 	bool isSoundEngine;
 	CSound SoundHorn;
-	int mBuzzerCount;//クラクションを鳴らした回数
 	CSound SoundCollision;
 	CSound SoundCollisionSmall;
 	bool isRespawn;

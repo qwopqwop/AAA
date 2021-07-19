@@ -51,7 +51,6 @@ public:
 
 		//文字列の描画
 		CText::DrawString("3D-RACE", -278 + 400 + 68, 430, 36, 36);
-		//CText::DrawString("EXTREME", -278 + 400 + 68+96-24 +6*5, 377, 18, 18, 2);
 		c[0] = c[1] = c[2] = 0.0f;
 		glColor4fv(c);
 		CText::DrawString("Demo Ver0.0", -278 + 400 + 68 + 131, 345+32, 8, 8, 3);
@@ -222,65 +221,9 @@ public:
 		glColor4fv(c);
 		CText::DrawString("COURCE-3", 580, 280, 12, 14);
 
-		//if (mVariable1 == -1 && mVariable2 == 0){
-		//	c[0] = c[1] = c[2] = 1.0f; c[3] = 1.0f;
-		//}
-		//else{
-		//	c[0] = c[1] = c[2] = 0.5f; c[3] = 1.0f;
-		//}
-		////選択時に点滅する
-		//if (mStart && mVariable1 == -1 && mVariable2 == 0){
-		//	if (mStartWaitTime > 20){
-		//		c[0] = c[1] = c[2] = 1.0f;
-		//	}
-		//	else if (mStartWaitTime % 8 < 4){
-		//		c[0] = c[1] = c[2] = 0.5f;
-		//	}
-		//}
-		//glColor4fv(c);
-		//CText::DrawString("-EDITOR-", 80, 234, 12, 14);
-		//
-		//if (mVariable1 == -1 && mVariable2 == 1){
-		//	c[0] = c[1] = c[2] = 1.0f; c[3] = 1.0f;
-		//}
-		//else{
-		//	c[0] = c[1] = c[2] = 0.5f; c[3] = 1.0f;
-		//}
-		////選択時に点滅する
-		//if (mStart && mVariable1 == -1 && mVariable2 == 1){
-		//	if (mStartWaitTime > 20){
-		//		c[0] = c[1] = c[2] = 1.0f;
-		//	}
-		//	else if (mStartWaitTime % 8 < 4){
-		//		c[0] = c[1] = c[2] = 0.5f;
-		//	}
-		//}
-		//glColor4fv(c);
-		//CText::DrawString("Map-E", 330, 250, 16, 16);
-		//
-		//if (mVariable1 == -1 && mVariable2 == 2){
-		//	c[0] = c[1] = c[2] = 1.0f; c[3] = 1.0f;
-		//}
-		//else{
-		//	c[0] = c[1] = c[2] = 0.5f; c[3] = 1.0f;
-		//}
-		////選択時に点滅する
-		//if (mStart && mVariable1 == -1 && mVariable2 == 2){
-		//	if (mStartWaitTime > 20){
-		//		c[0] = c[1] = c[2] = 1.0f;
-		//	}
-		//	else if (mStartWaitTime % 8 < 4){
-		//		c[0] = c[1] = c[2] = 0.5f;
-		//	}
-		//}
-		//glColor4fv(c);
-		//CText::DrawString("Map-F", 580, 250, 16, 16);
-
 		//最後に値を1.0fに戻す
 		c[0] = c[1] = c[2] = 1.0f; c[3] = 1.0f;
 		glColor4fv(c);	
-
-		
 		
 		char mrecord[70];// :も含めた最大文字数の設定
 		if (mMode == 1){
@@ -344,37 +287,30 @@ public:
 				if (mMode == 1){
 					//次のシーンはコース1
 					mScene = ERACE1;
-					//ECource mCource = ECOURCE1;
 				}
 				else if (mMode == 2){
 					//次のシーンはコース2
 					mScene = ERACE2;
-					//ECource mCource = ECOURCE2;
 				}
 				else if (mMode == 3){
 					//次のシーンはコース3
 					mScene = ERACE3;
-					//ECource mCource = ECOURCE3;
 				}
 				else if (mMode == 4){
 					//次のシーンはコース3
 					mScene = ERACE4;
-					//ECource mCource = ECOURCE4;
 				}
 				else if (mMode == 5){
 					//次のシーンはコース3
 					mScene = ERACE5;
-					//ECource mCource = ECOURCE4;
 				}
 				else if (mMode == 6){
 					//次のシーンはコース3
 					mScene = ERACE6;
-					//ECource mCource = ECOURCE4;
 				}
 				else if (mMode == 127){
 					//コースエディタに移行
 					mScene = EEDIT;
-					//ECource mCource = ECOURCE4;
 				}
 			}			
 		}
@@ -481,16 +417,6 @@ public:
 	static int mDifficulty;
 	int mPrevDifficulty;
 	int mSelectScene_Level;//選択画面の何段階目か
-
-	////各コースを列挙型で定義する
-	//enum ECource
-	//{
-	//	ECOURCE1,
-	//	ECOURCE2,
-	//	ECOURCE3,
-	//	ECOURCE4
-	//};
-	//static ECource mCource;
 };
 
 #endif

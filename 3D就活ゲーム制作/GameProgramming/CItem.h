@@ -19,10 +19,6 @@ public:
 
 	int mItemNumber;
 
-	//static CItem *mpItem;
-
-	//CSound SoundDest;//”j‰ó‰¹
-
 	bool mBoatMove;
 
 	void Update();
