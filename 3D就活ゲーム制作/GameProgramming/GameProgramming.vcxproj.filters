@@ -99,9 +99,6 @@
     <ClCompile Include="CObj.cpp">
       <Filter>ソース ファイル\Lib</Filter>
     </ClCompile>
-    <ClCompile Include="CItem.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="CBullet.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
@@ -175,9 +172,6 @@
       <Filter>ソース ファイル\RaceGame\TemporaryFolder</Filter>
     </ClCompile>
     <ClCompile Include="CRoadManager.cpp">
-      <Filter>ソース ファイル\RaceGame\TemporaryFolder</Filter>
-    </ClCompile>
-    <ClCompile Include="CSceneShadowMap.cpp">
       <Filter>ソース ファイル\RaceGame\TemporaryFolder</Filter>
     </ClCompile>
   </ItemGroup>
@@ -254,9 +248,6 @@
     <ClInclude Include="CObj.h">
       <Filter>ソース ファイル\Lib</Filter>
     </ClInclude>
-    <ClInclude Include="CItem.h">
-      <Filter>ソース ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="CBullet.h">
       <Filter>ソース ファイル</Filter>
     </ClInclude>
@@ -327,9 +318,6 @@
       <Filter>ソース ファイル\RaceGame\TemporaryFolder</Filter>
     </ClInclude>
     <ClInclude Include="CRoadManager.h">
-      <Filter>ソース ファイル\RaceGame\TemporaryFolder</Filter>
-    </ClInclude>
-    <ClInclude Include="CSceneShadowMap.h">
       <Filter>ソース ファイル\RaceGame\TemporaryFolder</Filter>
     </ClInclude>
   </ItemGroup>

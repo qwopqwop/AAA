@@ -38,8 +38,6 @@ public:
 	void RenderShadow();
 	GLuint mDepthTextureID;
 
-	CModel mSky;
-	CModel mRock;
 	CModel mRover;
 	CModel mCarRed;
 	CModel mCarBlue;
@@ -50,13 +48,7 @@ public:
 	CModel mCarWhite;
 	CModel mCarBlack;
 	CModel mCarGray;
-	CModel mCube;
 	CModel mPlane;
-	CModel mStairs;//階段
-	CModel mTarget;//的
-	CModel mOnBlock;//OFFになると消える
-	CModel mCube2;//透明度100％
-	CModel mCube3;//窓のような色、半透明で水色
 	CModel mCheckPoint;//ポリゴン1枚のみ、透明
 	CModel mTileBlack;//黒い床
 	CModel mTileWhite;//白い床

@@ -10,8 +10,6 @@
 #include "CSceneTitle.h"
 #include "CTaskManager.h"
 
-#include "CSceneShadowMap.h"
-
 CSceneManager SceneManager;
 
 CScene::EScene mScene;

@@ -1,5 +1,4 @@
 #include "CObj.h"
-#include "CItem.h"
 #include "CPlayer.h"
 #include "CTaskManager.h"
 

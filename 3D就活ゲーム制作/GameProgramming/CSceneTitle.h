@@ -17,11 +17,11 @@ public:
 	void Init() {
 		//テクスチャファイルを読み込む
 		//フォントの設定
-		CText::mFont.Load("font2nd.tga");
+		CText::mFont.Load("font\\font2nd.tga");
 		CText::mFont.SetRowCol(8, 256 / 16);
-		CText::mFont2.Load("FontG.tga");
+		CText::mFont2.Load("font\\FontG.tga");
 		CText::mFont2.SetRowCol(1, 4096 / 64);
-		CText::mFont3.Load("FontDIY.tga");//自作フォント
+		CText::mFont3.Load("font\\FontDIY.tga");//自作フォント
 		CText::mFont3.SetRowCol(8, 176 / 11);
 		//CText::mFont3.Load("FontDIYx5.tga");//自作フォント
 		//CText::mFont3.SetRowCol(8, 880 / 55);//サイズ5倍(没)

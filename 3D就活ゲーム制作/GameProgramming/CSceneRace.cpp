@@ -18,8 +18,6 @@
 //
 #include "CObjWall.h"
 //
-#include "CItem.h"
-//
 #include "CKey.h"
 //
 #include "CBullet.h"
@@ -85,63 +83,49 @@ void CSceneRace::Init() {
 	for (int i = 0; i < ENEMYS_AMOUNT + 1; i++){//+1はプレイヤー分
 		mCarShadow[i] = NULL;
 	}
-	
-	//的の残数の初期化
-	CItem::mTargetAmount = 0;
 
 	//爆発テクスチャの読み込み
-	TextureExp->Load("exp.tga");
+	TextureExp->Load("effect\\exp.tga");
 	//衝突テクスチャの読み込み
-	TextureHit->Load("effect\\[Attack]Hit01_panop.tga");
+	TextureHit->Load("effect\\Hit01_panop.tga");
 	//加速テクスチャの読み込み
 	TextureBoost->Load("effect\\boost01.tga");
 
 	//テキストフォントの読み込みと設定
-	CText::mFont.Load("FontG.tga");
+	CText::mFont.Load("font\\FontG.tga");
 	CText::mFont.SetRowCol(1, 4096 / 64);
-	CText::mFont2.Load("font2nd.tga");
+	CText::mFont2.Load("font\\font2nd.tga");
 	CText::mFont2.SetRowCol(8, 256 / 16);
-	//mFont3:最後にmFont3に設定したシーンでのフォント(=Title画面のフォント)
+	CText::mFont3.Load("font\\FontDIY.tga");
+	CText::mFont3.SetRowCol(8, 176 / 11);
 	
 	/*全コース共通のマテリアル*/
-	mSky.Load("sky.obj", "sky.mtl");//背景
-	mRock.Load("Rock1.obj", "Rock1.mtl");//岩
 	//車の読み込み
-	mRover.Load("Rover1.obj", "material\\racing_mat\\single_color\\white.mtl");//プレイヤー
-	mCarRed.Load("Rover1.obj", "material\\racing_mat\\single_color\\red.mtl");//以下敵の車
-	mCarBlue.Load("Rover1.obj", "material\\racing_mat\\single_color\\blue.mtl");
-	mCarGreen.Load("Rover1.obj", "material\\racing_mat\\single_color\\green.mtl");
-	mCarYellow.Load("Rover1.obj", "material\\racing_mat\\single_color\\yellow.mtl");
-	mCarPink.Load("Rover1.obj", "material\\racing_mat\\single_color\\pink.mtl");
-	mCarCyan.Load("Rover1.obj", "material\\racing_mat\\single_color\\cyan.mtl");
-	mCarWhite.Load("Rover1.obj", "material\\racing_mat\\single_color\\white.mtl");
-	mCarBlack.Load("Rover1.obj", "material\\racing_mat\\single_color\\black.mtl");
-	mCarGray.Load("Rover1.obj", "material\\racing_mat\\single_color\\gray.mtl");
-	mCheckPoint.Load("cube.obj", "cube2.mtl");//中間地点(透明、ポリゴン1枚)
+	mRover.Load("material\\common_mat\\Rover1.obj", "material\\single_color\\white.mtl");//プレイヤー
+	mCarRed.Load("material\\common_mat\\Rover1.obj", "material\\single_color\\red.mtl");//以下敵の車
+	mCarBlue.Load("material\\common_mat\\Rover1.obj", "material\\single_color\\blue.mtl");
+	mCarGreen.Load("material\\common_mat\\Rover1.obj", "material\\single_color\\green.mtl");
+	mCarYellow.Load("material\\common_mat\\Rover1.obj", "material\\single_color\\yellow.mtl");
+	mCarPink.Load("material\\common_mat\\Rover1.obj", "material\\single_color\\pink.mtl");
+	mCarCyan.Load("material\\common_mat\\Rover1.obj", "material\\single_color\\cyan.mtl");
+	mCarWhite.Load("material\\common_mat\\Rover1.obj", "material\\single_color\\white.mtl");
+	mCarBlack.Load("material\\common_mat\\Rover1.obj", "material\\single_color\\black.mtl");
+	mCarGray.Load("material\\common_mat\\Rover1.obj", "material\\single_color\\gray.mtl");
+	mCheckPoint.Load("material\\common_mat\\cube.obj", "material\\single_color\\invisible.mtl");//中間地点(透明、ポリゴン1枚)
 	//床タイルの読み込み
-	mTileBlack.Load("cube.obj", "material\\racing_mat\\tile_black.mtl");
-	mTileWhite.Load("cube.obj", "material\\racing_mat\\tile_white.mtl");
-	//立方体の読み込み
-	mCube.Load("cube.obj", "material\\cube.mtl");//白
-	mCube2.Load("cube.obj", "cube2.mtl");//透明
-	mCube3.Load("cube.obj", "cube3.mtl");//?
+	mTileBlack.Load("material\\common_mat\\cube.obj", "material\\racing_mat\\tile_black.mtl");
+	mTileWhite.Load("material\\common_mat\\cube.obj", "material\\racing_mat\\tile_white.mtl");	
 	//地面の読み込み
-	mPlane.Load("plane.obj", "plane.mtl");
-	//階段の読み込み
-	mStairs.Load("cube.obj", "material\\stairs.mtl");
-	//的の読み込み
-	mTarget.Load("Rock1.obj", "material\\target.mtl");
-	//ONブロック(？)の読み込み
-	mOnBlock.Load("cube.obj", "material\\on.mtl");
+	mPlane.Load("material\\common_mat\\plane.obj", "material\\common_mat\\plane.mtl");
 	mSign_Left.Load("material\\racing_mat\\stage5\\Sign_TurnLeft.obj", "material\\racing_mat\\stage5\\Sign_TurnLeft.mtl");//標識:左折
 	mSign_Right.Load("material\\racing_mat\\stage5\\Sign_TurnLeft.obj", "material\\racing_mat\\stage5\\Sign_TurnRight.mtl");//標識:右折
 	//ミニマップ上でのプレイヤー・敵のカーソル、ゴール地点の読み込み
 	mCarsol.Load("material\\racing_mat\\minicarsol.obj", "material\\racing_mat\\minicarsol.mtl");//プレイヤー
 	mCarsol_Enemy.Load("material\\racing_mat\\minicarsol.obj", "material\\racing_mat\\minicarsol_enemy.mtl");//敵
-	mMiniGoal.Load("material\\racing_mat\\minigoal.obj", "material\\racing_mat\\minigoal.mtl");
-	mPole.Load("cube.obj", "material\\soil.mtl");//ポール(木製)
+	mMiniGoal.Load("material\\racing_mat\\minigoal.obj", "material\\racing_mat\\minigoal.mtl");//ゴールアイコン
+	mPole.Load("material\\common_mat\\cube.obj", "material\\common_mat\\soil.mtl");//ポール(木製)
 	mDashBoard.Load("material\\racing_mat\\dashboard.obj", "material\\racing_mat\\dashboard.mtl");//加速床
-	mJumper01.Load("cube.obj", "cube.mtl");//ジャンプ台
+	mJumper01.Load("material\\common_mat\\cube.obj", "material\\common_mat\\on.mtl");//ジャンプ台
 	/*コース個別に読み込むマテリアル*/
 	if (CSceneTitle::mMode == 1){
 		mCource01.Load("material\\racing_mat\\CourceNew01.obj", "material\\racing_mat\\CourceNew01.mtl");//路面
