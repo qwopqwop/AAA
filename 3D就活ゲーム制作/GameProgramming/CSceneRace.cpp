@@ -23,6 +23,8 @@
 #include "CBullet.h"
 //
 #include "CRenderTexture.h"
+//
+#include "CRectangle.h"
 
 //スマートポインタの生成
 std::shared_ptr<CTexture> TextureExp(new CTexture());
@@ -30,10 +32,10 @@ std::shared_ptr<CTexture> TextureHit(new CTexture());
 std::shared_ptr<CTexture> TextureBoost(new CTexture());
 
 extern CSound BGM;
+extern CSound JingleOpening;
 extern CSound SoundCountDown;
 extern CSound SoundStart;
 extern CSound SoundGoal;
-
 extern CSound SoundMoveCarsol;
 extern CSound SoundDecide;
 extern CSound SoundPauseOn;
@@ -66,6 +68,8 @@ bool CSceneRace::isEnableSpeedometer = true;//速度計
 
 #define TEXWIDTH (800)
 #define TEXHEIGHT (600)
+
+#define OPENINGTIME 5*60
 
 CRenderTexture mRenderTexture;
 
@@ -211,6 +215,7 @@ void CSceneRace::Init() {
 		BGM.Load("BGM\\game_maoudamashii_7_event46.wav");
 		mBestTime = mRecord_F;
 	}
+	JingleOpening.Load("SE\\jingle19.wav");
 	//効果音の読み込み
 	SoundCountDown.Load("SE\\Countdown01-5.wav");
 	SoundStart.Load("SE\\Countdown01-6.wav");
@@ -221,6 +226,8 @@ void CSceneRace::Init() {
 	SoundPauseOn.Load("SE\\button79.wav");
 	SoundPauseOff.Load("SE\\button80.wav");
 
+	
+
 	//カメラ視点のY座標
 	mCamY = 0.0f;
 	//衝突判定の描画(デバッグ用)
@@ -229,6 +236,8 @@ void CSceneRace::Init() {
 	//一部テキストが点滅する時間
 	mTextBlinkTime = 0;
 
+	isOpening = true;
+	mTime_Opening = 0;
 	//レースのカウントダウン関連
 	mFrame = 0;
 	mCountDown = 3+1;
@@ -262,14 +271,19 @@ void CSceneRace::Init() {
 	isPause = false;
 	mPause_SelectCarsol = 1;
 	mPause_OptionCarsol = 1;
-
 	mPauseScreen = EPAUSE;
 
 	isEnableShadow_Cource = true;//ゲーム内での切り替え不可
 	isEnableShadow_Car = false;//現時点では非表示推奨
+
+	isFadeIn = true;
+	isFadeOut = false;
+	isBlackOutTime = 0;
 	
-	//BGMはループ
-	BGM.Repeat();
+	////BGMはループ
+	//BGM.Repeat();
+
+	JingleOpening.Play();
 
 	mRenderTexture.Init();
 	
@@ -479,6 +493,9 @@ void CSceneRace::Update() {
 	//2D描画開始
 	Start2D(0, 800, 0, 600);
 
+	
+	
+
 	//順位の描画
 	float color[] = { 1.0f, 1.0f, 1.0f, 1.0f };
 	//コース名を左下に表示
@@ -505,8 +522,14 @@ void CSceneRace::Update() {
 	sprintf(mbestti, "BEST:%02d:%02d:%02d", mBestTime / 10000 % 100, mBestTime / 100 % 100, mBestTime % 100);
 	CText::DrawString(mbestti, 20, 580, 10, 12);
 	
+	if (isOpening){
+		mTime_Opening++;
+		if (mTime_Opening > OPENINGTIME)
+			isOpening = false;
+	}
+
 	//カウントダウン開始、GO!で操作の受付開始
-	if (mFrame < 60){
+	else if (mFrame < 60){
 		mFrame++;
 	}
 	else{
@@ -518,6 +541,9 @@ void CSceneRace::Update() {
 			}
 			else if (mCountDown > 0){
 				SoundCountDown.Play();
+			}
+			else if (mCountDown < 0){
+				BGM.Repeat();
 			}
 		}
 		mFrame = 0;
@@ -771,16 +797,20 @@ void CSceneRace::Update() {
 				else if (i == 3){
 					CText::DrawString("Quit", 370, 140, 10, 12, 2);
 				}
-
 			}
-
 			color[0] = color[1] = color[2] = 1.0f;
 			glColor4fv(color);
 		}
-
-		
-
 	}
+	//フェードイン
+	if (isFadeIn){
+		FadeIn();
+	}
+	//フェードイン
+	if (isFadeOut){
+		SceneChange();
+	}
+
 	//2D描画終了
 	End2D();
 	
@@ -1064,6 +1094,9 @@ void CSceneRace::Update() {
 
 			if (isPause&&mPauseScreen == EOPTION)return;
 
+			//「タイトルに戻る」選択後はカーソルを動かせない
+			if (isFadeOut)return;
+
 			//ポーズのON・OFF切り替え
 			isPause = !isPause;
 			mPause_SelectCarsol = 1;
@@ -1086,6 +1119,9 @@ void CSceneRace::Update() {
 	}
 	//ポーズ中Escキー押下→タイトル画面移行
 	if (isPause){
+		//「タイトルに戻る」選択して暗転が始まるとカーソルを動かせない
+		if (isFadeOut)return;
+			
 		//ポーズの中で、設定画面を開いている時
 		if (mPauseScreen == EOPTION){
 			//↑キー
@@ -1156,11 +1192,11 @@ void CSceneRace::Update() {
 					SoundDecide.Play();
 				}
 				else if (mPause_SelectCarsol == 3){
-					//SoundDecide.Play();//すぐ戻るので鳴らない
-					//タイトル画面に戻る
-					mScene = ETITLE;
+					SoundDecide.Play();
+					isFadeOut = true;
+					isBlackOutTime = 0;
 				}
-			}			
+			}
 		}
 	}
 
@@ -1884,6 +1920,43 @@ void CSceneRace::RenderShadow(){
 
 	glActiveTexture(GL_TEXTURE0);
 	//************************************ Shadow Map
+}
+
+void CSceneRace::FadeIn(){
+	float color[] = { 1.0f, 1.0f, 1.0f, 1.0f };
+	//
+	if (isBlackOutTime < 60){
+		isBlackOutTime++;
+	}
+	else{
+		isFadeIn = false;
+	}
+	color[0] = color[1] = color[2] = 0.0f;
+	color[3] = 1.5f - 0.03f*isBlackOutTime;
+	glColor4fv(color);
+	CRectangle::Render(400, 300, 400, 300);
+	color[0] = color[1] = color[2] = color[3] = 1.0f;
+	glColor4fv(color);
+}
+
+void CSceneRace::SceneChange(){
+	float color[] = { 1.0f, 1.0f, 1.0f, 1.0f };
+	//
+	if (isBlackOutTime < 60){
+		isBlackOutTime++;
+	}
+	else{
+		isFadeOut = false;
+		//タイトル画面に戻る
+		mScene = ETITLE;
+	}
+	color[0] = color[1] = color[2] = 0.0f;
+	color[3] = 0.0f + 0.025f*isBlackOutTime;
+	//color[3] = 0.5f;
+	glColor4fv(color);
+	CRectangle::Render(400, 300, 400, 300);
+	color[0] = color[1] = color[2] = color[3] = 1.0f;
+	glColor4fv(color);
 }
 
 //次のシーンの取得

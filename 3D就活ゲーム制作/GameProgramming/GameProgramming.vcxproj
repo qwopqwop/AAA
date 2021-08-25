@@ -114,6 +114,7 @@
     <ClCompile Include="CRaceCourceD.cpp" />
     <ClCompile Include="CRaceCourceE.cpp" />
     <ClCompile Include="CRaceCourceF.cpp" />
+    <ClCompile Include="CRectangle.cpp" />
     <ClCompile Include="CRenderTexture.cpp" />
     <ClCompile Include="CRigidObj.cpp" />
     <ClCompile Include="CRoadManager.cpp" />
@@ -163,6 +164,7 @@
     <ClInclude Include="CRaceCourceD.h" />
     <ClInclude Include="CRaceCourceE.h" />
     <ClInclude Include="CRaceCourceF.h" />
+    <ClInclude Include="CRectangle.h" />
     <ClInclude Include="CRenderTexture.h" />
     <ClInclude Include="CRigidObj.h" />
     <ClInclude Include="CRoadManager.h" />

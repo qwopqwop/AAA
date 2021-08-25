@@ -33,7 +33,11 @@ public:
 	void RenderMiniMap();
 	//バックミラーの描画
 	void RenderBackMirror();
-	
+	//フェードインしてゲーム画面に突入する
+	void FadeIn();
+	//他シーンに行く際の演出・処理
+	void SceneChange();
+
 	//影の描画
 	void RenderShadow();
 	GLuint mDepthTextureID;
@@ -70,6 +74,7 @@ public:
 	CCameraPos *mCam;
 
 	CSound BGM;
+	CSound JingleOpening;
 	CSound SoundCountDown;
 	CSound SoundStart;
 	CSound SoundGoal;
@@ -168,5 +173,11 @@ public:
 	CCharacter *mCarShadow[ENEMYS_AMOUNT+1];
 	bool isEnableShadow_Cource;
 	bool isEnableShadow_Car;
+
+	bool isFadeIn,isFadeOut;
+	int isBlackOutTime;
+
+	bool isOpening;
+	int mTime_Opening;	
 };
 #endif
