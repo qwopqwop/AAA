@@ -27,6 +27,9 @@ public:
 
 	CVector mVPoint;
 	float mVCamY;//ƒJƒƒ‰‚Ì•ûŒü
+
+private:
+	float mZoom_distance;
 };
 
 

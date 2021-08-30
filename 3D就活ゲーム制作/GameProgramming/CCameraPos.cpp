@@ -21,7 +21,8 @@ CCameraPos *CCameraPos::mpCamera = 0;
 #define DECELERATE 0.1f //車の減速する量
 #define FIX_ANGLE_VALUE 1.0f //角度が0度に向けて調整される量(主にX・Z用)
 #define JUMPER01_POWER 3.0f;//ジャンプ台1によるジャンプの強さ
-
+#define ZOOMSPEED 3.0f //レースOPでカメラがズームする速度
+#define ZOOM_SPENDTIME 5.0f*60 //OPでズーム演出にかける時間 
 
 CCameraPos::CCameraPos()
 :mColCam(this, CVector(0.0f, 0.0f, 0.0f), CVector(0.0f, 0.0f, 0.0f), CVector(1.0f, 1.0f, 1.0f), 10.0f * 3)
@@ -41,6 +42,7 @@ CCameraPos::CCameraPos()
 	mRotation = CPlayer::mpPlayer->mRotation;
 	CCharacter::Update();
 	mVCamY = 0;
+	mZoom_distance = ZOOMSPEED * ZOOM_SPENDTIME;
 }
 
 void CCameraPos::Update(){	
@@ -78,9 +80,20 @@ void CCameraPos::Update(){
 	mPosition = CVector(0.0f, 0.0f, mCameraSpeed) * mMatrixRotate * mMatrixTranslate;
 	CCharacter::Update();
 
+	if (mZoom_distance < ZOOMSPEED && mZoom_distance > -ZOOMSPEED){
+		mZoom_distance = 0.0f;
+	}
+	if (mZoom_distance > 0.0f){
+		mZoom_distance -= ZOOMSPEED;
+	}
+	else if (mZoom_distance < 0.0f){
+		mZoom_distance += ZOOMSPEED;
+	}	
+
 	//カメラとプレイヤーの距離を一定にする
-	dir = (mPosition - CPlayer::mpPlayer->mPosition).Normalize() * CAMERA_DISTANCE;
+	dir = (mPosition - CPlayer::mpPlayer->mPosition).Normalize() * (CAMERA_DISTANCE + mZoom_distance);
 	mPosition = CPlayer::mpPlayer->mPosition + dir;
+	
 	CCharacter::Update();
 
 	//プレイヤーでリスポーンフラグが建った時の処理
