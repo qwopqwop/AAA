@@ -21,8 +21,8 @@ CCameraPos *CCameraPos::mpCamera = 0;
 #define DECELERATE 0.1f //車の減速する量
 #define FIX_ANGLE_VALUE 1.0f //角度が0度に向けて調整される量(主にX・Z用)
 #define JUMPER01_POWER 3.0f;//ジャンプ台1によるジャンプの強さ
-#define ZOOMSPEED 3.0f //レースOPでカメラがズームする速度
-#define ZOOM_SPENDTIME 5.0f*60 //OPでズーム演出にかける時間 
+#define ZOOMSPEED 4.0f //レースOPでカメラがズームする速度
+#define ZOOM_SPENDTIME 4.0f*60 //OPでズーム演出にかける時間 
 
 CCameraPos::CCameraPos()
 :mColCam(this, CVector(0.0f, 0.0f, 0.0f), CVector(0.0f, 0.0f, 0.0f), CVector(1.0f, 1.0f, 1.0f), 10.0f * 3)

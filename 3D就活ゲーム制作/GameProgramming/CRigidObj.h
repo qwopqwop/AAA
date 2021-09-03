@@ -6,6 +6,13 @@
 #include "CSound.h"
 
 class CRigidObj :public CCharacter{
+private:
+	//プレイヤーの体の当たり判定
+	CCollider mColBody;
+	CCollider mColBody2nd;
+	//ジャンプ速度の変数
+	float mVelocity;
+	int mJumpPrio;
 public:
 	static CRigidObj*mpRigObj;
 	
@@ -15,23 +22,11 @@ public:
 	//コンストラクタで初期設定
 	CRigidObj(CModel*model, const CVector &position, const CVector &rotation, const CVector &scale);
 	~CRigidObj();
-	////デフォルトコンストラクタ
-	//CRigidObj();
 
 	//更新
-	void Update();
-
-	//プレイヤーの体の当たり判定
-	CCollider mColBody;
-	CCollider mColBody2nd;
-
+	void Update();	
 	//衝突処理
 	void Collision(CCollider *mc, CCollider *yc);
-
-	//ジャンプ速度の変数
-	float mVelocity;
-	int mJumpPrio;
-	
 	//コライダの更新
 	void TaskCollision();
 };

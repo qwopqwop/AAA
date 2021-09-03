@@ -27,7 +27,20 @@ public:
 	void RenderMiniMap();
 	//バックミラーの描画
 	void RenderBackMirror();
+	
+private:
+	float mCamY;//プレイヤーの周りを回転(水平方向に)
 
+	int mCamPoV;
+
+	int mTextBlinkTime;
+
+	bool isPause;
+
+	bool mPutCol;//当たり判定の描画のON・OFF
+	bool isRendPoint;//中間地点がミニマップに表示されるか
+	
+protected:
 	CModel mRover;
 	CModel mCarRed;
 	CModel mCarBlue;
@@ -62,17 +75,6 @@ public:
 	CSound SoundCountDown;
 	CSound SoundStart;
 	CSound SoundGoal;
-
-	float mCamY;//プレイヤーの周りを回転(水平方向に)
-
-	int mCamPoV;
-
-	int mTextBlinkTime;
-
-	bool isPause;
-
-	bool mPutCol;//当たり判定の描画のON・OFF
-	bool isRendPoint;//中間地点がミニマップに表示されるか
 
 	//コース2,3のモデル
 	CModel mCource02Road;
@@ -121,6 +123,7 @@ public:
 	//標識
 	CModel mSign_Left;
 	CModel mSign_Right;
+
 };
 
 

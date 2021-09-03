@@ -451,7 +451,7 @@ void CEnemy::Update(){
 	//車がバックしている時
 	else if (mCarSpeed < 0.0f){
 		if (isSoundEngine == false){
-			//バックは違う音を鳴らす予定
+			//現状では相手のエンジン音は鳴らない
 			//SoundEngine.Repeat();
 			isSoundEngine = true;
 		}
@@ -460,13 +460,11 @@ void CEnemy::Update(){
 	mPosition = CVector(mADMoveX, 0.0f, mWSMoveZ + mCarSpeed) * mMatrixRotate * mMatrixTranslate;
 	CCharacter::Update();
 	//常に地面に対して垂直に落下
-	//mPosition = CVector(0.0f, mVelocityJump, 0.0f) * mMatrix;//できてない
-	mPosition = CVector(0.0f, mVelocityJump*2.0f, 0.0f) * //mMatrixScale * 
+	mPosition = CVector(0.0f, mVelocityJump*2.0f, 0.0f) *
 		CMatrix().RotateZ(0) *
 		CMatrix().RotateX(0) *
 		CMatrix().RotateY(0)
-		*mMatrixTranslate;//できてる？
-	//mMatrix = mMatrixScale * mMatrixRotate * mMatrixTranslate;
+		*mMatrixTranslate;
 
 	//コースアウトした時、もしくは敵が壁等に引っかかり進めなくなっている時
 	if (mPosition.mY < -700.0f || mPointTime > RESTART_TIME){

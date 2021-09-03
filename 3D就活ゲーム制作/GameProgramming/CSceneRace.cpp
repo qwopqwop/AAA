@@ -283,8 +283,6 @@ void CSceneRace::Init() {
 	////BGMはループ
 	//BGM.Repeat();
 
-	JingleOpening.Play();
-
 	mRenderTexture.Init();
 	
 
@@ -523,6 +521,10 @@ void CSceneRace::Update() {
 	CText::DrawString(mbestti, 20, 580, 10, 12);
 	
 	if (isOpening){
+		//OPジングル再生
+		if (mTime_Opening == 0){
+			JingleOpening.Play();
+		}		
 		mTime_Opening++;
 		if (mTime_Opening > OPENINGTIME)
 			isOpening = false;

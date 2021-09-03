@@ -20,28 +20,58 @@
 ゲームのシーン
 */
 class CSceneRace : public CScene {
-public:
-	//次のシーンの取得
-	EScene GetNextScene();
+private:
+	static bool isEnableShadow;//影の描画の有無
+	static bool isEnableMiniMap;//ミニマップ表示のON・OFF
+	static bool isEnableBackMirror;//バックミラー表示のON・OFF
+	static bool isEnableSpeedometer;//速度計のON・OFF
 
-	~CSceneRace();
-	//初期化処理のオーバーライド
-	void Init();
-	//更新処理のオーバーライド
-	void Update();
-	//ミニマップ関連の処理
-	void RenderMiniMap();
-	//バックミラーの描画
-	void RenderBackMirror();
-	//フェードインしてゲーム画面に突入する
-	void FadeIn();
-	//他シーンに行く際の演出・処理
-	void SceneChange();
-
-	//影の描画
-	void RenderShadow();
 	GLuint mDepthTextureID;
 
+	float mCamY;//プレイヤーの周りを回転(水平方向に)	
+
+	//スタート前のカウントダウン
+	int mFrame;
+	int mCountDown;
+	//コースタイム、ラップ関連
+	bool isStartRace, isGoal;
+	int mTime, mTime_Output;
+
+
+	static int mBestTime;
+	int mLap, mMaxLap;
+	bool isNewRecord;
+
+	int mCamPoV;
+
+	int mTextBlinkTime;
+
+	bool isPause;
+	int mPause_SelectCarsol;
+	int mPause_OptionCarsol;
+	enum EPauseScreen{
+		EPAUSE,//ポーズ画面(選択肢がresume,option,quit)
+		EOPTION,//オプション画面(設定を変更できる画面)
+	};
+	EPauseScreen mPauseScreen;
+
+	int mRanking;
+	int mAfterGoalTime;
+
+	//デバッグコマンド用の変数
+	bool mPutCol;//当たり判定の描画のON・OFF
+	bool isRendPoint;//中間地点がミニマップに表示されるか
+
+	bool isEnableShadow_Cource;
+	bool isEnableShadow_Car;
+
+	bool isFadeIn, isFadeOut;
+	int isBlackOutTime;
+
+	bool isOpening;
+	int mTime_Opening;
+
+protected:
 	CModel mRover;
 	CModel mCarRed;
 	CModel mCarBlue;
@@ -82,44 +112,7 @@ public:
 	CSound SoundDecide;
 	CSound SoundPauseOn;
 	CSound SoundPauseOff;
-	
-	float mCamY;//プレイヤーの周りを回転(水平方向に)	
 
-	//スタート前のカウントダウン
-	int mFrame;
-	int mCountDown;
-	//コースタイム、ラップ関連
-	bool isStartRace, isGoal;
-	int mTime, mTime_Output;
-	static int mBestTime;
-	int mLap, mMaxLap;
-	bool isNewRecord;
-	static int mRecord_A, mRecord_B, mRecord_C, mRecord_D, mRecord_E, mRecord_F;
-
-	int mCamPoV;
-
-	int mTextBlinkTime;
-		
-	bool isPause;
-	int mPause_SelectCarsol;
-	int mPause_OptionCarsol;
-	enum EPauseScreen{
-		EPAUSE,//ポーズ画面(選択肢がresume,option,quit)
-		EOPTION,//オプション画面(設定を変更できる画面)
-	};
-	EPauseScreen mPauseScreen;
-
-	int mRanking;
-	int mAfterGoalTime;
-
-	//デバッグコマンド用の変数
-	bool mPutCol;//当たり判定の描画のON・OFF
-	bool isRendPoint;//中間地点がミニマップに表示されるか
-
-	static bool isEnableShadow;//影の描画の有無
-	static bool isEnableMiniMap;//ミニマップ表示のON・OFF
-	static bool isEnableBackMirror;//バックミラー表示のON・OFF
-	static bool isEnableSpeedometer;//速度計のON・OFF
 
 	//コース2,3のモデル
 	CModel mCource02Road;
@@ -170,14 +163,31 @@ public:
 	CModel mSign_Right;
 
 	CObj *mpGrounds[GROUND_AMOUNT];
-	CCharacter *mCarShadow[ENEMYS_AMOUNT+1];
-	bool isEnableShadow_Cource;
-	bool isEnableShadow_Car;
+	CCharacter *mCarShadow[ENEMYS_AMOUNT + 1];
+public:
+	//次のシーンの取得
+	EScene GetNextScene();
 
-	bool isFadeIn,isFadeOut;
-	int isBlackOutTime;
+	~CSceneRace();
+	//初期化処理のオーバーライド
+	void Init();
+	//更新処理のオーバーライド
+	void Update();
+	//ミニマップ関連の処理
+	void RenderMiniMap();
+	//バックミラーの描画
+	void RenderBackMirror();
+	//影の描画
+	void RenderShadow();
+	//フェードインしてゲーム画面に突入する
+	void FadeIn();
+	//他シーンに行く際の演出・処理
+	void SceneChange();
+	
+	static int mRecord_A, mRecord_B, mRecord_C, mRecord_D, mRecord_E, mRecord_F;	
+	
 
-	bool isOpening;
-	int mTime_Opening;	
+
+
 };
 #endif
