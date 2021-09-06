@@ -16,7 +16,7 @@ private:
 	int mPrevVariable2;
 	bool mStart;
 	int mStartWaitTime;
-	int mPrevDifficulty;
+	int mPrevCPU_Level;
 	int mSelectScene_Level;//選択画面の何段階目か
 public:
 	//初期化処理
@@ -36,8 +36,8 @@ public:
 	CSound SoundDecide;
 	CSound SoundCancel;
 	
-	static int mMode;//コースNo.
-	static int mDifficulty;//CPUの強さ	
+	static int mCource_Number;//コースNo.
+	static int mCPU_Level;//CPUの強さ	
 };
 
 #endif

@@ -86,7 +86,6 @@ void CRaceCourceE::Init(){
 	//カメラの生成
 	mCamRange = new CCameraRange();
 	mCam = new CCameraPos();
-	//mCam->mpModel = &mCarYellow;
 
 	//コース全体のサイズ感を設定
 	float mtsize = 35.0f;

@@ -6,8 +6,8 @@
 #define WAITTIME_NOWLOADING  110 //WAITTIME_STARTLOAD - 10 //「NOW LOADING」が表示されるまでの時間
 #define WAITTIME_STARTFADEOUT  WAITTIME_STARTLOAD - 90 //WAITTIME_STARTLOAD - 10 //「NOW LOADING」が表示されるまでの時間
 
-int CSceneTitle::mMode = 1; //コースやLap数の初期設定
-int CSceneTitle::mDifficulty = 2; //敵AIの強さの初期設定　　1:EASY　2:NORMAL　3:HARD
+int CSceneTitle::mCource_Number = 1; //コースやLap数の初期設定
+int CSceneTitle::mCPU_Level = 2; //敵AIの強さの初期設定　　1:EASY　2:NORMAL　3:HARD
 
 //次のシーンの取得
 CScene::EScene CSceneTitle::GetNextScene(){
@@ -32,7 +32,7 @@ void CSceneTitle::Init() {
 	mScene = ETITLE;
 
 	mSelectScene_Level = 1;
-	mPrevDifficulty = mDifficulty;
+	mPrevCPU_Level = mCPU_Level;
 	mVariable1 = 0;
 	mPrevVariable1 = mVariable1;
 	mVariable2 = 0;
@@ -64,15 +64,15 @@ void CSceneTitle::Update() {
 		CText::DrawString("]", 262 + mVariable2 * 250, 284 + mVariable1 * 50, 20, 30, 2);
 	}
 	if (mSelectScene_Level == 2 && mStart == false){
-		if (mDifficulty == 1){
+		if (mCPU_Level == 1){
 			CText::DrawString("[", 190, 102, 16, 24, 2);
 			CText::DrawString("]", 278, 102, 16, 24, 2);
 		}
-		if (mDifficulty == 2){
+		if (mCPU_Level == 2){
 			CText::DrawString("[", 338, 102, 16, 24, 2);
 			CText::DrawString("]", 474, 102, 16, 24, 2);
 		}
-		if (mDifficulty == 3){
+		if (mCPU_Level == 3){
 			CText::DrawString("[", 534, 102, 16, 24, 2);
 			CText::DrawString("]", 622, 102, 16, 24, 2);
 		}
@@ -113,14 +113,14 @@ void CSceneTitle::Update() {
 
 
 	/*難易度選択(敵AIの強さ)*/
-	if (mDifficulty == 1 && mSelectScene_Level == 2){//難易度:EASY
+	if (mCPU_Level == 1 && mSelectScene_Level == 2){//難易度:EASY
 		c[0] = c[1] = c[2] = 1.0f; c[3] = 1.0f;
 	}
 	else{
 		c[0] = c[1] = c[2] = 0.5f; c[3] = 1.0f;
 	}
 	//選択時に点滅する
-	if (mStart && mDifficulty == 1){
+	if (mStart && mCPU_Level == 1){
 		if (mStartWaitTime > 20){
 			c[0] = c[1] = c[2] = 1.0f;
 		}
@@ -131,14 +131,14 @@ void CSceneTitle::Update() {
 	glColor4fv(c);
 	CText::DrawString("EASY", 200, 100, 12, 12);
 
-	if (mDifficulty == 2 && mSelectScene_Level == 2){//難易度:NORMAL
+	if (mCPU_Level == 2 && mSelectScene_Level == 2){//難易度:NORMAL
 		c[0] = c[1] = c[2] = 1.0f; c[3] = 1.0f;
 	}
 	else{
 		c[0] = c[1] = c[2] = 0.5f; c[3] = 1.0f;
 	}
 	//選択時に点滅する
-	if (mStart && mDifficulty == 2){
+	if (mStart && mCPU_Level == 2){
 		if (mStartWaitTime > 20){
 			c[0] = c[1] = c[2] = 1.0f;
 		}
@@ -149,14 +149,14 @@ void CSceneTitle::Update() {
 	glColor4fv(c);
 	CText::DrawString("NORMAL", 347, 100, 12, 12);
 
-	if (mDifficulty == 3 && mSelectScene_Level == 2){//難易度:HARD
+	if (mCPU_Level == 3 && mSelectScene_Level == 2){//難易度:HARD
 		c[0] = c[1] = c[2] = 1.0f; c[3] = 1.0f;
 	}
 	else{
 		c[0] = c[1] = c[2] = 0.5f; c[3] = 1.0f;
 	}
 	//選択時に点滅する
-	if (mStart && mDifficulty == 3){
+	if (mStart && mCPU_Level == 3){
 		if (mStartWaitTime > 20){
 			c[0] = c[1] = c[2] = 1.0f;
 		}
@@ -227,31 +227,31 @@ void CSceneTitle::Update() {
 	glColor4fv(c);
 
 	char mrecord[70];// :も含めた最大文字数の設定
-	if (mMode == 1){
+	if (mCource_Number == 1){
 		sprintf(mrecord, "BEST:%02d:%02d:%02d", CSceneRace::mRecord_A / 10000 % 100, CSceneRace::mRecord_A / 100 % 100, CSceneRace::mRecord_A % 100);
 		CText::DrawString(mrecord, 20, 580, 10, 12);
 	}
-	else if (mMode == 2){
+	else if (mCource_Number == 2){
 		sprintf(mrecord, "BEST:%02d:%02d:%02d", CSceneRace::mRecord_B / 10000 % 100, CSceneRace::mRecord_B / 100 % 100, CSceneRace::mRecord_B % 100);
 		CText::DrawString(mrecord, 20, 580, 10, 12);
 	}
-	else if (mMode == 3){
+	else if (mCource_Number == 3){
 		sprintf(mrecord, "BEST:%02d:%02d:%02d", CSceneRace::mRecord_C / 10000 % 100, CSceneRace::mRecord_C / 100 % 100, CSceneRace::mRecord_C % 100);
 		CText::DrawString(mrecord, 20, 580, 10, 12);
 	}
-	else if (mMode == 4){
+	else if (mCource_Number == 4){
 		sprintf(mrecord, "BEST:%02d:%02d:%02d", CSceneRace::mRecord_D / 10000 % 100, CSceneRace::mRecord_D / 100 % 100, CSceneRace::mRecord_D % 100);
 		CText::DrawString(mrecord, 20, 580, 10, 12);
 	}
-	else if (mMode == 5){
+	else if (mCource_Number == 5){
 		sprintf(mrecord, "BEST:%02d:%02d:%02d", CSceneRace::mRecord_E / 10000 % 100, CSceneRace::mRecord_E / 100 % 100, CSceneRace::mRecord_E % 100);
 		CText::DrawString(mrecord, 20, 580, 10, 12);
 	}
-	else if (mMode == 6){
+	else if (mCource_Number == 6){
 		sprintf(mrecord, "BEST:%02d:%02d:%02d", CSceneRace::mRecord_F / 10000 % 100, CSceneRace::mRecord_F / 100 % 100, CSceneRace::mRecord_F % 100);
 		CText::DrawString(mrecord, 20, 580, 10, 12);
 	}
-	else if (mMode == 127){
+	else if (mCource_Number == 127){
 		sprintf(mrecord, "EDIT");
 		CText::DrawString(mrecord, 20, 580, 10, 12);
 	}
@@ -339,34 +339,34 @@ void CSceneTitle::Update() {
 		}
 		else{
 			//次のシーンはレース画面
-			printf("選択したコース番号:No.%d  ", mMode);
-			printf("選択したCPUのレベル:%d\n", mDifficulty);
+			printf("選択したコース番号:No.%d  ", mCource_Number);
+			printf("選択したCPUのレベル:%d\n", mCPU_Level);
 			//選択したコースに対応するシーンへ移行			
-			if (mMode == 1){
+			if (mCource_Number == 1){
 				//次のシーンはコース1
 				mScene = ERACE1;
 			}
-			else if (mMode == 2){
+			else if (mCource_Number == 2){
 				//次のシーンはコース2
 				mScene = ERACE2;
 			}
-			else if (mMode == 3){
+			else if (mCource_Number == 3){
 				//次のシーンはコース3
 				mScene = ERACE3;
 			}
-			else if (mMode == 4){
+			else if (mCource_Number == 4){
 				//次のシーンはコース3
 				mScene = ERACE4;
 			}
-			else if (mMode == 5){
+			else if (mCource_Number == 5){
 				//次のシーンはコース3
 				mScene = ERACE5;
 			}
-			else if (mMode == 6){
+			else if (mCource_Number == 6){
 				//次のシーンはコース3
 				mScene = ERACE6;
 			}
-			else if (mMode == 127){
+			else if (mCource_Number == 127){
 				//コースエディタに移行
 				mScene = EEDIT;
 			}
@@ -406,19 +406,19 @@ void CSceneTitle::Update() {
 		//選択画面2：敵AIの強さの設定
 		else if (mSelectScene_Level == 2){
 			if (CKey::Once(VK_LEFT)){
-				if (mDifficulty > 1){
-					mDifficulty--;
+				if (mCPU_Level > 1){
+					mCPU_Level--;
 				}
 				else{
-					mDifficulty = 3;
+					mCPU_Level = 3;
 				}
 			}
 			if (CKey::Once(VK_RIGHT)){
-				if (mDifficulty < 3){
-					mDifficulty++;
+				if (mCPU_Level < 3){
+					mCPU_Level++;
 				}
 				else{
-					mDifficulty = 1;
+					mCPU_Level = 1;
 				}
 			}
 			//Escキーか、BackSpaceキーで、前の選択画面に戻る
@@ -429,30 +429,30 @@ void CSceneTitle::Update() {
 		}
 	}
 	if (mVariable1 == 0 && mVariable2 == 0){
-		mMode = 1;
+		mCource_Number = 1;
 	}
 	else if (mVariable1 == 0 && mVariable2 == 1){
-		mMode = 2;
+		mCource_Number = 2;
 	}
 	else if (mVariable1 == 0 && mVariable2 == 2){
-		mMode = 5;
+		mCource_Number = 5;
 	}
 	else if (mVariable1 == -1 && mVariable2 == 0){
-		mMode = 127;//EDITORのNo.
+		mCource_Number = 127;//EDITORのNo.
 	}
 	else if (mVariable1 == -1 && mVariable2 == 1){
-		mMode = 3;
+		mCource_Number = 3;
 	}
 	else if (mVariable1 == -1 && mVariable2 == 2){
-		mMode = 6;
+		mCource_Number = 6;
 	}
 
 	//カーソルの場所が1f前と変わった瞬間
-	if (mPrevVariable1 != mVariable1 || mPrevVariable2 != mVariable2 || mPrevDifficulty != mDifficulty){
+	if (mPrevVariable1 != mVariable1 || mPrevVariable2 != mVariable2 || mPrevCPU_Level != mCPU_Level){
 		SoundMoveCarsol.Play();
 		mPrevVariable1 = mVariable1;
 		mPrevVariable2 = mVariable2;
-		mPrevDifficulty = mDifficulty;
+		mPrevCPU_Level = mCPU_Level;
 	}
 
 }

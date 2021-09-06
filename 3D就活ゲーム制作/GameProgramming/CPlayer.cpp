@@ -74,32 +74,32 @@ CPlayer::CPlayer()
 	mTag = EPLAYER;
 	mJumpPrio = 0;
 
-	if (CSceneTitle::mMode == 3){
+	if (CSceneTitle::mCource_Number == 3){
 		//スタート地点の座標を設定;
 		mStartPoint[0] = 0.0f;  mStartPoint[1] = -13.538f;  mStartPoint[2] = 80.0f;
 		mStartRotation = 90.0f;
 		mRotation.mY = mStartRotation;
 	}
-	else if (CSceneTitle::mMode == 2){
+	else if (CSceneTitle::mCource_Number == 2){
 		//スタート地点の座標を設定;
 		mStartPoint[0] = 2222.0f;  mStartPoint[1] = -13.538f;  mStartPoint[2] = -2510.0f;
 		mStartRotation = 0.0f;
 		mRotation.mY = mStartRotation;
 	}
-	else if (CSceneTitle::mMode == 4){
+	else if (CSceneTitle::mCource_Number == 4){
 		//スタート地点の座標を設定;
 		mStartPoint[0] = 0.0f;  mStartPoint[1] = 0.0f;  mStartPoint[2] = 0.0f;
 		//mStartPoint[0] = 450.0f;  mStartPoint[1] = -13.538f;  mStartPoint[2] = -50.0f;
 		mStartRotation = 180.0f;
 		mRotation.mY = mStartRotation;
 	}
-	else if (CSceneTitle::mMode == 5){
+	else if (CSceneTitle::mCource_Number == 5){
 		//スタート地点の座標を設定;
 		mStartPoint[0] = -3755.5f;  mStartPoint[1] = 13.5f;  mStartPoint[2] = 16060.5f;
 		mStartRotation = -145.0f;
 		mRotation.mY = mStartRotation;		
 	}
-	else if (CSceneTitle::mMode == 127){
+	else if (CSceneTitle::mCource_Number == 127){
 		//スタート地点の座標を設定;
 		mStartPoint[0] = 0.0f;  mStartPoint[1] = 0.0f;  mStartPoint[2] = 0.0f;
 		//mStartPoint[0] = 450.0f;  mStartPoint[1] = -13.538f;  mStartPoint[2] = -50.0f;
@@ -337,7 +337,7 @@ void CPlayer::Update(){
 		mVelocityJump = 0.0f;
 		//車の速度を0に
 		mCarSpeed = 0.0f;
-		if (CSceneTitle::mMode == 2){
+		if (CSceneTitle::mCource_Number == 2){
 			if (mChecks == 0){
 				//スタート時の位置、方向に戻される
 				mPosition = CVector(mStartPoint[0], mStartPoint[1], mStartPoint[2]);
@@ -356,7 +356,7 @@ void CPlayer::Update(){
 				mStartRotation = -200.0f;
 			}
 		}
-		else if (CSceneTitle::mMode == 3){
+		else if (CSceneTitle::mCource_Number == 3){
 			if (mChecks == 0){
 				//スタート時の位置、方向に戻される
 				mPosition = CVector(mStartPoint[0], mStartPoint[1], mStartPoint[2]);
@@ -375,7 +375,7 @@ void CPlayer::Update(){
 				mStartRotation = -583.5f;
 			}
 		}
-		else if (CSceneTitle::mMode == 5){
+		else if (CSceneTitle::mCource_Number == 5){
 			if (mChecks == 0){
 				//スタート時の位置、方向に戻される
 				mPosition = CVector(mStartPoint[0], mStartPoint[1], mStartPoint[2]);
@@ -394,7 +394,7 @@ void CPlayer::Update(){
 				mStartRotation = -9.5f;
 			}
 		}
-		else if (CSceneTitle::mMode == 127){
+		else if (CSceneTitle::mCource_Number == 127){
 			if (mChecks == 0){
 				//スタート時の位置、方向に戻される
 				mPosition = CVector(mStartPoint[0], mStartPoint[1], mStartPoint[2]);

@@ -5,6 +5,9 @@
 #include "CCollisionManager.h"
 
 class CCameraPos :public CCharacter{
+private:
+	float mZoom_distance;
+
 public:
 	static CCameraPos*mpCamera;
 	//デフォルトコンストラクタ
@@ -28,8 +31,6 @@ public:
 	CVector mVPoint;
 	float mVCamY;//カメラの方向
 
-private:
-	float mZoom_distance;
 };
 
 
