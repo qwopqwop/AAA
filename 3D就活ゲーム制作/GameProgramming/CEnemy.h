@@ -86,7 +86,7 @@ public:
 	int mChecks;
 	bool CanMove;//プレイヤーが操作可能か否か(カウントダウン前・ゴール後などは否)
 
-	int PointNumber(CPoint *current_point);
+	//int PointNumber(CPoint *current_point);
 
 	static int mPointSize;
 
@@ -94,10 +94,8 @@ public:
 	void TaskCollision();
 
 	//誘導ポイント//中心、全エネミー共通のポイント
-	static CPoint *mPointss[54];
-
 	static CPoint *mPoint;
-	static CPoint *mPoint2;
+	/*static CPoint *mPoint2;
 	static CPoint *mPoint3;
 	static CPoint *mPoint4;
 	static CPoint *mPoint5;
@@ -150,6 +148,8 @@ public:
 	static CPoint *mPoint52;
 	static CPoint *mPoint53;
 	static CPoint *mPoint54;
+	static CPoint *mPointss[54];*/
+
 	CPoint *mpPoint;//目指すポイント
 	
 	

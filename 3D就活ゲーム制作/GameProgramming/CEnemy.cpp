@@ -719,293 +719,294 @@ void CEnemy::Collision(CCollider *mc, CCollider *yc){
 									r = (mc->mRadius + yc->mRadius) * 0.2f;
 									gap = (rand() % (r * 2) - r);
 								}
-
-								//コース5は分散無しの地点あり
-								if (CSceneTitle::mCource_Number == 5){
-									SetNextPoint(mpPoint, gap, false);
-								}
-								else if (CSceneTitle::mCource_Number == 1){
-									SetNextPoint(mpPoint, gap, false);
-								}
-								else if (CSceneTitle::mCource_Number == 2){
-									SetNextPoint(mpPoint, gap, false);
-								}
-								else{
-									SetNextPoint(mpPoint, gap, false);
-									////次のポイントのポインタを設定
-									//if (mpPoint == mPoint){
-									//	mVPoint = mPoint2->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-									//	mpPoint = mPoint2;
-									//}
-									//else if (mpPoint == mPoint2){
-									//	mVPoint = mPoint3->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-									//	mpPoint = mPoint3;
-									//}
-									//else if (mpPoint == mPoint3){
-									//	mVPoint = mPoint4->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-									//	mpPoint = mPoint4;
-									//}
-									//else if (mpPoint == mPoint4){
-									//	mVPoint = mPoint5->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-									//	mpPoint = mPoint5;
-									//}
-									//else if (mpPoint == mPoint5){
-									//	mVPoint = mPoint6->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-									//	mpPoint = mPoint6;
-									//}
-									//else if (mpPoint == mPoint6){
-									//	mVPoint = mPoint7->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-									//	mpPoint = mPoint7;
-									//}
-									//else if (mpPoint == mPoint7){
-									//	mVPoint = mPoint8->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-									//	mpPoint = mPoint8;
-									//}
-									//else if (mpPoint == mPoint8){
-									//	mVPoint = mPoint9->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-									//	mpPoint = mPoint9;
-									//}
-									//else if (mpPoint == mPoint9){
-									//	mVPoint = mPoint10->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-									//	mpPoint = mPoint10;
-									//}
-									//else if (mpPoint == mPoint10){
-									//	mVPoint = mPoint11->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-									//	mpPoint = mPoint11;
-									//}
-									//else if (mpPoint == mPoint11){
-									//	mVPoint = mPoint12->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-									//	mpPoint = mPoint12;
-									//}
-									//else if (mpPoint == mPoint12){
-									//	//コース2or3を走行中かで分岐する
-									//	if (CSceneTitle::mCource_Number == 2 || CSceneTitle::mCource_Number == 3 || CSceneTitle::mCource_Number == 5){
-									//		mVPoint = mPoint13->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-									//		mpPoint = mPoint13;
-									//	}
-									//	else{
-									//		mVPoint = mPoint->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-									//		mpPoint = mPoint;//ポイント1に戻ってループする
-									//	}
-									//}
-									////コース2
-									//else if (CSceneTitle::mCource_Number == 2){
-									//	if (mpPoint == mPoint13){
-									//		mVPoint = mPoint14->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-									//		mpPoint = mPoint14;
-									//	}
-									//	else if (mpPoint == mPoint14){
-									//		mVPoint = mPoint15->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-									//		mpPoint = mPoint15;
-									//	}
-									//	else if (mpPoint == mPoint15){
-									//		mVPoint = mPoint16->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-									//		mpPoint = mPoint16;
-									//	}
-									//	else if (mpPoint == mPoint16){
-									//		mVPoint = mPoint17->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-									//		mpPoint = mPoint17;
-									//	}
-									//	else if (mpPoint == mPoint17){
-									//		mVPoint = mPoint->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-									//		mpPoint = mPoint;
-									//	}
-									//}
-									////コース3ではポインタの数が拡張される
-									//else if (CSceneTitle::mCource_Number == 3){
-									//	if (mpPoint == mPoint13){
-									//		mVPoint = mPoint14->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-									//		mpPoint = mPoint14;
-									//	}
-									//	else if (mpPoint == mPoint14){
-									//		mVPoint = mPoint15->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-									//		mpPoint = mPoint15;
-									//	}
-									//	else if (mpPoint == mPoint15){
-									//		mVPoint = mPoint16->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-									//		mpPoint = mPoint16;
-									//	}
-									//	else if (mpPoint == mPoint16){
-									//		mVPoint = mPoint17->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-									//		mpPoint = mPoint17;
-									//	}
-									//	else if (mpPoint == mPoint17){
-									//		mVPoint = mPoint18->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-									//		mpPoint = mPoint18;
-									//	}
-									//	else if (mpPoint == mPoint18){
-									//		mVPoint = mPoint19->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-									//		mpPoint = mPoint19;
-									//	}
-									//	else if (mpPoint == mPoint19){
-									//		mVPoint = mPoint20->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-									//		mpPoint = mPoint20;
-									//	}
-									//	else if (mpPoint == mPoint20){
-									//		mVPoint = mPoint21->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-									//		mpPoint = mPoint21;
-									//	}
-									//	else if (mpPoint == mPoint21){
-									//		mVPoint = mPoint22->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-									//		mpPoint = mPoint22;
-									//	}
-									//	else if (mpPoint == mPoint22){
-									//		mVPoint = mPoint23->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-									//		mpPoint = mPoint23;
-									//	}
-									//	else if (mpPoint == mPoint23){
-									//		mVPoint = mPoint->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-									//		mpPoint = mPoint;
-									//	}
-									//}
-									////コース5ではポインタの数が拡張される
-									//else if (CSceneTitle::mCource_Number == 5){
-									//	if (mpPoint == mPoint13){
-									//		mVPoint = mPoint14->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-									//		mpPoint = mPoint14;
-									//	}
-									//	else if (mpPoint == mPoint14){
-									//		mVPoint = mPoint15->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-									//		mpPoint = mPoint15;
-									//	}
-									//	else if (mpPoint == mPoint15){
-									//		mVPoint = mPoint16->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-									//		mpPoint = mPoint16;
-									//	}
-									//	else if (mpPoint == mPoint16){
-									//		mVPoint = mPoint17->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-									//		mpPoint = mPoint17;
-									//	}
-									//	else if (mpPoint == mPoint17){
-									//		mVPoint = mPoint18->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-									//		mpPoint = mPoint18;
-									//	}
-									//	else if (mpPoint == mPoint18){
-									//		mVPoint = mPoint19->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-									//		mpPoint = mPoint19;
-									//	}
-									//	else if (mpPoint == mPoint19){
-									//		mVPoint = mPoint20->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-									//		mpPoint = mPoint20;
-									//	}
-									//	else if (mpPoint == mPoint20){
-									//		mVPoint = mPoint21->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-									//		mpPoint = mPoint21;
-									//	}
-									//	else if (mpPoint == mPoint21){
-									//		mVPoint = mPoint22->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-									//		mpPoint = mPoint22;
-									//	}
-									//	else if (mpPoint == mPoint22){
-									//		mVPoint = mPoint23->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-									//		mpPoint = mPoint23;
-									//	}
-									//	else if (mpPoint == mPoint23){
-									//		mVPoint = mPoint24->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-									//		mpPoint = mPoint24;
-									//	}
-									//	else if (mpPoint == mPoint24){
-									//		mVPoint = mPoint25->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-									//		mpPoint = mPoint25;
-									//	}
-									//	else if (mpPoint == mPoint25){
-									//		mVPoint = mPoint26->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-									//		mpPoint = mPoint26;
-									//	}
-									//	else if (mpPoint == mPoint26){
-									//		mVPoint = mPoint27->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-									//		mpPoint = mPoint27;
-									//	}
-									//	else if (mpPoint == mPoint27){
-									//		mVPoint = mPoint28->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-									//		mpPoint = mPoint28;
-									//	}
-									//	else if (mpPoint == mPoint28){
-									//		mVPoint = mPoint29->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-									//		mpPoint = mPoint29;
-									//	}
-									//	else if (mpPoint == mPoint29){
-									//		mVPoint = mPoint30->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-									//		mpPoint = mPoint30;
-									//	}
-									//	else if (mpPoint == mPoint30){
-									//		mVPoint = mPoint31->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-									//		mpPoint = mPoint31;
-									//	}
-									//	else if (mpPoint == mPoint31){
-									//		mVPoint = mPoint32->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-									//		mpPoint = mPoint32;
-									//	}
-									//	else if (mpPoint == mPoint32){
-									//		mVPoint = mPoint33->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-									//		mpPoint = mPoint33;
-									//	}
-									//	else if (mpPoint == mPoint33){
-									//		mVPoint = mPoint34->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-									//		mpPoint = mPoint34;
-									//	}
-									//	else if (mpPoint == mPoint34){
-									//		mVPoint = mPoint35->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-									//		mpPoint = mPoint35;
-									//	}
-									//	else if (mpPoint == mPoint35){
-									//		mVPoint = mPoint36->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-									//		mpPoint = mPoint36;
-									//	}
-									//	else if (mpPoint == mPoint36){
-									//		mVPoint = mPoint37->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-									//		mpPoint = mPoint37;
-									//	}
-									//	else if (mpPoint == mPoint37){
-									//		mVPoint = mPoint38->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-									//		mpPoint = mPoint38;
-									//	}
-									//	else if (mpPoint == mPoint38){
-									//		mVPoint = mPoint39->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-									//		mpPoint = mPoint39;
-									//	}
-									//	else if (mpPoint == mPoint39){
-									//		mVPoint = mPoint40->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-									//		mpPoint = mPoint40;
-									//	}
-									//	else if (mpPoint == mPoint40){
-									//		mVPoint = mPoint41->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-									//		mpPoint = mPoint41;
-									//	}
-									//	else if (mpPoint == mPoint41){
-									//		mVPoint = mPoint42->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-									//		mpPoint = mPoint42;
-									//	}
-									//	else if (mpPoint == mPoint42){
-									//		mVPoint = mPoint43->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-									//		mpPoint = mPoint43;
-									//	}
-									//	else if (mpPoint == mPoint43){
-									//		mVPoint = mPoint44->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-									//		mpPoint = mPoint44;
-									//	}
-									//	else if (mpPoint == mPoint44){
-									//		mVPoint = mPoint45->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-									//		mpPoint = mPoint45;
-									//	}
-									//	else if (mpPoint == mPoint45){
-									//		mVPoint = mPoint46->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-									//		mpPoint = mPoint46;
-									//	}
-									//	else if (mpPoint == mPoint46){
-									//		mVPoint = mPoint47->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-									//		mpPoint = mPoint47;
-									//	}
-									//	else if (mpPoint == mPoint47){
-									//		mVPoint = mPoint48->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-									//		mpPoint = mPoint48;
-									//	}
-									//	else if (mpPoint == mPoint48){
-									//		mVPoint = mPoint->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-									//		mpPoint = mPoint;
-									//	}
-									//}
-								}								
+								//次のポイントを設定する
+								SetNextPoint(mpPoint, gap, false);
+								////コース5は分散無しの地点あり
+								//if (CSceneTitle::mCource_Number == 5){
+								//	SetNextPoint(mpPoint, gap, false);
+								//}
+								//else if (CSceneTitle::mCource_Number == 1){
+								//	SetNextPoint(mpPoint, gap, false);
+								//}
+								//else if (CSceneTitle::mCource_Number == 2){
+								//	SetNextPoint(mpPoint, gap, false);
+								//}
+								//else{
+								//	SetNextPoint(mpPoint, gap, false);
+								//	////次のポイントのポインタを設定
+								//	//if (mpPoint == mPoint){
+								//	//	mVPoint = mPoint2->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
+								//	//	mpPoint = mPoint2;
+								//	//}
+								//	//else if (mpPoint == mPoint2){
+								//	//	mVPoint = mPoint3->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
+								//	//	mpPoint = mPoint3;
+								//	//}
+								//	//else if (mpPoint == mPoint3){
+								//	//	mVPoint = mPoint4->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
+								//	//	mpPoint = mPoint4;
+								//	//}
+								//	//else if (mpPoint == mPoint4){
+								//	//	mVPoint = mPoint5->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
+								//	//	mpPoint = mPoint5;
+								//	//}
+								//	//else if (mpPoint == mPoint5){
+								//	//	mVPoint = mPoint6->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
+								//	//	mpPoint = mPoint6;
+								//	//}
+								//	//else if (mpPoint == mPoint6){
+								//	//	mVPoint = mPoint7->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
+								//	//	mpPoint = mPoint7;
+								//	//}
+								//	//else if (mpPoint == mPoint7){
+								//	//	mVPoint = mPoint8->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
+								//	//	mpPoint = mPoint8;
+								//	//}
+								//	//else if (mpPoint == mPoint8){
+								//	//	mVPoint = mPoint9->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
+								//	//	mpPoint = mPoint9;
+								//	//}
+								//	//else if (mpPoint == mPoint9){
+								//	//	mVPoint = mPoint10->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
+								//	//	mpPoint = mPoint10;
+								//	//}
+								//	//else if (mpPoint == mPoint10){
+								//	//	mVPoint = mPoint11->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
+								//	//	mpPoint = mPoint11;
+								//	//}
+								//	//else if (mpPoint == mPoint11){
+								//	//	mVPoint = mPoint12->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
+								//	//	mpPoint = mPoint12;
+								//	//}
+								//	//else if (mpPoint == mPoint12){
+								//	//	//コース2or3を走行中かで分岐する
+								//	//	if (CSceneTitle::mCource_Number == 2 || CSceneTitle::mCource_Number == 3 || CSceneTitle::mCource_Number == 5){
+								//	//		mVPoint = mPoint13->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
+								//	//		mpPoint = mPoint13;
+								//	//	}
+								//	//	else{
+								//	//		mVPoint = mPoint->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
+								//	//		mpPoint = mPoint;//ポイント1に戻ってループする
+								//	//	}
+								//	//}
+								//	////コース2
+								//	//else if (CSceneTitle::mCource_Number == 2){
+								//	//	if (mpPoint == mPoint13){
+								//	//		mVPoint = mPoint14->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
+								//	//		mpPoint = mPoint14;
+								//	//	}
+								//	//	else if (mpPoint == mPoint14){
+								//	//		mVPoint = mPoint15->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
+								//	//		mpPoint = mPoint15;
+								//	//	}
+								//	//	else if (mpPoint == mPoint15){
+								//	//		mVPoint = mPoint16->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
+								//	//		mpPoint = mPoint16;
+								//	//	}
+								//	//	else if (mpPoint == mPoint16){
+								//	//		mVPoint = mPoint17->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
+								//	//		mpPoint = mPoint17;
+								//	//	}
+								//	//	else if (mpPoint == mPoint17){
+								//	//		mVPoint = mPoint->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
+								//	//		mpPoint = mPoint;
+								//	//	}
+								//	//}
+								//	////コース3ではポインタの数が拡張される
+								//	//else if (CSceneTitle::mCource_Number == 3){
+								//	//	if (mpPoint == mPoint13){
+								//	//		mVPoint = mPoint14->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
+								//	//		mpPoint = mPoint14;
+								//	//	}
+								//	//	else if (mpPoint == mPoint14){
+								//	//		mVPoint = mPoint15->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
+								//	//		mpPoint = mPoint15;
+								//	//	}
+								//	//	else if (mpPoint == mPoint15){
+								//	//		mVPoint = mPoint16->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
+								//	//		mpPoint = mPoint16;
+								//	//	}
+								//	//	else if (mpPoint == mPoint16){
+								//	//		mVPoint = mPoint17->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
+								//	//		mpPoint = mPoint17;
+								//	//	}
+								//	//	else if (mpPoint == mPoint17){
+								//	//		mVPoint = mPoint18->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
+								//	//		mpPoint = mPoint18;
+								//	//	}
+								//	//	else if (mpPoint == mPoint18){
+								//	//		mVPoint = mPoint19->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
+								//	//		mpPoint = mPoint19;
+								//	//	}
+								//	//	else if (mpPoint == mPoint19){
+								//	//		mVPoint = mPoint20->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
+								//	//		mpPoint = mPoint20;
+								//	//	}
+								//	//	else if (mpPoint == mPoint20){
+								//	//		mVPoint = mPoint21->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
+								//	//		mpPoint = mPoint21;
+								//	//	}
+								//	//	else if (mpPoint == mPoint21){
+								//	//		mVPoint = mPoint22->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
+								//	//		mpPoint = mPoint22;
+								//	//	}
+								//	//	else if (mpPoint == mPoint22){
+								//	//		mVPoint = mPoint23->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
+								//	//		mpPoint = mPoint23;
+								//	//	}
+								//	//	else if (mpPoint == mPoint23){
+								//	//		mVPoint = mPoint->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
+								//	//		mpPoint = mPoint;
+								//	//	}
+								//	//}
+								//	////コース5ではポインタの数が拡張される
+								//	//else if (CSceneTitle::mCource_Number == 5){
+								//	//	if (mpPoint == mPoint13){
+								//	//		mVPoint = mPoint14->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
+								//	//		mpPoint = mPoint14;
+								//	//	}
+								//	//	else if (mpPoint == mPoint14){
+								//	//		mVPoint = mPoint15->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
+								//	//		mpPoint = mPoint15;
+								//	//	}
+								//	//	else if (mpPoint == mPoint15){
+								//	//		mVPoint = mPoint16->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
+								//	//		mpPoint = mPoint16;
+								//	//	}
+								//	//	else if (mpPoint == mPoint16){
+								//	//		mVPoint = mPoint17->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
+								//	//		mpPoint = mPoint17;
+								//	//	}
+								//	//	else if (mpPoint == mPoint17){
+								//	//		mVPoint = mPoint18->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
+								//	//		mpPoint = mPoint18;
+								//	//	}
+								//	//	else if (mpPoint == mPoint18){
+								//	//		mVPoint = mPoint19->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
+								//	//		mpPoint = mPoint19;
+								//	//	}
+								//	//	else if (mpPoint == mPoint19){
+								//	//		mVPoint = mPoint20->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
+								//	//		mpPoint = mPoint20;
+								//	//	}
+								//	//	else if (mpPoint == mPoint20){
+								//	//		mVPoint = mPoint21->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
+								//	//		mpPoint = mPoint21;
+								//	//	}
+								//	//	else if (mpPoint == mPoint21){
+								//	//		mVPoint = mPoint22->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
+								//	//		mpPoint = mPoint22;
+								//	//	}
+								//	//	else if (mpPoint == mPoint22){
+								//	//		mVPoint = mPoint23->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
+								//	//		mpPoint = mPoint23;
+								//	//	}
+								//	//	else if (mpPoint == mPoint23){
+								//	//		mVPoint = mPoint24->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
+								//	//		mpPoint = mPoint24;
+								//	//	}
+								//	//	else if (mpPoint == mPoint24){
+								//	//		mVPoint = mPoint25->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
+								//	//		mpPoint = mPoint25;
+								//	//	}
+								//	//	else if (mpPoint == mPoint25){
+								//	//		mVPoint = mPoint26->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
+								//	//		mpPoint = mPoint26;
+								//	//	}
+								//	//	else if (mpPoint == mPoint26){
+								//	//		mVPoint = mPoint27->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
+								//	//		mpPoint = mPoint27;
+								//	//	}
+								//	//	else if (mpPoint == mPoint27){
+								//	//		mVPoint = mPoint28->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
+								//	//		mpPoint = mPoint28;
+								//	//	}
+								//	//	else if (mpPoint == mPoint28){
+								//	//		mVPoint = mPoint29->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
+								//	//		mpPoint = mPoint29;
+								//	//	}
+								//	//	else if (mpPoint == mPoint29){
+								//	//		mVPoint = mPoint30->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
+								//	//		mpPoint = mPoint30;
+								//	//	}
+								//	//	else if (mpPoint == mPoint30){
+								//	//		mVPoint = mPoint31->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
+								//	//		mpPoint = mPoint31;
+								//	//	}
+								//	//	else if (mpPoint == mPoint31){
+								//	//		mVPoint = mPoint32->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
+								//	//		mpPoint = mPoint32;
+								//	//	}
+								//	//	else if (mpPoint == mPoint32){
+								//	//		mVPoint = mPoint33->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
+								//	//		mpPoint = mPoint33;
+								//	//	}
+								//	//	else if (mpPoint == mPoint33){
+								//	//		mVPoint = mPoint34->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
+								//	//		mpPoint = mPoint34;
+								//	//	}
+								//	//	else if (mpPoint == mPoint34){
+								//	//		mVPoint = mPoint35->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
+								//	//		mpPoint = mPoint35;
+								//	//	}
+								//	//	else if (mpPoint == mPoint35){
+								//	//		mVPoint = mPoint36->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
+								//	//		mpPoint = mPoint36;
+								//	//	}
+								//	//	else if (mpPoint == mPoint36){
+								//	//		mVPoint = mPoint37->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
+								//	//		mpPoint = mPoint37;
+								//	//	}
+								//	//	else if (mpPoint == mPoint37){
+								//	//		mVPoint = mPoint38->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
+								//	//		mpPoint = mPoint38;
+								//	//	}
+								//	//	else if (mpPoint == mPoint38){
+								//	//		mVPoint = mPoint39->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
+								//	//		mpPoint = mPoint39;
+								//	//	}
+								//	//	else if (mpPoint == mPoint39){
+								//	//		mVPoint = mPoint40->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
+								//	//		mpPoint = mPoint40;
+								//	//	}
+								//	//	else if (mpPoint == mPoint40){
+								//	//		mVPoint = mPoint41->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
+								//	//		mpPoint = mPoint41;
+								//	//	}
+								//	//	else if (mpPoint == mPoint41){
+								//	//		mVPoint = mPoint42->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
+								//	//		mpPoint = mPoint42;
+								//	//	}
+								//	//	else if (mpPoint == mPoint42){
+								//	//		mVPoint = mPoint43->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
+								//	//		mpPoint = mPoint43;
+								//	//	}
+								//	//	else if (mpPoint == mPoint43){
+								//	//		mVPoint = mPoint44->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
+								//	//		mpPoint = mPoint44;
+								//	//	}
+								//	//	else if (mpPoint == mPoint44){
+								//	//		mVPoint = mPoint45->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
+								//	//		mpPoint = mPoint45;
+								//	//	}
+								//	//	else if (mpPoint == mPoint45){
+								//	//		mVPoint = mPoint46->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
+								//	//		mpPoint = mPoint46;
+								//	//	}
+								//	//	else if (mpPoint == mPoint46){
+								//	//		mVPoint = mPoint47->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
+								//	//		mpPoint = mPoint47;
+								//	//	}
+								//	//	else if (mpPoint == mPoint47){
+								//	//		mVPoint = mPoint48->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
+								//	//		mpPoint = mPoint48;
+								//	//	}
+								//	//	else if (mpPoint == mPoint48){
+								//	//		mVPoint = mPoint->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
+								//	//		mpPoint = mPoint;
+								//	//	}
+								//	//}
+								//}								
 							}
 						}
 					}
@@ -1030,16 +1031,16 @@ void CEnemy::TaskCollision()
 void CEnemy::SetNextPoint(CPoint *current_point, int gap_amount, bool iscurrentpointlast){
 	bool gap = true;
 	if (CSceneTitle::mCource_Number == 5){
-		if (PointNumber(current_point) <= 20){
+		/*if (PointNumber(current_point) <= 20){
+			gap = false;
+		}*/
+		if (mChecks < 1){
 			gap = false;
 		}
 	}
 	/*else if (CSceneTitle::mMode == 2){
 		gap = false;
-	}*/
-	else{
-		gap = true;
-	}
+	}*/	
 
 	//「一つ前の目標地点」の更新
 	mVPoint_prev = mpPoint->mPosition;
@@ -1077,228 +1078,228 @@ CPoint* CEnemy::GetNextPoint(CPoint *current_point, bool iscurrentpointlast){
 	return current_point->GetNextPoint();
 }
 
-//mPoint2なら2、とmPoint～～の整数部分の値を返す
-int CEnemy::PointNumber(CPoint *current_point){
-	int pt_num = 0;
-	if (mpPoint == mPoint){
-		pt_num = 1;
-	}
-	else if (mpPoint == mPoint2){
-		pt_num = 2;
-	}
-	else if (mpPoint == mPoint3){
-		pt_num = 3;
-	}
-	else if (mpPoint == mPoint4){
-		pt_num = 4;
-	}
-	else if (mpPoint == mPoint5){
-		pt_num = 5;
-	}
-	else if (mpPoint == mPoint6){
-		pt_num = 6;
-	}
-	else if (mpPoint == mPoint7){
-		pt_num = 7;
-	}
-	else if (mpPoint == mPoint8){
-		pt_num = 8;
-	}
-	else if (mpPoint == mPoint9){
-		pt_num = 9;
-	}
-	else if (mpPoint == mPoint10){
-		pt_num = 10;
-	}
-	else if (mpPoint == mPoint11){
-		pt_num = 11;
-	}
-	else if (mpPoint == mPoint12){
-		pt_num = 12;
-	}
-	else if (mpPoint == mPoint13){
-		pt_num = 13;
-	}
-	else if (mpPoint == mPoint14){
-		pt_num = 14;
-	}
-	else if (mpPoint == mPoint15){
-		pt_num = 15;
-	}
-	else if (mpPoint == mPoint16){
-		pt_num = 16;
-	}
-	else if (mpPoint == mPoint17){
-		pt_num = 17;
-	}
-	else if (mpPoint == mPoint18){
-		pt_num = 18;
-	}
-	else if (mpPoint == mPoint19){
-		pt_num = 19;
-	}
-	else if (mpPoint == mPoint20){
-		pt_num = 20;
-	}
-	else if (mpPoint == mPoint21){
-		pt_num = 21;
-	}
-	else if (mpPoint == mPoint22){
-		pt_num = 22;
-	}
-	else if (mpPoint == mPoint23){
-		pt_num = 23;
-	}
-	else if (mpPoint == mPoint24){
-		pt_num = 24;
-	}
-	else if (mpPoint == mPoint25){
-		pt_num = 25;
-	}
-	else if (mpPoint == mPoint26){
-		pt_num = 26;
-	}
-	else if (mpPoint == mPoint27){
-		pt_num = 27;
-	}
-	else if (mpPoint == mPoint28){
-		pt_num = 28;
-	}
-	else if (mpPoint == mPoint29){
-		pt_num = 29;
-	}
-	else if (mpPoint == mPoint30){
-		pt_num = 30;
-	}
-	else if (mpPoint == mPoint31){
-		pt_num = 31;
-	}
-	else if (mpPoint == mPoint32){
-		pt_num = 32;
-	}
-	else if (mpPoint == mPoint33){
-		pt_num = 33;
-	}
-	else if (mpPoint == mPoint34){
-		pt_num = 34;
-	}
-	else if (mpPoint == mPoint35){
-		pt_num = 35;
-	}
-	else if (mpPoint == mPoint36){
-		pt_num = 36;
-	}
-	else if (mpPoint == mPoint37){
-		pt_num = 37;
-	}
-	else if (mpPoint == mPoint38){
-		pt_num = 38;
-	}
-	else if (mpPoint == mPoint39){
-		pt_num = 39;
-	}
-	else if (mpPoint == mPoint40){
-		pt_num = 40;
-	}
-	else if (mpPoint == mPoint41){
-		pt_num = 41;
-	}
-	else if (mpPoint == mPoint42){
-		pt_num = 42;
-	}
-	else if (mpPoint == mPoint43){
-		pt_num = 43;
-	}
-	else if (mpPoint == mPoint44){
-		pt_num = 44;
-	}
-	else if (mpPoint == mPoint45){
-		pt_num = 45;
-	}
-	else if (mpPoint == mPoint46){
-		pt_num = 46;
-	}
-	else if (mpPoint == mPoint47){
-		pt_num = 47;
-	}
-	else if (mpPoint == mPoint48){
-		pt_num = 48;
-	}
-	else if (mpPoint == mPoint49){
-		pt_num = 49;
-	}
-	else if (mpPoint == mPoint50){
-		pt_num = 50;
-	}
-	else if (mpPoint == mPoint51){
-		pt_num = 51;
-	}
-	else if (mpPoint == mPoint52){
-		pt_num = 52;
-	}
-	else if (mpPoint == mPoint53){
-		pt_num = 53;
-	}
-	else if (mpPoint == mPoint54){
-		pt_num = 54;
-	}
-	return pt_num;
-}
+////mPoint2なら2、とmPoint～～の整数部分の値を返す
+//int CEnemy::PointNumber(CPoint *current_point){
+//	int pt_num = 0;
+//	if (mpPoint == mPoint){
+//		pt_num = 1;
+//	}
+//	else if (mpPoint == mPoint2){
+//		pt_num = 2;
+//	}
+//	else if (mpPoint == mPoint3){
+//		pt_num = 3;
+//	}
+//	else if (mpPoint == mPoint4){
+//		pt_num = 4;
+//	}
+//	else if (mpPoint == mPoint5){
+//		pt_num = 5;
+//	}
+//	else if (mpPoint == mPoint6){
+//		pt_num = 6;
+//	}
+//	else if (mpPoint == mPoint7){
+//		pt_num = 7;
+//	}
+//	else if (mpPoint == mPoint8){
+//		pt_num = 8;
+//	}
+//	else if (mpPoint == mPoint9){
+//		pt_num = 9;
+//	}
+//	else if (mpPoint == mPoint10){
+//		pt_num = 10;
+//	}
+//	else if (mpPoint == mPoint11){
+//		pt_num = 11;
+//	}
+//	else if (mpPoint == mPoint12){
+//		pt_num = 12;
+//	}
+//	else if (mpPoint == mPoint13){
+//		pt_num = 13;
+//	}
+//	else if (mpPoint == mPoint14){
+//		pt_num = 14;
+//	}
+//	else if (mpPoint == mPoint15){
+//		pt_num = 15;
+//	}
+//	else if (mpPoint == mPoint16){
+//		pt_num = 16;
+//	}
+//	else if (mpPoint == mPoint17){
+//		pt_num = 17;
+//	}
+//	else if (mpPoint == mPoint18){
+//		pt_num = 18;
+//	}
+//	else if (mpPoint == mPoint19){
+//		pt_num = 19;
+//	}
+//	else if (mpPoint == mPoint20){
+//		pt_num = 20;
+//	}
+//	else if (mpPoint == mPoint21){
+//		pt_num = 21;
+//	}
+//	else if (mpPoint == mPoint22){
+//		pt_num = 22;
+//	}
+//	else if (mpPoint == mPoint23){
+//		pt_num = 23;
+//	}
+//	else if (mpPoint == mPoint24){
+//		pt_num = 24;
+//	}
+//	else if (mpPoint == mPoint25){
+//		pt_num = 25;
+//	}
+//	else if (mpPoint == mPoint26){
+//		pt_num = 26;
+//	}
+//	else if (mpPoint == mPoint27){
+//		pt_num = 27;
+//	}
+//	else if (mpPoint == mPoint28){
+//		pt_num = 28;
+//	}
+//	else if (mpPoint == mPoint29){
+//		pt_num = 29;
+//	}
+//	else if (mpPoint == mPoint30){
+//		pt_num = 30;
+//	}
+//	else if (mpPoint == mPoint31){
+//		pt_num = 31;
+//	}
+//	else if (mpPoint == mPoint32){
+//		pt_num = 32;
+//	}
+//	else if (mpPoint == mPoint33){
+//		pt_num = 33;
+//	}
+//	else if (mpPoint == mPoint34){
+//		pt_num = 34;
+//	}
+//	else if (mpPoint == mPoint35){
+//		pt_num = 35;
+//	}
+//	else if (mpPoint == mPoint36){
+//		pt_num = 36;
+//	}
+//	else if (mpPoint == mPoint37){
+//		pt_num = 37;
+//	}
+//	else if (mpPoint == mPoint38){
+//		pt_num = 38;
+//	}
+//	else if (mpPoint == mPoint39){
+//		pt_num = 39;
+//	}
+//	else if (mpPoint == mPoint40){
+//		pt_num = 40;
+//	}
+//	else if (mpPoint == mPoint41){
+//		pt_num = 41;
+//	}
+//	else if (mpPoint == mPoint42){
+//		pt_num = 42;
+//	}
+//	else if (mpPoint == mPoint43){
+//		pt_num = 43;
+//	}
+//	else if (mpPoint == mPoint44){
+//		pt_num = 44;
+//	}
+//	else if (mpPoint == mPoint45){
+//		pt_num = 45;
+//	}
+//	else if (mpPoint == mPoint46){
+//		pt_num = 46;
+//	}
+//	else if (mpPoint == mPoint47){
+//		pt_num = 47;
+//	}
+//	else if (mpPoint == mPoint48){
+//		pt_num = 48;
+//	}
+//	else if (mpPoint == mPoint49){
+//		pt_num = 49;
+//	}
+//	else if (mpPoint == mPoint50){
+//		pt_num = 50;
+//	}
+//	else if (mpPoint == mPoint51){
+//		pt_num = 51;
+//	}
+//	else if (mpPoint == mPoint52){
+//		pt_num = 52;
+//	}
+//	else if (mpPoint == mPoint53){
+//		pt_num = 53;
+//	}
+//	else if (mpPoint == mPoint54){
+//		pt_num = 54;
+//	}
+//	return pt_num;
+//}
 
 //誘導ポイント
 CPoint *CEnemy::mPoint;
-CPoint *CEnemy::mPoint2;
-CPoint *CEnemy::mPoint3;
-CPoint *CEnemy::mPoint4;
-CPoint *CEnemy::mPoint5;
-CPoint *CEnemy::mPoint6;
-CPoint *CEnemy::mPoint7;
-CPoint *CEnemy::mPoint8;
-CPoint *CEnemy::mPoint9;
-CPoint *CEnemy::mPoint10;
-CPoint *CEnemy::mPoint11;
-CPoint *CEnemy::mPoint12;
-CPoint *CEnemy::mPoint13;
-CPoint *CEnemy::mPoint14;
-CPoint *CEnemy::mPoint15;
-CPoint *CEnemy::mPoint16;
-CPoint *CEnemy::mPoint17;
-CPoint *CEnemy::mPoint18;
-CPoint *CEnemy::mPoint19;
-CPoint *CEnemy::mPoint20;
-CPoint *CEnemy::mPoint21;
-CPoint *CEnemy::mPoint22;
-CPoint *CEnemy::mPoint23;
-CPoint *CEnemy::mPoint24;
-CPoint *CEnemy::mPoint25;
-CPoint *CEnemy::mPoint26;
-CPoint *CEnemy::mPoint27;
-CPoint *CEnemy::mPoint28;
-CPoint *CEnemy::mPoint29;
-CPoint *CEnemy::mPoint30;
-CPoint *CEnemy::mPoint31;
-CPoint *CEnemy::mPoint32;
-CPoint *CEnemy::mPoint33;
-CPoint *CEnemy::mPoint34;
-CPoint *CEnemy::mPoint35;
-CPoint *CEnemy::mPoint36;
-CPoint *CEnemy::mPoint37;
-CPoint *CEnemy::mPoint38;
-CPoint *CEnemy::mPoint39;
-CPoint *CEnemy::mPoint40;
-CPoint *CEnemy::mPoint41;
-CPoint *CEnemy::mPoint42;
-CPoint *CEnemy::mPoint43;
-CPoint *CEnemy::mPoint44;
-CPoint *CEnemy::mPoint45;
-CPoint *CEnemy::mPoint46;
-CPoint *CEnemy::mPoint47;
-CPoint *CEnemy::mPoint48;
-CPoint *CEnemy::mPoint49;
-CPoint *CEnemy::mPoint50;
-CPoint *CEnemy::mPoint51;
-CPoint *CEnemy::mPoint52;
-CPoint *CEnemy::mPoint53;
-CPoint *CEnemy::mPoint54;
-
-CPoint *CEnemy::mPointss[54];
+//CPoint *CEnemy::mPoint2;
+//CPoint *CEnemy::mPoint3;
+//CPoint *CEnemy::mPoint4;
+//CPoint *CEnemy::mPoint5;
+//CPoint *CEnemy::mPoint6;
+//CPoint *CEnemy::mPoint7;
+//CPoint *CEnemy::mPoint8;
+//CPoint *CEnemy::mPoint9;
+//CPoint *CEnemy::mPoint10;
+//CPoint *CEnemy::mPoint11;
+//CPoint *CEnemy::mPoint12;
+//CPoint *CEnemy::mPoint13;
+//CPoint *CEnemy::mPoint14;
+//CPoint *CEnemy::mPoint15;
+//CPoint *CEnemy::mPoint16;
+//CPoint *CEnemy::mPoint17;
+//CPoint *CEnemy::mPoint18;
+//CPoint *CEnemy::mPoint19;
+//CPoint *CEnemy::mPoint20;
+//CPoint *CEnemy::mPoint21;
+//CPoint *CEnemy::mPoint22;
+//CPoint *CEnemy::mPoint23;
+//CPoint *CEnemy::mPoint24;
+//CPoint *CEnemy::mPoint25;
+//CPoint *CEnemy::mPoint26;
+//CPoint *CEnemy::mPoint27;
+//CPoint *CEnemy::mPoint28;
+//CPoint *CEnemy::mPoint29;
+//CPoint *CEnemy::mPoint30;
+//CPoint *CEnemy::mPoint31;
+//CPoint *CEnemy::mPoint32;
+//CPoint *CEnemy::mPoint33;
+//CPoint *CEnemy::mPoint34;
+//CPoint *CEnemy::mPoint35;
+//CPoint *CEnemy::mPoint36;
+//CPoint *CEnemy::mPoint37;
+//CPoint *CEnemy::mPoint38;
+//CPoint *CEnemy::mPoint39;
+//CPoint *CEnemy::mPoint40;
+//CPoint *CEnemy::mPoint41;
+//CPoint *CEnemy::mPoint42;
+//CPoint *CEnemy::mPoint43;
+//CPoint *CEnemy::mPoint44;
+//CPoint *CEnemy::mPoint45;
+//CPoint *CEnemy::mPoint46;
+//CPoint *CEnemy::mPoint47;
+//CPoint *CEnemy::mPoint48;
+//CPoint *CEnemy::mPoint49;
+//CPoint *CEnemy::mPoint50;
+//CPoint *CEnemy::mPoint51;
+//CPoint *CEnemy::mPoint52;
+//CPoint *CEnemy::mPoint53;
+//CPoint *CEnemy::mPoint54;
+//
+//CPoint *CEnemy::mPointss[54];

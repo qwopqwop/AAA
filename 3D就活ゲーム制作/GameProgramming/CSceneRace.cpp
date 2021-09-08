@@ -261,12 +261,7 @@ void CSceneRace::Init() {
 	mRanking = 1;
 	//プレイヤーがゴール後の経過時間
 	mAfterGoalTime = 0;
-
-	//カメラ視点
-	mCamPoV = 1;
-
-	//初期状態では敵の目標地点は描画しない
-	isRendPoint = false;
+	
 	//初期状態ではポーズ状態無効
 	isPause = false;
 	mPause_SelectCarsol = 1;
@@ -340,6 +335,8 @@ void CSceneRace::Init() {
 	//テクスチャユニットを0に戻す
 	glActiveTexture(GL_TEXTURE0);
 
+	
+
 	//************************************ Shadow Map
 }
 
@@ -377,9 +374,6 @@ void CSceneRace::Update() {
 	if (CKey::Once('2')){//Playerの座標を出力する
 		printf("X:%f Y:%f Z:%f\n", CPlayer::mpPlayer->mPosition.mX, CPlayer::mpPlayer->mPosition.mY, CPlayer::mpPlayer->mPosition.mZ);
 	}
-	if (CKey::Once('4')){//バックミラーのON・OFF切り替え
-		isEnableBackMirror = !isEnableBackMirror;
-	}
 	if (CKey::Push('5')){
 		printf("%f:%f:%f\n", CPlayer::mpPlayer->mRotation.mX, CPlayer::mpPlayer->mRotation.mY, CPlayer::mpPlayer->mRotation.mZ);
 	}
@@ -406,35 +400,16 @@ void CSceneRace::Update() {
 		//衝突判定の描画
 		CollisionManager.Render();
 	}
-	//GetNearestColor(1,2);
 
-	//敵の中継地点の表示ON・OFF切り替え
-	if (CKey::Once('O')){		
-		/*if (isRendPoint){
-			isRendPoint = false;
-		}
-		else{
-			isRendPoint = true;
-		}*/
-		//もっと簡潔に切り替える方法
-		isRendPoint = !isRendPoint;
-	}
 	//BGMを停止する
 	if (CKey::Once('M')){
 		BGM.Stop();
-	}
-	//Bキーを押している間、メイン画面も後方視点になる
-	if (CKey::Push('B')){
-		mCamPoV = 3;
-	}
-	else{
-		mCamPoV = 1;
 	}
 	//即時トップスピードに
 	if (CKey::Once('G')){
 		mPlayer->mCarSpeed = 20.0f;
 	}
-	//
+	//各チェックポイントを回ったことにする
 	if (CKey::Once('V')){
 		mPlayer->mChecks = 3;
 	}
@@ -496,19 +471,28 @@ void CSceneRace::Update() {
 
 	//順位の描画
 	float color[] = { 1.0f, 1.0f, 1.0f, 1.0f };
-	//コース名を左下に表示
-	if (CSceneTitle::mCource_Number == 1){
-		CText::DrawString("COURCE 1", 20, 20, 10, 12);
+	//レース開始前のOP中にコース名を左下に表示
+	if (isOpening){
+		if (CSceneTitle::mCource_Number == 1){
+			CText::DrawString("COURCE 1", 20, 20, 10, 12);
+		}
+		else if (CSceneTitle::mCource_Number == 2){
+			CText::DrawString("COURCE 2", 20, 20, 10, 12);
+		}
+		else if (CSceneTitle::mCource_Number == 3){
+			CText::DrawString("COURCE 3", 20, 20, 10, 12);
+		}
+		else if (CSceneTitle::mCource_Number == 4){
+			CText::DrawString("COURCE 4", 20, 20, 10, 12);
+		}
+		else if (CSceneTitle::mCource_Number == 5){
+			CText::DrawString("COURCE 5", 20, 20, 10, 12);
+		}
+		else if (CSceneTitle::mCource_Number == 6){
+			CText::DrawString("COURCE 6", 20, 20, 10, 12);
+		}
 	}
-	else if (CSceneTitle::mCource_Number == 2){
-		CText::DrawString("COURCE 2", 20, 20, 10, 12);
-	}
-	else if (CSceneTitle::mCource_Number == 3){
-		CText::DrawString("COURCE 3", 20, 20, 10, 12);
-	}
-	else if (CSceneTitle::mCource_Number == 4){
-		CText::DrawString("COURCE 4", 20, 20, 10, 12);
-	}
+	
 
 	//時間の表示
 	char mti[20];// :も含めた最大文字数の設定
@@ -596,7 +580,7 @@ void CSceneRace::Update() {
 				CText::DrawString("NEW RECORD!", 55, 551, 8, 9, 2);
 			}
 		}
-	}
+	}	
 	
 	//ゴール後に表示される文字
 	if (isGoal){
@@ -845,7 +829,7 @@ void CSceneRace::Update() {
 					}
 					else if (CSceneTitle::mCource_Number == 6){
 						mRecord_F = mBestTime;
-					}
+					}					
 				}
 				mPlayer->mRank = mRanking;
 				mRanking++;
@@ -855,7 +839,7 @@ void CSceneRace::Update() {
 				SoundGoal.Play();
 				//CPlayer::mpPlayer->CanMove = false;//動きストップ
 				CPlayer::mpPlayer->mChecks = 0;
-				CPlayer::mpPlayer->mGoalTime = mTime;
+				CPlayer::mpPlayer->mGoalTime = mTime;				
 			}
 			else{
 				mLap++;
@@ -922,7 +906,7 @@ void CSceneRace::Update() {
 				SoundGoal.Play();
 				//CPlayer::mpPlayer->CanMove = false;//動きストップ
 				CPlayer::mpPlayer->mChecks = 0;
-				CPlayer::mpPlayer->mGoalTime = mTime;
+				CPlayer::mpPlayer->mGoalTime = mTime;				
 			}
 			else{
 				mLap++;
@@ -1059,6 +1043,21 @@ void CSceneRace::Update() {
 				//CPlayer::mpPlayer->CanMove = false;//false:ゴール後も走行は可能
 				CPlayer::mpPlayer->mChecks = 0;
 				CPlayer::mpPlayer->mGoalTime = mTime;
+
+				////ベストタイムをファイルに記録する
+				//outputfile = fopen("record.txt", "w");
+				//if (outputfile == NULL){
+				//	printf("cannot open\n");
+				//}
+				//else{
+				//	fprintf(outputfile, "aaa");
+				//	fprintf(outputfile, "bbb\n");
+				//	char best[11];
+				//	sprintf(best, "%02d:%02d:%02d", mBestTime / 10000 % 100, mBestTime / 100 % 100, mBestTime % 100);
+				//	fprintf(outputfile, best);
+				//	fclose(outputfile);
+				//	printf("ベストタイムを保存しました\n");
+				//}
 			}
 			else{
 				mLap++;
@@ -1250,60 +1249,6 @@ void CSceneRace::RenderMiniMap() {
 	CTaskManager::Get()->Render();
 		
 	if (CSceneTitle::mCource_Number == 3){
-		if (isRendPoint == true){
-			/*デバッグ用*/
-			//設定した敵の目標地点すべてをミニマップ上に描画する
-			CMatrix point;
-			for (int i = 1; i <= 12; i++){//ポイントの数だけ処理実行
-				point = CMatrix().Scale(150.0f, 1.0f, 150.0f)
-					* CMatrix().RotateY(45);
-				//* CEnemy::mPoint->mMatrixTranslate;
-				//1より小さい時は即やめ
-				if (i < 1){
-					break;
-				}
-				if (i == 1){
-					point = point * CEnemy::mPoint->mMatrixTranslate;
-				}
-				else if (i == 2){
-					point = point * CEnemy::mPoint2->mMatrixTranslate;
-				}
-				else if (i == 3){
-					point = point * CEnemy::mPoint3->mMatrixTranslate;
-				}
-				else if (i == 4){
-					point = point * CEnemy::mPoint4->mMatrixTranslate;
-				}
-				else if (i == 5){
-					point = point * CEnemy::mPoint5->mMatrixTranslate;
-				}
-				else if (i == 6){
-					point = point * CEnemy::mPoint6->mMatrixTranslate;
-				}
-				else if (i == 7){
-					point = point * CEnemy::mPoint7->mMatrixTranslate;
-				}
-				else if (i == 8){
-					point = point * CEnemy::mPoint8->mMatrixTranslate;
-				}
-				else if (i == 9){
-					point = point * CEnemy::mPoint9->mMatrixTranslate;
-				}
-				else if (i == 10){
-					point = point * CEnemy::mPoint10->mMatrixTranslate;
-				}
-				else if (i == 11){
-					point = point * CEnemy::mPoint11->mMatrixTranslate;
-				}
-				else if (i == 12){
-					point = point * CEnemy::mPoint12->mMatrixTranslate;
-				}
-				else{
-					break;
-				}
-				mTileWhite.Render(point);
-			}
-		}
 		//ミニマップにゴールアイコンを描画
 		CMatrix matminig;
 		matminig = CMatrix().Scale(25.0f, 1.0f, 25.0f)
@@ -1333,60 +1278,6 @@ void CSceneRace::RenderMiniMap() {
 		mCarsol.Render(matplayer);
 	}
 	else if (CSceneTitle::mCource_Number == 2){
-		if (isRendPoint == true){
-			/*デバッグ用*/
-			//設定した敵の目標地点すべてをミニマップ上に描画する
-			CMatrix point;
-			for (int i = 1; i <= 12; i++){//ポイントの数だけ処理実行
-				point = CMatrix().Scale(111.0f, 1.0f, 111.0f)
-					* CMatrix().RotateY(45);
-				//* CEnemy::mPoint->mMatrixTranslate;
-				//1より小さい時は即やめ
-				if (i < 1){
-					break;
-				}
-				if (i == 1){
-					point = point * CEnemy::mPoint->mMatrixTranslate;
-				}
-				else if (i == 2){
-					point = point * CEnemy::mPoint2->mMatrixTranslate;
-				}
-				else if (i == 3){
-					point = point * CEnemy::mPoint3->mMatrixTranslate;
-				}
-				else if (i == 4){
-					point = point * CEnemy::mPoint4->mMatrixTranslate;
-				}
-				else if (i == 5){
-					point = point * CEnemy::mPoint5->mMatrixTranslate;
-				}
-				else if (i == 6){
-					point = point * CEnemy::mPoint6->mMatrixTranslate;
-				}
-				else if (i == 7){
-					point = point * CEnemy::mPoint7->mMatrixTranslate;
-				}
-				else if (i == 8){
-					point = point * CEnemy::mPoint8->mMatrixTranslate;
-				}
-				else if (i == 9){
-					point = point * CEnemy::mPoint9->mMatrixTranslate;
-				}
-				else if (i == 10){
-					point = point * CEnemy::mPoint10->mMatrixTranslate;
-				}
-				else if (i == 11){
-					point = point * CEnemy::mPoint11->mMatrixTranslate;
-				}
-				else if (i == 12){
-					point = point * CEnemy::mPoint12->mMatrixTranslate;
-				}
-				else{
-					break;
-				}
-				mTileWhite.Render(point);
-			}
-		}
 		//ミニマップにゴールアイコンを描画
 		CMatrix matminig;
 		matminig = CMatrix().Scale(25.0f, 1.0f, 25.0f)
@@ -1417,60 +1308,6 @@ void CSceneRace::RenderMiniMap() {
 		mCarsol.Render(matplayer);
 	}
 	else if (CSceneTitle::mCource_Number == 5){
-		if (isRendPoint == true){
-			/*デバッグ用*/
-			//設定した敵の目標地点すべてをミニマップ上に描画する
-			CMatrix point;
-			for (int i = 1; i <= 12; i++){//ポイントの数だけ処理実行
-				point = CMatrix().Scale(111.0f, 1.0f, 111.0f)
-					* CMatrix().RotateY(45);
-				//* CEnemy::mPoint->mMatrixTranslate;
-				//1より小さい時は即やめ
-				if (i < 1){
-					break;
-				}
-				if (i == 1){
-					point = point * CEnemy::mPoint->mMatrixTranslate;
-				}
-				else if (i == 2){
-					point = point * CEnemy::mPoint2->mMatrixTranslate;
-				}
-				else if (i == 3){
-					point = point * CEnemy::mPoint3->mMatrixTranslate;
-				}
-				else if (i == 4){
-					point = point * CEnemy::mPoint4->mMatrixTranslate;
-				}
-				else if (i == 5){
-					point = point * CEnemy::mPoint5->mMatrixTranslate;
-				}
-				else if (i == 6){
-					point = point * CEnemy::mPoint6->mMatrixTranslate;
-				}
-				else if (i == 7){
-					point = point * CEnemy::mPoint7->mMatrixTranslate;
-				}
-				else if (i == 8){
-					point = point * CEnemy::mPoint8->mMatrixTranslate;
-				}
-				else if (i == 9){
-					point = point * CEnemy::mPoint9->mMatrixTranslate;
-				}
-				else if (i == 10){
-					point = point * CEnemy::mPoint10->mMatrixTranslate;
-				}
-				else if (i == 11){
-					point = point * CEnemy::mPoint11->mMatrixTranslate;
-				}
-				else if (i == 12){
-					point = point * CEnemy::mPoint12->mMatrixTranslate;
-				}
-				else{
-					break;
-				}
-				mTileWhite.Render(point);
-			}
-		}
 		//ミニマップにゴールアイコンを描画
 		CMatrix matminig;
 		matminig = CMatrix().Scale(25.0f, 100.0f, 25.0f)
@@ -1501,60 +1338,6 @@ void CSceneRace::RenderMiniMap() {
 		mCarsol.Render(matplayer);
 	}
 	else{
-		if (isRendPoint == true){
-			/*デバッグ用*/
-			//設定した敵の目標地点すべてをミニマップ上に描画する
-			CMatrix point;
-			for (int i = 1; i <= 12; i++){//ポイントの数だけ処理実行
-				point = CMatrix().Scale(111.0f, 1.0f, 111.0f)
-					* CMatrix().RotateY(45);
-				//* CEnemy::mPoint->mMatrixTranslate;
-				//1より小さい時は即やめ
-				if (i < 1){
-					break;
-				}
-				if (i == 1){
-					point = point * CEnemy::mPoint->mMatrixTranslate;
-				}
-				else if (i == 2){
-					point = point * CEnemy::mPoint2->mMatrixTranslate;
-				}
-				else if (i == 3){
-					point = point * CEnemy::mPoint3->mMatrixTranslate;
-				}
-				else if (i == 4){
-					point = point * CEnemy::mPoint4->mMatrixTranslate;
-				}
-				else if (i == 5){
-					point = point * CEnemy::mPoint5->mMatrixTranslate;
-				}
-				else if (i == 6){
-					point = point * CEnemy::mPoint6->mMatrixTranslate;
-				}
-				else if (i == 7){
-					point = point * CEnemy::mPoint7->mMatrixTranslate;
-				}
-				else if (i == 8){
-					point = point * CEnemy::mPoint8->mMatrixTranslate;
-				}
-				else if (i == 9){
-					point = point * CEnemy::mPoint9->mMatrixTranslate;
-				}
-				else if (i == 10){
-					point = point * CEnemy::mPoint10->mMatrixTranslate;
-				}
-				else if (i == 11){
-					point = point * CEnemy::mPoint11->mMatrixTranslate;
-				}
-				else if (i == 12){
-					point = point * CEnemy::mPoint12->mMatrixTranslate;
-				}
-				else{
-					break;
-				}
-				mTileWhite.Render(point);
-			}
-		}
 		//ミニマップにゴールアイコンを描画
 		CMatrix matminig;
 		matminig = CMatrix().Scale(20.0f, 1.0f, 20.0f)
@@ -1716,21 +1499,7 @@ void CSceneRace::RenderBackMirror()
 }
 
 //影の描画
-void CSceneRace::RenderShadow(){
-	/*for (int i = 0; i < 1; i++){
-		int ho = rand() % 2;
-		if (ho == 1){
-			for (int j = 0; j < 30; j++){
-				printf("　");
-			}
-		}
-		else{
-			for (int j = 0; j < 30; j++){
-				printf("■");
-			}
-		}
-	}*/
-	
+void CSceneRace::RenderShadow(){	
 	//CModel *mod = mpGrounds[3]->mpModel;
 	//mpGrounds[3]->mpModel = NULL;
 	//if (isEnableShadow){
@@ -1741,7 +1510,6 @@ void CSceneRace::RenderShadow(){
 	//	mpGrounds[3]->mpModel = mod;
 	//}
 	
-
 	//Shadow Map ************************************
 
 	GLint	viewport[4]; //ビューポートの保存用

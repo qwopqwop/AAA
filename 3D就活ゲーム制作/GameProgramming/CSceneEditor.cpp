@@ -38,15 +38,6 @@ extern CSound SoundCountDown;
 extern CSound SoundStart;
 extern CSound SoundGoal;
 
-////ここのmBestTimeの値は関係ない(mRecord_ の値を入れるため)
-//int CSceneEditor::mBestTime = 0;
-//int CSceneEditor::mRecord_A = 10000;
-//int CSceneEditor::mRecord_B = 13000;
-//int CSceneEditor::mRecord_C = 22000;
-//int CSceneEditor::mRecord_D = 460000;
-//int CSceneEditor::mRecord_E = 40000;
-//int CSceneEditor::mRecord_F = 43300;
-
 //画面サイズは800x600を想定
 #define SCREENSIZE_X 800
 #define SCREENSIZE_Y 600
@@ -198,14 +189,7 @@ void CSceneEditor::Init() {
 
 	//一部テキストが点滅する時間
 	mTextBlinkTime = 0;
-
-
-	//カメラ視点
-	mCamPoV = 1;
-
-
-	//初期状態では敵の目標地点は描画しない
-	isRendPoint = false;
+	
 	//初期状態ではポーズ状態無効
 	isPause = false;
 
@@ -365,27 +349,9 @@ void CSceneEditor::Update() {
 		CollisionManager.Render();
 	}
 
-	//敵の中継地点の表示ON・OFF切り替え
-	if (CKey::Once('O')){
-		/*if (isRendPoint){
-		isRendPoint = false;
-		}
-		else{
-		isRendPoint = true;
-		}*/
-		//もっと簡潔に切り替える方法
-		isRendPoint = !isRendPoint;
-	}
 	//BGMを停止する
 	if (CKey::Once('M')){
 		BGM.Stop();
-	}
-	//Bキーを押している間、メイン画面も後方視点になる
-	if (CKey::Push('B')){
-		mCamPoV = 3;
-	}
-	else{
-		mCamPoV = 1;
 	}
 	//即時トップスピードに
 	if (CKey::Once('G')){
@@ -461,63 +427,6 @@ void CSceneEditor::RenderMiniMap() {
 	glDisable(GL_DEPTH_TEST);
 	CTaskManager::Get()->Render();
 
-	
-
-
-	if (isRendPoint == true){
-		/*デバッグ用*/
-		//設定した敵の目標地点すべてをミニマップ上に描画する
-		CMatrix point;
-		for (int i = 1; i <= 12; i++){//ポイントの数だけ処理実行
-			point = CMatrix().Scale(111.0f, 1.0f, 111.0f)
-				* CMatrix().RotateY(45);
-			//* CEnemy::mPoint->mMatrixTranslate;
-			//1より小さい時は即やめ
-			if (i < 1){
-				break;
-			}
-			if (i == 1){
-				point = point * CEnemy::mPoint->mMatrixTranslate;
-			}
-			else if (i == 2){
-				point = point * CEnemy::mPoint2->mMatrixTranslate;
-			}
-			else if (i == 3){
-				point = point * CEnemy::mPoint3->mMatrixTranslate;
-			}
-			else if (i == 4){
-				point = point * CEnemy::mPoint4->mMatrixTranslate;
-			}
-			else if (i == 5){
-				point = point * CEnemy::mPoint5->mMatrixTranslate;
-			}
-			else if (i == 6){
-				point = point * CEnemy::mPoint6->mMatrixTranslate;
-			}
-			else if (i == 7){
-				point = point * CEnemy::mPoint7->mMatrixTranslate;
-			}
-			else if (i == 8){
-				point = point * CEnemy::mPoint8->mMatrixTranslate;
-			}
-			else if (i == 9){
-				point = point * CEnemy::mPoint9->mMatrixTranslate;
-			}
-			else if (i == 10){
-				point = point * CEnemy::mPoint10->mMatrixTranslate;
-			}
-			else if (i == 11){
-				point = point * CEnemy::mPoint11->mMatrixTranslate;
-			}
-			else if (i == 12){
-				point = point * CEnemy::mPoint12->mMatrixTranslate;
-			}
-			else{
-				break;
-			}
-			mTileWhite.Render(point);
-		}
-	}
 	//ミニマップにゴールアイコンを描画
 	CMatrix matminig;
 	matminig = CMatrix().Scale(20.0f, 1.0f, 20.0f)

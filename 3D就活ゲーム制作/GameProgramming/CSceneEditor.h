@@ -30,15 +30,12 @@ public:
 	
 private:
 	float mCamY;//プレイヤーの周りを回転(水平方向に)
-
-	int mCamPoV;
-
+	
 	int mTextBlinkTime;
 
 	bool isPause;
 
 	bool mPutCol;//当たり判定の描画のON・OFF
-	bool isRendPoint;//中間地点がミニマップに表示されるか
 	
 protected:
 	CModel mRover;

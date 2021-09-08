@@ -1,27 +1,75 @@
 #include "CRoadManager.h"
 #include "CPoint.h"
 #include "CEnemy.h"
+#include "CSceneTitle.h"
 
 //CRoadManager(モデルデータのポインタ,位置,回転,拡大縮小,スタート位置,進行方向)
-CRoadManager::CRoadManager(CModel *model, const CVector& position, const CVector& rotation, const CVector& scale, const CVector& startPos, const CVector& foward, const float radius)
+CRoadManager::CRoadManager(CModel *model, const CVector& position, const CVector& rotation, const CVector& scale, const CVector& startPos, const CVector& foward, const float radius, const float interval)
 : CObjFloor(model, position, rotation, scale)
 {
-	Init(model, position, rotation, scale, startPos, foward, radius);
+	Init(model, position, rotation, scale, startPos, foward, radius, interval);
 }
 
-void CRoadManager::Init(CModel* pmodel, const CVector& pos, const CVector& rot, const CVector& scale, const CVector& startPos, const CVector& foward, const float radius)
+void CRoadManager::Init(CModel* pmodel, const CVector& pos, const CVector& rot, const CVector& scale, const CVector& startPos, const CVector& foward, const float radius, const float interval)
 {
 	//mMatrixの更新
 	mPosition = pos;
 	mRotation = rot;
 	mScale = scale;
-	CCharacter::Update();
-
 	float rad = radius;
-	
+	CCharacter::Update();	
+
+	//コースAのポイントはここで作成
+	if (CSceneTitle::mCource_Number == 1){
+		CPoint *next, *first;
+		first = next = new CPoint(CVector(340.0f, 30.0f, -1182.0f), rad, nullptr);
+		next = new CPoint(CVector(-500.0f, 30.0f, -2000.0f), rad, next);
+		next = new CPoint(CVector(-1601.0f, 30.0f, -1702.0f), rad, next);
+		next = new CPoint(CVector(-1350.0f, 30.0f, 2150.0f), rad, next);
+		next = new CPoint(CVector(258.0f, 30.0f, 2000.0f), rad, next);
+		next = new CPoint(CVector(413.0f, 30.0f, 1300.0f), rad, next);
+		next = new CPoint(CVector(340.0f, 30.0f, -1182.0f), rad, next);
+		next = new CPoint(CVector(-500.0f, 30.0f, -2000.0f), rad, next);
+		next = new CPoint(CVector(-1601.0f, 30.0f, -1702.0f), rad, next);
+		next = new CPoint(CVector(-1350.0f, 30.0f, 2150.0f), rad, next);
+		next = new CPoint(CVector(258.0f, 30.0f, 2000.0f), rad, next);
+		next = new CPoint(CVector(413.0f, 30.0f, 1300.0f), rad, next);
+		////最初に生成したポインタの次ポインタの設定
+		first->Set(first->mPosition, rad, next);
+		//最初の目標を設定
+		CEnemy::mPoint = next->GetNextPoint();
+		return;
+	}
+	else if (CSceneTitle::mCource_Number == 2){
+		CPoint *next, *first;
+		first = next = new CPoint(CVector(2128.0f, 30.0f, -3026.0f), rad, nullptr);
+		next = new CPoint(CVector(1317.0f, 30.0f, -3865.0f), rad, next);
+		next = new CPoint(CVector(529.0f, 30.0f, -3565.0f), rad, next);
+		next = new CPoint(CVector(-721.0f, 30.0f, -1926.0f), rad, next);
+		next = new CPoint(CVector(-1500.0f, 30.0f, -80.0f), rad, next);
+		next = new CPoint(CVector(-2652.0f, 30.0f, 113.0f), rad, next);
+		next = new CPoint(CVector(-3355.0f, 30.0f, 809.0f), rad, next);
+		next = new CPoint(CVector(-3127.0f, 30.0f, 1432.0f), rad, next);
+		next = new CPoint(CVector(-2528.0f, 30.0f, 1832.0f), rad, next);
+		next = new CPoint(CVector(-1645.0f, 30.0f, 3612.0f), rad, next);
+		next = new CPoint(CVector(-700.0f, 30.0f, 4935.0f), rad, next);
+		next = new CPoint(CVector(463.0f, 30.0f, 5010.0f), rad, next);
+		next = new CPoint(CVector(1212.0f, 30.0f, 4516.0f), rad, next);
+		next = new CPoint(CVector(1719.0f, 30.0f, 3250.0f), rad, next);
+		next = new CPoint(CVector(3240.0f, 30.0f, 2207.0f), rad, next);
+		next = new CPoint(CVector(3763.0f, 30.0f, 510.0f), rad, next);
+		next = new CPoint(CVector(3068.0f, 30.0f, -355.0f), rad, next);
+		next = new CPoint(CVector(2364.0f, 30.0f, -653.0f), rad, next);
+		next = new CPoint(CVector(2285.0f, 30.0f, -2140.0f), rad, next);
+		////最初に生成したポインタの次ポインタの設定
+		first->Set(first->mPosition, rad, next);
+		//最初の目標を設定
+		CEnemy::mPoint = next->GetNextPoint();
+		return;
+	}
+
 	//三角形ポリゴンの重心座標を求めて配列にする
-	int triangle_size = pmodel->mTriangles.size();
-	
+	int triangle_size = pmodel->mTriangles.size();	
 	//ポリゴンの数分ベクトルの配列を作成する
 	CVector *polygonarray;
 	polygonarray = new CVector[triangle_size];
@@ -139,12 +187,58 @@ void CRoadManager::Init(CModel* pmodel, const CVector& pos, const CVector& rot, 
 			first = next = new CPoint(center, rad, nullptr);
 			isfirst = false;
 		}
-		else{
-			/*if ((next->mPosition - center).Length() > 240.0f){
-				next = new CPoint(center, 120.0f, next);
-			}*/
-			next = new CPoint(center, rad, next);
-		}		
+		else{	
+			if ((next->mPosition - center).Length() >= interval){
+				/*if (CSceneTitle::mCource_Number == 2){
+					if (center.mX > -249.0f && center.mX < -248.0f
+						&& center.mZ > 5027.0f && center.mZ < 5028.0f
+						&& center.mY > -5.0f && center.mY < -3.0f){
+						CVector extrapoint = center;
+						extrapoint.mX = -705.0f;
+						extrapoint.mZ = 4848.0f;
+						next = new CPoint(extrapoint, rad, next);
+					}
+					else if (center.mX > 1417.0f && center.mX < -1418.0f
+						&& center.mZ > 4000.0f && center.mZ < 4000.5f){
+						CVector extrapoint = center;
+						extrapoint.mX = 1211.0f;
+						extrapoint.mZ = 4433.0f;
+						next = new CPoint(extrapoint, rad, next);
+					}
+				}*/				
+				next = new CPoint(center, rad, next);
+				//if (CSceneTitle::mCource_Number == 2){
+				//	if (center.mX > -1226.0f && center.mX < -1225.5f
+				//		&& center.mZ > -597.5f && center.mZ < -597.0f){
+				//		CVector extrapoint = center;
+				//		/*extrapoint.mX = -1568.0f;
+				//		extrapoint.mZ = -156.0f;*/
+				//		extrapoint.mX = -1543.0f;
+				//		extrapoint.mZ = -78.9f;
+				//		next = new CPoint(extrapoint, rad, next);
+				//	}
+				//	if (center.mX > -3134.0f && center.mX < -3133.5f
+				//		&& center.mZ > 442.5f && center.mZ < -443.0f){
+				//		CVector extrapoint = center;
+				//		/*extrapoint.mX = -1568.0f;
+				//		extrapoint.mZ = -156.0f;*/
+				//		extrapoint.mX = -2800.0f;
+				//		extrapoint.mZ = 195.0f;
+				//		next = new CPoint(extrapoint, rad, next);
+				//	}
+				//	if (center.mX > 1417.0f && center.mX < -1418.0f
+				//		&& center.mZ > 4000.0f && center.mZ < 4000.5f){
+				//		CVector extrapoint = center;
+				//		/*extrapoint.mX = -1568.0f;
+				//		extrapoint.mZ = -156.0f;*/
+				//		extrapoint.mX = 1115.0f;
+				//		extrapoint.mZ = 4540.0f;
+				//		next = new CPoint(extrapoint, rad, next);
+				//	}
+				//}				
+			}			
+		}
+		//printf("x:%f, y:%f, z:%f\n", center.mX, center.mY, center.mZ);
 	}
 	////最初に生成したポインタの次ポインタの設定
 	first->Set(first->mPosition, rad, next);

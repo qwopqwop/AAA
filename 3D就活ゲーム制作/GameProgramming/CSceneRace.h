@@ -12,9 +12,11 @@
 
 #include "CObjFloor.h"
 
-#define ENEMYS_AMOUNT 7-2 //0以下には設定できない
+#define ENEMYS_AMOUNT 5//0以下には設定できない
 
 #define GROUND_AMOUNT 128
+
+#include <stdlib.h>
 
 /*
 ゲームのシーン
@@ -31,7 +33,7 @@ private:
 	float mCamY;//プレイヤーの周りを回転(水平方向に)	
 
 	//スタート前のカウントダウン
-	int mFrame;
+	int mFrame;//60f=1秒
 	int mCountDown;
 	//コースタイム、ラップ関連
 	bool isStartRace, isGoal;
@@ -41,10 +43,7 @@ private:
 	static int mBestTime;
 	int mLap, mMaxLap;
 	bool isNewRecord;
-
-	int mCamPoV;
-
-	int mTextBlinkTime;
+	int mTextBlinkTime;//テキストの点滅に関わる変数
 
 	bool isPause;
 	int mPause_SelectCarsol;
@@ -60,7 +59,6 @@ private:
 
 	//デバッグコマンド用の変数
 	bool mPutCol;//当たり判定の描画のON・OFF
-	bool isRendPoint;//中間地点がミニマップに表示されるか
 
 	bool isEnableShadow_Cource;
 	bool isEnableShadow_Car;
@@ -123,7 +121,7 @@ protected:
 	CModel mCource03Fence;
 
 	CModel mJumper01;//ジャンプ台
-	//平たいる
+	//平らなタイル
 	CModel mTile_Curve01_Floor;
 	CModel mTile_Curve02_Floor;
 	CModel mTile_Curve03_Floor;
@@ -184,10 +182,9 @@ public:
 	//他シーンに行く際の演出・処理
 	void SceneChange();
 	
-	static int mRecord_A, mRecord_B, mRecord_C, mRecord_D, mRecord_E, mRecord_F;	
-	
+	//各コースのベストタイム
+	static int mRecord_A, mRecord_B, mRecord_C, mRecord_D, mRecord_E, mRecord_F;
 
-
-
+	FILE *outputfile;	
 };
 #endif

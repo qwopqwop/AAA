@@ -6,10 +6,10 @@
 class CRoadManager : public CObjFloor
 {
 public:
-	//CRoadManager(モデルデータのポインタ,位置,回転,拡大縮小,スタート位置,進行方向,各ポイントの半径)
-	CRoadManager(CModel*, const CVector& pos, const CVector& rot, const CVector& scale, const CVector& startPos, const CVector& foward, const float radius);
+	//CRoadManager(モデルデータのポインタ,位置,回転,拡大縮小,スタート位置,進行方向,各ポイントの半径,ポイント間の最小の間隔)
+	CRoadManager(CModel*, const CVector& pos, const CVector& rot, const CVector& scale, const CVector& startPos, const CVector& foward, const float radius, const float interval);
 	//Init(モデルデータのポインタ,位置,回転,拡大縮小,スタート位置,進行方向)
-	void Init(CModel*, const CVector& pos, const CVector& rot, const CVector& scale, const CVector& startPos, const CVector& foward, const float radius);
+	void Init(CModel*, const CVector& pos, const CVector& rot, const CVector& scale, const CVector& startPos, const CVector& foward, const float radius, const float interval);
 };
 
 #endif
