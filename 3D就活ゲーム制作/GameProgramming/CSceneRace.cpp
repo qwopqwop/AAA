@@ -55,7 +55,7 @@ int CSceneRace::mRecord_F = 43300;
 bool CSceneRace::isEnableShadow = true;//影
 bool CSceneRace::isEnableMiniMap = true;//ミニマップ
 bool CSceneRace::isEnableBackMirror = true;//バックミラー
-bool CSceneRace::isEnableSpeedometer = true;//速度計
+bool CSceneRace::isEnableSpeedometer = false;//速度計
 
 //画面サイズは800x600を想定
 #define SCREENSIZE_X 800

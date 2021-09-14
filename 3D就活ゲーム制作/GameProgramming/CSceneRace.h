@@ -12,7 +12,7 @@
 
 #include "CObjFloor.h"
 
-#define ENEMYS_AMOUNT 5//0ˆÈ‰º‚É‚ÍÝ’è‚Å‚«‚È‚¢
+#define ENEMYS_AMOUNT 5-4//0ˆÈ‰º‚É‚ÍÝ’è‚Å‚«‚È‚¢
 
 #define GROUND_AMOUNT 128
 

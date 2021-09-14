@@ -29,15 +29,12 @@ CPlayer *CPlayer::mpPlayer = 0;
 
 #define G (9.8f / 90.0f)//重力加速度//60.0f
 #define JUMPV0 (16.0f)//ジャンプ初速//4.0f
-
-#define MAXSPEED 20.0f //4.5f+3.0f *5//車の最高速度
+#define MAXSPEED 20.0f //車の最高速度
 #define MAXSPEED_BACK 4.0f//車の後退する最大速度
 #define CAR_POWER 0.1f //*2//1フレーム辺りの車の加速していく量
 #define CAR_BREAK_POWER 0.1f//前進中のブレーキの強さ
-
 #define DECELERATE 0.1f //車の減速する量
 #define FIX_ANGLE_VALUE 1.0f //角度が0度に向けて調整される量(主にX・Z用)
-
 #define JUMPER01_POWER 3.0f;//ジャンプ台1によるジャンプの強さ
 
 CPlayer::CPlayer()
@@ -514,9 +511,6 @@ void CPlayer::Collision(CCollider *mc, CCollider *yc){
 						}
 					}
 				}
-				/*else{
-					isTouchGoal = false;
-				}*/
 				if (mCanSwim && yc->mpParent->mTag == CCharacter::EWATER){
 					//通過可能、ステージ1の水
 				}
@@ -534,8 +528,7 @@ void CPlayer::Collision(CCollider *mc, CCollider *yc){
 					if (mJumpPrio < 1){
 
 						CVector adjust;//調整用ベクトル
-						//		//三角形と球の衝突判定
-						//		CCollider::CollisionTriangleSphere(yc, mc, &adjust);
+						//三角形と球の衝突判定
 						if (CCollider::CollisionTriangleSphere(yc, mc, &adjust)){
 							//位置の更新
 							mPosition = mPosition - adjust * -1;
@@ -567,7 +560,6 @@ void CPlayer::Collision(CCollider *mc, CCollider *yc){
 								}								
 							}
 							else if(yc->mpParent->mTag == CCharacter::EJUMPER){//ジャンプ台に接触した時
-								//mVelocityJump = 0; 
 								mVelocityJump = JUMPER01_POWER;
 								mCanJump = true;
 								SoundJump.Play();
@@ -586,7 +578,7 @@ void CPlayer::Collision(CCollider *mc, CCollider *yc){
 			if (mc->mTag == CCollider::ESEARCH){
 				//加速床に乗った時の処理
 				if (yc->mpParent->mTag == CCharacter::EDASHBOARD){
-					CVector aiueo;//とりまベクトル
+					CVector aiueo;//値を返すためのベクトル
 					if (CCollider::CollisionTriangleSphere(yc, mc, &aiueo)){
 						//mCarSpeed += 10.0f;
 						//mCarSpeed = MAXSPEED+10.0f;						
@@ -624,14 +616,12 @@ void CPlayer::Collision(CCollider *mc, CCollider *yc){
 					if (yc->mpParent->mTag == CCharacter::EENEMY){
 						if (yc->mTag == CCollider::EBODY){
 							CVector adjust;//調整用ベクトル
-							////		//球同士の衝突判定
+							//球同士の衝突判定
 							if (CCollider::Collision(mc, yc, &adjust)){
 								//位置の更新
 								mPosition = mPosition - adjust * -1;
 								//行列の更新
 								CCharacter::Update();
-								//printf("自分の衝突処理");
-								//SoundCollisionSmall.Play();
 							}
 						}
 					}

@@ -15,25 +15,6 @@ void CRaceCourceA::Init(){
 	mScene = ERACE1;
 
 	CSceneRace::Init();
-
-	//CEnemy::mPointSize = 12;//ポイント数の設定
-	//CPoint *next, *first;
-	////後ろから前に向かって生成していく
-	//first = next = CEnemy::mPoint12 = new CPoint(CVector(340.0f, 30.0f, -1182.0f), 500.0f, nullptr);
-	////CPoint生成時に次ポインタを設定していく
-	//next = CEnemy::mPoint11 = new CPoint(CVector(-500.0f, 30.0f, -2000.0f), 500.0f, next);
-	//next = CEnemy::mPoint10 = new CPoint(CVector(-1601.0f, 30.0f, -1702.0f), 500.0f, next);
-	//next = CEnemy::mPoint9 = new CPoint(CVector(-1350.0f, 30.0f, 2150.0f), 500.0f, next);
-	//next = CEnemy::mPoint8 = new CPoint(CVector(258.0f, 30.0f, 2000.0f), 500.0f, next);
-	//next = CEnemy::mPoint7 = new CPoint(CVector(413.0f, 30.0f, 1300.0f), 500.0f, next);
-	//next = CEnemy::mPoint6 = new CPoint(CVector(340.0f, 30.0f, -1182.0f), 500.0f, next);
-	//next = CEnemy::mPoint5 = new CPoint(CVector(-500.0f, 30.0f, -2000.0f), 500.0f, next);
-	//next = CEnemy::mPoint4 = new CPoint(CVector(-1601.0f, 30.0f, -1702.0f), 500.0f, next);
-	//next = CEnemy::mPoint3 = new CPoint(CVector(-1350.0f, 30.0f, 2150.0f), 500.0f, next);
-	//next = CEnemy::mPoint2 = new CPoint(CVector(258.0f, 30.0f, 2000.0f), 500.0f, next);
-	//next = CEnemy::mPoint = new CPoint(CVector(413.0f, 30.0f, 1300.0f), 500.0f, next);
-	////最初に生成したポインタの次ポインタの設定
-	//first->Set(CVector(340.0f, 30.0f, -1182.0f), 500.0f, next);
 		
 	//プレイヤーの生成
 	mCarShadow[0] = mPlayer = new CPlayer();
@@ -41,17 +22,11 @@ void CRaceCourceA::Init(){
 	//カメラの生成
 	mCamRange = new CCameraRange();
 	mCam = new CCameraPos();
-	//コースの生成//ここを床と壁で分割して処理を分ける
+	//コースの生成//床と壁で分割して処理を区別する
 	//コース全体のサイズ感を設定
 	float mtsize = 50.0f;
 	float height = 2.0f;
-	CVector karikari = mPlayer->mPosition;
-	//karikari.mZ = 1300.0f;
-	mpGrounds[0] = new CRoadManager(&mCource01, CVector(-360.0f, 5.0f - 33.0f, 230.0f), CVector(), CVector(mtsize, height, mtsize), karikari, CVector(0.0f, 0.0f, 1.0f), 60.0f, 0.0f);
-	//mpGrounds[0] = new CObjFloor(&mCource01, CVector(-360.0f, 5.0f - 33.0f, 230.0f), CVector(), CVector(50.0f, 2.0f, 50.0f));
-//	mpGrounds[0] = new CRoadManager(&mCource01, CVector(-360.0f, 5.0f - 33.0f, 230.0f), CVector(), CVector(50.0f, 2.0f, 50.0f));
-//	mpGrounds[0] = new CRoadManager(&mCource01, CVector(-360.0f, 5.0f - 33.0f, 230.0f), CVector(), CVector(50.0f, 2.0f, 50.0f), mPlayer->mPosition, CVector(0.0f, 0.0f, 1.0f), 120.0f);//
-	//new CRoadManager(&mCource01, CVector(-360.0f, 5.0f - 33.0f, 230.0f), CVector(), CVector(50.0f, 2.0f, 50.0f), mPlayer->mPosition, CVector(0.0f, 0.0f, -1.0f));//
+	mpGrounds[0] = new CRoadManager(&mCource01, CVector(-360.0f, 5.0f - 33.0f, 230.0f), CVector(), CVector(mtsize, height, mtsize), mPlayer->mPosition, CVector(0.0f, 0.0f, 1.0f), 500.0f, 0.0f);
 	//敵車の生成
 	for (int i = 0; i < ENEMYS_AMOUNT; i++){
 		mEnemys[i] = new CEnemy();
@@ -134,32 +109,33 @@ void CRaceCourceA::Init(){
 	}
 
 	for (int i = 0; i < ENEMYS_AMOUNT; i++){
-		if (mEnemys[i]->mpModel==&mCarRed){
-			printf("CPU%d RED\n", i + 1);
+		int cpu_number = i + 1;
+		if (mEnemys[i]->mpModel == &mCarRed){
+			printf("CPU%d RED\n", cpu_number);
 		}
 		else if (mEnemys[i]->mpModel == &mCarBlue){
-			printf("CPU%d BLUE\n", i + 1);
+			printf("CPU%d BLUE\n", cpu_number);
 		}
 		else if (mEnemys[i]->mpModel == &mCarBlack){
-			printf("CPU%d BLACK\n", i + 1);
+			printf("CPU%d BLACK\n", cpu_number);
 		}
 		else if (mEnemys[i]->mpModel == &mCarCyan){
-			printf("CPU%d CYAN\n", i + 1);
+			printf("CPU%d CYAN\n", cpu_number);
 		}
 		else if (mEnemys[i]->mpModel == &mCarGreen){
-			printf("CPU%d GREEN\n", i + 1);
+			printf("CPU%d GREEN\n", cpu_number);
 		}
 		else if (mEnemys[i]->mpModel == &mCarGray){
-			printf("CPU%d GRAY\n", i + 1);
+			printf("CPU%d GRAY\n", cpu_number);
 		}
 		else if (mEnemys[i]->mpModel == &mCarPink){
-			printf("CPU%d PINK\n", i + 1);
+			printf("CPU%d PINK\n", cpu_number);
 		}
 		else if (mEnemys[i]->mpModel == &mCarWhite){
-			printf("CPU%d WHITE\n", i + 1);
+			printf("CPU%d WHITE\n", cpu_number);
 		}
 		else if (mEnemys[i]->mpModel == &mCarYellow){
-			printf("CPU%d YELLOW\n", i + 1);
+			printf("CPU%d YELLOW\n", cpu_number);
 		}
 	}
 }

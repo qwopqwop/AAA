@@ -20,18 +20,13 @@ extern std::shared_ptr<CTexture> TextureHit;
 extern std::shared_ptr<CTexture> TextureBoost;
 #include "CTaskManager.h"
 
-extern CSound SoundBoost;
-extern CSound SoundEngine;
-extern CSound SoundCollision;
-extern CSound SoundCollisionSmall;
-
 CEnemy *CEnemy::mpEnemy = 0;
-int CEnemy::mPointSize = 0;
 
 #define G (9.8f / 90.0f)//重力加速度
 #define JUMPV0 (16.0f)//ジャンプ初速
 
-#define MAXSPEED 20.0f//車の最高速度 //一応プレイヤーが追いつける程度に最高速は少し低め
+#define MAXSPEED 20.0f//車の最高速度
+#define MINSPEED 1.0f//車の最低速度
 #define MAXSPEED_BACK 4.0f//車の後退する最大速度
 #define CAR_POWER 0.1f//1フレーム辺りの車の加速していく量
 #define CAR_BREAK_POWER 0.1f//前進中のブレーキの強さ
@@ -61,17 +56,6 @@ CEnemy::CEnemy()
 	mCarSpeed = 0.0f;//車の速度の初期化
 	mTurnSpeed = 0.0f;
 
-	mCPULevelSpeed = 0.0f;
-	/*if (CSceneTitle::mCPU_Level == 1){
-		mCPULevelSpeed = 0.0f;
-	}
-	else if (CSceneTitle::mCPU_Level == 2){
-		mCPULevelSpeed = 0.0f;
-	}
-	else if (CSceneTitle::mCPU_Level == 3){
-		mCPULevelSpeed = 0.0f;
-	}*/
-	
 	mCanJump = false;
 	CanMove = false;
 
@@ -82,6 +66,7 @@ CEnemy::CEnemy()
 	mBoostTime = 0;
 
 	mTag = EENEMY;
+	mEnemyAI = EPRO;
 
 	//スタート地点の座標を設定;
 	mStartPoint[0] = 350.0f;  mStartPoint[1] = -13.538f;  mStartPoint[2] = -100.0f;
@@ -92,17 +77,8 @@ CEnemy::CEnemy()
 	mColBody.mTag = CCollider::EBODY;
 	mColTire.mTag = CCollider::ESEARCH;
 	mSearch.mTag = CCollider::ESEARCH;
-
-	SoundBoost.Load("SE\\Shortbridge31-3.wav");
-	SoundEngine.Load("SE\\SNES-Racing01-02.wav");
-	SoundCollision.Load("SE\\bomb1.wav");
-	SoundCollisionSmall.Load("SE\\SNES-Racing01-10(Collision).wav");
-
-	isSoundEngine = false;
 	
-	mPointCnt = 0;//最初のポイントを設定
 	mPointTime = 0;//現ポイントに移ってからの経過時間
-	//mpPoint = &mPoint[mPointCnt];//目指すポイントのポインタを設定
 
 	mpPoint = mPoint;
 	mVPoint = mpPoint->mPosition;//一番最初は分散無し
@@ -110,7 +86,6 @@ CEnemy::CEnemy()
 
 	mMaxSpeed_PtoP = 20.0f;
 
-	mRespawnCount = 0;
 	mEnemyLap = 1;//敵のラップ数を１周目に設定する
 	isTouchGoal = false;
 	isEnemyGoaled = false;//まだゴールしてない状態にする
@@ -120,48 +95,39 @@ CEnemy::CEnemy()
 void CEnemy::Update(){
 
 	//速度調整
-	if (CSceneTitle::mCource_Number == 2){
-		//	/*if (mpPoint == mPoint){
-		//		mMaxSpeed_PtoP = 15.0f;
-		//	}
-		//	else if (mpPoint == mPoint2){
-		//		mMaxSpeed_PtoP = 10.0f;
-		//	}
-		//	else if (mpPoint == mPoint4){
-		//		mMaxSpeed_PtoP = 15.0f;
-		//	}
-		//	else if (mpPoint == mPoint6){
-		//		mMaxSpeed_PtoP = 15.0f;
-		//	}
-		//	else if (mpPoint == mPoint8){
-		//		mMaxSpeed_PtoP = 15.0f;
-		//	}
-		//	else if (mpPoint == mPoint9){
-		//		mMaxSpeed_PtoP = 15.0f;
-		//	}
-		//	else if (mpPoint == mPoint11){
-		//		mMaxSpeed_PtoP = 14.0f;
-		//	}
-		//	else if (mpPoint == mPoint12){
-		//		mMaxSpeed_PtoP = 13.0f;
-		//	}
-		//	else if (mpPoint == mPoint13){
-		//		mMaxSpeed_PtoP = 10.0f;
-		//	}
-		//	else if (mpPoint == mPoint15){
-		//		mMaxSpeed_PtoP = 18.0f;
-		//	}
-		//	else if (mpPoint == mPoint16){
-		//		mMaxSpeed_PtoP = 14.0f;
-		//	}
-		//	else if (mpPoint == mPoint17){
-		//		mMaxSpeed_PtoP = 15.0f;
-		//	}
-		//	else{
-		//		mMaxSpeed_PtoP = 20.0f;
-		//	}*/
+	if (CSceneTitle::mCource_Number == 1){
+		//次のポイントから次の次のポイントへのベクトル
+		CVector vNext = mpPoint->GetNextPoint()->mPosition - mPosition;
+		//現在の向き
+		CVector vLeft = CVector(1.0f, 0.0f, 0.0f) * mMatrixRotate;
+		//内積から曲がり具合を求める(0:90°　1.0：真っすぐ）
+		float corve = abs(vLeft.Dot(vNext.Normalize()));
+		if (corve > 0.9f){
+			corve = 0.7f;
+		}
+		else if (corve < 0.7f){
+			corve = 1.0f;
+		}
+		//速度上限の計算
+		mMaxSpeed_PtoP = MAXSPEED * corve;
 	}
-	if (CSceneTitle::mCource_Number == 5){
+	else if(CSceneTitle::mCource_Number == 2){
+		//次のポイントから次の次のポイントへのベクトル
+		CVector vNext = mpPoint->GetNextPoint()->mPosition - mPosition;
+		//現在の向き
+		CVector vLeft = CVector(1.0f, 0.0f, 0.0f) * mMatrixRotate;
+		//内積から曲がり具合を求める(0:90°　1.0：真っすぐ）
+		float corve = abs(vLeft.Dot(vNext.Normalize()));
+		/*if (corve > 0.9f){
+			corve = 0.05f;
+		}*/
+		if (corve < 0.5f){
+			corve = 1.0f;
+		}
+		//速度上限の計算
+		mMaxSpeed_PtoP = MAXSPEED * corve;
+	}
+	else if (CSceneTitle::mCource_Number == 5){
 		//次のポイントから次の次のポイントへのベクトル
 		CVector vNext = mpPoint->GetNextPoint()->mPosition - mPosition;
 		//現在の向き
@@ -176,15 +142,13 @@ void CEnemy::Update(){
 		}
 		//速度上限の計算
 		mMaxSpeed_PtoP = MAXSPEED * corve;
-		//スピードの最低値
-		if (mMaxSpeed_PtoP < 1.0f)
-		{
-			mMaxSpeed_PtoP = 1.0f;
-		}
 	}
-	else{
-		//※A,Bコースも調整が必要
+	else{		
 		mMaxSpeed_PtoP = 20.0f;
+	}
+	//スピードは最低速度を下回らない
+	if (mMaxSpeed_PtoP < MINSPEED){
+		mMaxSpeed_PtoP = MINSPEED;
 	}
 
 	//ポイントへのベクトルを求める
@@ -319,27 +283,7 @@ void CEnemy::Update(){
 	else if (mRotation.mZ < -180){
 		mRotation.mZ = 180;
 	}
-
-	//前に車が進んでいる時
-	if (mCarSpeed > 0.0f){
-		if (isSoundEngine == false){
-			//SoundEngine.Repeat();
-			isSoundEngine = true;
-		}
-	}
-	//車が停止している時
-	else if (mCarSpeed == 0.0f){
-		//SoundEngine.Stop();
-		isSoundEngine = false;
-	}
-	//車がバックしている時
-	else if (mCarSpeed < 0.0f){
-		if (isSoundEngine == false){
-			//現状では相手のエンジン音は鳴らない
-			//SoundEngine.Repeat();
-			isSoundEngine = true;
-		}
-	}
+		
 	//X,Z方向の移動とY軸方向(重力)の移動は別々に行う
 	mPosition = CVector(mADMoveX, 0.0f, mWSMoveZ + mCarSpeed) * mMatrixRotate * mMatrixTranslate;
 	CCharacter::Update();
@@ -359,156 +303,6 @@ void CEnemy::Update(){
 		mCarSpeed = 0.0f;
 		//1つ前の目標地点に戻される
 		mPosition = mVPoint_prev;
-		////mRotation = CVector(0.0f, 0.0f, 0.0f);
-		//if (CSceneTitle::mCource_Number != 0){
-		//	//目標の地点へリスポーンさせる
-		////	mPosition = mpPoint->mPosition;
-		////	mPosition = mVPoint;
-		//	mPosition = mVPoint_prev;
-		//}
-		//else if (CSceneTitle::mCource_Number == 1){
-		//	if (mChecks == 0){
-		//		//スタートした時の位置、方向に戻される
-		//		mPosition = CVector(mStartPoint[0], mStartPoint[1], mStartPoint[2]);
-		//		mRotation.mY = 0.0f;
-		//		mpPoint = mPoint;
-		//		mVPoint = mpPoint->mPosition;
-		//	}
-		//	else if (mChecks == 1){
-		//		mPosition = CVector(-80.0f, mStartPoint[1], 2175.0f);
-		//		mRotation.mY = -55.0f;
-		//		mpPoint = mPoint3;
-		//		mVPoint = mpPoint->mPosition;
-		//	}
-		//	else if (mChecks == 2){
-		//		mPosition = CVector(-1620.0f, mStartPoint[1], 450.0f);
-		//		mRotation.mY = -175.0f;
-		//		mpPoint = mPoint4;
-		//		mVPoint = mpPoint->mPosition;
-		//	}
-		//	else if (mChecks == 3){
-		//		/*mPosition = CVector(-1412.0f, mStartPoint[1], -1720.0f);
-		//		mRotation.mY = 120.0f;
-		//		mpPoint = mPoint5;
-		//		mVPoint = mpPoint->mPosition;*/
-		//		mPosition = CVector(-1620.0f, mStartPoint[1], -250.0f);
-		//		mRotation.mY = -175.0f;
-		//		mpPoint = mPoint4;
-		//		mVPoint = mpPoint->mPosition;
-		//	}
-		//}
-		//else if (CSceneTitle::mCource_Number == 2){
-		//	if (mChecks == 0){
-		//		//スタートした時の位置、方向に戻される
-		//		mPosition = CVector(2222.0f, -13.538f, -2510.0f - 30.0f);
-		//		mRotation.mY = 0.0f;
-		//		//目標地点も戻る
-		//		mpPoint = mPoint;
-		//		mVPoint = mpPoint->mPosition;
-		//	}
-		//	else if (mChecks == 1){
-		//		mPosition = CVector(2893.0f, mStartPoint[1], 2473.0f);
-		//		mRotation.mY = -59.0f;
-		//		mpPoint = mPoint5;
-		//		//mpPoint = mPoint;
-		//		mVPoint = mpPoint->mPosition;
-		//	}
-		//	else if (mChecks == 2){
-		//		mPosition = CVector(-1020.0f, mStartPoint[1], 4594.0f);
-		//		mRotation.mY = -506.4f;
-		//		mpPoint = mPoint10;
-		//		//mpPoint = mPoint;
-		//		mVPoint = mpPoint->mPosition;
-		//	}
-		//	else if (mChecks == 3){
-		//		mPosition = CVector(-1357.0f, mStartPoint[1] - 30.0f, -520.0f);
-		//		mRotation.mY = -200.0f+40.0f;
-		//		mpPoint = mPoint14;
-		//		//mpPoint = mPoint;
-		//		mVPoint = mpPoint->mPosition;
-		//		
-		//	}
-		//}
-		//else if (CSceneTitle::mCource_Number == 3){
-		//	if (mChecks == 0){
-		//		//スタートした時の位置、方向に戻される
-		//		mPosition = CVector(0.0f, -13.538f, 80.0f);
-		//		mRotation.mY = 90.0f;
-		//		//目標地点も戻る
-		//		mpPoint = mPoint;
-		//		mVPoint = mpPoint->mPosition;
-		//	}
-		//	else if (mChecks == 1){
-		//		mPosition = CVector(1127.4f, mStartPoint[1]+100.0f, -5054.0f);
-		//		mRotation.mY = 270.1f;
-		//		mpPoint = mPoint7;
-		//		mVPoint = mpPoint->mPosition;
-		//	}
-		//	else if (mChecks == 2){
-		//		/*mPosition = CVector(777.0f, mStartPoint[1], 1925.0f);
-		//		mStartRotation = 405.1f;*/
-		//		mPosition = CVector(777.0f, mStartPoint[1], 1925.0f);
-		//		mRotation.mY = 405.1f;
-		//		mpPoint = mPoint12;
-		//		mVPoint = mpPoint->mPosition;
-		//	}
-		//	else if (mChecks == 3){
-		//		mPosition = CVector(-5861.0f, mStartPoint[1], 1165.0f);
-		//		mRotation.mY = -583.5f;
-		//		mpPoint = mPoint20;
-		//		mVPoint = mpPoint->mPosition;
-		//	}
-		//}
-		//else if (CSceneTitle::mCource_Number == 5){
-		//	if (mChecks == 0){
-		//		//スタートした時の位置、方向に戻される
-		//		mPosition = CVector(-3755.5f, 13.5f, 16060.5f);
-		//		mRotation.mY = -145.0f;
-		//		//目標地点も戻る
-		//		mpPoint = mPoint;
-		//		mVPoint = mpPoint->mPosition;
-		//	}
-		//	else if (mChecks == 1){
-		//		mPosition = CVector(-16054.4f, 4915.0f, -2180.0f);
-		//		mRotation.mY = -174.6f;
-		//		mpPoint = mPoint21;
-		//		//mpPoint = mPoint;
-		//		mVPoint = mpPoint->mPosition;
-		//	}
-		//	else if (mChecks == 2){
-		//		mPosition = CVector(4680.0f, 13.5f, -2027.0f);
-		//		mRotation.mY = 147.2f;
-		//		mpPoint = mPoint32;
-		//		//mpPoint = mPoint;
-		//		mVPoint = mpPoint->mPosition;
-		//	}
-		//	else if (mChecks == 3){
-		//		mPosition = CVector(14809.0f, 13.5f, 4270.0f);
-		//		mRotation.mY = -9.5f;
-		//		mpPoint = mPoint38;
-		//		//mpPoint = mPoint;
-		//		mVPoint = mpPoint->mPosition;
-		//	}
-		//}
-		//else{
-		//	if (mChecks == 0){
-		//		//スタートした時の位置、方向に戻される
-		//		mPosition = CVector(mStartPoint[0]-300.0f, mStartPoint[1]+400.0f, mStartPoint[2]-0.0f);
-		//		mRotation.mY = 0.0f;
-		//	}
-		//	else if (mChecks == 1){
-		//		mPosition = CVector(-80.0f, mStartPoint[1], 2175.0f);
-		//		mRotation.mY = -55.0f;
-		//	}
-		//	else if (mChecks == 2){
-		//		mPosition = CVector(-1620.0f, mStartPoint[1], 450.0f);
-		//		mRotation.mY = -175.0f;
-		//	}
-		//	else if (mChecks == 3){
-		//		mPosition = CVector(-1212.0f, mStartPoint[1], -1616.0f);
-		//		mRotation.mY = 120.0f;
-		//	}
-		//}		
 	}
 	CCharacter::Update();
 
@@ -534,7 +328,6 @@ void CEnemy::Collision(CCollider *mc, CCollider *yc){
 					if (CCollider::CollisionTriangleSphere(yc, mc, &aiueo)){
 						//ブースト効果の方が優先される
 						if (isBoost == false){
-							//printf("speed down…\n");
 							//一定速度までスピード低下
 							if (mCarSpeed > 3.2f + 1.8f){
 								if (mCarSpeed > 4.0f + 1.8f){
@@ -550,7 +343,7 @@ void CEnemy::Collision(CCollider *mc, CCollider *yc){
 				if (yc->mpParent->mTag == CCharacter::ECHECKPOINT){//中間地点1
 					if (mChecks == 0){
 						//各中間地点を通過しないと1周したとみなされない
-						CVector aiu;//数合わせのためだけのベクトル
+						CVector aiu;//値返し用ベクトル
 						if (CCollider::CollisionTriangleSphere(yc, mc, &aiu)){
 							mChecks = 1;
 						}
@@ -559,7 +352,7 @@ void CEnemy::Collision(CCollider *mc, CCollider *yc){
 				if (yc->mpParent->mTag == CCharacter::ECHECKPOINT2){//中間地点2
 					if (mChecks == 1){
 						//各中間地点を通過しないと1周したとみなされない
-						CVector aiu;//数合わせのためだけのベクトル
+						CVector aiu;//値返し用ベクトル
 						if (CCollider::CollisionTriangleSphere(yc, mc, &aiu)){
 							mChecks = 2;
 							//mChecks = 0;
@@ -569,7 +362,7 @@ void CEnemy::Collision(CCollider *mc, CCollider *yc){
 				if (yc->mpParent->mTag == CCharacter::ECHECKPOINT3){//中間地点3
 					if (mChecks == 2){
 						//各中間地点を通過しないと1周したとみなされない
-						CVector aiu;//数合わせのためだけのベクトル
+						CVector aiu;//値返し用ベクトル
 						if (CCollider::CollisionTriangleSphere(yc, mc, &aiu)){
 							mChecks = 3;
 						}
@@ -578,7 +371,7 @@ void CEnemy::Collision(CCollider *mc, CCollider *yc){
 				if (yc->mpParent->mTag == CCharacter::EGOALPOINT){//ゴール地点
 					if (mChecks == 3){
 						//各中間地点を通過していなければ1周判定がなされない
-						CVector aiu;//数合わせのためだけのベクトル
+						CVector aiu;//値返し用ベクトル
 						if (CCollider::CollisionTriangleSphere(yc, mc, &aiu)){
 							isTouchGoal = true;
 						}
@@ -605,18 +398,14 @@ void CEnemy::Collision(CCollider *mc, CCollider *yc){
 						//行列の更新
 						CCharacter::Update();
 						if (yc->mpParent->mTag == CCharacter::EWALL){
-							//衝突したのが壁だった場合は壁には引っかからず落下
-							//壁にぶつかると衝突音がし、車が減速する
 							//速い時に衝突で減速、遅い時の衝突は特に変化なし
 							if (mCarSpeed > 6.5f){
 								mCarSpeed = 2.0f;
-								//SoundCollision.Play();
 								//激突時、エフェクト発生
 								new CEffect(mPosition + CVector(0.0f, 35.0f, 0.0f), 100.0f, 100.0f, TextureExp, 4, 4, 1, 0);
 							}
 							else if (mCarSpeed > 4.0f){
 								mCarSpeed = 2.0f;
-								//SoundCollisionSmall.Play();
 								//軽くぶつけた時もエフェクト発生
 								new CEffect(mPosition + CVector(0.0f, 15.5f, 0.0f), 60.0f, 60.0f, TextureHit, 3, 8, 1, 1);
 							}
@@ -626,15 +415,10 @@ void CEnemy::Collision(CCollider *mc, CCollider *yc){
 									mCarSpeed = 2.0f;
 								}
 							}
-							//mCarSpeed = -mCarSpeed * 1.0;
-							//mVelocityJump = 2.0f;
-
 						}
 						else if (yc->mpParent->mTag == CCharacter::EJUMPER){//ジャンプ台に接触した時
-							//mVelocityJump = 0; 
 							mVelocityJump = JUMPER01_POWER;
 							mCanJump = true;
-							//SoundJump.Play();
 						}
 						else{
 							mVelocityJump = 0;
@@ -720,293 +504,7 @@ void CEnemy::Collision(CCollider *mc, CCollider *yc){
 									gap = (rand() % (r * 2) - r);
 								}
 								//次のポイントを設定する
-								SetNextPoint(mpPoint, gap, false);
-								////コース5は分散無しの地点あり
-								//if (CSceneTitle::mCource_Number == 5){
-								//	SetNextPoint(mpPoint, gap, false);
-								//}
-								//else if (CSceneTitle::mCource_Number == 1){
-								//	SetNextPoint(mpPoint, gap, false);
-								//}
-								//else if (CSceneTitle::mCource_Number == 2){
-								//	SetNextPoint(mpPoint, gap, false);
-								//}
-								//else{
-								//	SetNextPoint(mpPoint, gap, false);
-								//	////次のポイントのポインタを設定
-								//	//if (mpPoint == mPoint){
-								//	//	mVPoint = mPoint2->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-								//	//	mpPoint = mPoint2;
-								//	//}
-								//	//else if (mpPoint == mPoint2){
-								//	//	mVPoint = mPoint3->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-								//	//	mpPoint = mPoint3;
-								//	//}
-								//	//else if (mpPoint == mPoint3){
-								//	//	mVPoint = mPoint4->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-								//	//	mpPoint = mPoint4;
-								//	//}
-								//	//else if (mpPoint == mPoint4){
-								//	//	mVPoint = mPoint5->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-								//	//	mpPoint = mPoint5;
-								//	//}
-								//	//else if (mpPoint == mPoint5){
-								//	//	mVPoint = mPoint6->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-								//	//	mpPoint = mPoint6;
-								//	//}
-								//	//else if (mpPoint == mPoint6){
-								//	//	mVPoint = mPoint7->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-								//	//	mpPoint = mPoint7;
-								//	//}
-								//	//else if (mpPoint == mPoint7){
-								//	//	mVPoint = mPoint8->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-								//	//	mpPoint = mPoint8;
-								//	//}
-								//	//else if (mpPoint == mPoint8){
-								//	//	mVPoint = mPoint9->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-								//	//	mpPoint = mPoint9;
-								//	//}
-								//	//else if (mpPoint == mPoint9){
-								//	//	mVPoint = mPoint10->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-								//	//	mpPoint = mPoint10;
-								//	//}
-								//	//else if (mpPoint == mPoint10){
-								//	//	mVPoint = mPoint11->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-								//	//	mpPoint = mPoint11;
-								//	//}
-								//	//else if (mpPoint == mPoint11){
-								//	//	mVPoint = mPoint12->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-								//	//	mpPoint = mPoint12;
-								//	//}
-								//	//else if (mpPoint == mPoint12){
-								//	//	//コース2or3を走行中かで分岐する
-								//	//	if (CSceneTitle::mCource_Number == 2 || CSceneTitle::mCource_Number == 3 || CSceneTitle::mCource_Number == 5){
-								//	//		mVPoint = mPoint13->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-								//	//		mpPoint = mPoint13;
-								//	//	}
-								//	//	else{
-								//	//		mVPoint = mPoint->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-								//	//		mpPoint = mPoint;//ポイント1に戻ってループする
-								//	//	}
-								//	//}
-								//	////コース2
-								//	//else if (CSceneTitle::mCource_Number == 2){
-								//	//	if (mpPoint == mPoint13){
-								//	//		mVPoint = mPoint14->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-								//	//		mpPoint = mPoint14;
-								//	//	}
-								//	//	else if (mpPoint == mPoint14){
-								//	//		mVPoint = mPoint15->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-								//	//		mpPoint = mPoint15;
-								//	//	}
-								//	//	else if (mpPoint == mPoint15){
-								//	//		mVPoint = mPoint16->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-								//	//		mpPoint = mPoint16;
-								//	//	}
-								//	//	else if (mpPoint == mPoint16){
-								//	//		mVPoint = mPoint17->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-								//	//		mpPoint = mPoint17;
-								//	//	}
-								//	//	else if (mpPoint == mPoint17){
-								//	//		mVPoint = mPoint->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-								//	//		mpPoint = mPoint;
-								//	//	}
-								//	//}
-								//	////コース3ではポインタの数が拡張される
-								//	//else if (CSceneTitle::mCource_Number == 3){
-								//	//	if (mpPoint == mPoint13){
-								//	//		mVPoint = mPoint14->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-								//	//		mpPoint = mPoint14;
-								//	//	}
-								//	//	else if (mpPoint == mPoint14){
-								//	//		mVPoint = mPoint15->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-								//	//		mpPoint = mPoint15;
-								//	//	}
-								//	//	else if (mpPoint == mPoint15){
-								//	//		mVPoint = mPoint16->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-								//	//		mpPoint = mPoint16;
-								//	//	}
-								//	//	else if (mpPoint == mPoint16){
-								//	//		mVPoint = mPoint17->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-								//	//		mpPoint = mPoint17;
-								//	//	}
-								//	//	else if (mpPoint == mPoint17){
-								//	//		mVPoint = mPoint18->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-								//	//		mpPoint = mPoint18;
-								//	//	}
-								//	//	else if (mpPoint == mPoint18){
-								//	//		mVPoint = mPoint19->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-								//	//		mpPoint = mPoint19;
-								//	//	}
-								//	//	else if (mpPoint == mPoint19){
-								//	//		mVPoint = mPoint20->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-								//	//		mpPoint = mPoint20;
-								//	//	}
-								//	//	else if (mpPoint == mPoint20){
-								//	//		mVPoint = mPoint21->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-								//	//		mpPoint = mPoint21;
-								//	//	}
-								//	//	else if (mpPoint == mPoint21){
-								//	//		mVPoint = mPoint22->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-								//	//		mpPoint = mPoint22;
-								//	//	}
-								//	//	else if (mpPoint == mPoint22){
-								//	//		mVPoint = mPoint23->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-								//	//		mpPoint = mPoint23;
-								//	//	}
-								//	//	else if (mpPoint == mPoint23){
-								//	//		mVPoint = mPoint->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-								//	//		mpPoint = mPoint;
-								//	//	}
-								//	//}
-								//	////コース5ではポインタの数が拡張される
-								//	//else if (CSceneTitle::mCource_Number == 5){
-								//	//	if (mpPoint == mPoint13){
-								//	//		mVPoint = mPoint14->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-								//	//		mpPoint = mPoint14;
-								//	//	}
-								//	//	else if (mpPoint == mPoint14){
-								//	//		mVPoint = mPoint15->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-								//	//		mpPoint = mPoint15;
-								//	//	}
-								//	//	else if (mpPoint == mPoint15){
-								//	//		mVPoint = mPoint16->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-								//	//		mpPoint = mPoint16;
-								//	//	}
-								//	//	else if (mpPoint == mPoint16){
-								//	//		mVPoint = mPoint17->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-								//	//		mpPoint = mPoint17;
-								//	//	}
-								//	//	else if (mpPoint == mPoint17){
-								//	//		mVPoint = mPoint18->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-								//	//		mpPoint = mPoint18;
-								//	//	}
-								//	//	else if (mpPoint == mPoint18){
-								//	//		mVPoint = mPoint19->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-								//	//		mpPoint = mPoint19;
-								//	//	}
-								//	//	else if (mpPoint == mPoint19){
-								//	//		mVPoint = mPoint20->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-								//	//		mpPoint = mPoint20;
-								//	//	}
-								//	//	else if (mpPoint == mPoint20){
-								//	//		mVPoint = mPoint21->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-								//	//		mpPoint = mPoint21;
-								//	//	}
-								//	//	else if (mpPoint == mPoint21){
-								//	//		mVPoint = mPoint22->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-								//	//		mpPoint = mPoint22;
-								//	//	}
-								//	//	else if (mpPoint == mPoint22){
-								//	//		mVPoint = mPoint23->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-								//	//		mpPoint = mPoint23;
-								//	//	}
-								//	//	else if (mpPoint == mPoint23){
-								//	//		mVPoint = mPoint24->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-								//	//		mpPoint = mPoint24;
-								//	//	}
-								//	//	else if (mpPoint == mPoint24){
-								//	//		mVPoint = mPoint25->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-								//	//		mpPoint = mPoint25;
-								//	//	}
-								//	//	else if (mpPoint == mPoint25){
-								//	//		mVPoint = mPoint26->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-								//	//		mpPoint = mPoint26;
-								//	//	}
-								//	//	else if (mpPoint == mPoint26){
-								//	//		mVPoint = mPoint27->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-								//	//		mpPoint = mPoint27;
-								//	//	}
-								//	//	else if (mpPoint == mPoint27){
-								//	//		mVPoint = mPoint28->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-								//	//		mpPoint = mPoint28;
-								//	//	}
-								//	//	else if (mpPoint == mPoint28){
-								//	//		mVPoint = mPoint29->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-								//	//		mpPoint = mPoint29;
-								//	//	}
-								//	//	else if (mpPoint == mPoint29){
-								//	//		mVPoint = mPoint30->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-								//	//		mpPoint = mPoint30;
-								//	//	}
-								//	//	else if (mpPoint == mPoint30){
-								//	//		mVPoint = mPoint31->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-								//	//		mpPoint = mPoint31;
-								//	//	}
-								//	//	else if (mpPoint == mPoint31){
-								//	//		mVPoint = mPoint32->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-								//	//		mpPoint = mPoint32;
-								//	//	}
-								//	//	else if (mpPoint == mPoint32){
-								//	//		mVPoint = mPoint33->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-								//	//		mpPoint = mPoint33;
-								//	//	}
-								//	//	else if (mpPoint == mPoint33){
-								//	//		mVPoint = mPoint34->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-								//	//		mpPoint = mPoint34;
-								//	//	}
-								//	//	else if (mpPoint == mPoint34){
-								//	//		mVPoint = mPoint35->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-								//	//		mpPoint = mPoint35;
-								//	//	}
-								//	//	else if (mpPoint == mPoint35){
-								//	//		mVPoint = mPoint36->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-								//	//		mpPoint = mPoint36;
-								//	//	}
-								//	//	else if (mpPoint == mPoint36){
-								//	//		mVPoint = mPoint37->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-								//	//		mpPoint = mPoint37;
-								//	//	}
-								//	//	else if (mpPoint == mPoint37){
-								//	//		mVPoint = mPoint38->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-								//	//		mpPoint = mPoint38;
-								//	//	}
-								//	//	else if (mpPoint == mPoint38){
-								//	//		mVPoint = mPoint39->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-								//	//		mpPoint = mPoint39;
-								//	//	}
-								//	//	else if (mpPoint == mPoint39){
-								//	//		mVPoint = mPoint40->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-								//	//		mpPoint = mPoint40;
-								//	//	}
-								//	//	else if (mpPoint == mPoint40){
-								//	//		mVPoint = mPoint41->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-								//	//		mpPoint = mPoint41;
-								//	//	}
-								//	//	else if (mpPoint == mPoint41){
-								//	//		mVPoint = mPoint42->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-								//	//		mpPoint = mPoint42;
-								//	//	}
-								//	//	else if (mpPoint == mPoint42){
-								//	//		mVPoint = mPoint43->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-								//	//		mpPoint = mPoint43;
-								//	//	}
-								//	//	else if (mpPoint == mPoint43){
-								//	//		mVPoint = mPoint44->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-								//	//		mpPoint = mPoint44;
-								//	//	}
-								//	//	else if (mpPoint == mPoint44){
-								//	//		mVPoint = mPoint45->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-								//	//		mpPoint = mPoint45;
-								//	//	}
-								//	//	else if (mpPoint == mPoint45){
-								//	//		mVPoint = mPoint46->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-								//	//		mpPoint = mPoint46;
-								//	//	}
-								//	//	else if (mpPoint == mPoint46){
-								//	//		mVPoint = mPoint47->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-								//	//		mpPoint = mPoint47;
-								//	//	}
-								//	//	else if (mpPoint == mPoint47){
-								//	//		mVPoint = mPoint48->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-								//	//		mpPoint = mPoint48;
-								//	//	}
-								//	//	else if (mpPoint == mPoint48){
-								//	//		mVPoint = mPoint->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap;
-								//	//		mpPoint = mPoint;
-								//	//	}
-								//	//}
-								//}								
+								SetNextPoint(mpPoint, gap, false);								
 							}
 						}
 					}
@@ -1031,16 +529,10 @@ void CEnemy::TaskCollision()
 void CEnemy::SetNextPoint(CPoint *current_point, int gap_amount, bool iscurrentpointlast){
 	bool gap = true;
 	if (CSceneTitle::mCource_Number == 5){
-		/*if (PointNumber(current_point) <= 20){
-			gap = false;
-		}*/
-		if (mChecks < 1){
+		if (mChecks < 1){//中間ポイント1まで誤差無し
 			gap = false;
 		}
 	}
-	/*else if (CSceneTitle::mMode == 2){
-		gap = false;
-	}*/	
 
 	//「一つ前の目標地点」の更新
 	mVPoint_prev = mpPoint->mPosition;
@@ -1059,12 +551,10 @@ void CEnemy::SetNextPoint(CPoint *current_point, int gap_amount, bool iscurrentp
 	else{
 		CPoint *nexp = GetNextPoint(current_point, iscurrentpointlast);
 		//誤差の有無
-		if (gap){
-			//printf("ぶれ有り\n");
+		if (gap){//ぶれ有り
 			mVPoint = nexp->mPosition + CVector(1.0f, 0.0f, 1.0f)*gap_amount;
 		}
-		else{
-			//printf("ぶれ無し\n");
+		else{//ぶれ無し
 			mVPoint = nexp->mPosition;
 		}
 		//次の目標地点に移る
@@ -1072,234 +562,10 @@ void CEnemy::SetNextPoint(CPoint *current_point, int gap_amount, bool iscurrentp
 	}	
 }
 
-////次のポイントの取得
-//修正例
+//次のポイントの取得
 CPoint* CEnemy::GetNextPoint(CPoint *current_point, bool iscurrentpointlast){
 	return current_point->GetNextPoint();
 }
 
-////mPoint2なら2、とmPoint～～の整数部分の値を返す
-//int CEnemy::PointNumber(CPoint *current_point){
-//	int pt_num = 0;
-//	if (mpPoint == mPoint){
-//		pt_num = 1;
-//	}
-//	else if (mpPoint == mPoint2){
-//		pt_num = 2;
-//	}
-//	else if (mpPoint == mPoint3){
-//		pt_num = 3;
-//	}
-//	else if (mpPoint == mPoint4){
-//		pt_num = 4;
-//	}
-//	else if (mpPoint == mPoint5){
-//		pt_num = 5;
-//	}
-//	else if (mpPoint == mPoint6){
-//		pt_num = 6;
-//	}
-//	else if (mpPoint == mPoint7){
-//		pt_num = 7;
-//	}
-//	else if (mpPoint == mPoint8){
-//		pt_num = 8;
-//	}
-//	else if (mpPoint == mPoint9){
-//		pt_num = 9;
-//	}
-//	else if (mpPoint == mPoint10){
-//		pt_num = 10;
-//	}
-//	else if (mpPoint == mPoint11){
-//		pt_num = 11;
-//	}
-//	else if (mpPoint == mPoint12){
-//		pt_num = 12;
-//	}
-//	else if (mpPoint == mPoint13){
-//		pt_num = 13;
-//	}
-//	else if (mpPoint == mPoint14){
-//		pt_num = 14;
-//	}
-//	else if (mpPoint == mPoint15){
-//		pt_num = 15;
-//	}
-//	else if (mpPoint == mPoint16){
-//		pt_num = 16;
-//	}
-//	else if (mpPoint == mPoint17){
-//		pt_num = 17;
-//	}
-//	else if (mpPoint == mPoint18){
-//		pt_num = 18;
-//	}
-//	else if (mpPoint == mPoint19){
-//		pt_num = 19;
-//	}
-//	else if (mpPoint == mPoint20){
-//		pt_num = 20;
-//	}
-//	else if (mpPoint == mPoint21){
-//		pt_num = 21;
-//	}
-//	else if (mpPoint == mPoint22){
-//		pt_num = 22;
-//	}
-//	else if (mpPoint == mPoint23){
-//		pt_num = 23;
-//	}
-//	else if (mpPoint == mPoint24){
-//		pt_num = 24;
-//	}
-//	else if (mpPoint == mPoint25){
-//		pt_num = 25;
-//	}
-//	else if (mpPoint == mPoint26){
-//		pt_num = 26;
-//	}
-//	else if (mpPoint == mPoint27){
-//		pt_num = 27;
-//	}
-//	else if (mpPoint == mPoint28){
-//		pt_num = 28;
-//	}
-//	else if (mpPoint == mPoint29){
-//		pt_num = 29;
-//	}
-//	else if (mpPoint == mPoint30){
-//		pt_num = 30;
-//	}
-//	else if (mpPoint == mPoint31){
-//		pt_num = 31;
-//	}
-//	else if (mpPoint == mPoint32){
-//		pt_num = 32;
-//	}
-//	else if (mpPoint == mPoint33){
-//		pt_num = 33;
-//	}
-//	else if (mpPoint == mPoint34){
-//		pt_num = 34;
-//	}
-//	else if (mpPoint == mPoint35){
-//		pt_num = 35;
-//	}
-//	else if (mpPoint == mPoint36){
-//		pt_num = 36;
-//	}
-//	else if (mpPoint == mPoint37){
-//		pt_num = 37;
-//	}
-//	else if (mpPoint == mPoint38){
-//		pt_num = 38;
-//	}
-//	else if (mpPoint == mPoint39){
-//		pt_num = 39;
-//	}
-//	else if (mpPoint == mPoint40){
-//		pt_num = 40;
-//	}
-//	else if (mpPoint == mPoint41){
-//		pt_num = 41;
-//	}
-//	else if (mpPoint == mPoint42){
-//		pt_num = 42;
-//	}
-//	else if (mpPoint == mPoint43){
-//		pt_num = 43;
-//	}
-//	else if (mpPoint == mPoint44){
-//		pt_num = 44;
-//	}
-//	else if (mpPoint == mPoint45){
-//		pt_num = 45;
-//	}
-//	else if (mpPoint == mPoint46){
-//		pt_num = 46;
-//	}
-//	else if (mpPoint == mPoint47){
-//		pt_num = 47;
-//	}
-//	else if (mpPoint == mPoint48){
-//		pt_num = 48;
-//	}
-//	else if (mpPoint == mPoint49){
-//		pt_num = 49;
-//	}
-//	else if (mpPoint == mPoint50){
-//		pt_num = 50;
-//	}
-//	else if (mpPoint == mPoint51){
-//		pt_num = 51;
-//	}
-//	else if (mpPoint == mPoint52){
-//		pt_num = 52;
-//	}
-//	else if (mpPoint == mPoint53){
-//		pt_num = 53;
-//	}
-//	else if (mpPoint == mPoint54){
-//		pt_num = 54;
-//	}
-//	return pt_num;
-//}
-
 //誘導ポイント
 CPoint *CEnemy::mPoint;
-//CPoint *CEnemy::mPoint2;
-//CPoint *CEnemy::mPoint3;
-//CPoint *CEnemy::mPoint4;
-//CPoint *CEnemy::mPoint5;
-//CPoint *CEnemy::mPoint6;
-//CPoint *CEnemy::mPoint7;
-//CPoint *CEnemy::mPoint8;
-//CPoint *CEnemy::mPoint9;
-//CPoint *CEnemy::mPoint10;
-//CPoint *CEnemy::mPoint11;
-//CPoint *CEnemy::mPoint12;
-//CPoint *CEnemy::mPoint13;
-//CPoint *CEnemy::mPoint14;
-//CPoint *CEnemy::mPoint15;
-//CPoint *CEnemy::mPoint16;
-//CPoint *CEnemy::mPoint17;
-//CPoint *CEnemy::mPoint18;
-//CPoint *CEnemy::mPoint19;
-//CPoint *CEnemy::mPoint20;
-//CPoint *CEnemy::mPoint21;
-//CPoint *CEnemy::mPoint22;
-//CPoint *CEnemy::mPoint23;
-//CPoint *CEnemy::mPoint24;
-//CPoint *CEnemy::mPoint25;
-//CPoint *CEnemy::mPoint26;
-//CPoint *CEnemy::mPoint27;
-//CPoint *CEnemy::mPoint28;
-//CPoint *CEnemy::mPoint29;
-//CPoint *CEnemy::mPoint30;
-//CPoint *CEnemy::mPoint31;
-//CPoint *CEnemy::mPoint32;
-//CPoint *CEnemy::mPoint33;
-//CPoint *CEnemy::mPoint34;
-//CPoint *CEnemy::mPoint35;
-//CPoint *CEnemy::mPoint36;
-//CPoint *CEnemy::mPoint37;
-//CPoint *CEnemy::mPoint38;
-//CPoint *CEnemy::mPoint39;
-//CPoint *CEnemy::mPoint40;
-//CPoint *CEnemy::mPoint41;
-//CPoint *CEnemy::mPoint42;
-//CPoint *CEnemy::mPoint43;
-//CPoint *CEnemy::mPoint44;
-//CPoint *CEnemy::mPoint45;
-//CPoint *CEnemy::mPoint46;
-//CPoint *CEnemy::mPoint47;
-//CPoint *CEnemy::mPoint48;
-//CPoint *CEnemy::mPoint49;
-//CPoint *CEnemy::mPoint50;
-//CPoint *CEnemy::mPoint51;
-//CPoint *CEnemy::mPoint52;
-//CPoint *CEnemy::mPoint53;
-//CPoint *CEnemy::mPoint54;
-//
-//CPoint *CEnemy::mPointss[54];

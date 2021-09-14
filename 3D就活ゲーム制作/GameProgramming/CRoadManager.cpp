@@ -57,6 +57,7 @@ void CRoadManager::Init(CModel* pmodel, const CVector& pos, const CVector& rot, 
 		next = new CPoint(CVector(1212.0f, 30.0f, 4516.0f), rad, next);
 		next = new CPoint(CVector(1719.0f, 30.0f, 3250.0f), rad, next);
 		next = new CPoint(CVector(3240.0f, 30.0f, 2207.0f), rad, next);
+		next = new CPoint(CVector(3737.0f, 30.0f, 1280.0f), rad, next);
 		next = new CPoint(CVector(3763.0f, 30.0f, 510.0f), rad, next);
 		next = new CPoint(CVector(3068.0f, 30.0f, -355.0f), rad, next);
 		next = new CPoint(CVector(2364.0f, 30.0f, -653.0f), rad, next);
