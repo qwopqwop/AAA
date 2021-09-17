@@ -1,7 +1,6 @@
 #include "CEnemy.h"
 #include "CKey.h"
 
-#include "CBullet.h"
 #include "CSceneTitle.h"
 
 //乱数を実装するインクルード群
@@ -56,14 +55,11 @@ CEnemy::CEnemy()
 	mCarSpeed = 0.0f;//車の速度の初期化
 	mTurnSpeed = 0.0f;
 
-	mCanJump = false;
 	CanMove = false;
-
-	mChecks = 0;
-
 	isBoost = false;
 	mBoostMaxSpeed = 0.0f;
 	mBoostTime = 0;
+	mChecks = 0;
 
 	mTag = EENEMY;
 	mEnemyAI = EPRO;
@@ -93,59 +89,65 @@ CEnemy::CEnemy()
 }
 
 void CEnemy::Update(){
-
-	//速度調整
-	if (CSceneTitle::mCource_Number == 1){
-		//次のポイントから次の次のポイントへのベクトル
-		CVector vNext = mpPoint->GetNextPoint()->mPosition - mPosition;
-		//現在の向き
-		CVector vLeft = CVector(1.0f, 0.0f, 0.0f) * mMatrixRotate;
-		//内積から曲がり具合を求める(0:90°　1.0：真っすぐ）
-		float corve = abs(vLeft.Dot(vNext.Normalize()));
-		if (corve > 0.9f){
-			corve = 0.7f;
-		}
-		else if (corve < 0.7f){
-			corve = 1.0f;
-		}
-		//速度上限の計算
-		mMaxSpeed_PtoP = MAXSPEED * corve;
-	}
-	else if(CSceneTitle::mCource_Number == 2){
-		//次のポイントから次の次のポイントへのベクトル
-		CVector vNext = mpPoint->GetNextPoint()->mPosition - mPosition;
-		//現在の向き
-		CVector vLeft = CVector(1.0f, 0.0f, 0.0f) * mMatrixRotate;
-		//内積から曲がり具合を求める(0:90°　1.0：真っすぐ）
-		float corve = abs(vLeft.Dot(vNext.Normalize()));
-		/*if (corve > 0.9f){
-			corve = 0.05f;
-		}*/
-		if (corve < 0.5f){
-			corve = 1.0f;
-		}
-		//速度上限の計算
-		mMaxSpeed_PtoP = MAXSPEED * corve;
-	}
-	else if (CSceneTitle::mCource_Number == 5){
-		//次のポイントから次の次のポイントへのベクトル
-		CVector vNext = mpPoint->GetNextPoint()->mPosition - mPosition;
-		//現在の向き
-		CVector vLeft = CVector(1.0f, 0.0f, 0.0f) * mMatrixRotate;
-		//内積から曲がり具合を求める(0:90°　1.0：真っすぐ）
-		float corve = abs(vLeft.Dot(vNext.Normalize()));
-		if (corve > 0.6f){
-			corve = 0.05f;
-		}
-		else if (corve < 0.5f){
-			corve = 1.0f;
-		}
-		//速度上限の計算
-		mMaxSpeed_PtoP = MAXSPEED * corve;
-	}
-	else{		
+	//mEnemyAIで動き方が決まる
+	if (mEnemyAI == ENEWBIE){
+		//常に全速力で走行しようとする
 		mMaxSpeed_PtoP = 20.0f;
 	}
+	else if (mEnemyAI == EPRO){
+		//速度調整
+		if (CSceneTitle::mCource_Number == 1){
+			//次のポイントから次の次のポイントへのベクトル
+			CVector vNext = mpPoint->GetNextPoint()->mPosition - mPosition;
+			//現在の向き
+			CVector vLeft = CVector(1.0f, 0.0f, 0.0f) * mMatrixRotate;
+			//内積から曲がり具合を求める(0:90°　1.0：真っすぐ）
+			float corve = abs(vLeft.Dot(vNext.Normalize()));
+			if (corve > 0.9f){
+				corve = 0.7f;
+			}
+			else if (corve < 0.7f){
+				corve = 1.0f;
+			}
+			//速度上限の計算
+			mMaxSpeed_PtoP = MAXSPEED * corve;
+		}
+		else if (CSceneTitle::mCource_Number == 2){
+			//次のポイントから次の次のポイントへのベクトル
+			CVector vNext = mpPoint->GetNextPoint()->mPosition - mPosition;
+			//現在の向き
+			CVector vLeft = CVector(1.0f, 0.0f, 0.0f) * mMatrixRotate;
+			//内積から曲がり具合を求める(0:90°　1.0：真っすぐ）
+			float corve = abs(vLeft.Dot(vNext.Normalize()));
+			/*if (corve > 0.9f){
+			corve = 0.05f;
+			}*/
+			if (corve < 0.5f){
+				corve = 1.0f;
+			}
+			//速度上限の計算
+			mMaxSpeed_PtoP = MAXSPEED * corve;
+		}
+		else if (CSceneTitle::mCource_Number == 5){
+			//次のポイントから次の次のポイントへのベクトル
+			CVector vNext = mpPoint->GetNextPoint()->mPosition - mPosition;
+			//現在の向き
+			CVector vLeft = CVector(1.0f, 0.0f, 0.0f) * mMatrixRotate;
+			//内積から曲がり具合を求める(0:90°　1.0：真っすぐ）
+			float corve = abs(vLeft.Dot(vNext.Normalize()));
+			if (corve > 0.6f){
+				corve = 0.05f;
+			}
+			else if (corve < 0.5f){
+				corve = 1.0f;
+			}
+			//速度上限の計算
+			mMaxSpeed_PtoP = MAXSPEED * corve;
+		}
+		else{
+			mMaxSpeed_PtoP = 20.0f;
+		}
+	}	
 	//スピードは最低速度を下回らない
 	if (mMaxSpeed_PtoP < MINSPEED){
 		mMaxSpeed_PtoP = MINSPEED;
@@ -380,9 +382,6 @@ void CEnemy::Collision(CCollider *mc, CCollider *yc){
 				if (yc->mpParent->mTag == CCharacter::EWATER){
 					//通過可能、ステージ1の水
 				}
-				else if (yc->mpParent->mTag == CCharacter::ECLEARWATER){
-					//通過可能、ステージ2の水
-				}
 				else if (yc->mpParent->mTag == CCharacter::ECHECKPOINT
 					|| yc->mpParent->mTag == CCharacter::ECHECKPOINT2
 					|| yc->mpParent->mTag == CCharacter::ECHECKPOINT3
@@ -418,11 +417,9 @@ void CEnemy::Collision(CCollider *mc, CCollider *yc){
 						}
 						else if (yc->mpParent->mTag == CCharacter::EJUMPER){//ジャンプ台に接触した時
 							mVelocityJump = JUMPER01_POWER;
-							mCanJump = true;
 						}
 						else{
 							mVelocityJump = 0;
-							mCanJump = true;
 							mRotation = CCollider::CalculateEulerAngle(mc, yc, mMatrixRotate, PI);
 						}
 					}

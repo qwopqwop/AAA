@@ -1,7 +1,6 @@
 #include "CPlayer.h"
 #include "CKey.h"
 
-#include "CBullet.h"
 #include "CSceneTitle.h"
 
 //衝突時のエフェクト追加
@@ -51,12 +50,7 @@ CPlayer::CPlayer()
 	mADMoveX = 0.0f;  mWSMoveZ = 0.0f;
 	mCarSpeed = 0.0f;//車の速度の初期化
 	mTurnSpeed = 0.0f;
-	mRespawnCount = 0;//リスポーンした回数
 
-	mCanJump = false;
-	mCanSwim = false;
-	mIsGetKey = false;
-	mHaveBoat = false;
 	mFlyingMode = false;
 
 	CanMove = false;
@@ -86,7 +80,6 @@ CPlayer::CPlayer()
 	else if (CSceneTitle::mCource_Number == 4){
 		//スタート地点の座標を設定;
 		mStartPoint[0] = 0.0f;  mStartPoint[1] = 0.0f;  mStartPoint[2] = 0.0f;
-		//mStartPoint[0] = 450.0f;  mStartPoint[1] = -13.538f;  mStartPoint[2] = -50.0f;
 		mStartRotation = 180.0f;
 		mRotation.mY = mStartRotation;
 	}
@@ -99,7 +92,6 @@ CPlayer::CPlayer()
 	else if (CSceneTitle::mCource_Number == 127){
 		//スタート地点の座標を設定;
 		mStartPoint[0] = 0.0f;  mStartPoint[1] = 0.0f;  mStartPoint[2] = 0.0f;
-		//mStartPoint[0] = 450.0f;  mStartPoint[1] = -13.538f;  mStartPoint[2] = -50.0f;
 		mStartRotation = 180.0f;
 		mRotation.mY = mStartRotation;
 	}
@@ -439,13 +431,7 @@ void CPlayer::Update(){
 	mVelocityJump -= G;
 	if (mJumpPrio > 0){
 		mJumpPrio--;
-	}
-
-	if (CKey::Once('L')){
-		mPosition = CVector(0.0f, 100.0f, 0.0f);
-		CCharacter::Update();
-	}
-	
+	}	
 }
 
 void CPlayer::Collision(CCollider *mc, CCollider *yc){
@@ -511,17 +497,12 @@ void CPlayer::Collision(CCollider *mc, CCollider *yc){
 						}
 					}
 				}
-				if (mCanSwim && yc->mpParent->mTag == CCharacter::EWATER){
-					//通過可能、ステージ1の水
-				}
-				else if (yc->mpParent->mTag == CCharacter::ECLEARWATER){
-					//通過可能、ステージ2の水
-				}
-				else if (yc->mpParent->mTag == CCharacter::ECHECKPOINT
+				if (yc->mpParent->mTag == CCharacter::ECHECKPOINT
 					|| yc->mpParent->mTag == CCharacter::ECHECKPOINT2
 					|| yc->mpParent->mTag == CCharacter::ECHECKPOINT3
 					|| yc->mpParent->mTag == CCharacter::EGOALPOINT
-					|| yc->mpParent->mTag == CCharacter::EDASHBOARD){
+					|| yc->mpParent->mTag == CCharacter::EDASHBOARD
+					|| yc->mpParent->mTag == CCharacter::EWATER){
 					//処理は行われるが、これらのパネルは通過可能
 				}
 				else{
@@ -561,12 +542,10 @@ void CPlayer::Collision(CCollider *mc, CCollider *yc){
 							}
 							else if(yc->mpParent->mTag == CCharacter::EJUMPER){//ジャンプ台に接触した時
 								mVelocityJump = JUMPER01_POWER;
-								mCanJump = true;
 								SoundJump.Play();
 							}
 							else{
 								mVelocityJump = 0;
-								mCanJump = true;
 								mRotation = CCollider::CalculateEulerAngle(mc, yc, mMatrixRotate, PI);
 							}
 						}
@@ -594,24 +573,6 @@ void CPlayer::Collision(CCollider *mc, CCollider *yc){
 		}
 		if (yc->mType == CCollider::ESPHERE){
 			if (CCollider::Collision(mc, yc)){
-				if (yc->mpParent->mTag == CCharacter::ESPRING){
-					mJumpV0 = 2.2f;
-					SoundItemGet.Play();
-				}
-				if (yc->mpParent->mTag == CCharacter::ESCREW){
-					mCanSwim = true;
-					SoundItemGet.Play();
-				}
-				if (yc->mpParent->mTag == CCharacter::EKEY){
-					mIsGetKey = true;
-					SoundItemGet.Play();
-				}
-				if (yc->mpParent->mTag == CCharacter::EBOAT){//ボート乗船時
-					mHaveBoat = true;
-					mMoveSpeed = 0.85f;
-				}
-
-
 				if (mc->mTag == CCollider::EBODY){
 					if (yc->mpParent->mTag == CCharacter::EENEMY){
 						if (yc->mTag == CCollider::EBODY){
@@ -638,10 +599,6 @@ void CPlayer::TaskCollision()
 {
 	mColBody.ChangePriority();
 	mColTire.ChangePriority();
-	//mColCamRange.ChangePriority();
-	//mColCamera.ChangePriority();
 	CollisionManager.Collision(&mColBody);
 	CollisionManager.Collision(&mColTire);
-	//CollisionManager.Collision(&mColCamRange);	
-	//CollisionManager.Collision(&mColCamera);
 }

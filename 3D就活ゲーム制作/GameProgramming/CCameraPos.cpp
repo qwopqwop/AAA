@@ -114,7 +114,6 @@ void CCameraPos::Collision(CCollider *mc, CCollider *yc){
 			//自分のコライダが本体の時
 			if (mc->mTag == CCollider::ECAMERA){
 				if (yc->mpParent->mTag == CCharacter::EWATER
-					|| yc->mpParent->mTag == CCharacter::ECLEARWATER
 					|| yc->mpParent->mTag == CCharacter::ECHECKPOINT
 					|| yc->mpParent->mTag == CCharacter::ECHECKPOINT2
 					|| yc->mpParent->mTag == CCharacter::ECHECKPOINT3

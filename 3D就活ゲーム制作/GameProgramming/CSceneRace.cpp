@@ -1,29 +1,14 @@
 #include "glew.h"
-
 #include "CSceneRace.h"
-//
 #include "CSceneTitle.h"
-//
 #include "CCamera.h"
-//
 #include "CText.h"
-//
 #include "CTaskManager.h"
-//
 #include "CCollisionManager.h"
-////
-#include "CRock.h"
-//
 #include "CObj.h"
-//
 #include "CObjWall.h"
-//
 #include "CKey.h"
-//
-#include "CBullet.h"
-//
 #include "CRenderTexture.h"
-//
 #include "CRectangle.h"
 
 //スマートポインタの生成
@@ -49,7 +34,6 @@ int CSceneRace::mRecord_B = 13000;
 int CSceneRace::mRecord_C = 22000;
 int CSceneRace::mRecord_D = 460000;
 int CSceneRace::mRecord_E = 40000;
-int CSceneRace::mRecord_F = 43300;
 
 //オプション画面から変更ができる変数
 bool CSceneRace::isEnableShadow = true;//影
@@ -186,9 +170,6 @@ void CSceneRace::Init() {
 		mCource05Grass_Wall.Load("material\\racing_mat\\stage5\\cource05grass_wall.obj", "material\\racing_mat\\stage5\\cource05grass_wall.mtl");
 		mCource05GoalTile.Load("material\\racing_mat\\stage5\\Checker_Tile.obj", "material\\racing_mat\\stage5\\Checker_Tile.mtl");
 	}
-	else if (CSceneTitle::mCource_Number == 6){
-		//
-	}
 
 	//ステージ1BGMの読み込み
 	if (CSceneTitle::mCource_Number == 1){
@@ -211,21 +192,16 @@ void CSceneRace::Init() {
 		BGM.Load("BGM\\Go_on_the_mountain_road.wav");
 		mBestTime = mRecord_E;
 	}
-	else if (CSceneTitle::mCource_Number == 6){
-		BGM.Load("BGM\\game_maoudamashii_7_event46.wav");
-		mBestTime = mRecord_F;
-	}
 	JingleOpening.Load("SE\\jingle19.wav");
-	//効果音の読み込み
+	//効果音の読み込み//主にレース中
 	SoundCountDown.Load("SE\\Countdown01-5.wav");
 	SoundStart.Load("SE\\Countdown01-6.wav");
 	SoundGoal.Load("SE\\tm2_whistle000.wav");
-
+	//主にポーズ中
 	SoundMoveCarsol.Load("SE\\Carsol2.wav");
 	SoundDecide.Load("SE\\Decision_Small(SF).wav");
 	SoundPauseOn.Load("SE\\button79.wav");
 	SoundPauseOff.Load("SE\\button80.wav");
-
 	
 
 	//カメラ視点のY座標
@@ -240,8 +216,8 @@ void CSceneRace::Init() {
 	mTime_Opening = 0;
 	//レースのカウントダウン関連
 	mFrame = 0;
-	mCountDown = 3+1;
-	//レースはカウントダウンが終わってから開始
+	mCountDown = 4;//countdownは3秒から始まる
+	//カウントダウン後にレース開始
 	isStartRace = isGoal = false;
 	//時間のリセット
 	mTime = 0;
@@ -249,10 +225,10 @@ void CSceneRace::Init() {
 		
 	//ラップ数の初期化
 	mLap = 1;
-	//？周でゴール(基本は3周)
+	//n周でゴール(基本は3周)
 	mMaxLap = 3;
 	if (CSceneTitle::mCource_Number == 5){
-		mMaxLap = 2;//コース5は2周
+		mMaxLap = 2;//コース5は2周(1周が長い為)
 	}
 	//記録更新してない状態
 	isNewRecord = false;
@@ -275,13 +251,8 @@ void CSceneRace::Init() {
 	isFadeOut = false;
 	isBlackOutTime = 0;
 	
-	////BGMはループ
-	//BGM.Repeat();
-
 	mRenderTexture.Init();
 	
-
-	//Shadow Map ************************************
 
 	/* テクスチャユニット１をDepthテクスチャで使用 */
 	glActiveTexture(GL_TEXTURE1);
@@ -333,11 +304,7 @@ void CSceneRace::Init() {
 	//テクスチャの解除
 	glBindTexture(GL_TEXTURE_2D, 0);
 	//テクスチャユニットを0に戻す
-	glActiveTexture(GL_TEXTURE0);
-
-	
-
-	//************************************ Shadow Map
+	glActiveTexture(GL_TEXTURE0);	
 }
 
 
@@ -368,26 +335,23 @@ void CSceneRace::Update() {
 
 	//デバッグ用
 #ifdef _DEBUG
-	if (CKey::Once('1')){
-		printf("ベストタイム:%d\n", mBestTime);
-	}
-	if (CKey::Once('2')){//Playerの座標を出力する
+	if (CKey::Once('2')){//Playerの座標を出力
 		printf("X:%f Y:%f Z:%f\n", CPlayer::mpPlayer->mPosition.mX, CPlayer::mpPlayer->mPosition.mY, CPlayer::mpPlayer->mPosition.mZ);
 	}
-	if (CKey::Push('5')){
+	if (CKey::Push('5')){//Playerの回転値を出力
 		printf("%f:%f:%f\n", CPlayer::mpPlayer->mRotation.mX, CPlayer::mpPlayer->mRotation.mY, CPlayer::mpPlayer->mRotation.mZ);
 	}
-	if (CKey::Once('6')){
+	if (CKey::Once('6')){//Playerのチェックポイントの状態を出力
 		printf("%d\n", CPlayer::mpPlayer->mChecks);
 	}
-	if (CKey::Once('7')){
+	if (CKey::Once('7')){//Player飛行モード切り替え
 		if (CPlayer::mpPlayer->mFlyingMode){
 			CPlayer::mpPlayer->mFlyingMode = false;
 		}
 		else{
 			CPlayer::mpPlayer->mFlyingMode = true;
 		}
-	}
+	}//当たり判定描画の切り替え
 	if (CKey::Once('9')){
 		if (mPutCol){
 			mPutCol = false;
@@ -400,16 +364,11 @@ void CSceneRace::Update() {
 		//衝突判定の描画
 		CollisionManager.Render();
 	}
-
-	//BGMを停止する
-	if (CKey::Once('M')){
-		BGM.Stop();
-	}
-	//即時トップスピードに
+	//Playerを即時トップスピードに
 	if (CKey::Once('G')){
 		mPlayer->mCarSpeed = 20.0f;
 	}
-	//各チェックポイントを回ったことにする
+	//最後のチェックポイントを通過した扱いにする
 	if (CKey::Once('V')){
 		mPlayer->mChecks = 3;
 	}
@@ -418,7 +377,7 @@ void CSceneRace::Update() {
 	//ポーズ画面に入っていない時
 	if (isPause == false){
 		if (isStartRace || isGoal){
-			//mTime:ゴール後も内部的にタイマーは作動し続ける
+			//mTime:ゴール後も内部的にタイマーは作動し続ける(ゲーム画面には表示されない)
 			//59:59:59が最大時間
 			if (mTime < 595959){
 				if (mTime % 10000 == 5959){
@@ -438,7 +397,7 @@ void CSceneRace::Update() {
 			}
 		}
 		if (isStartRace){
-			//mTime_Output:レース中に表示されるタイム(ゴール後にタイマー停止)
+			//mTime_Output:ゲーム画面に表示されるタイム(ゴール後にタイマー停止)
 			if (mTime_Output < 595959){
 				if (mTime_Output % 10000 == 5959){
 					mTime_Output += 1 + 40 + 4000;
@@ -452,69 +411,17 @@ void CSceneRace::Update() {
 			}
 		}
 	}
-	//バックミラーの描画
-	if (isEnableBackMirror){
-		RenderBackMirror();		
-	}
-	//ミニマップの描画
-	if (isEnableMiniMap){
-		RenderMiniMap();
-	}
-	
-	
 
-	//2D描画開始
-	Start2D(0, 800, 0, 600);
-
-	
-	
-
-	//順位の描画
-	float color[] = { 1.0f, 1.0f, 1.0f, 1.0f };
-	//レース開始前のOP中にコース名を左下に表示
-	if (isOpening){
-		if (CSceneTitle::mCource_Number == 1){
-			CText::DrawString("COURCE 1", 20, 20, 10, 12);
-		}
-		else if (CSceneTitle::mCource_Number == 2){
-			CText::DrawString("COURCE 2", 20, 20, 10, 12);
-		}
-		else if (CSceneTitle::mCource_Number == 3){
-			CText::DrawString("COURCE 3", 20, 20, 10, 12);
-		}
-		else if (CSceneTitle::mCource_Number == 4){
-			CText::DrawString("COURCE 4", 20, 20, 10, 12);
-		}
-		else if (CSceneTitle::mCource_Number == 5){
-			CText::DrawString("COURCE 5", 20, 20, 10, 12);
-		}
-		else if (CSceneTitle::mCource_Number == 6){
-			CText::DrawString("COURCE 6", 20, 20, 10, 12);
-		}
-	}
-	
-
-	//時間の表示
-	char mti[20];// :も含めた最大文字数の設定
-	sprintf(mti, "TIME:%02d:%02d:%02d", mTime_Output / 10000 % 100, mTime_Output / 100 % 100, mTime_Output % 100);
-	CText::DrawString(mti, 20, 530, 10, 12);
-	//ベストタイムの表示
-	char mbestti[20];// :も含めた最大文字数の設定
-	//	sprintf(mti, "%06d", mTime);
-	sprintf(mbestti, "BEST:%02d:%02d:%02d", mBestTime / 10000 % 100, mBestTime / 100 % 100, mBestTime % 100);
-	CText::DrawString(mbestti, 20, 580, 10, 12);
-	
+	//レース前のオープニング
 	if (isOpening){
 		//OPジングル再生
-		if (mTime_Opening == 0){
+		if (mTime_Opening == 0)
 			JingleOpening.Play();
-		}		
 		mTime_Opening++;
 		if (mTime_Opening > OPENINGTIME)
 			isOpening = false;
 	}
-
-	//カウントダウン開始、GO!で操作の受付開始
+	//カウントダウン開始、「GO!」で操作の受付開始
 	else if (mFrame < 60){
 		mFrame++;
 	}
@@ -534,555 +441,87 @@ void CSceneRace::Update() {
 		}
 		mFrame = 0;
 	}
-
-	//カウントダウン表示
-	char mcountd[7];
-	//残り3秒までの間、表示
-	sprintf(mcountd, "%d", mCountDown);
-	if (mCountDown > 0 && mCountDown <= 3){
-		CText::DrawString(mcountd, 400, 300, 25, 30);
-	}
-	else if (mCountDown == 0){
-		CText::DrawString("GO!", 400 - 40, 300, 25, 30);
+	//カウント0で全員が走行可能に
+	if (mCountDown == 0){
 		CPlayer::mpPlayer->CanMove = true;
 		for (int i = 0; i < ENEMYS_AMOUNT; i++){
 			mEnemys[i]->CanMove = true;
 		}
 	}
-	char lap[19];
-	sprintf(lap, "LAP%d/%d", mLap, mMaxLap);
-	CText::DrawString(lap, 20, 500, 10, 12, 2);
-	//プレイヤーの車の速度表示
-	char carspeed[33];
-	sprintf(carspeed, "SPEED:%4.1f", CPlayer::mpPlayer->mCarSpeed);
-	if (isEnableSpeedometer){
-		CText::DrawString(carspeed, 20 + 580, 20, 10, 12);
-	}
-	
 
-	//ゴール後、継続して実行する処理
-	if (mLap == mMaxLap && isStartRace == false && isGoal){
-		//60fで一巡
-		if (mTextBlinkTime < 60){
-			mTextBlinkTime++;
+	//バックミラーの描画
+	if (isEnableBackMirror){
+		RenderBackMirror();		
+	}
+	//ミニマップの描画
+	if (isEnableMiniMap){
+		RenderMiniMap();
+	}
+	//テキスト、フェードイン等の描画
+	Render();	
+	
+	//プレイヤーがゴール地点を通過した時の処理
+	if ((CPlayer::mpPlayer->isTouchGoal)
+		&& (CPlayer::mpPlayer->mChecks == 3)
+		&& (isStartRace)){
+		if (mLap == mMaxLap){
+			//ベストタイム更新時
+			if (mTime < mBestTime){
+				mBestTime = mTime;
+				isNewRecord = true;
+				//コースによって新しく記録する
+				if (CSceneTitle::mCource_Number == 1){
+					mRecord_A = mBestTime;
+				}
+				else if (CSceneTitle::mCource_Number == 2){
+					mRecord_B = mBestTime;
+				}
+				else if (CSceneTitle::mCource_Number == 3){
+					mRecord_C = mBestTime;
+				}
+				else if (CSceneTitle::mCource_Number == 4){
+					mRecord_D = mBestTime;
+				}
+				else if (CSceneTitle::mCource_Number == 5){
+					mRecord_E = mBestTime;
+				}
+			}
+			mPlayer->mRank = mRanking;
+			mRanking++;
+			isStartRace = false;
+			isGoal = true;
+			BGM.Stop();
+			SoundGoal.Play();
+			//CPlayer::mpPlayer->CanMove = false;//動きストップ
+			CPlayer::mpPlayer->mChecks = 0;
+			CPlayer::mpPlayer->mGoalTime = mTime;
+			CPlayer::mpPlayer->isTouchGoal = false;
 		}
 		else{
-			mTextBlinkTime = 0;
-		}
-		//Enterキー入力でタイトル画面に戻れることを伝えるテキスト
-		if (mTextBlinkTime < 30){
-			CText::DrawString("Press Enter to Title", 222, 77, 10, 12, 2);
-		}
-		//新記録をたたき出した時
-		if (isNewRecord){
-			//CText::DrawString("FINISH!", 400 - 20 * 6, 300, 20, 24);
-			if (mTextBlinkTime < 15 || mTextBlinkTime >= 30 && mTextBlinkTime < 45){
-				CText::DrawString("NEW RECORD!", 55, 551, 8, 9, 2);
-			}
-		}
-	}	
-	
-	//ゴール後に表示される文字
-	if (isGoal){
-		if (mAfterGoalTime < 999){
-			mAfterGoalTime++;
-		}
-		if (mAfterGoalTime > 85){
-			color[3] = 1.0f - 0.1f * (mAfterGoalTime - 85);
-			glColor4fv(color);
-		}
-		CText::DrawString("FINISH!", 400 - 25 * 6, 300, 25, 30);
-
-		color[3] = 0.05f * (mAfterGoalTime - 100);
-		glColor4fv(color);
-		char rank[8];
-		if (mPlayer->mRank == 1){      //1st
-			sprintf(rank, "%dst", mPlayer->mRank);
-		}
-		else if (mPlayer->mRank == 2){ //2nd
-			sprintf(rank, "%dnd", mPlayer->mRank);
-		}
-		else if (mPlayer->mRank == 3){ //3rd
-			sprintf(rank, "%drd", mPlayer->mRank);
-		}
-		else{ //4th,5th,...
-			sprintf(rank, "%dth", mPlayer->mRank);
-		}
-		CText::DrawString(rank, 357, 310, 10 * 2, 12 * 2, 2);
-
-		//ゴール済みのプレイヤー、ライバルの記録を表示
-		char goaltime[30];
-		char name[8];
-		sprintf(goaltime, "%d YOU  %02d:%02d:%02d", mPlayer->mRank, mPlayer->mGoalTime / 10000 % 100, mPlayer->mGoalTime / 100 % 100, mPlayer->mGoalTime % 100);
-		if (isGoal){
-			CText::DrawString(goaltime, 270, 285 - mPlayer->mRank * 17, 10, 12, 2);
-		}
-		for (int i = 0; i < ENEMYS_AMOUNT; i++){
-			sprintf(goaltime, "%d      %02d:%02d:%02d", mEnemys[i]->mRank, mEnemys[i]->mGoalTime / 10000 % 100, mEnemys[i]->mGoalTime / 100 % 100, mEnemys[i]->mGoalTime % 100);
-			sprintf(name, "CPU%d", i + 1);
-			if (mEnemys[i]->isEnemyGoaled){
-				if (mEnemys[i]->mpModel == &mCarRed){
-					color[0] = 1.0f, color[1] = 0.0f, color[2] = 0.0f;
-				}
-				else if (mEnemys[i]->mpModel == &mCarGreen){
-					color[0] = 0.0f, color[1] = 1.0f, color[2] = 0.0f;
-				}
-				else if (mEnemys[i]->mpModel == &mCarBlue){
-					color[0] = 0.0f, color[1] = 0.0f, color[2] = 1.0f;
-				}
-				else if (mEnemys[i]->mpModel == &mCarYellow){
-					color[0] = 1.0f, color[1] = 1.0f, color[2] = 0.0f;
-				}
-				else if (mEnemys[i]->mpModel == &mCarCyan){
-					color[0] = 0.0f, color[1] = 1.0f, color[2] = 1.0f;
-				}								
-				else if (mEnemys[i]->mpModel == &mCarPink){
-					color[0] = 1.0f, color[1] = 0.0f, color[2] = 1.0f;
-				}
-				else if (mEnemys[i]->mpModel == &mCarWhite){
-					color[0] = color[1] = color[2] = 1.0f;
-				}
-				else if (mEnemys[i]->mpModel == &mCarGray){
-					color[0] = color[1] = color[2] = 0.5f;
-				}
-				else if (mEnemys[i]->mpModel == &mCarBlack){
-					color[0] = color[1] = color[2] = 0.0f;
-				}
-				else {
-					color[0] = color[1] = color[2] = 0.75f;
-				}
-				glColor4fv(color);
-				CText::DrawString(name, 270+40, 285 - mEnemys[i]->mRank * 17, 10, 12, 2);
-				//色を一旦、白に戻す
-				color[0] = color[1] = color[2] = 1.0f;
-				glColor4fv(color);
-				CText::DrawString(goaltime, 270, 285 - mEnemys[i]->mRank * 17, 10, 12, 2);
-			}			
+			mLap++;
+			CPlayer::mpPlayer->mChecks = 0;
+			CPlayer::mpPlayer->isTouchGoal = false;
 		}
 	}
-	//色合いを元に戻す
-	color[3] = 1.0f;
-	glColor4fv(color);
-	
-	//ポーズ中に表示される文字
-	if (isPause){
-
-		if (mPauseScreen == EOPTION){
-			CText::DrawString("OPTION", 280-30, 300, 10 * 3, 12 * 3, 3);
-
-			CText::DrawString("Shadow", 260, 200, 10, 12, 2);
-			CText::DrawString("BackMirror", 260, 170, 10, 12, 2);
-			CText::DrawString("MiniMap", 260, 140, 10, 12, 2);
-			CText::DrawString("Speedometer", 260, 110, 10, 12, 2);
-
-			if (mPause_OptionCarsol == 5){
-				CText::DrawString("[", 373, 230 - 30 * mPause_OptionCarsol-10, 14, 21, 1);
-				CText::DrawString("]", 432, 230 - 30 * mPause_OptionCarsol-10, 14, 21, 1);
-			}
-			else{
-				CText::DrawString("[", 493, 230 - 30 * mPause_OptionCarsol, 14, 21, 1);
-				CText::DrawString("]", 547, 230 - 30 * mPause_OptionCarsol, 14, 21, 1);
-			}
-			
-			for (int i = 1; i <= 5; i++){
-				if (mPause_OptionCarsol == i){
-					color[0] = color[1] = color[2] = 1.0f;
-				}
-				else{
-					color[0] = color[1] = color[2] = 0.5f;
-				}
-				glColor4fv(color);
-
-				if (i == 1){
-					if (isEnableShadow){
-						CText::DrawString("ON", 510, 200, 10, 12, 2);
-					}
-					else{
-						CText::DrawString("OFF", 502, 200, 10, 12, 2);
-					}
-				}
-				else if (i == 2){
-					if (isEnableBackMirror){
-						CText::DrawString("ON", 510, 170, 10, 12, 2);
-					}
-					else{
-						CText::DrawString("OFF", 502, 170, 10, 12, 2);
-					}
-					//CText::DrawString("ON", 440, 170, 10, 12, 2);
-				}
-				else if (i == 3){
-					if (isEnableMiniMap){
-						CText::DrawString("ON", 510, 140, 10, 12, 2);
-					}
-					else{
-						CText::DrawString("OFF", 502, 140, 10, 12, 2);
-					}
-					//CText::DrawString("ON", 440, 140, 10, 12, 2);
-				}
-				else if (i == 4){
-					if (isEnableSpeedometer){
-						CText::DrawString("ON", 510, 110, 10, 12, 2);
-					}
-					else{
-						CText::DrawString("OFF", 502, 110, 10, 12, 2);
-					}
-					//CText::DrawString("ON", 440, 140, 10, 12, 2);
-				}
-				/*if (i == 1){
-					CText::DrawString("OFF", 520, 200, 10, 12, 2);
-				}
-				else if (i == 2){
-					CText::DrawString("OFF", 520, 170, 10, 12, 2);
-				}
-				else if (i == 3){
-					CText::DrawString("OFF", 520, 140, 10, 12, 2);
-				}
-				if (i <= 3){
-					CText::DrawString("/", 490, 230 - 30 * i, 10, 12, 2);
-				}*/
-				
-				if (i == 5){
-					CText::DrawString("OK", 390, 70, 13, 15, 2);
-				}
-			}
-
-			color[0] = color[1] = color[2] = 1.0f;
-			glColor4fv(color);
-		}
-		else if (mPauseScreen == EPAUSE){
-			//CText::DrawString("O", 400, 200, 80, 50, 1);
-
-			/*CText::DrawString("PAUSE", 280, 300, 10*3, 12*3, 3);
-			CText::DrawString("P - Resume", 290, 200, 10, 12, 2);
-			CText::DrawString("Esc - Back to Title", 250, 170, 10, 12, 2);*/
-
-			CText::DrawString("[", 336, 230 - 30 * mPause_SelectCarsol, 14, 21, 1);
-			CText::DrawString("]", 462, 230 - 30 * mPause_SelectCarsol, 14, 21, 1);
-
-			/*int ca = rand() % 6;
-			if (ca < 1){
-			mPause_SelectNum = rand() % 3 + 1;
-			}*/
-
-			CText::DrawString("PAUSE", 280, 300, 10 * 3, 12 * 3, 3);
-			for (int i = 1; i <= 3; i++){
-				if (mPause_SelectCarsol == i){
-					color[0] = color[1] = color[2] = 1.0f;
-				}
-				else{
-					color[0] = color[1] = color[2] = 0.5f;
-				}
-				glColor4fv(color);
-
-				if (i == 1){
-					CText::DrawString("Resume", 350, 200, 10, 12, 2);
-				}
-				else if (i == 2){
-					CText::DrawString("Option", 350, 170, 10, 12, 2);
-				}
-				else if (i == 3){
-					CText::DrawString("Quit", 370, 140, 10, 12, 2);
-				}
-			}
-			color[0] = color[1] = color[2] = 1.0f;
-			glColor4fv(color);
-		}
-	}
-	//フェードイン
-	if (isFadeIn){
-		FadeIn();
-	}
-	//フェードイン
-	if (isFadeOut){
-		SceneChange();
-	}
-
-	//2D描画終了
-	End2D();
-	
-	//ゴール地点通過時の処理
-	if (CSceneTitle::mCource_Number == 2){
-		if ((CPlayer::mpPlayer->mPosition.mX > 2216.0f - 222.0f && CPlayer::mpPlayer->mPosition.mX < 2216.0f + 222.0f)
-			&& (CPlayer::mpPlayer->mPosition.mZ > -2300.0f - 30.0f && CPlayer::mpPlayer->mPosition.mZ < -2300.0f + 30.0f)
-			&& (CPlayer::mpPlayer->mChecks == 3)
-			&& (isStartRace)){
-			if (mLap == mMaxLap){
-				//ベストタイム更新時
-				if (mTime < mBestTime){
-					mBestTime = mTime;
-					isNewRecord = true;
-					//コースによって新しく記録する
-					if (CSceneTitle::mCource_Number == 1){
-						mRecord_A = mBestTime;
-					}
-					else if (CSceneTitle::mCource_Number == 2){
-						mRecord_B = mBestTime;
-					}
-					else if (CSceneTitle::mCource_Number == 3){
-						mRecord_C = mBestTime;
-					}
-					else if (CSceneTitle::mCource_Number == 4){
-						mRecord_D = mBestTime;
-					}
-					else if (CSceneTitle::mCource_Number == 5){
-						mRecord_E = mBestTime;
-					}
-					else if (CSceneTitle::mCource_Number == 6){
-						mRecord_F = mBestTime;
-					}					
-				}
-				mPlayer->mRank = mRanking;
+	//CPUの車がゴール地点を通過した時の処理
+	for (int i = 0; i < ENEMYS_AMOUNT; i++){
+		if (mEnemys[i]->isTouchGoal
+			&& (mEnemys[i]->mChecks == 3)
+			&& (mEnemys[i]->isEnemyGoaled == false)){
+			//その敵が最終ラップだった場合
+			if (mEnemys[i]->mEnemyLap == mMaxLap){
+				mEnemys[i]->mRank = mRanking;
 				mRanking++;
-				isStartRace = false;
-				isGoal = true;
-				BGM.Stop();
-				SoundGoal.Play();
-				//CPlayer::mpPlayer->CanMove = false;//動きストップ
-				CPlayer::mpPlayer->mChecks = 0;
-				CPlayer::mpPlayer->mGoalTime = mTime;				
+				mEnemys[i]->isTouchGoal = false;
+				mEnemys[i]->isEnemyGoaled = true;
+				mEnemys[i]->mGoalTime = mTime;
 			}
+			//まだ最終ラップでない場合
 			else{
-				mLap++;
-				CPlayer::mpPlayer->mChecks = 0;
-			}
-		}
-		//CPUの車がゴール地点を通過した時の処理
-		for (int i = 0; i < ENEMYS_AMOUNT; i++){
-			if (mEnemys[i]->mPosition.mX>2216.0f - 222.0f && mEnemys[i]->mPosition.mX < 2216.0f + 222.0f
-				&& (mEnemys[i]->mPosition.mZ > -2300.0f - 30.0f && mEnemys[i]->mPosition.mZ < -2300.0f + 30.0f)
-				&& (mEnemys[i]->mChecks == 3)
-				&& (mEnemys[i]->isEnemyGoaled == false)){
-				//その敵が最終ラップだった場合
-				if (mEnemys[i]->mEnemyLap == mMaxLap){
-					mEnemys[i]->mRank = mRanking;
-					mRanking++;
-					mEnemys[i]->isEnemyGoaled = true;
-					mEnemys[i]->mGoalTime = mTime;
-				}
-				//まだ最終ラップでない場合
-				else{
-					//チェックポイントをリセットし、次の周スタート
-					mEnemys[i]->mChecks = 0;
-					mEnemys[i]->mEnemyLap++;
-				}
-			}
-		}
-	}
-	else if (CSceneTitle::mCource_Number == 3){
-		if ((CPlayer::mpPlayer->mPosition.mX > 140.0f - 30.0f && CPlayer::mpPlayer->mPosition.mX < 140.0f + 30.0f)
-			&& (CPlayer::mpPlayer->mPosition.mZ > -222.0f && CPlayer::mpPlayer->mPosition.mZ < 222.0f)
-			&& (CPlayer::mpPlayer->mChecks == 3)
-			&& (isStartRace)){
-			if (mLap == mMaxLap){
-				//ベストタイム更新時
-				if (mTime < mBestTime){
-					mBestTime = mTime;
-					isNewRecord = true;
-					//コースによって新しく記録する
-					if (CSceneTitle::mCource_Number == 1){
-						mRecord_A = mBestTime;
-					}
-					else if (CSceneTitle::mCource_Number == 2){
-						mRecord_B = mBestTime;
-					}
-					else if (CSceneTitle::mCource_Number == 3){
-						mRecord_C = mBestTime;
-					}
-					else if (CSceneTitle::mCource_Number == 4){
-						mRecord_D = mBestTime;
-					}
-					else if (CSceneTitle::mCource_Number == 5){
-						mRecord_E = mBestTime;
-					}
-					else if (CSceneTitle::mCource_Number == 6){
-						mRecord_F = mBestTime;
-					}
-				}
-				mPlayer->mRank = mRanking;
-				mRanking++;
-				isStartRace = false;
-				isGoal = true;
-				BGM.Stop();
-				SoundGoal.Play();
-				//CPlayer::mpPlayer->CanMove = false;//動きストップ
-				CPlayer::mpPlayer->mChecks = 0;
-				CPlayer::mpPlayer->mGoalTime = mTime;				
-			}
-			else{
-				mLap++;
-				CPlayer::mpPlayer->mChecks = 0;
-			}
-		}
-		//CPUの車がゴール地点を通過した時の処理
-		for (int i = 0; i < ENEMYS_AMOUNT; i++){
-			if (mEnemys[i]->mPosition.mX>100.0f && mEnemys[i]->mPosition.mX < 180.0f
-				&& (mEnemys[i]->mPosition.mZ > -222.0f && mEnemys[i]->mPosition.mZ < 222.0f)
-				&& (mEnemys[i]->mChecks == 3)
-				&& (mEnemys[i]->isEnemyGoaled == false)){
-				//その敵が最終ラップだった場合
-				if (mEnemys[i]->mEnemyLap == mMaxLap){
-					mEnemys[i]->mRank = mRanking;
-					mRanking++;
-					mEnemys[i]->isEnemyGoaled = true;
-					mEnemys[i]->mGoalTime = mTime;
-				}
-				//まだ最終ラップでない場合
-				else{
-					//チェックポイントをリセットし、次の周スタート
-					mEnemys[i]->mChecks = 0;
-					mEnemys[i]->mEnemyLap++;
-				}
-			}
-		}
-	}
-	else if (CSceneTitle::mCource_Number == 5){
-		if ((CPlayer::mpPlayer->isTouchGoal)
-			&& (CPlayer::mpPlayer->mChecks == 3)
-			&& (isStartRace)){
-			if (mLap == mMaxLap){
-				//ベストタイム更新時
-				if (mTime < mBestTime){
-					mBestTime = mTime;
-					isNewRecord = true;
-					//コースによって新しく記録する
-					if (CSceneTitle::mCource_Number == 1){
-						mRecord_A = mBestTime;
-					}
-					else if (CSceneTitle::mCource_Number == 2){
-						mRecord_B = mBestTime;
-					}
-					else if (CSceneTitle::mCource_Number == 3){
-						mRecord_C = mBestTime;
-					}
-					else if (CSceneTitle::mCource_Number == 4){
-						mRecord_D = mBestTime;
-					}
-					else if (CSceneTitle::mCource_Number == 5){
-						mRecord_E = mBestTime;
-					}
-					else if (CSceneTitle::mCource_Number == 6){
-						mRecord_F = mBestTime;
-					}
-				}
-				mPlayer->mRank = mRanking;
-				mRanking++;
-				isStartRace = false;
-				isGoal = true;
-				BGM.Stop();
-				SoundGoal.Play();
-				//CPlayer::mpPlayer->CanMove = false;//動きストップ
-				CPlayer::mpPlayer->mChecks = 0;
-				CPlayer::mpPlayer->mGoalTime = mTime;
-				CPlayer::mpPlayer->isTouchGoal = false;
-			}
-			else{
-				mLap++;
-				CPlayer::mpPlayer->mChecks = 0;
-				CPlayer::mpPlayer->isTouchGoal = false;
-			}
-		}
-		//CPUの車がゴール地点を通過した時の処理
-		for (int i = 0; i < ENEMYS_AMOUNT; i++){
-			if (mEnemys[i]->isTouchGoal
-				&& (mEnemys[i]->mChecks == 3)
-				&& (mEnemys[i]->isEnemyGoaled == false)){
-				//その敵が最終ラップだった場合
-				if (mEnemys[i]->mEnemyLap == mMaxLap){
-					mEnemys[i]->mRank = mRanking;
-					mRanking++;
-					mEnemys[i]->isTouchGoal = false;
-					mEnemys[i]->isEnemyGoaled = true;
-					mEnemys[i]->mGoalTime = mTime;
-				}
-				//まだ最終ラップでない場合
-				else{
-					//チェックポイントをリセットし、次の周スタート
-					mEnemys[i]->mChecks = 0;
-					mEnemys[i]->isTouchGoal = false;
-					mEnemys[i]->mEnemyLap++;
-				}
-			}
-		}
-	}
-	else{
-		if ((CPlayer::mpPlayer->mPosition.mX > -55.0f && CPlayer::mpPlayer->mPosition.mX < 1400.0f)
-			&& (CPlayer::mpPlayer->mPosition.mZ > -3.1f - 5.0f && CPlayer::mpPlayer->mPosition.mZ < -3.1f + 5.0f + 20.0f)
-			&& (CPlayer::mpPlayer->mChecks == 3)
-			&& (isStartRace)){
-			if (mLap == mMaxLap){
-				//ベストタイム更新時
-				if (mTime < mBestTime){
-					mBestTime = mTime;
-					isNewRecord = true;
-					//コースによって新しく記録する
-					if (CSceneTitle::mCource_Number == 1){
-						mRecord_A = mBestTime;
-					}
-					else if (CSceneTitle::mCource_Number == 2){
-						mRecord_B = mBestTime;
-					}
-					else if (CSceneTitle::mCource_Number == 3){
-						mRecord_C = mBestTime;
-					}
-					else if (CSceneTitle::mCource_Number == 4){
-						mRecord_D = mBestTime;
-					}
-					else if (CSceneTitle::mCource_Number == 5){
-						mRecord_E = mBestTime;
-					}
-					else if (CSceneTitle::mCource_Number == 6){
-						mRecord_F = mBestTime;
-					}
-				}
-				mPlayer->mRank = mRanking;
-				mRanking++;
-				isStartRace = false;
-				isGoal = true;
-				BGM.Stop();
-				SoundGoal.Play();
-				//CPlayer::mpPlayer->CanMove = false;//false:ゴール後も走行は可能
-				CPlayer::mpPlayer->mChecks = 0;
-				CPlayer::mpPlayer->mGoalTime = mTime;
-
-				////ベストタイムをファイルに記録する
-				//outputfile = fopen("record.txt", "w");
-				//if (outputfile == NULL){
-				//	printf("cannot open\n");
-				//}
-				//else{
-				//	fprintf(outputfile, "aaa");
-				//	fprintf(outputfile, "bbb\n");
-				//	char best[11];
-				//	sprintf(best, "%02d:%02d:%02d", mBestTime / 10000 % 100, mBestTime / 100 % 100, mBestTime % 100);
-				//	fprintf(outputfile, best);
-				//	fclose(outputfile);
-				//	printf("ベストタイムを保存しました\n");
-				//}
-			}
-			else{
-				mLap++;
-				CPlayer::mpPlayer->mChecks = 0;
-			}
-		}
-		//CPUの車がゴール地点を通過した時の処理
-		for (int i = 0; i < ENEMYS_AMOUNT; i++){
-			if (mEnemys[i]->mPosition.mX>-55.0f && mEnemys[i]->mPosition.mX < 1400.0f
-				&& (mEnemys[i]->mPosition.mZ > -3.1f - 5.0f && mEnemys[i]->mPosition.mZ < -3.1f + 5.0f + 20.0f)
-				&& (mEnemys[i]->mChecks == 3)
-				&& (mEnemys[i]->isEnemyGoaled == false)){
-				//その敵が最終ラップだった場合
-				if (mEnemys[i]->mEnemyLap == mMaxLap){
-					mEnemys[i]->mRank = mRanking;
-					mRanking++;
-					mEnemys[i]->isEnemyGoaled = true;
-					mEnemys[i]->mGoalTime = mTime;
-				}
-				//まだ最終ラップでない場合
-				else{
-					//チェックポイントをリセットし、次の周スタート
-					mEnemys[i]->mChecks = 0;
-					mEnemys[i]->mEnemyLap++;
-				}
+				//チェックポイントをリセットし、次の周スタート
+				mEnemys[i]->mChecks = 0;
+				mEnemys[i]->isTouchGoal = false;
+				mEnemys[i]->mEnemyLap++;
 			}
 		}
 	}
@@ -1204,16 +643,282 @@ void CSceneRace::Update() {
 	return;
 }
 
+void CSceneRace::Render(){
+	//2D描画開始
+	Start2D(0, 800, 0, 600);
+
+	//順位の描画
+	float color[] = { 1.0f, 1.0f, 1.0f, 1.0f };
+	//レース開始前のOP中にコース名を左下に表示
+	if (isOpening){
+		if (CSceneTitle::mCource_Number == 1){
+			CText::DrawString("COURCE 1", 20, 20, 10, 12);
+		}
+		else if (CSceneTitle::mCource_Number == 2){
+			CText::DrawString("COURCE 2", 20, 20, 10, 12);
+		}
+		else if (CSceneTitle::mCource_Number == 3){
+			CText::DrawString("COURCE 3", 20, 20, 10, 12);
+		}
+		else if (CSceneTitle::mCource_Number == 4){
+			CText::DrawString("COURCE 4", 20, 20, 10, 12);
+		}
+		else if (CSceneTitle::mCource_Number == 5){
+			CText::DrawString("COURCE 5", 20, 20, 10, 12);
+		}
+	}
+
+	//時間の表示
+	char time[20];// :も含めた最大文字数の設定
+	sprintf(time, "TIME:%02d:%02d:%02d", mTime_Output / 10000 % 100, mTime_Output / 100 % 100, mTime_Output % 100);
+	CText::DrawString(time, 20, 530, 10, 12);
+	//ベストタイムの表示
+	char besttime[20];// :も含めた最大文字数の設定
+	sprintf(besttime, "BEST:%02d:%02d:%02d", mBestTime / 10000 % 100, mBestTime / 100 % 100, mBestTime % 100);
+	CText::DrawString(besttime, 20, 580, 10, 12);
+
+	//カウントダウンの表示
+	char mcountd[7];
+	//残り3秒までの間、表示
+	sprintf(mcountd, "%d", mCountDown);
+	if (mCountDown > 0 && mCountDown <= 3){
+		CText::DrawString(mcountd, 400, 300, 25, 30);
+	}
+	else if (mCountDown == 0){
+		CText::DrawString("GO!", 400 - 40, 300, 25, 30);
+	}
+	char lap[19];
+	sprintf(lap, "LAP%d/%d", mLap, mMaxLap);
+	CText::DrawString(lap, 20, 500, 10, 12, 2);
+	//プレイヤーの車の速度表示
+	char carspeed[33];
+	sprintf(carspeed, "SPEED:%4.1f", CPlayer::mpPlayer->mCarSpeed);
+	if (isEnableSpeedometer){
+		CText::DrawString(carspeed, 20 + 580, 20, 10, 12);
+	}
+	
+	//ゴール後、継続して実行する処理
+	if (mLap == mMaxLap && isStartRace == false && isGoal){
+		//60fで一巡
+		if (mTextBlinkTime < 60){
+			mTextBlinkTime++;
+		}
+		else{
+			mTextBlinkTime = 0;
+		}
+		//Enterキー入力でタイトル画面に戻れることを伝えるテキスト
+		if (mTextBlinkTime < 30){
+			CText::DrawString("Press Enter to Title", 222, 77, 10, 12, 2);
+		}
+		//新記録をたたき出した時
+		if (isNewRecord){
+			//CText::DrawString("FINISH!", 400 - 20 * 6, 300, 20, 24);
+			if (mTextBlinkTime < 15 || mTextBlinkTime >= 30 && mTextBlinkTime < 45){
+				CText::DrawString("NEW RECORD!", 55, 551, 8, 9, 2);
+			}
+		}
+	}
+
+	//ゴール後に表示される文字
+	if (isGoal){
+		if (mAfterGoalTime < 999){
+			mAfterGoalTime++;
+		}
+		if (mAfterGoalTime > 85){
+			color[3] = 1.0f - 0.1f * (mAfterGoalTime - 85);
+			glColor4fv(color);
+		}
+		CText::DrawString("FINISH!", 400 - 25 * 6, 300, 25, 30);
+
+		color[3] = 0.05f * (mAfterGoalTime - 100);
+		glColor4fv(color);
+		char rank[8];
+		if (mPlayer->mRank == 1){      //1st
+			sprintf(rank, "%dst", mPlayer->mRank);
+		}
+		else if (mPlayer->mRank == 2){ //2nd
+			sprintf(rank, "%dnd", mPlayer->mRank);
+		}
+		else if (mPlayer->mRank == 3){ //3rd
+			sprintf(rank, "%drd", mPlayer->mRank);
+		}
+		else{ //4th,5th,...
+			sprintf(rank, "%dth", mPlayer->mRank);
+		}
+		CText::DrawString(rank, 357, 310, 10 * 2, 12 * 2, 2);
+
+		//ゴールした車の記録を表示
+		char goaltime[30];
+		char name[8];
+		sprintf(goaltime, "%d YOU  %02d:%02d:%02d", mPlayer->mRank, mPlayer->mGoalTime / 10000 % 100, mPlayer->mGoalTime / 100 % 100, mPlayer->mGoalTime % 100);
+		if (isGoal){
+			CText::DrawString(goaltime, 270, 285 - mPlayer->mRank * 17, 10, 12, 2);
+		}
+		for (int i = 0; i < ENEMYS_AMOUNT; i++){
+			sprintf(goaltime, "%d      %02d:%02d:%02d", mEnemys[i]->mRank, mEnemys[i]->mGoalTime / 10000 % 100, mEnemys[i]->mGoalTime / 100 % 100, mEnemys[i]->mGoalTime % 100);
+			sprintf(name, "CPU%d", i + 1);
+			if (mEnemys[i]->isEnemyGoaled){
+				if (mEnemys[i]->mpModel == &mCarRed){
+					color[0] = 1.0f, color[1] = 0.0f, color[2] = 0.0f;
+				}
+				else if (mEnemys[i]->mpModel == &mCarGreen){
+					color[0] = 0.0f, color[1] = 1.0f, color[2] = 0.0f;
+				}
+				else if (mEnemys[i]->mpModel == &mCarBlue){
+					color[0] = 0.0f, color[1] = 0.0f, color[2] = 1.0f;
+				}
+				else if (mEnemys[i]->mpModel == &mCarYellow){
+					color[0] = 1.0f, color[1] = 1.0f, color[2] = 0.0f;
+				}
+				else if (mEnemys[i]->mpModel == &mCarCyan){
+					color[0] = 0.0f, color[1] = 1.0f, color[2] = 1.0f;
+				}
+				else if (mEnemys[i]->mpModel == &mCarPink){
+					color[0] = 1.0f, color[1] = 0.0f, color[2] = 1.0f;
+				}
+				else if (mEnemys[i]->mpModel == &mCarWhite){
+					color[0] = color[1] = color[2] = 1.0f;
+				}
+				else if (mEnemys[i]->mpModel == &mCarGray){
+					color[0] = color[1] = color[2] = 0.5f;
+				}
+				else if (mEnemys[i]->mpModel == &mCarBlack){
+					color[0] = color[1] = color[2] = 0.0f;
+				}
+				else {
+					color[0] = color[1] = color[2] = 0.75f;
+				}
+				glColor4fv(color);
+				CText::DrawString(name, 270 + 40, 285 - mEnemys[i]->mRank * 17, 10, 12, 2);
+				//色を一旦、白に戻す
+				color[0] = color[1] = color[2] = 1.0f;
+				glColor4fv(color);
+				CText::DrawString(goaltime, 270, 285 - mEnemys[i]->mRank * 17, 10, 12, 2);
+			}
+		}
+	}
+	//色合いを元に戻す
+	color[3] = 1.0f;
+	glColor4fv(color);
+
+	//ポーズ中に表示される文字
+	if (isPause){
+
+		if (mPauseScreen == EOPTION){
+			//表示場所が変化しないテキスト
+			CText::DrawString("OPTION", 250, 300, 10 * 3, 12 * 3, 3);
+			CText::DrawString("Shadow", 260, 200, 10, 12, 2);
+			CText::DrawString("BackMirror", 260, 170, 10, 12, 2);
+			CText::DrawString("MiniMap", 260, 140, 10, 12, 2);
+			CText::DrawString("Speedometer", 260, 110, 10, 12, 2);
+
+			//表示場所が変化するテキスト
+			if (mPause_OptionCarsol == 5){
+				CText::DrawString("[", 373, 230 - 30 * mPause_OptionCarsol - 10, 14, 21, 1);
+				CText::DrawString("]", 432, 230 - 30 * mPause_OptionCarsol - 10, 14, 21, 1);
+			}
+			else{
+				CText::DrawString("[", 493, 230 - 30 * mPause_OptionCarsol, 14, 21, 1);
+				CText::DrawString("]", 547, 230 - 30 * mPause_OptionCarsol, 14, 21, 1);
+			}
+
+			for (int i = 1; i <= 5; i++){
+				if (mPause_OptionCarsol == i){
+					color[0] = color[1] = color[2] = 1.0f;
+				}
+				else{
+					color[0] = color[1] = color[2] = 0.5f;
+				}
+				glColor4fv(color);
+
+				if (i == 1){
+					if (isEnableShadow){
+						CText::DrawString("ON", 510, 200, 10, 12, 2);
+					}
+					else{
+						CText::DrawString("OFF", 502, 200, 10, 12, 2);
+					}
+				}
+				else if (i == 2){
+					if (isEnableBackMirror){
+						CText::DrawString("ON", 510, 170, 10, 12, 2);
+					}
+					else{
+						CText::DrawString("OFF", 502, 170, 10, 12, 2);
+					}
+				}
+				else if (i == 3){
+					if (isEnableMiniMap){
+						CText::DrawString("ON", 510, 140, 10, 12, 2);
+					}
+					else{
+						CText::DrawString("OFF", 502, 140, 10, 12, 2);
+					}
+				}
+				else if (i == 4){
+					if (isEnableSpeedometer){
+						CText::DrawString("ON", 510, 110, 10, 12, 2);
+					}
+					else{
+						CText::DrawString("OFF", 502, 110, 10, 12, 2);
+					}
+				}
+				if (i == 5){
+					CText::DrawString("OK", 390, 70, 13, 15, 2);
+				}
+			}
+			color[0] = color[1] = color[2] = 1.0f;
+			glColor4fv(color);
+		}
+		else if (mPauseScreen == EPAUSE){
+			CText::DrawString("[", 336, 230 - 30 * mPause_SelectCarsol, 14, 21, 1);
+			CText::DrawString("]", 462, 230 - 30 * mPause_SelectCarsol, 14, 21, 1);
+			CText::DrawString("PAUSE", 280, 300, 10 * 3, 12 * 3, 3);
+			//カーソルの位置
+			for (int i = 1; i <= 3; i++){
+				if (mPause_SelectCarsol == i){
+					color[0] = color[1] = color[2] = 1.0f;
+				}
+				else{
+					color[0] = color[1] = color[2] = 0.5f;
+				}
+				glColor4fv(color);
+				if (i == 1){
+					CText::DrawString("Resume", 350, 200, 10, 12, 2);
+				}
+				else if (i == 2){
+					CText::DrawString("Option", 350, 170, 10, 12, 2);
+				}
+				else if (i == 3){
+					CText::DrawString("Quit", 370, 140, 10, 12, 2);
+				}
+			}
+			color[0] = color[1] = color[2] = 1.0f;
+			glColor4fv(color);
+		}
+	}
+	//フェードイン
+	if (isFadeIn){
+		FadeIn();
+	}
+	//フェードイン
+	if (isFadeOut){
+		SceneChange();
+	}
+	//2D描画終了
+	End2D();
+}
+
 /* マップ上からの視点 */
 void CSceneRace::RenderMiniMap() {	
 	glPushMatrix();
 	glLoadIdentity();
 	//一時的に2D視点に変更する
 	glViewport(MINIMAP_AREA);//画面の描画エリアの指定
-	glMatrixMode(GL_PROJECTION);	//行列をプロジェクションモードへ変更
+	glMatrixMode(GL_PROJECTION);//行列をプロジェクションモードへ変更
 	//行列退避
 	glPushMatrix();
-	glLoadIdentity();				//行列を初期化
+	glLoadIdentity();			//行列を初期化
 	//2D画面の設定変更
 	float size = 20000.0f;//コースの縮尺設定
 	bool canscrollmap = false;//プレイヤーに合わせたマップ移動の有無
@@ -1500,16 +1205,6 @@ void CSceneRace::RenderBackMirror()
 
 //影の描画
 void CSceneRace::RenderShadow(){	
-	//CModel *mod = mpGrounds[3]->mpModel;
-	//mpGrounds[3]->mpModel = NULL;
-	//if (isEnableShadow){
-	//	/*CModel *mod = mpGrounds[3]->mpModel;
-	//	mpGrounds[3]->mpModel = NULL;*/
-	//}
-	//else{
-	//	mpGrounds[3]->mpModel = mod;
-	//}
-	
 	//Shadow Map ************************************
 
 	GLint	viewport[4]; //ビューポートの保存用
@@ -1709,9 +1404,10 @@ void CSceneRace::FadeIn(){
 	glColor4fv(color);
 }
 
+//別のシーンに映る際の処理
 void CSceneRace::SceneChange(){
 	float color[] = { 1.0f, 1.0f, 1.0f, 1.0f };
-	//
+	//暗転
 	if (isBlackOutTime < 60){
 		isBlackOutTime++;
 	}
@@ -1722,7 +1418,6 @@ void CSceneRace::SceneChange(){
 	}
 	color[0] = color[1] = color[2] = 0.0f;
 	color[3] = 0.0f + 0.025f*isBlackOutTime;
-	//color[3] = 0.5f;
 	glColor4fv(color);
 	CRectangle::Render(400, 300, 400, 300);
 	color[0] = color[1] = color[2] = color[3] = 1.0f;
@@ -1732,4 +1427,37 @@ void CSceneRace::SceneChange(){
 //次のシーンの取得
 CScene::EScene CSceneRace::GetNextScene(){
 	return mScene;
+}
+
+void CSceneRace::PutCPUColor(){
+	for (int i = 0; i < ENEMYS_AMOUNT; i++){
+		int cpu_number = i + 1;
+		if (mEnemys[i]->mpModel == &mCarRed){
+			printf("CPU%d RED\n", cpu_number);
+		}
+		else if (mEnemys[i]->mpModel == &mCarBlue){
+			printf("CPU%d BLUE\n", cpu_number);
+		}
+		else if (mEnemys[i]->mpModel == &mCarBlack){
+			printf("CPU%d BLACK\n", cpu_number);
+		}
+		else if (mEnemys[i]->mpModel == &mCarCyan){
+			printf("CPU%d CYAN\n", cpu_number);
+		}
+		else if (mEnemys[i]->mpModel == &mCarGreen){
+			printf("CPU%d GREEN\n", cpu_number);
+		}
+		else if (mEnemys[i]->mpModel == &mCarGray){
+			printf("CPU%d GRAY\n", cpu_number);
+		}
+		else if (mEnemys[i]->mpModel == &mCarPink){
+			printf("CPU%d PINK\n", cpu_number);
+		}
+		else if (mEnemys[i]->mpModel == &mCarWhite){
+			printf("CPU%d WHITE\n", cpu_number);
+		}
+		else if (mEnemys[i]->mpModel == &mCarYellow){
+			printf("CPU%d YELLOW\n", cpu_number);
+		}
+	}
 }

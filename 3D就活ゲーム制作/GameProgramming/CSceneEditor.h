@@ -6,37 +6,17 @@
 #include "CEnemy.h"
 #include "CCameraRange.h"
 #include "CCameraPos.h"
-#include "CRigidObj.h"
-//CSound.hをインクルードしたら音の再生の動作が軽くなった？
 #include "CSound.h"
 
 /*
 エディター画面
 */
-class CSceneEditor : public CScene {
-public:
-	//次のシーンの取得
-	EScene GetNextScene();
-
-	~CSceneEditor();
-	//初期化処理のオーバーライド
-	void Init();
-	//更新処理のオーバーライド
-	void Update();
-	//ミニマップ関連の処理
-	void RenderMiniMap();
-	//バックミラーの描画
-	void RenderBackMirror();
-	
+class CSceneEditor : public CScene {	
 private:
-	float mCamY;//プレイヤーの周りを回転(水平方向に)
-	
+	float mCamY;//プレイヤーの周りを回転(水平方向に)	
 	int mTextBlinkTime;
-
 	bool isPause;
-
-	bool mPutCol;//当たり判定の描画のON・OFF
-	
+	bool mPutCol;//当たり判定の描画のON・OFF	
 protected:
 	CModel mRover;
 	CModel mCarRed;
@@ -120,9 +100,19 @@ protected:
 	//標識
 	CModel mSign_Left;
 	CModel mSign_Right;
+public:
+	//次のシーンの取得
+	EScene GetNextScene();
 
+	~CSceneEditor();
+	//初期化処理のオーバーライド
+	void Init();
+	//更新処理のオーバーライド
+	void Update();
+	//ミニマップ関連の処理
+	void RenderMiniMap();
+	//バックミラーの描画
+	void RenderBackMirror();
 };
-
-
 
 #endif

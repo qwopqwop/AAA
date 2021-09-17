@@ -86,17 +86,13 @@ CMatrix CMatrix::Scale(float x, float y, float z) {
 	mM[0][0] = x;
 	mM[1][1] = y;
 	mM[2][2] = z;
-	//この行列を返す
+	//行列を返す
 	return *this;
 }
 //*演算子のオーバーロード
 //CMatrix * CMatrix の演算結果を返す
 CMatrix CMatrix::operator*(const CMatrix &m) {
-	CMatrix t;
-	//t.mM[0][0] = mM[0][0] * m.mM[0][0] + mM[0][1] * m.mM[1][0] + mM[0][2] * m.mM[2][0] + mM[0][3] * m.mM[3][0];
-	//t.mM[0][1] = mM[0][0] * m.mM[0][1] + mM[0][1] * m.mM[1][1] + mM[0][2] * m.mM[2][1] + mM[0][3] * m.mM[3][1];
-	//t.mM[0][2] = mM[0][0] * m.mM[0][2] + mM[0][1] * m.mM[1][2] + mM[0][2] * m.mM[2][2] + mM[0][3] * m.mM[3][2];
-	//t.mM[0][3] = mM[0][0] * m.mM[0][3] + mM[0][1] * m.mM[1][3] + mM[0][2] * m.mM[2][3] + mM[0][3] * m.mM[3][3];
+	CMatrix t;	
 	for (int i = 0; i < 4; i++) {
 		for (int j = 0; j < 4; j++) {
 			t.mM[i][j] = 0;
@@ -107,9 +103,6 @@ CMatrix CMatrix::operator*(const CMatrix &m) {
 	}
 	return t;
 }
-
-
-
 /*
 GetInverse
 逆行列の取得

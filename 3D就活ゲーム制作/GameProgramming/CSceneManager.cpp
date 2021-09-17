@@ -5,7 +5,6 @@
 #include "CRaceCourceC.h"
 #include "CRaceCourceD.h"
 #include "CRaceCourceE.h"
-#include "CRaceCourceF.h"
 #include "CSceneEditor.h"
 #include "CSceneTitle.h"
 #include "CTaskManager.h"
@@ -72,11 +71,7 @@ void CSceneManager::Update() {
 		case CScene::ERACE5:
 			mpScene = new CRaceCourceE();
 			mpScene->Init();
-			break;
-		case CScene::ERACE6:
-			mpScene = new CRaceCourceF();
-			mpScene->Init();
-			break;
+			break;		
 		case CScene::EEDIT:
 			mpScene = new CSceneEditor();
 			mpScene->Init();

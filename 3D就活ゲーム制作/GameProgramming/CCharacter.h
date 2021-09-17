@@ -22,17 +22,8 @@ public:
 		ENONE,	//初期値
 		EPOINT,	//ポイント
 		EPLAYER,//プレイヤー
-		EAIRBASE,//空軍基地
-		EMISSILE,//ミサイル
 		EENEMY, //敵
-		ESPRING,//ばね
-		ESCREW, //スクリュー
-		EBOAT, //ボート
-		EGUN,   //銃
 		EWATER, //水場
-		EBULLET,//弾
-		ECLEARWATER,//透き通った水
-		EKEY, //鍵
 		ECHECKPOINT,//中間地点1
 		ECHECKPOINT2,//中間地点2
 		ECHECKPOINT3,//中間地点3

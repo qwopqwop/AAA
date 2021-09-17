@@ -34,9 +34,7 @@ public:
 	void Delete();
 	//—Dæ“x‚Ì•ÏX
 	void ChangePriority(CTask *t, int p);
-
-	
-	
+		
 	void Destroy();
 
 	void Disabled();

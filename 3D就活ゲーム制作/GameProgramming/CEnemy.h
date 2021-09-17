@@ -27,8 +27,6 @@ private:
 	//回転速度
 	float mTurnSpeed;
 
-	bool mCanJump;//ジャンプ可能か(≒地面に足が着いてるか)
-	
 	float mStartPoint[3];//{ X,Y,Z }	
 
 	bool isBoost;//ブースト中か(加速床で一定時間有効)
@@ -80,7 +78,7 @@ public:
 
 	//敵のAI
 	enum EEnemyAI{
-		ENOOB, //一切減速しない
+		ENEWBIE, //一切減速しない
 		EPRO, //適度に減速する
 	};
 	EEnemyAI mEnemyAI;

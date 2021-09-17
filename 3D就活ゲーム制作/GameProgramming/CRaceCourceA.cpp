@@ -60,14 +60,18 @@ void CRaceCourceA::Init(){
 			mEnemys[i]->mPosition.mX -= 80.0f;
 		}
 		mEnemys[i]->CCharacter::Update();
+
+		if (i == 0){
+			mEnemys[i]->mEnemyAI = CEnemy::ENEWBIE;
+		}		
 	}
 	/*透明度の高い物から先に描画する*/
 	//中間地点(1周と判定されるには順番通りに通過する必要がある)
 	mpGrounds[95] = new CObjCheckPoint(&mCheckPoint, CVector(50.0f, 15.0f, 2500.0f), CVector(-90.0f, 0.0f, -50.0f), CVector(2000.0f, 31.0f, 255.0f), 1);
 	mpGrounds[96] = new CObjCheckPoint(&mCheckPoint, CVector(-1800.0f, 15.0f, 20.0f), CVector(-90.0f, 180.0f, 0.0f), CVector(750.0f, 31.0f, 255.0f), 2);
 	mpGrounds[97] = new CObjCheckPoint(&mCheckPoint, CVector(-1100.0f, 15.0f, -2000.0f), CVector(-90.0f, 0.0f, 110.0f), CVector(750.0f, 31.0f, 255.0f), 3);
-	////ゴール地点
-	//new CObjCheckPoint(&mCheckPoint, CVector(-3862.5f, 21.3f, 15925.5f), CVector(0.0f, 0.0f - 145.3f, 0.0f), CVector(240.0f, 100.0f, 30.0f), 9);
+	//ゴール地点
+	new CObjCheckPoint(&mCheckPoint, CVector(600.0f, -30.0f, 1.9f), CVector(), CVector(800.0f, 100.0f, 10.0f), 9);
 
 	//コースの生成
 	for (int i = 0; i < 1; i++){		
@@ -107,37 +111,8 @@ void CRaceCourceA::Init(){
 	for (int i = 0; i < ENEMYS_AMOUNT; i++){
 		CTaskManager::Get()->ChangePriority(mEnemys[i], 15);
 	}
-
-	for (int i = 0; i < ENEMYS_AMOUNT; i++){
-		int cpu_number = i + 1;
-		if (mEnemys[i]->mpModel == &mCarRed){
-			printf("CPU%d RED\n", cpu_number);
-		}
-		else if (mEnemys[i]->mpModel == &mCarBlue){
-			printf("CPU%d BLUE\n", cpu_number);
-		}
-		else if (mEnemys[i]->mpModel == &mCarBlack){
-			printf("CPU%d BLACK\n", cpu_number);
-		}
-		else if (mEnemys[i]->mpModel == &mCarCyan){
-			printf("CPU%d CYAN\n", cpu_number);
-		}
-		else if (mEnemys[i]->mpModel == &mCarGreen){
-			printf("CPU%d GREEN\n", cpu_number);
-		}
-		else if (mEnemys[i]->mpModel == &mCarGray){
-			printf("CPU%d GRAY\n", cpu_number);
-		}
-		else if (mEnemys[i]->mpModel == &mCarPink){
-			printf("CPU%d PINK\n", cpu_number);
-		}
-		else if (mEnemys[i]->mpModel == &mCarWhite){
-			printf("CPU%d WHITE\n", cpu_number);
-		}
-		else if (mEnemys[i]->mpModel == &mCarYellow){
-			printf("CPU%d YELLOW\n", cpu_number);
-		}
-	}
+	//敵車のカラー情報の出力
+	PutCPUColor();
 }
 void CRaceCourceA::Update(){
 	CSceneRace::Update();

@@ -62,10 +62,12 @@ void CRaceCourceB::Init(){
 	}
 
 	/* ※透明度の高い物から先に描画する */
-	//中間地点(順に通らないと1周したことにならないし、順番を飛ばしてもいけない)
+	//中間地点(順番に通らないと1周とカウントされない)
 	new CObjCheckPoint(&mCheckPoint, CVector(2893.0f, -100.0f, 2473.0f), CVector(0.0f, 0.0f, 0.0f), CVector(220.0f, 200.0f, 220.0f), 1);
 	new CObjCheckPoint(&mCheckPoint, CVector(-1020.0f, -100.0f, 4594.0f), CVector(0.0f, 0.0f, 0.0f), CVector(220.0f, 200.0f, 220.0f), 2);
 	new CObjCheckPoint(&mCheckPoint, CVector(-1277.0f, -100.0f, -448.0f), CVector(0.0f, 0.0f, 0.0f), CVector(220.0f, 200.0f, 220.0f), 3);
+	//ゴール地点
+	new CObjCheckPoint(&mCheckPoint, CVector(2216.0f, -100.0f, -2300.0f), CVector(), CVector(222.2f, 100.0f, 30.0f), 9);
 
 	//ここから
 	//コースの生成
@@ -80,36 +82,8 @@ void CRaceCourceB::Init(){
 	for (int i = 0; i < ENEMYS_AMOUNT; i++){
 		CTaskManager::Get()->ChangePriority(mEnemys[i], 15);
 	}
-	for (int i = 0; i < ENEMYS_AMOUNT; i++){
-		int cpu_number = i + 1;
-		if (mEnemys[i]->mpModel == &mCarRed){
-			printf("CPU%d RED\n", cpu_number);
-		}
-		else if (mEnemys[i]->mpModel == &mCarBlue){
-			printf("CPU%d BLUE\n", cpu_number);
-		}
-		else if (mEnemys[i]->mpModel == &mCarBlack){
-			printf("CPU%d BLACK\n", cpu_number);
-		}
-		else if (mEnemys[i]->mpModel == &mCarCyan){
-			printf("CPU%d CYAN\n", cpu_number);
-		}
-		else if (mEnemys[i]->mpModel == &mCarGreen){
-			printf("CPU%d GREEN\n", cpu_number);
-		}
-		else if (mEnemys[i]->mpModel == &mCarGray){
-			printf("CPU%d GRAY\n", cpu_number);
-		}
-		else if (mEnemys[i]->mpModel == &mCarPink){
-			printf("CPU%d PINK\n", cpu_number);
-		}
-		else if (mEnemys[i]->mpModel == &mCarWhite){
-			printf("CPU%d WHITE\n", cpu_number);
-		}
-		else if (mEnemys[i]->mpModel == &mCarYellow){
-			printf("CPU%d YELLOW\n", cpu_number);
-		}
-	}
+	//敵車のカラー情報の出力
+	PutCPUColor();
 }
 void CRaceCourceB::Update(){
 	CSceneRace::Update();

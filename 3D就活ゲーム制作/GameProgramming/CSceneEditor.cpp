@@ -1,26 +1,12 @@
 #include "CSceneEditor.h"
-//
 #include "CSceneTitle.h"
-//
 #include "CCamera.h"
-//
 #include "CText.h"
-//
 #include "CTaskManager.h"
-//
 #include "CCollisionManager.h"
-////
-#include "CRock.h"
-//
 #include "CObj.h"
-//
 #include "CObjWall.h"
-//
 #include "CKey.h"
-//
-#include "CBullet.h"
-
-
 #include "CRaceCourceD.h"
 #include "CObjWall.h"
 #include "CObjFloor.h"
@@ -146,9 +132,7 @@ void CSceneEditor::Init() {
 		mCource05Grass_Wall.Load("material\\racing_mat\\stage5\\cource05grass_wall.obj", "material\\racing_mat\\stage5\\cource05grass_wall.mtl");
 		mCource05GoalTile.Load("material\\racing_mat\\stage5\\Checker_Tile.obj", "material\\racing_mat\\stage5\\Checker_Tile.mtl");
 	}
-	else if (CSceneTitle::mCource_Number == 6){
-		//
-	}
+
 	//コースエディターのタイルの読み込み
 	mTile_Curve01_Floor.Load("material\\racing_mat\\stage_edit\\Curve01_floor.obj", "material\\racing_mat\\stage_edit\\Curve01_floor.mtl");
 	mTile_Curve01_Wall.Load("material\\racing_mat\\stage_edit\\Curve01_wall.obj", "material\\racing_mat\\stage_edit\\Curve01_wall.mtl");

@@ -40,10 +40,7 @@ public:
 
 	//回転速度
 	float mTurnSpeed;
-
-	bool mCanJump;//ジャンプ可能か(≒地面に足が着いてるか)
-	int mCanSwim;//水泳可能か
-
+	
 	CSound SoundJump;
 	CSound SoundShot;
 	CSound SoundItemGet;
@@ -55,15 +52,11 @@ public:
 	CSound SoundCollision;
 	CSound SoundCollisionSmall;
 	bool isRespawn;
-	int mRespawnCount;
 
 	float mStartPoint[3];//{ X,Y,Z }
 	float mStartRotation;//Y軸のみ
-
-	bool mIsGetKey;
-	bool mHaveBoat;
-
-	bool mFlyingMode;//デバッグ用：自由落下無効
+	
+	bool mFlyingMode;//デバッグ用：自由落下を無効化
 
 	int mChecks;
 	bool isTouchGoal;//ゴール地点に入っているか

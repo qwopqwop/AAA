@@ -6,13 +6,10 @@
 #include "CEnemy.h"
 #include "CCameraRange.h"
 #include "CCameraPos.h"
-#include "CRigidObj.h"
-//CSound.hをインクルードしたら音の再生の動作が軽くなった？
 #include "CSound.h"
-
 #include "CObjFloor.h"
 
-#define ENEMYS_AMOUNT 5-4//0以下には設定できない
+#define ENEMYS_AMOUNT 5//0以下には設定できない
 
 #define GROUND_AMOUNT 128
 
@@ -162,6 +159,7 @@ protected:
 
 	CObj *mpGrounds[GROUND_AMOUNT];
 	CCharacter *mCarShadow[ENEMYS_AMOUNT + 1];
+
 public:
 	//次のシーンの取得
 	EScene GetNextScene();
@@ -171,20 +169,22 @@ public:
 	void Init();
 	//更新処理のオーバーライド
 	void Update();
+	//テキストの描画
+	void Render();
 	//ミニマップ関連の処理
 	void RenderMiniMap();
 	//バックミラーの描画
 	void RenderBackMirror();
 	//影の描画
 	void RenderShadow();
-	//フェードインしてゲーム画面に突入する
+	//フェードインをしてゲーム画面に入る
 	void FadeIn();
 	//他シーンに行く際の演出・処理
 	void SceneChange();
 	
 	//各コースのベストタイム
-	static int mRecord_A, mRecord_B, mRecord_C, mRecord_D, mRecord_E, mRecord_F;
+	static int mRecord_A, mRecord_B, mRecord_C, mRecord_D, mRecord_E;
 
-	FILE *outputfile;	
+	void PutCPUColor();
 };
 #endif

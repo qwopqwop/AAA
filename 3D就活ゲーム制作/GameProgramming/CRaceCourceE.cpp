@@ -84,38 +84,9 @@ void CRaceCourceE::Init(){
 	for (int i = 0; i < ENEMYS_AMOUNT; i++){
 		CTaskManager::Get()->ChangePriority(mEnemys[i], 15);
 	}
-	for (int i = 0; i < ENEMYS_AMOUNT; i++){
-		int cpu_number = i + 1;
-		if (mEnemys[i]->mpModel == &mCarRed){
-			printf("CPU%d RED\n", cpu_number);
-		}
-		else if (mEnemys[i]->mpModel == &mCarBlue){
-			printf("CPU%d BLUE\n", cpu_number);
-		}
-		else if (mEnemys[i]->mpModel == &mCarBlack){
-			printf("CPU%d BLACK\n", cpu_number);
-		}
-		else if (mEnemys[i]->mpModel == &mCarCyan){
-			printf("CPU%d CYAN\n", cpu_number);
-		}
-		else if (mEnemys[i]->mpModel == &mCarGreen){
-			printf("CPU%d GREEN\n", cpu_number);
-		}
-		else if (mEnemys[i]->mpModel == &mCarGray){
-			printf("CPU%d GRAY\n", cpu_number);
-		}
-		else if (mEnemys[i]->mpModel == &mCarPink){
-			printf("CPU%d PINK\n", cpu_number);
-		}
-		else if (mEnemys[i]->mpModel == &mCarWhite){
-			printf("CPU%d WHITE\n", cpu_number);
-		}
-		else if (mEnemys[i]->mpModel == &mCarYellow){
-			printf("CPU%d YELLOW\n", cpu_number);
-		}
-	}
+	//“GÔ‚ÌƒJƒ‰[î•ñ‚Ìo—Í
+	PutCPUColor();
 }
 void CRaceCourceE::Update(){
 	CSceneRace::Update();
-
 }
