@@ -53,8 +53,10 @@ public:
 	CSound SoundCollisionSmall;
 	bool isRespawn;
 
-	float mStartPoint[3];//{ X,Y,Z }
-	float mStartRotation;//Y軸のみ
+	CVector mVCheckPositions[4];//mChecksに応じて変化、CRaceCourceXで設定
+	CVector mVCheckRotations[4];
+	//リスポーン地点の設定(チェックポイントの通過状況に応じてリスポーン地点は変化)
+	void SetRespawnPoint(int checknumber, CVector position, CVector rotation);
 	
 	bool mFlyingMode;//デバッグ用：自由落下を無効化
 
@@ -68,7 +70,7 @@ public:
 	int mBoostTime;//ブースト状態が継続される時間
 
 	bool CanMove;//プレイヤーが操作可能か否か(カウントダウン前・ゴール後などは否)
-
+	
 	//コライダの更新
 	void TaskCollision();
 };

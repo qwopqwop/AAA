@@ -41,7 +41,6 @@ private:
 
 	CVector mVPoint;
 	CVector mVPoint_prev;//一つ前の目標ポイント	
-
 protected:
 
 public:

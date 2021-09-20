@@ -64,12 +64,6 @@ CEnemy::CEnemy()
 	mTag = EENEMY;
 	mEnemyAI = EPRO;
 
-	//スタート地点の座標を設定;
-	mStartPoint[0] = 350.0f;  mStartPoint[1] = -13.538f;  mStartPoint[2] = -100.0f;
-
-	mPosition = CVector(mStartPoint[0], mStartPoint[1], mStartPoint[2]);
-	CCharacter::Update();
-
 	mColBody.mTag = CCollider::EBODY;
 	mColTire.mTag = CCollider::ESEARCH;
 	mSearch.mTag = CCollider::ESEARCH;

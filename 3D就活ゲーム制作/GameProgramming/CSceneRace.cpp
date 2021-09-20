@@ -370,7 +370,15 @@ void CSceneRace::Update() {
 	}
 	//最後のチェックポイントを通過した扱いにする
 	if (CKey::Once('V')){
-		mPlayer->mChecks = 3;
+		if (mPlayer->mChecks < 3){
+			mPlayer->mChecks++;
+		}
+		//mPlayer->mChecks = 3;
+	}
+	if (CKey::Once('8')){
+		for (int i = 0; i <= 3; i++){
+			printf("%d…x:%f,y:%f,z:%f\n", i, mPlayer->mVCheckPositions[i].mX, mPlayer->mVCheckPositions[i].mY, mPlayer->mVCheckPositions[i].mZ);
+		}
 	}
 #endif	
 

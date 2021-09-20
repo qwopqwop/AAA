@@ -64,45 +64,6 @@ CPlayer::CPlayer()
 
 	mTag = EPLAYER;
 	mJumpPrio = 0;
-
-	if (CSceneTitle::mCource_Number == 3){
-		//スタート地点の座標を設定;
-		mStartPoint[0] = 0.0f;  mStartPoint[1] = -13.538f;  mStartPoint[2] = 80.0f;
-		mStartRotation = 90.0f;
-		mRotation.mY = mStartRotation;
-	}
-	else if (CSceneTitle::mCource_Number == 2){
-		//スタート地点の座標を設定;
-		mStartPoint[0] = 2222.0f;  mStartPoint[1] = -13.538f;  mStartPoint[2] = -2510.0f;
-		mStartRotation = 0.0f;
-		mRotation.mY = mStartRotation;
-	}
-	else if (CSceneTitle::mCource_Number == 4){
-		//スタート地点の座標を設定;
-		mStartPoint[0] = 0.0f;  mStartPoint[1] = 0.0f;  mStartPoint[2] = 0.0f;
-		mStartRotation = 180.0f;
-		mRotation.mY = mStartRotation;
-	}
-	else if (CSceneTitle::mCource_Number == 5){
-		//スタート地点の座標を設定;
-		mStartPoint[0] = -3755.5f;  mStartPoint[1] = 13.5f;  mStartPoint[2] = 16060.5f;
-		mStartRotation = -145.0f;
-		mRotation.mY = mStartRotation;		
-	}
-	else if (CSceneTitle::mCource_Number == 127){
-		//スタート地点の座標を設定;
-		mStartPoint[0] = 0.0f;  mStartPoint[1] = 0.0f;  mStartPoint[2] = 0.0f;
-		mStartRotation = 180.0f;
-		mRotation.mY = mStartRotation;
-	}
-	else{
-		//スタート地点の座標を設定;
-		mStartPoint[0] = 350.0f;  mStartPoint[1] = -13.538f;  mStartPoint[2] = -100.0f;
-		mStartRotation = 0.0f;
-		mRotation.mY = mStartRotation;
-	}
-	mPosition = CVector(mStartPoint[0], mStartPoint[1], mStartPoint[2]);
-	CCharacter::Update();
 	
 	mColBody.mTag = CCollider::EBODY;
 	mColTire.mTag = CCollider::ESEARCH;
@@ -116,26 +77,28 @@ CPlayer::CPlayer()
 	SoundHorn.Load("SE\\car-horn1.wav");
 	SoundCollision.Load("SE\\bomb1.wav");
 	SoundCollisionSmall.Load("SE\\SNES-Racing01-10(Collision).wav");
-	
-	
+		
 	isSoundEngine = false;
 	isTouchGoal = false;
 	mGoalTime = 0; mRank = 1;
 }
 
 void CPlayer::Update(){
-	//飛行モード有効時(デバッグ用)
+	//デバッグ用
+#ifdef _DEBUG
+	//飛行モード
 	if (mFlyingMode){
 		if (CKey::Push('W')){
-			mVelocityJump = mMoveSpeed*3;
+			mVelocityJump = mMoveSpeed * 3;
 		}
 		else if (CKey::Push('S')){
-			mVelocityJump = -mMoveSpeed*3;
+			mVelocityJump = -mMoveSpeed * 3;
 		}
 		else{
 			mVelocityJump = 0.0f;
 		}
 	}
+#endif
 
 	//ブースト残り時間
 	if (mBoostTime > 0){
@@ -326,105 +289,11 @@ void CPlayer::Update(){
 		mVelocityJump = 0.0f;
 		//車の速度を0に
 		mCarSpeed = 0.0f;
-		if (CSceneTitle::mCource_Number == 2){
-			if (mChecks == 0){
-				//スタート時の位置、方向に戻される
-				mPosition = CVector(mStartPoint[0], mStartPoint[1], mStartPoint[2]);
-				mStartRotation = 0.0f;
-			}
-			else if (mChecks == 1){
-				mPosition = CVector(2893.0f, mStartPoint[1], 2473.0f);
-				mStartRotation = -59.0f;
-			}
-			else if (mChecks == 2){
-				mPosition = CVector(-1020.0f, mStartPoint[1], 4594.0f);
-				mStartRotation = -506.4f;
-			}
-			else if (mChecks == 3){
-				mPosition = CVector(-1277.0f, mStartPoint[1], -448.0f);
-				mStartRotation = -200.0f;
-			}
-		}
-		else if (CSceneTitle::mCource_Number == 3){
-			if (mChecks == 0){
-				//スタート時の位置、方向に戻される
-				mPosition = CVector(mStartPoint[0], mStartPoint[1], mStartPoint[2]);
-				mStartRotation = 90.0f;
-			}
-			else if (mChecks == 1){
-				mPosition = CVector(1127.4f, mStartPoint[1] + 100.0f, -5054.0f);
-				mStartRotation = -59.0f;
-			}
-			else if (mChecks == 2){
-				mPosition = CVector(777.0f, mStartPoint[1], 1925.0f);
-				mStartRotation = 405.1f;
-			}
-			else if (mChecks == 3){
-				mPosition = CVector(-5861.0f, mStartPoint[1], 1165.0f);
-				mStartRotation = -583.5f;
-			}
-		}
-		else if (CSceneTitle::mCource_Number == 5){
-			if (mChecks == 0){
-				//スタート時の位置、方向に戻される
-				mPosition = CVector(mStartPoint[0], mStartPoint[1], mStartPoint[2]);
-				mStartRotation = -145.0f;
-			}
-			else if (mChecks == 1){
-				mPosition = CVector(-16054.4f, 4915.0f, -2180.0f);
-				mStartRotation = -174.6f;
-			}
-			else if (mChecks == 2){
-				mPosition = CVector(4680.0f, 13.5f, -2027.0f);
-				mStartRotation = 147.2f;
-			}
-			else if (mChecks == 3){
-				mPosition = CVector(14809.0f, 13.5f, 4270.0f);
-				mStartRotation = -9.5f;
-			}
-		}
-		else if (CSceneTitle::mCource_Number == 127){
-			if (mChecks == 0){
-				//スタート時の位置、方向に戻される
-				mPosition = CVector(mStartPoint[0], mStartPoint[1], mStartPoint[2]);
-				mStartRotation = 180.0f;
-			}
-			else if (mChecks == 1){
-				mPosition = CVector(-16054.4f, 4915.0f, -2180.0f);
-				mStartRotation = -174.6f;
-			}
-			else if (mChecks == 2){
-				mPosition = CVector(4680.0f, 13.5f, -2027.0f);
-				mStartRotation = 147.2f;
-			}
-			else if (mChecks == 3){
-				mPosition = CVector(14809.0f, 13.5f, 4270.0f);
-				mStartRotation = -9.5f;
-			}
-		}
-		else{
-			if (mChecks == 0){
-				//スタート時の位置、方向に戻される
-				mPosition = CVector(mStartPoint[0], mStartPoint[1], mStartPoint[2]);
-				mStartRotation = 0.0f;
-			}
-			else if (mChecks == 1){
-				mPosition = CVector(-80.0f, mStartPoint[1], 2175.0f);
-				mStartRotation = -55.0f;
-			}
-			else if (mChecks == 2){
-				mPosition = CVector(-1620.0f, mStartPoint[1], 450.0f);
-				mStartRotation = -175.0f;
-			}
-			else if (mChecks == 3){
-				mPosition = CVector(-1212.0f, mStartPoint[1], -1616.0f);
-				mStartRotation = 120.0f;
-			}
-		}
-		mRotation = CVector(0.0f, mStartRotation, 0.0f);
+		//座標、回転値を変更する
+		mPosition = mVCheckPositions[mChecks];
+		mRotation = mVCheckRotations[mChecks];
 		isRespawn = true;
 	}
-
 	CCharacter::Update();
 	
 	//重力の影響を反映する
@@ -594,6 +463,11 @@ void CPlayer::Collision(CCollider *mc, CCollider *yc){
 	}
 }
 
+//各チェックポイント通過時のリスポーン地点を決める
+void CPlayer::SetRespawnPoint(int checknumber, CVector position, CVector rotation){
+	mVCheckPositions[checknumber] = position;
+	mVCheckRotations[checknumber] = rotation;
+}
 
 void CPlayer::TaskCollision()
 {

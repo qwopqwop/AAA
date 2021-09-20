@@ -19,6 +19,14 @@ void CRaceCourceA::Init(){
 	//プレイヤーの生成
 	mCarShadow[0] = mPlayer = new CPlayer();
 	mPlayer->mpModel = &mCarWhite;
+	//プレイヤーのリスポーンするCheckPointの設定
+	mPlayer->SetRespawnPoint(0, CVector(350.0f, -13.538f, -130.0f), CVector(0.0f, 0.0f, 0.0f));
+	mPlayer->SetRespawnPoint(1, CVector(-80.0f, -13.538f, 2175.0f), CVector(0.0f, -55.0f, 0.0f));
+	mPlayer->SetRespawnPoint(2, CVector(-1620.0f, -13.538f, 450.0f), CVector(0.0f, -175.0f, 0.0f));
+	mPlayer->SetRespawnPoint(3, CVector(-1212.0f, -13.538f, -1616.0f), CVector(0.0f, 120.0f, 0.0f));
+	mPlayer->mPosition = mPlayer->mVCheckPositions[0];
+	mPlayer->mRotation = mPlayer->mVCheckRotations[0];
+	mPlayer->CCharacter::Update();
 	//カメラの生成
 	mCamRange = new CCameraRange();
 	mCam = new CCameraPos();

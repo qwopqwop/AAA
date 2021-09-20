@@ -169,7 +169,7 @@ public:
 	void Init();
 	//更新処理のオーバーライド
 	void Update();
-	//テキストの描画
+	//テキスト等の描画
 	void Render();
 	//ミニマップ関連の処理
 	void RenderMiniMap();
@@ -181,10 +181,10 @@ public:
 	void FadeIn();
 	//他シーンに行く際の演出・処理
 	void SceneChange();
+	//CPU車の色の出力
+	void PutCPUColor();
 	
 	//各コースのベストタイム
-	static int mRecord_A, mRecord_B, mRecord_C, mRecord_D, mRecord_E;
-
-	void PutCPUColor();
+	static int mRecord_A, mRecord_B, mRecord_C, mRecord_D, mRecord_E;	
 };
 #endif
