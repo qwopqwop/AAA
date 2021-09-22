@@ -21,9 +21,7 @@ void CRaceCourceC::Init(){
 	mPlayer->SetRespawnPoint(1, CVector(1127.4f, 87.5f, -5054.0f), CVector(0.0f, -59.0f, 0.0f));
 	mPlayer->SetRespawnPoint(2, CVector(777.0f, -13.538f, 1925.0f), CVector(0.0f, 405.1f, 0.0f));
 	mPlayer->SetRespawnPoint(3, CVector(-5861.0f, -13.538f, 1165.0f), CVector(0.0f, -583.5, 0.0f));
-	mPlayer->mPosition = mPlayer->mVCheckPositions[0];
-	mPlayer->mRotation = mPlayer->mVCheckRotations[0];
-	mPlayer->CCharacter::Update();
+	mPlayer->GetReady();
 	//ƒJƒƒ‰‚Ì¶¬
 	mCamRange = new CCameraRange();
 	mCam = new CCameraPos();

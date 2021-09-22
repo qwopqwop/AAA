@@ -7,6 +7,8 @@
 
 class CPlayer :public CCharacter{
 private:
+	CVector mVCheckPositions[4];//mChecksに応じたリスポーン地点の座標
+	CVector mVCheckRotations[4];//mChecksに応じたリスポーン地点の回転値
 protected:
 public:
 	static CPlayer*mpPlayer;
@@ -53,11 +55,11 @@ public:
 	CSound SoundCollisionSmall;
 	bool isRespawn;
 
-	CVector mVCheckPositions[4];//mChecksに応じて変化、CRaceCourceXで設定
-	CVector mVCheckRotations[4];
 	//リスポーン地点の設定(チェックポイントの通過状況に応じてリスポーン地点は変化)
 	void SetRespawnPoint(int checknumber, CVector position, CVector rotation);
-	
+	//所定の位置(スタート地点)に着く
+	void GetReady();
+
 	bool mFlyingMode;//デバッグ用：自由落下を無効化
 
 	int mChecks;
@@ -73,6 +75,14 @@ public:
 	
 	//コライダの更新
 	void TaskCollision();
+
+	enum Sound_Engine{
+		ENONE,//初期値
+		EONGRASS,
+		ENOTONGRASS,		
+	};
+	Sound_Engine mSound_Engine, mSound_Engine_Prev;//接触状況,1f前の〃
+	
 };
 
 #endif

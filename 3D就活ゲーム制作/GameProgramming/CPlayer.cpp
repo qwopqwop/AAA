@@ -81,6 +81,9 @@ CPlayer::CPlayer()
 	isSoundEngine = false;
 	isTouchGoal = false;
 	mGoalTime = 0; mRank = 1;
+
+	mSound_Engine = mSound_Engine_Prev = ENONE;
+	
 }
 
 void CPlayer::Update(){
@@ -252,26 +255,26 @@ void CPlayer::Update(){
 		mRotation.mZ = 180;
 	}
 
-	//前に車が進んでいる時
-	if (mCarSpeed > 0.0f){
-		if (isSoundEngine == false){
-			SoundEngine.Repeat();
-			isSoundEngine = true;
-		}		
-	}
-	//車が停止している時
-	else if (mCarSpeed == 0.0f){
-		SoundEngine.Stop();
-		isSoundEngine = false;
-	}
-	//車がバックしている時
-	else if (mCarSpeed < 0.0f){
-		if (isSoundEngine == false){
-			//バックは違う音を鳴らす予定
-			SoundEngine.Repeat();
-			isSoundEngine = true;
-		}
-	}
+	////前に車が進んでいる時
+	//if (mCarSpeed > 0.0f){
+	//	if (isSoundEngine == false){
+	//		SoundEngine.Repeat();
+	//		isSoundEngine = true;
+	//	}		
+	//}
+	////車が停止している時
+	//else if (mCarSpeed == 0.0f){
+	//	SoundEngine.Stop();
+	//	isSoundEngine = false;
+	//}
+	////車がバックしている時
+	//else if (mCarSpeed < 0.0f){
+	//	if (isSoundEngine == false){
+	//		//バックは違う音を鳴らす予定
+	//		SoundEngine.Repeat();
+	//		isSoundEngine = true;
+	//	}
+	//}
 
 	mPosition = CVector(mADMoveX, 0.0f, mWSMoveZ + mCarSpeed) * mMatrixRotate * mMatrixTranslate;
 	CCharacter::Update();
@@ -310,14 +313,13 @@ void CPlayer::Collision(CCollider *mc, CCollider *yc){
 		//相手のコライダが三角コライダの時
 		if (yc->mType == CCollider::ETRIANGLE){
 			//自分のコライダが本体の時
-			if (mc->mTag == CCollider::EBODY){
+			if (mc->mTag == CCollider::EBODY){				
 				//芝生通過中の処理
 				if (yc->mpParent->mTag == CCharacter::EGRASS){
 					CVector aiueo;//仮のベクトル
-					if (CCollider::CollisionTriangleSphere(yc, mc, &aiueo)){
+					if (CCollider::CollisionTriangleSphere(yc, mc, &aiueo)){						
 						//ブースト効果の方が優先される
 						if (isBoost == false){
-							//printf("speed down…\n");
 							//一定速度までスピード低下
 							if (mCarSpeed > 3.2f + 1.8f){
 								if (mCarSpeed > 4.0f + 1.8f){
@@ -330,6 +332,9 @@ void CPlayer::Collision(CCollider *mc, CCollider *yc){
 						}
 					}
 				}
+
+				
+				
 				if (yc->mpParent->mTag == CCharacter::ECHECKPOINT){//中間地点1
 					if (mChecks == 0){
 						//各中間地点を通過しないと1周したとみなされない
@@ -384,6 +389,80 @@ void CPlayer::Collision(CCollider *mc, CCollider *yc){
 							mPosition = mPosition - adjust * -1;
 							//行列の更新
 							CCharacter::Update();
+
+							if (yc->mpParent->mTag == CCharacter::EGRASS){
+								mSound_Engine = EONGRASS;
+							}
+							else{
+								mSound_Engine = ENOTONGRASS;
+							}							
+							
+							//エンジン音を鳴らす
+							if (mCarSpeed > 0.0f){
+								if (isSoundEngine == false){
+									mSound_Engine_Prev = mSound_Engine;
+									if (mSound_Engine == EONGRASS){
+										SoundEngine_Turf.Repeat();										
+									}
+									else if (mSound_Engine == ENOTONGRASS){
+										SoundEngine.Repeat();
+									}									
+									isSoundEngine = true;
+								}
+								else{
+									//芝生、非芝生の切り替わり
+									if (mSound_Engine_Prev != mSound_Engine){
+										mSound_Engine_Prev = mSound_Engine;
+										if (mSound_Engine_Prev == EONGRASS){
+											SoundEngine_Turf.Repeat();
+											SoundEngine.Stop();
+										}
+										else if (mSound_Engine_Prev == ENOTONGRASS){
+											SoundEngine.Repeat();
+											SoundEngine_Turf.Stop();
+										}
+									}
+								}
+							}
+							//車が停止している時
+							else if (mCarSpeed == 0.0f){
+								SoundEngine.Stop();
+								SoundEngine_Turf.Stop();
+								isSoundEngine = false;
+							}
+							//車がバックしている時
+							else if (mCarSpeed < 0.0f){
+								if (isSoundEngine == false){
+									mSound_Engine_Prev = mSound_Engine;
+									if (mSound_Engine == EONGRASS){
+										SoundEngine_Turf.Repeat();
+									}
+									else if (mSound_Engine == ENOTONGRASS){
+										SoundEngine.Repeat();
+									}
+									isSoundEngine = true;
+								}
+								else{
+									//芝生、非芝生の切り替わり
+									if (mSound_Engine_Prev != mSound_Engine){
+										mSound_Engine_Prev = mSound_Engine;
+										if (mSound_Engine_Prev == EONGRASS){
+											SoundEngine_Turf.Repeat();
+											SoundEngine.Stop();
+										}
+										else if (mSound_Engine_Prev == ENOTONGRASS){
+											SoundEngine.Repeat();
+											SoundEngine_Turf.Stop();
+										}
+									}
+								}
+								//if (isSoundEngine == false){
+								//	//バックは違う音を鳴らす予定
+								//	SoundEngine.Repeat();
+								//	isSoundEngine = true;
+								//}
+							}
+
 
 							if (yc->mpParent->mTag == CCharacter::EWALL){
 								//衝突したのが壁だった場合は壁には引っかからず落下
@@ -467,6 +546,13 @@ void CPlayer::Collision(CCollider *mc, CCollider *yc){
 void CPlayer::SetRespawnPoint(int checknumber, CVector position, CVector rotation){
 	mVCheckPositions[checknumber] = position;
 	mVCheckRotations[checknumber] = rotation;
+}
+
+//スタート地点に着く(主にレース開始時に呼び出し)
+void CPlayer::GetReady(){
+	mPosition = mVCheckPositions[0];
+	mRotation = mVCheckRotations[0];
+	CCharacter::Update();
 }
 
 void CPlayer::TaskCollision()

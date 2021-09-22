@@ -23,9 +23,7 @@ void CRaceCourceE::Init(){
 	mPlayer->SetRespawnPoint(1, CVector(-16054.4f, 4915.0f, -2180.0f), CVector(0.0f, -174.6f, 0.0f));
 	mPlayer->SetRespawnPoint(2, CVector(4680.0f, 13.5f, -2027.0f), CVector(0.0f, 147.2f, 0.0f));
 	mPlayer->SetRespawnPoint(3, CVector(14809.0f, 13.5f, 4270.0f), CVector(0.0f, -9.5f, 0.0f));
-	mPlayer->mPosition = mPlayer->mVCheckPositions[0];
-	mPlayer->mRotation = mPlayer->mVCheckRotations[0];
-	mPlayer->CCharacter::Update();
+	mPlayer->GetReady();
 	//カメラの生成
 	mCamRange = new CCameraRange();
 	mCam = new CCameraPos();
@@ -33,7 +31,6 @@ void CRaceCourceE::Init(){
 	//コース全体のサイズ感を設定
 	float mtsize = 35.0f;
 	float height = 11.0f;
-	//new CObjFloor(&mCource05Road, CVector(0.0f, 21.0f, 0.0f), CVector(), CVector(mtsize, height, mtsize));
 	mpGrounds[0] = new CRoadManager(&mCource05Road, CVector(0.0f, 21.0f, 0.0f), CVector(), CVector(mtsize, height, mtsize), mPlayer->mPosition, CVector(0.0f, 0.0f, -1.0f), 120.0f, 0.0f);//
 
 	//敵車の生成
