@@ -11,7 +11,7 @@
 
 #define ENEMYS_AMOUNT 5//0以下には設定できない
 
-#define GROUND_AMOUNT 128
+//#define GROUND_AMOUNT 128
 
 #include <stdlib.h>
 
@@ -56,10 +56,7 @@ private:
 
 	//デバッグコマンド用の変数
 	bool mPutCol;//当たり判定の描画のON・OFF
-
-	bool isEnableShadow_Cource;
-	bool isEnableShadow_Car;
-
+	
 	bool isFadeIn, isFadeOut;
 	int isBlackOutTime;
 
@@ -156,10 +153,7 @@ protected:
 	//標識
 	CModel mSign_Left;
 	CModel mSign_Right;
-
-	CObj *mpGrounds[GROUND_AMOUNT];
-	CCharacter *mCarShadow[ENEMYS_AMOUNT + 1];
-
+	
 public:
 	//次のシーンの取得
 	EScene GetNextScene();

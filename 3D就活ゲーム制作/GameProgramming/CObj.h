@@ -4,6 +4,8 @@
 #include "CCollider.h"
 #include "CCollisionManager.h"
 
+#define GROUNDS_LIMIT 128//生成できるオブジェ数の限界値
+
 class CObj :public CCharacter{
 public:
 	//コライダの追加
@@ -13,6 +15,10 @@ public:
 	~CObj();
 
 	void Update();
+
+	static int mObjectNum;//オブジェの番号(生成したオブジェの総数にもなる)
+	static int mObject_Limit;//生成できるオブジェ数の限界値
+	static CObj *mpGrounds[GROUNDS_LIMIT];
 };
 
 #endif

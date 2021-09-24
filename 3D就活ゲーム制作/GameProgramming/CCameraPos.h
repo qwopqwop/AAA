@@ -7,30 +7,19 @@
 class CCameraPos :public CCharacter{
 private:
 	float mZoom_distance;
-
-public:
-	static CCameraPos*mpCamera;
-	//デフォルトコンストラクタ
-	CCameraPos();
-
-	//更新
-	void Update();
-
+	float mCameraSpeed;
 	//カメラの当たり判定
 	CCollider mColCam;
-	
+public:
+	static CCameraPos*mpCamera;	
+	//デフォルトコンストラクタ
+	CCameraPos();
+	//更新処理
+	void Update();	
 	//衝突処理
-	void Collision(CCollider *mc, CCollider *yc);
-
-	float mCameraSpeed;
-	bool CanMove;//プレイヤーが操作可能か(カウントダウン前が不可)
-	
+	void Collision(CCollider *mc, CCollider *yc);		
 	//コライダの更新
 	void TaskCollision();
-
-	CVector mVPoint;
-	float mVCamY;//カメラの方向
-
 };
 
 

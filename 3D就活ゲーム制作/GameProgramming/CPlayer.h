@@ -9,6 +9,17 @@ class CPlayer :public CCharacter{
 private:
 	CVector mVCheckPositions[4];//mChecksに応じたリスポーン地点の座標
 	CVector mVCheckRotations[4];//mChecksに応じたリスポーン地点の回転値
+
+	//ジャンプ速度の変数
+	float mVelocityJump;
+	//ジャンプ力(ジャンプ初速)の変数
+	float mJumpV0;
+	//ジャンプを当たり判定よりも早く処理させるもの
+	int mJumpPrio;
+
+	bool isBoost;//ブースト中か(加速床で一定時間有効)
+	float mBoostMaxSpeed;//ブーストで底上げされる最高速度の値
+	int mBoostTime;//ブースト状態の効果時間
 protected:
 public:
 	static CPlayer*mpPlayer;
@@ -25,21 +36,12 @@ public:
 
 	//衝突処理
 	void Collision(CCollider *mc, CCollider *yc);
-
-	//ジャンプ速度の変数
-	float mVelocityJump;
-	//ジャンプ力(ジャンプ初速)の変数
-	float mJumpV0;
-
-	//ジャンプを当たり判定よりも早く処理させるもの
-	int mJumpPrio;
-
+	
 	//移動速度
 	float mMoveSpeed;
 	float mADMoveX;
 	float mWSMoveZ;
 	float mCarSpeed;
-
 	//回転速度
 	float mTurnSpeed;
 	
@@ -47,8 +49,8 @@ public:
 	CSound SoundShot;
 	CSound SoundItemGet;
 	CSound SoundBoost;
-	CSound SoundEngine;//一番の難題
-	CSound SoundEngine_Turf;//芝生の上では別の音が鳴る仕様
+	CSound SoundEngine;//エンジン音
+	CSound SoundEngine_Turf;//芝生の上での音
 	bool isSoundEngine;
 	CSound SoundHorn;
 	CSound SoundCollision;
@@ -67,9 +69,7 @@ public:
 	int mGoalTime;
 	int mRank;
 
-	bool isBoost;//ブースト中か(加速床で一定時間有効)
-	float mBoostMaxSpeed;//ブーストで底上げされる最高速度の数値
-	int mBoostTime;//ブースト状態が継続される時間
+	
 
 	bool CanMove;//プレイヤーが操作可能か否か(カウントダウン前・ゴール後などは否)
 	
@@ -78,11 +78,10 @@ public:
 
 	enum Sound_Engine{
 		ENONE,//初期値
-		EONGRASS,
-		ENOTONGRASS,		
+		EONGRASS,//芝生の上
+		ENOTONGRASS,//芝生の上でない
 	};
-	Sound_Engine mSound_Engine, mSound_Engine_Prev;//接触状況,1f前の〃
-	
+	Sound_Engine mSound_Engine, mSound_Engine_Prev;//接触状況,1f前の〃	
 };
 
 #endif

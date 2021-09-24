@@ -19,10 +19,10 @@ CTexture::CTexture(char *file)
 }
 
 CTexture::~CTexture() {
-	Destory();
+	Destroy();
 }
 
-void CTexture::Destory() {
+void CTexture::Destroy() {
 	//テクスチャデータがあれば削除する
 	if (mId != 0) {
 		//テクスチャデータの削除

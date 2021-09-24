@@ -64,12 +64,11 @@ CSceneRace::~CSceneRace() {
 
 
 void CSceneRace::Init() {
+	//オブジェクトの数の初期化
+	CObj::mObjectNum = 0;
 	
-	for (int i = 0; i < GROUND_AMOUNT; i++){
-		mpGrounds[i] = NULL;
-	}
-	for (int i = 0; i < ENEMYS_AMOUNT + 1; i++){//+1はプレイヤー分
-		mCarShadow[i] = NULL;
+	for (int i = 0; i < CObj::mObject_Limit; i++){
+		CObj::mpGrounds[i] = NULL;
 	}
 
 	//爆発テクスチャの読み込み
@@ -244,9 +243,6 @@ void CSceneRace::Init() {
 	mPause_OptionCarsol = 1;
 	mPauseScreen = EPAUSE;
 
-	isEnableShadow_Cource = true;//ゲーム内での切り替え不可
-	isEnableShadow_Car = false;//現時点では非表示推奨
-
 	isFadeIn = true;
 	isFadeOut = false;
 	isBlackOutTime = 0;
@@ -324,10 +320,9 @@ void CSceneRace::Update() {
 	if (isPause == false){
 		CTaskManager::Get()->Update();
 	}
-
-	RenderShadow();
-
-	CTaskManager::Get()->Render();	
+	//描画処理
+	RenderShadow();//影
+	CTaskManager::Get()->Render();//タスク	
 	//衝突処理
 	CTaskManager::Get()->TaskCollision();
 	//削除処理
@@ -379,6 +374,10 @@ void CSceneRace::Update() {
 			printf("%d…x:%f,y:%f,z:%f\n", i, mPlayer->mVCheckPositions[i].mX, mPlayer->mVCheckPositions[i].mY, mPlayer->mVCheckPositions[i].mZ);
 		}
 	}*/
+	if (CKey::Once('8')){
+		printf("オブジェクトの数：%d\n", CObj::mObjectNum);
+		
+	}
 #endif	
 
 	//ポーズ画面に入っていない時
@@ -1349,27 +1348,13 @@ void CSceneRace::RenderShadow(){
 	//影の描画
 	if (isEnableShadow){
 		//コースの影の描画
-		if (isEnableShadow_Cource){
-			for (int i = 0; i < GROUND_AMOUNT; i++){
-				if (mpGrounds[i] != NULL){
-					//テクスチャユニット0に切り替える
-					glActiveTexture(GL_TEXTURE0);
-					mpGrounds[i]->Render();
-					//テクスチャユニット1に切り替える
-					glActiveTexture(GL_TEXTURE1);
-				}
-			}
-		}
-		//車の影を設定
-		if (isEnableShadow_Car){
-			for (int i = 0; i < ENEMYS_AMOUNT + 1; i++){
-				if (mCarShadow[i] != NULL){
-					//テクスチャユニット0に切り替える
-					glActiveTexture(GL_TEXTURE0);
-					mCarShadow[i]->Render();
-					//テクスチャユニット1に切り替える
-					glActiveTexture(GL_TEXTURE1);
-				}
+		for (int i = 0; i < CObj::mObject_Limit; i++){
+			if (CObj::mpGrounds[i] != NULL){
+				//テクスチャユニット0に切り替える
+				glActiveTexture(GL_TEXTURE0);
+				CObj::mpGrounds[i]->Render();
+				//テクスチャユニット1に切り替える
+				glActiveTexture(GL_TEXTURE1);
 			}
 		}		
 	}

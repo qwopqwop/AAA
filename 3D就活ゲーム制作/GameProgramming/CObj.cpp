@@ -8,6 +8,10 @@
 
 #define G (9.8f / 120.0f)//重力加速度//60.0f
 
+int CObj::mObjectNum = 0;//現在のオブジェの数
+int CObj::mObject_Limit = GROUNDS_LIMIT;//出すことができるオブジェの数
+CObj *CObj::mpGrounds[GROUNDS_LIMIT];
+
 //コンストラクタ
 //model:モデルのポインタ position:位置 rotation:回転 scale:拡縮 hascollider:コライダの生成の有無(設定がなければ有)
 CObj::CObj(CModel *model, const CVector &position, const CVector &rotation, const CVector &scale, bool hascollider, bool hasshadow)
@@ -41,6 +45,8 @@ CObj::CObj(CModel *model, const CVector &position, const CVector &rotation, cons
 	}
 	else{
 	}
+	mpGrounds[mObjectNum] = this;
+	mObjectNum++;
 }
 //デストラクタ
 CObj::~CObj(){

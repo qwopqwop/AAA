@@ -30,7 +30,7 @@ CCameraPos::CCameraPos()
 {
 	mpCamera = this;	
 
-	CanMove = false;	
+	//CanMove = false;	
 	mTag = EPLAYER;
 
 	CCharacter::Update();
@@ -42,12 +42,11 @@ CCameraPos::CCameraPos()
 	//printf("X:%f\nY:%f\nZ:%f\n", mPosition.mX, mPosition.mY, mPosition.mZ);
 	mRotation = CPlayer::mpPlayer->mRotation;
 	CCharacter::Update();
-	mVCamY = 0;
 	mZoom_distance = ZOOMSPEED * ZOOM_SPENDTIME;
 }
 
 void CCameraPos::Update(){	
-	mVPoint = CCameraRange::mpCameraRange->mPosition;
+	CVector mVPoint = CCameraRange::mpCameraRange->mPosition;
 	CCharacter::Update();
 	//ポイントへのベクトルを求める
 	CVector dir = mVPoint - mPosition;
