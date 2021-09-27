@@ -14,6 +14,8 @@ private:
 	bool mStart;
 	int mStartWaitTime;
 	int mSelect_Step;//選択画面の何段階目か
+	int mLevel;//敵のレベル
+	int mCourceNum;
 public:
 	//初期化処理
 	void Init();
@@ -29,8 +31,24 @@ public:
 	CSound SoundDecide;
 	CSound SoundCancel;
 	
-	static int mCource_Number;//コースNo.
-	static int mCPU_Level;//CPUの強さ
+	//CPUの強さ
+	enum ECPU_Level{
+		EEASY = 1,//簡単
+		ENORMAL,//普通
+		EHARD,//難しい
+	};
+	static ECPU_Level mCPU_Level;
+
+	//CPUの強さ
+	enum ECource{
+		ECOURCEEDITOR = 0,//エディター
+		ECOURCE1,//コースA
+		ECOURCE2,//B...
+		ECOURCE3,
+		ECOURCE4,
+		ECOURCE5,		
+	};
+	static ECource mCource;
 };
 
 #endif

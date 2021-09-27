@@ -20,7 +20,7 @@ void CRoadManager::Init(CModel* pmodel, const CVector& pos, const CVector& rot, 
 	CCharacter::Update();	
 
 	//コースAのポイントはここで作成
-	if (CSceneTitle::mCource_Number == 1){
+	if (CSceneTitle::mCource == 1){
 		CPoint *next, *first;
 		first = next = new CPoint(CVector(340.0f, 30.0f, -1182.0f), rad, nullptr);
 		next = new CPoint(CVector(-500.0f, 30.0f, -2000.0f), rad, next);
@@ -40,7 +40,7 @@ void CRoadManager::Init(CModel* pmodel, const CVector& pos, const CVector& rot, 
 		CEnemy::mPoint = next->GetNextPoint();
 		return;
 	}
-	else if (CSceneTitle::mCource_Number == 2){
+	else if (CSceneTitle::mCource == 2){
 		CPoint *next, *first;
 		first = next = new CPoint(CVector(2128.0f, 30.0f, -3026.0f), rad, nullptr);
 		next = new CPoint(CVector(1317.0f, 30.0f, -3865.0f), rad, next);

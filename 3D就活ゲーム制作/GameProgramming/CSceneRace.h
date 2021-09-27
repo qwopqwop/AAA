@@ -9,12 +9,10 @@
 #include "CSound.h"
 #include "CObjFloor.h"
 
-#define ENEMYS_AMOUNT 5//0以下には設定できない
-
-//#define GROUND_AMOUNT 128
-
 #include <stdlib.h>
 
+#define ENEMYS_AMOUNT 5//0以下には設定できない
+#define COURCE_TOTAL 5//全コース数
 /*
 ゲームのシーン
 */
@@ -179,6 +177,7 @@ public:
 	void PutCPUColor();
 	
 	//各コースのベストタイム
-	static int mRecord_A, mRecord_B, mRecord_C, mRecord_D, mRecord_E;	
+	//static int mRecord_A, mRecord_B, mRecord_C, mRecord_D, mRecord_E;
+	static int mRecords[COURCE_TOTAL + 1];//0:edit 1～:cource1, 2, ...
 };
 #endif

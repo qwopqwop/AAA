@@ -5,14 +5,16 @@
 #define WAITTIME_NOWLOADING  110 //「NOW LOADING」が表示されるまでの時間
 #define WAITTIME_STARTFADEOUT  WAITTIME_STARTLOAD - 90 //「NOW LOADING」がフェードアウトが始まるまでの時間
 
-int CSceneTitle::mCource_Number = 1; //コースやLap数の初期設定
-int CSceneTitle::mCPU_Level = 2; //敵AIの強さの初期設定　　1:EASY　2:NORMAL　3:HARD
+//int CSceneTitle::mCource_Number = 1; //コースやLap数の初期設定
+CSceneTitle::ECPU_Level CSceneTitle::mCPU_Level = CSceneTitle::ENORMAL;//敵AIの強さの初期設定
+
+//int CSceneTitle::mCource_Number;//コースNo.
+CSceneTitle::ECource CSceneTitle::mCource = CSceneTitle::ECOURCE1;
 
 //次のシーンの取得
 CScene::EScene CSceneTitle::GetNextScene(){
 	return mScene;
 }
-
 
 //初期化処理のオーバーライド
 void CSceneTitle::Init() {
@@ -28,6 +30,8 @@ void CSceneTitle::Init() {
 	//シーンの設定
 	mScene = ETITLE;
 
+	mLevel = mCPU_Level;
+	mCourceNum = mCource;
 	mSelect_Step = 1;
 	mCarsol_Pos = 0;
 	mStart = false;
@@ -58,30 +62,30 @@ void CSceneTitle::Update() {
 		}
 		else{
 			//次のシーンはレース画面
-			printf("選択したコース番号:No.%d  ", mCource_Number);
+			printf("選択したコース番号:No.%d  ", mCource);
 			printf("選択したCPUのレベル:%d\n", mCPU_Level);
 			//選択したコースに対応するシーンへ移行			
-			if (mCource_Number == 1){
+			if (mCource == 1){
 				//次のシーンはコース1
 				mScene = ERACE1;
 			}
-			else if (mCource_Number == 2){
+			else if (mCource == 2){
 				//次のシーンはコース2
 				mScene = ERACE2;
 			}
-			else if (mCource_Number == 3){
+			else if (mCource == 3){
 				//次のシーンはコース3
 				mScene = ERACE3;
 			}
-			else if (mCource_Number == 4){
+			else if (mCource == 4){
 				//次のシーンはコース3
 				mScene = ERACE4;
 			}
-			else if (mCource_Number == 5){
+			else if (mCource == 5){
 				//次のシーンはコース3
 				mScene = ERACE5;
 			}
-			else if (mCource_Number == 127){
+			else if (mCource == 127){
 				//コースエディタに移行
 				mScene = EEDIT;
 			}
@@ -112,23 +116,40 @@ void CSceneTitle::Update() {
 		//選択画面2：敵AIの強さの設定
 		else if (mSelect_Step == 2){
 			if (CKey::Once(VK_LEFT)){
-				if (mCPU_Level > 1){
-					mCPU_Level--;					
+				if (mLevel > 1){
+					mLevel--;
 				}
 				else{
-					mCPU_Level = 3;
+					mLevel = 3;
 				}
 				SoundMoveCarsol.Play();
 			}
 			if (CKey::Once(VK_RIGHT)){
-				if (mCPU_Level < 3){
-					mCPU_Level++;
+				if (mLevel < 3){
+					mLevel++;
 				}
 				else{
-					mCPU_Level = 1;
+					mLevel = 1;
 				}
 				SoundMoveCarsol.Play();
 			}
+			
+			switch (mLevel)
+			{
+			case 1:
+				mCPU_Level = EEASY;
+				break;
+			case 2:
+				mCPU_Level = ENORMAL;
+				break;
+			case 3:
+				mCPU_Level = EHARD;
+				break;
+			default:
+				//
+				break;
+			}
+
 			//Escキーか、BackSpaceキーで、前の選択画面に戻る
 			if (CKey::Once(VK_BACK) || CKey::Once(VK_ESCAPE)){
 				mSelect_Step--;
@@ -137,14 +158,39 @@ void CSceneTitle::Update() {
 		}
 	}
 	if (mCarsol_Pos == 0){
-		mCource_Number = 1;
+		mCource = ECOURCE1;
 	}
 	else if (mCarsol_Pos == 1){
-		mCource_Number = 2;
+		mCource = ECOURCE2;
 	}
 	else if (mCarsol_Pos == 2){
-		mCource_Number = 5;
+		mCource = ECOURCE5;
 	}
+
+	/*switch (mCource_Number)
+	{
+	case 1:
+		mCource = ECOURCE1;
+		break;
+	case 2:
+		mCource = ECOURCE2;
+		break;
+	case 3:
+		mCource = ECOURCE3;
+		break;
+	case 4:
+		mCource = ECOURCE4;
+		break;
+	case 5:
+		mCource = ECOURCE5;
+		break;
+	case 0:
+		mCource = ECOURCEEDITOR;
+		break;
+	default:
+		break;
+	}*/
+
 	Render();//テキスト等の描画
 }
 
@@ -246,31 +292,20 @@ void CSceneTitle::Render(){
 	c[0] = c[1] = c[2] = c[3] = 1.0f;
 	glColor4fv(c);
 
-	char mrecord[16];// :も含めた最大文字数の設定
-	if (mCource_Number == 1){
-		sprintf(mrecord, "BEST:%02d:%02d:%02d", CSceneRace::mRecord_A / 10000 % 100, CSceneRace::mRecord_A / 100 % 100, CSceneRace::mRecord_A % 100);
-		CText::DrawString(mrecord, 20, 580, 10, 12);
+	char record[16];
+	if (mCource == 0){
+		sprintf(record, "EDIT");
+		CText::DrawString(record, 20, 580, 10, 12);
 	}
-	else if (mCource_Number == 2){
-		sprintf(mrecord, "BEST:%02d:%02d:%02d", CSceneRace::mRecord_B / 10000 % 100, CSceneRace::mRecord_B / 100 % 100, CSceneRace::mRecord_B % 100);
-		CText::DrawString(mrecord, 20, 580, 10, 12);
-	}
-	else if (mCource_Number == 3){
-		sprintf(mrecord, "BEST:%02d:%02d:%02d", CSceneRace::mRecord_C / 10000 % 100, CSceneRace::mRecord_C / 100 % 100, CSceneRace::mRecord_C % 100);
-		CText::DrawString(mrecord, 20, 580, 10, 12);
-	}
-	else if (mCource_Number == 4){
-		sprintf(mrecord, "BEST:%02d:%02d:%02d", CSceneRace::mRecord_D / 10000 % 100, CSceneRace::mRecord_D / 100 % 100, CSceneRace::mRecord_D % 100);
-		CText::DrawString(mrecord, 20, 580, 10, 12);
-	}
-	else if (mCource_Number == 5){
-		sprintf(mrecord, "BEST:%02d:%02d:%02d", CSceneRace::mRecord_E / 10000 % 100, CSceneRace::mRecord_E / 100 % 100, CSceneRace::mRecord_E % 100);
-		CText::DrawString(mrecord, 20, 580, 10, 12);
-	}
-	else if (mCource_Number == 127){
-		sprintf(mrecord, "EDIT");
-		CText::DrawString(mrecord, 20, 580, 10, 12);
-	}
+	else{
+		for (int i = 1; i <= COURCE_TOTAL; i++){
+			if (mCource == i){
+				sprintf(record, "BEST:%02d:%02d:%02d", CSceneRace::mRecords[i] / 10000 % 100, CSceneRace::mRecords[i] / 100 % 100, CSceneRace::mRecords[i] % 100);
+				CText::DrawString(record, 20, 580, 10, 12);
+			}			
+		}
+	}	
+
 	c[0] = c[1] = c[2] = 1.0f;
 	glColor4fv(c);
 	

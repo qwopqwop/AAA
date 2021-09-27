@@ -90,7 +90,7 @@ void CEnemy::Update(){
 	}
 	else if (mEnemyAI == EPRO){
 		//速度調整
-		if (CSceneTitle::mCource_Number == 1){
+		if (CSceneTitle::mCource == 1){
 			//次のポイントから次の次のポイントへのベクトル
 			CVector vNext = mpPoint->GetNextPoint()->mPosition - mPosition;
 			//現在の向き
@@ -106,7 +106,7 @@ void CEnemy::Update(){
 			//速度上限の計算
 			mMaxSpeed_PtoP = MAXSPEED * corve;
 		}
-		else if (CSceneTitle::mCource_Number == 2){
+		else if (CSceneTitle::mCource == 2){
 			//次のポイントから次の次のポイントへのベクトル
 			CVector vNext = mpPoint->GetNextPoint()->mPosition - mPosition;
 			//現在の向き
@@ -122,7 +122,7 @@ void CEnemy::Update(){
 			//速度上限の計算
 			mMaxSpeed_PtoP = MAXSPEED * corve;
 		}
-		else if (CSceneTitle::mCource_Number == 5){
+		else if (CSceneTitle::mCource == 5){
 			//次のポイントから次の次のポイントへのベクトル
 			CVector vNext = mpPoint->GetNextPoint()->mPosition - mPosition;
 			//現在の向き
@@ -478,19 +478,19 @@ void CEnemy::Collision(CCollider *mc, CCollider *yc){
 							if (yc->mpParent == mpPoint){
 								//ポイント経過時間のリセット
 								mPointTime = 0;
-								//とりあえず先にint付けで生成しておく
+								//とりあえず先にintで宣言
 								int r = (mc->mRadius + yc->mRadius) * 0.8f;
 								int gap = (rand() % (r * 2) - r);
 								//敵AIのLvにより分散値も変化
-								if (CSceneTitle::mCPU_Level == 1){
+								if (CSceneTitle::mCPU_Level == CSceneTitle::EEASY){
 									r = (mc->mRadius + yc->mRadius) * 0.5f;
 									gap = (rand() % (r * 2) - r);
 								}
-								else if (CSceneTitle::mCPU_Level == 2){
+								else if (CSceneTitle::mCPU_Level == CSceneTitle::ENORMAL){
 									r = (mc->mRadius + yc->mRadius) * 0.4f;
 									gap = (rand() % (r * 2) - r);
-								}
-								else if (CSceneTitle::mCPU_Level == 3){
+								}								
+								else if (CSceneTitle::mCPU_Level == CSceneTitle::EHARD){
 									r = (mc->mRadius + yc->mRadius) * 0.2f;
 									gap = (rand() % (r * 2) - r);
 								}
@@ -519,7 +519,7 @@ void CEnemy::TaskCollision()
 //SetNextPoint(現在のポイント,誤差の有無,誤差の量,現在のポイントが最終ポイントか)
 void CEnemy::SetNextPoint(CPoint *current_point, int gap_amount, bool iscurrentpointlast){
 	bool gap = true;
-	if (CSceneTitle::mCource_Number == 5){
+	if (CSceneTitle::mCource == 5){
 		if (mChecks < 1){//中間ポイント1まで誤差無し
 			gap = false;
 		}

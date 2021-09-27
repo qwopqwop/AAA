@@ -29,11 +29,7 @@ extern CSound SoundPauseOff;
 
 //ここのmBestTimeの値は関係ない(mRecord_ の値を入れるため)
 int CSceneRace::mBestTime = 0;
-int CSceneRace::mRecord_A = 10000;
-int CSceneRace::mRecord_B = 13000;
-int CSceneRace::mRecord_C = 22000;
-int CSceneRace::mRecord_D = 460000;
-int CSceneRace::mRecord_E = 40000;
+int CSceneRace::mRecords[6] = { 0, 10000, 13000, 23000, 595959, 40000};//{ｴﾃﾞｨﾀ,A,B,C,D,E}
 
 //オプション画面から変更ができる変数
 bool CSceneRace::isEnableShadow = true;//影
@@ -113,8 +109,8 @@ void CSceneRace::Init() {
 	mPole.Load("material\\common_mat\\cube.obj", "material\\common_mat\\soil.mtl");//ポール(木製)
 	mDashBoard.Load("material\\racing_mat\\dashboard.obj", "material\\racing_mat\\dashboard.mtl");//加速床
 	mJumper01.Load("material\\common_mat\\cube.obj", "material\\common_mat\\on.mtl");//ジャンプ台
-	/*コース個別に読み込むマテリアル*/
-	if (CSceneTitle::mCource_Number == 1){
+	/*コースによって読み込むマテリアルが変化*/
+	if (CSceneTitle::mCource == 1){
 		mCource01.Load("material\\racing_mat\\CourceNew01.obj", "material\\racing_mat\\CourceNew01.mtl");//路面
 		mGrass01.Load("material\\racing_mat\\GrassNew01.obj", "material\\racing_mat\\GrassNew01.mtl");//芝生
 		mFenceTop.Load("material\\racing_mat\\FenceTopNew.obj", "material\\racing_mat\\FenceTopNew.mtl");//柵(上面)
@@ -122,17 +118,17 @@ void CSceneRace::Init() {
 		mCurb01.Load("material\\racing_mat\\Curb01.obj", "material\\racing_mat\\Curb01.mtl");//紅白タイル
 		mGoalTile01.Load("material\\racing_mat\\cource01_goaltile.obj", "material\\racing_mat\\cource01_goaltile.mtl");//＝白黒タイル
 	}
-	else if (CSceneTitle::mCource_Number == 2){
+	else if (CSceneTitle::mCource == 2){
 		mCource02Road.Load("material\\racing_mat\\cource2nd\\cource02road.obj", "material\\racing_mat\\cource2nd\\cource02road.mtl");
 		mCource02Wall.Load("material\\racing_mat\\cource2nd\\cource02wall.obj", "material\\racing_mat\\cource2nd\\cource02wall.mtl");
 		mCource02Jump.Load("material\\racing_mat\\cource2nd\\cource02jumper.obj", "material\\racing_mat\\cource2nd\\cource02jumper.mtl");
 	}
-	else if (CSceneTitle::mCource_Number == 3){
+	else if (CSceneTitle::mCource == 3){
 		mCource03Road.Load("material\\racing_mat\\stage3\\cource03road.obj", "material\\racing_mat\\stage3\\cource03road.mtl");
 		mCource03Wall.Load("material\\racing_mat\\stage3\\cource03wall.obj", "material\\racing_mat\\stage3\\cource03wall.mtl");
 		mCource03Fence.Load("material\\racing_mat\\stage3\\cource03fence.obj", "material\\racing_mat\\stage3\\cource03fence.mtl");
 	}
-	else if (CSceneTitle::mCource_Number == 4){
+	else if (CSceneTitle::mCource == 4){
 		//コースエディターのタイルの読み込み
 		mTile_Curve01_Floor.Load("material\\racing_mat\\stage_edit\\Curve01_floor.obj", "material\\racing_mat\\stage_edit\\Curve01_floor.mtl");
 		mTile_Curve01_Wall.Load("material\\racing_mat\\stage_edit\\Curve01_wall.obj", "material\\racing_mat\\stage_edit\\Curve01_wall.mtl");
@@ -159,7 +155,7 @@ void CSceneRace::Init() {
 		mBlock_Floor.Load("material\\racing_mat\\stage_edit\\BlockF.obj", "material\\racing_mat\\stage_edit\\BlockF.mtl");
 		mBlock_Wall.Load("material\\racing_mat\\stage_edit\\BlockW.obj", "material\\racing_mat\\stage_edit\\BlockW.mtl");
 	}
-	else if (CSceneTitle::mCource_Number == 5){
+	else if (CSceneTitle::mCource == 5){
 		//コース05の読み込み
 		mCource05Wall.Load("material\\racing_mat\\stage5\\cource05wall.obj", "material\\racing_mat\\stage5\\cource05wall.mtl");
 		mCource05Mountain.Load("material\\racing_mat\\stage5\\cource05mountain.obj", "material\\racing_mat\\stage5\\cource05mountain.mtl");//全ての山共通
@@ -170,27 +166,19 @@ void CSceneRace::Init() {
 		mCource05GoalTile.Load("material\\racing_mat\\stage5\\Checker_Tile.obj", "material\\racing_mat\\stage5\\Checker_Tile.mtl");
 	}
 
-	//ステージ1BGMの読み込み
-	if (CSceneTitle::mCource_Number == 1){
-		BGM.Load("BGM\\revolumed_PopsGuitar_No.01.wav");
-		mBestTime = mRecord_A;
+	for (int i = 1; i <= COURCE_TOTAL; i++){
+		if (CSceneTitle::mCource == i){
+			//ベストタイムの読み込み
+			mBestTime = mRecords[i];
+			//BGMの読み込み
+			if (i == 1)BGM.Load("BGM\\revolumed_PopsGuitar_No.01.wav");
+			if (i == 2)BGM.Load("BGM\\revolumed_game_maoudamashii_1_battle34.wav");
+			if (i == 3)BGM.Load("BGM\\revolumed_bgm_maoudamashii_neorock33.wav");
+			if (i == 4)BGM.Load("BGM\\revolumed_Spring_Breeze.wav");
+			if (i == 5)BGM.Load("BGM\\Go_on_the_mountain_road.wav");
+		}		
 	}
-	else if (CSceneTitle::mCource_Number == 2){
-		BGM.Load("BGM\\revolumed_game_maoudamashii_1_battle34.wav");
-		mBestTime = mRecord_B;
-	}
-	else if (CSceneTitle::mCource_Number == 3){
-		BGM.Load("BGM\\revolumed_bgm_maoudamashii_neorock33.wav");
-		mBestTime = mRecord_C;
-	}
-	else if (CSceneTitle::mCource_Number == 4){
-		BGM.Load("BGM\\revolumed_Spring_Breeze.wav");
-		mBestTime = mRecord_D;
-	}
-	else if (CSceneTitle::mCource_Number == 5){
-		BGM.Load("BGM\\Go_on_the_mountain_road.wav");
-		mBestTime = mRecord_E;
-	}
+
 	JingleOpening.Load("SE\\jingle19.wav");
 	//効果音の読み込み//主にレース中
 	SoundCountDown.Load("SE\\Countdown01-5.wav");
@@ -226,7 +214,7 @@ void CSceneRace::Init() {
 	mLap = 1;
 	//n周でゴール(基本は3周)
 	mMaxLap = 3;
-	if (CSceneTitle::mCource_Number == 5){
+	if (CSceneTitle::mCource == 5){
 		mMaxLap = 2;//コース5は2周(1周が長い為)
 	}
 	//記録更新してない状態
@@ -300,7 +288,7 @@ void CSceneRace::Init() {
 	//テクスチャの解除
 	glBindTexture(GL_TEXTURE_2D, 0);
 	//テクスチャユニットを0に戻す
-	glActiveTexture(GL_TEXTURE0);	
+	glActiveTexture(GL_TEXTURE0);		
 }
 
 
@@ -475,21 +463,11 @@ void CSceneRace::Update() {
 			if (mTime < mBestTime){
 				mBestTime = mTime;
 				isNewRecord = true;
-				//コースによって新しく記録する
-				if (CSceneTitle::mCource_Number == 1){
-					mRecord_A = mBestTime;
-				}
-				else if (CSceneTitle::mCource_Number == 2){
-					mRecord_B = mBestTime;
-				}
-				else if (CSceneTitle::mCource_Number == 3){
-					mRecord_C = mBestTime;
-				}
-				else if (CSceneTitle::mCource_Number == 4){
-					mRecord_D = mBestTime;
-				}
-				else if (CSceneTitle::mCource_Number == 5){
-					mRecord_E = mBestTime;
+				//そのコースの記録を更新する
+				for (int i = 1; i <= COURCE_TOTAL; i++){
+					if (CSceneTitle::mCource == i){
+						mRecords[i] = mBestTime;
+					}
 				}
 			}
 			mPlayer->mRank = mRanking;
@@ -657,19 +635,19 @@ void CSceneRace::Render(){
 	float color[] = { 1.0f, 1.0f, 1.0f, 1.0f };
 	//レース開始前のOP中にコース名を左下に表示
 	if (isOpening){
-		if (CSceneTitle::mCource_Number == 1){
+		if (CSceneTitle::mCource == 1){
 			CText::DrawString("COURCE 1", 20, 20, 10, 12);
 		}
-		else if (CSceneTitle::mCource_Number == 2){
+		else if (CSceneTitle::mCource == 2){
 			CText::DrawString("COURCE 2", 20, 20, 10, 12);
 		}
-		else if (CSceneTitle::mCource_Number == 3){
+		else if (CSceneTitle::mCource == 3){
 			CText::DrawString("COURCE 3", 20, 20, 10, 12);
 		}
-		else if (CSceneTitle::mCource_Number == 4){
+		else if (CSceneTitle::mCource == 4){
 			CText::DrawString("COURCE 4", 20, 20, 10, 12);
 		}
-		else if (CSceneTitle::mCource_Number == 5){
+		else if (CSceneTitle::mCource == 5){
 			CText::DrawString("COURCE 5", 20, 20, 10, 12);
 		}
 	}
@@ -928,19 +906,19 @@ void CSceneRace::RenderMiniMap() {
 	//2D画面の設定変更
 	float size = 20000.0f;//コースの縮尺設定
 	bool canscrollmap = false;//プレイヤーに合わせたマップ移動の有無
-	if (CSceneTitle::mCource_Number == 1){
+	if (CSceneTitle::mCource == 1){
 		size = 3600.0f;
 	}
-	else if (CSceneTitle::mCource_Number == 2){
+	else if (CSceneTitle::mCource == 2){
 		size = 5600.0f;
 	}
-	else if (CSceneTitle::mCource_Number == 3){
+	else if (CSceneTitle::mCource == 3){
 		size = 7600.0f;
 	}
-	else if (CSceneTitle::mCource_Number == 4){
+	else if (CSceneTitle::mCource == 4){
 		size = 3600.0f;
 	}
-	else if (CSceneTitle::mCource_Number == 5){
+	else if (CSceneTitle::mCource == 5){
 		size = 5500.0f;
 		canscrollmap = true;
 	}
@@ -959,7 +937,7 @@ void CSceneRace::RenderMiniMap() {
 	glDisable(GL_DEPTH_TEST);
 	CTaskManager::Get()->Render();
 		
-	if (CSceneTitle::mCource_Number == 3){
+	if (CSceneTitle::mCource == 3){
 		//ミニマップにゴールアイコンを描画
 		CMatrix matminig;
 		matminig = CMatrix().Scale(25.0f, 1.0f, 25.0f)
@@ -988,7 +966,7 @@ void CSceneRace::RenderMiniMap() {
 			* mPlayer->mMatrixTranslate;
 		mCarsol.Render(matplayer);
 	}
-	else if (CSceneTitle::mCource_Number == 2){
+	else if (CSceneTitle::mCource == 2){
 		//ミニマップにゴールアイコンを描画
 		CMatrix matminig;
 		matminig = CMatrix().Scale(25.0f, 1.0f, 25.0f)
@@ -1018,7 +996,7 @@ void CSceneRace::RenderMiniMap() {
 			* mPlayer->mMatrixTranslate;
 		mCarsol.Render(matplayer);
 	}
-	else if (CSceneTitle::mCource_Number == 5){
+	else if (CSceneTitle::mCource == 5){
 		//ミニマップにゴールアイコンを描画
 		CMatrix matminig;
 		matminig = CMatrix().Scale(25.0f, 100.0f, 25.0f)
@@ -1241,13 +1219,13 @@ void CSceneRace::RenderShadow(){
 
 	GLfloat lightpos[] = { 0.0f, 200.0f, 200.0f, 0.0f }; //ライトの位置データ
 	lightpos[2] = 0.0f; //ライトの位置データ
-	if (CSceneTitle::mCource_Number == 1){
+	if (CSceneTitle::mCource == 1){
 		lightpos[1] = 2000.0f*2; //ライトの位置データ
 	}
-	else if (CSceneTitle::mCource_Number == 2){
+	else if (CSceneTitle::mCource == 2){
 		lightpos[1] = 10000.0f; //ライトの位置データ
 	}
-	else if (CSceneTitle::mCource_Number == 5){
+	else if (CSceneTitle::mCource == 5){
 		lightpos[1] = 24000.0f; //ライトの位置データ
 	}
 	else{
