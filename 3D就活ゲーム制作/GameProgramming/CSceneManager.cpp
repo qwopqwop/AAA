@@ -13,7 +13,6 @@ CSceneManager SceneManager;
 
 CScene::EScene mScene;
 
-
 //コンストラクタ
 CSceneManager::CSceneManager()
 : mpScene(0)

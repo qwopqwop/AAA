@@ -61,6 +61,11 @@ private:
 	bool isOpening;
 	int mTime_Opening;
 
+	enum ECameraAngle{
+		EANGLE_FRONTCAR,
+		EANGLE_THIRDPERSON
+	};
+	ECameraAngle mCameraAngle;
 protected:
 	CModel mRover;
 	CModel mCarRed;
@@ -177,7 +182,6 @@ public:
 	void PutCPUColor();
 	
 	//各コースのベストタイム
-	//static int mRecord_A, mRecord_B, mRecord_C, mRecord_D, mRecord_E;
 	static int mRecords[COURCE_TOTAL + 1];//0:edit 1～:cource1, 2, ...
 };
 #endif

@@ -43,7 +43,7 @@ public:
 	enum ECource{
 		ECOURCEEDITOR = 0,//エディター
 		ECOURCE1,//コースA
-		ECOURCE2,//B...
+		ECOURCE2,//コースB...
 		ECOURCE3,
 		ECOURCE4,
 		ECOURCE5,		

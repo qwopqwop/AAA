@@ -56,6 +56,8 @@ public:
 	CSound SoundCollision;
 	CSound SoundCollisionSmall;
 	bool isRespawn;
+	CSound SoundSink;
+	bool isSink;
 
 	//リスポーン地点の設定(チェックポイントの通過状況に応じてリスポーン地点は変化)
 	void SetRespawnPoint(int checknumber, CVector position, CVector rotation);

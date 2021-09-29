@@ -165,7 +165,6 @@ void CSceneRace::Init() {
 		mCource05Grass_Wall.Load("material\\racing_mat\\stage5\\cource05grass_wall.obj", "material\\racing_mat\\stage5\\cource05grass_wall.mtl");
 		mCource05GoalTile.Load("material\\racing_mat\\stage5\\Checker_Tile.obj", "material\\racing_mat\\stage5\\Checker_Tile.mtl");
 	}
-
 	for (int i = 1; i <= COURCE_TOTAL; i++){
 		if (CSceneTitle::mCource == i){
 			//ベストタイムの読み込み
@@ -175,7 +174,7 @@ void CSceneRace::Init() {
 			if (i == 2)BGM.Load("BGM\\revolumed_game_maoudamashii_1_battle34.wav");
 			if (i == 3)BGM.Load("BGM\\revolumed_bgm_maoudamashii_neorock33.wav");
 			if (i == 4)BGM.Load("BGM\\revolumed_Spring_Breeze.wav");
-			if (i == 5)BGM.Load("BGM\\Go_on_the_mountain_road.wav");
+			if (i == 5)BGM.Load("BGM\\revolumed_Go_on_the_mountain_road.wav");
 		}		
 	}
 
@@ -190,7 +189,6 @@ void CSceneRace::Init() {
 	SoundPauseOn.Load("SE\\button79.wav");
 	SoundPauseOff.Load("SE\\button80.wav");
 	
-
 	//カメラ視点のY座標
 	mCamY = 0.0f;
 	//衝突判定の描画(デバッグ用)
@@ -234,6 +232,8 @@ void CSceneRace::Init() {
 	isFadeIn = true;
 	isFadeOut = false;
 	isBlackOutTime = 0;
+
+	mCameraAngle = EANGLE_THIRDPERSON;
 	
 	mRenderTexture.Init();
 	
@@ -293,21 +293,31 @@ void CSceneRace::Init() {
 
 
 void CSceneRace::Update() {
-	//カメラのパラメータを作成する
-	CVector e, c, u;//視点、注視点、上方向
-
-	e = CCameraPos::mpCamera->mPosition;
-	c = mPlayer->mPosition + CVector(0.0f, 0.0f, 35.0f)* mPlayer->mMatrixScale   //* mPlayer->mMatrixScale
-		* CMatrix().RotateY(mPlayer->mRotation.mY);
-	u = CVector(0.0f, 1.0f, 0.0f);//*mPlayer->mMatrixRotate;
-	//カメラの設定
-	Camera3D(e.mX, e.mY, e.mZ, c.mX, c.mY, c.mZ, u.mX, u.mY, u.mZ);
-	Camera.mEye = e;
+	
 
 	//タスクマネージャの更新・描画
 	if (isPause == false){
 		CTaskManager::Get()->Update();
 	}
+
+	//カメラのパラメータを作成する
+	CVector e, c, u;//視点、注視点、上方向
+	if (mCameraAngle == EANGLE_FRONTCAR){
+		e = mPlayer->mPosition + CVector(0.0f, 6.0f, 5.0f)* mPlayer->mMatrixScale* CMatrix().RotateY(mPlayer->mRotation.mY);;
+		c = mPlayer->mPosition + CVector(0.0f, 0.0f, 45.0f)* mPlayer->mMatrixScale   //* mPlayer->mMatrixScale
+			* CMatrix().RotateY(mPlayer->mRotation.mY);
+	}
+	else if (mCameraAngle == EANGLE_THIRDPERSON){
+		e = CCameraPos::mpCamera->mPosition;
+		c = mPlayer->mPosition + CVector(0.0f, 0.0f, 75.0f)* mPlayer->mMatrixScale   //* mPlayer->mMatrixScale
+			* CMatrix().RotateY(mPlayer->mRotation.mY);
+	}
+	u = CVector(0.0f, 1.0f, 0.0f);//*mPlayer->mMatrixRotate;
+
+	//カメラの設定
+	Camera3D(e.mX, e.mY, e.mZ, c.mX, c.mY, c.mZ, u.mX, u.mY, u.mZ);
+	Camera.mEye = e;
+
 	//描画処理
 	RenderShadow();//影
 	CTaskManager::Get()->Render();//タスク	
@@ -363,8 +373,10 @@ void CSceneRace::Update() {
 		}
 	}*/
 	if (CKey::Once('8')){
-		printf("オブジェクトの数：%d\n", CObj::mObjectNum);
-		
+		printf("オブジェクトの数：%d\n", CObj::mObjectNum);		
+	}
+	if (CKey::Once('0')){
+		BGM.Stop();
 	}
 #endif	
 
@@ -405,7 +417,6 @@ void CSceneRace::Update() {
 			}
 		}
 	}
-
 	//レース前のオープニング
 	if (isOpening){
 		//OPジングル再生
@@ -507,6 +518,23 @@ void CSceneRace::Update() {
 				mEnemys[i]->isTouchGoal = false;
 				mEnemys[i]->mEnemyLap++;
 			}
+		}
+	}
+
+	//カメラアングルの変更
+	if (CKey::Once('C')){
+		switch (mCameraAngle){
+		case EANGLE_FRONTCAR:
+			printf("俯瞰視点\n");
+			mCameraAngle = EANGLE_THIRDPERSON;
+			break;
+		case EANGLE_THIRDPERSON:
+			printf("運転席視点\n");
+			mCameraAngle = EANGLE_FRONTCAR;
+			break;
+		default:
+			printf("視点変更に失敗しました\n");
+			break;
 		}
 	}
 

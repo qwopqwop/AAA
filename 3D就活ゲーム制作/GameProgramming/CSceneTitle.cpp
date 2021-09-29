@@ -61,6 +61,22 @@ void CSceneTitle::Update() {
 			mStartWaitTime++;
 		}
 		else{
+			switch (mLevel)
+			{
+			case 1:
+				mCPU_Level = EEASY;
+				break;
+			case 2:
+				mCPU_Level = ENORMAL;
+				break;
+			case 3:
+				mCPU_Level = EHARD;
+				break;
+			default:
+				printf("不明な難易度が選択されました　難易度をnormalに設定します\n");
+				mCPU_Level = ENORMAL;//
+				break;
+			}			
 			//次のシーンはレース画面
 			printf("選択したコース番号:No.%d  ", mCource);
 			printf("選択したCPUのレベル:%d\n", mCPU_Level);
@@ -85,13 +101,12 @@ void CSceneTitle::Update() {
 				//次のシーンはコース3
 				mScene = ERACE5;
 			}
-			else if (mCource == 127){
+			else if (mCource == 0){
 				//コースエディタに移行
 				mScene = EEDIT;
 			}
 		}
 	}
-
 	//まだ選択してない時
 	if (mStart == false){
 		//矢印キーで選択
@@ -133,23 +148,6 @@ void CSceneTitle::Update() {
 				}
 				SoundMoveCarsol.Play();
 			}
-			
-			switch (mLevel)
-			{
-			case 1:
-				mCPU_Level = EEASY;
-				break;
-			case 2:
-				mCPU_Level = ENORMAL;
-				break;
-			case 3:
-				mCPU_Level = EHARD;
-				break;
-			default:
-				//
-				break;
-			}
-
 			//Escキーか、BackSpaceキーで、前の選択画面に戻る
 			if (CKey::Once(VK_BACK) || CKey::Once(VK_ESCAPE)){
 				mSelect_Step--;
@@ -166,31 +164,6 @@ void CSceneTitle::Update() {
 	else if (mCarsol_Pos == 2){
 		mCource = ECOURCE5;
 	}
-
-	/*switch (mCource_Number)
-	{
-	case 1:
-		mCource = ECOURCE1;
-		break;
-	case 2:
-		mCource = ECOURCE2;
-		break;
-	case 3:
-		mCource = ECOURCE3;
-		break;
-	case 4:
-		mCource = ECOURCE4;
-		break;
-	case 5:
-		mCource = ECOURCE5;
-		break;
-	case 0:
-		mCource = ECOURCEEDITOR;
-		break;
-	default:
-		break;
-	}*/
-
 	Render();//テキスト等の描画
 }
 
@@ -202,21 +175,20 @@ void CSceneTitle::Render(){
 	//文字列の描画
 	CText::DrawString("3D-RACE", 190, 430, 36, 36);
 	CText::DrawString("Push Enter Key", 200, 177, 16, 16);
-	//
-	if (mSelect_Step == 1){
+	if (mSelect_Step == 1){//コース選択のカーソル
 		CText::DrawString("[", 66 + mCarsol_Pos * 250, 284, 20, 30, 2);
 		CText::DrawString("]", 262 + mCarsol_Pos * 250, 284, 20, 30, 2);
 	}
 	if (mSelect_Step == 2 && mStart == false){
-		if (mCPU_Level == 1){
+		if (mLevel == 1){//CPUの強さ選択のカーソル
 			CText::DrawString("[", 190, 102, 16, 24, 2);
 			CText::DrawString("]", 278, 102, 16, 24, 2);
 		}
-		if (mCPU_Level == 2){
+		if (mLevel == 2){
 			CText::DrawString("[", 338, 102, 16, 24, 2);
 			CText::DrawString("]", 474, 102, 16, 24, 2);
 		}
-		if (mCPU_Level == 3){
+		if (mLevel == 3){
 			CText::DrawString("[", 534, 102, 16, 24, 2);
 			CText::DrawString("]", 622, 102, 16, 24, 2);
 		}
@@ -260,16 +232,16 @@ void CSceneTitle::Render(){
 			CText::DrawString("COURCE-3", 580, 280, 12, 14);
 		}
 	}
-	//敵のレベル系のテキスト
+	//CPUレベルのテキスト
 	for (int i = 1; i <= 3; i++){		
-		if (mCPU_Level == i && mSelect_Step == 2){
+		if (mLevel == i && mSelect_Step == 2){
 			c[0] = c[1] = c[2] = 1.0f; c[3] = 1.0f;
 		}
 		else{
 			c[0] = c[1] = c[2] = 0.5f; c[3] = 1.0f;
 		}
 		//選択時に点滅する
-		if (mStart && mCPU_Level == i){
+		if (mStart && mLevel == i){
 			if (mStartWaitTime > 20){
 				c[0] = c[1] = c[2] = 1.0f;
 			}

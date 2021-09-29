@@ -23,6 +23,7 @@ extern CSound SoundEngine;
 extern CSound SoundHorn;
 extern CSound SoundCollision;
 extern CSound SoundCollisionSmall;
+extern CSound SoundSink;
 
 CPlayer *CPlayer::mpPlayer = 0;
 
@@ -55,6 +56,7 @@ CPlayer::CPlayer()
 
 	CanMove = false;
 	isRespawn = false;
+	isSink = false;
 
 	mChecks = 0;
 
@@ -77,13 +79,13 @@ CPlayer::CPlayer()
 	SoundHorn.Load("SE\\car-horn1.wav");
 	SoundCollision.Load("SE\\bomb1.wav");
 	SoundCollisionSmall.Load("SE\\SNES-Racing01-10(Collision).wav");
-		
-	isSoundEngine = false;
+	SoundSink.Load("SE\\Diving.wav");
+
+	isSoundEngine = false;	
 	isTouchGoal = false;
 	mGoalTime = 0; mRank = 1;
 
 	mSound_Engine = mSound_Engine_Prev = ENONE;
-	
 }
 
 void CPlayer::Update(){
@@ -174,7 +176,7 @@ void CPlayer::Update(){
 		}		
 	}
 	
-	if (CKey::Push(VK_LEFT) && CanMove){ //ハンドルを左に！
+	if (CKey::Push(VK_LEFT) && CanMove){//ハンドルを左に！
 		/*バック中は逆方向に曲がる*/
 		if (mCarSpeed > 0.0f){
 			if (mTurnSpeed >= 0.0f&&mTurnSpeed<0.5f){
@@ -195,8 +197,7 @@ void CPlayer::Update(){
 			mTurnSpeed += -0.04f;
 		}
 	}
-	else if (CKey::Push(VK_RIGHT) && CanMove){//ハンドルを右に！
-		
+	else if (CKey::Push(VK_RIGHT) && CanMove){//ハンドルを右に！		
 		/*バック中は逆方向に曲がる*/
 		if (mCarSpeed > 0.0f){
 			if (mTurnSpeed <= 0.0f&&mTurnSpeed>-0.5f){
@@ -255,27 +256,6 @@ void CPlayer::Update(){
 		mRotation.mZ = 180;
 	}
 
-	////前に車が進んでいる時
-	//if (mCarSpeed > 0.0f){
-	//	if (isSoundEngine == false){
-	//		SoundEngine.Repeat();
-	//		isSoundEngine = true;
-	//	}		
-	//}
-	////車が停止している時
-	//else if (mCarSpeed == 0.0f){
-	//	SoundEngine.Stop();
-	//	isSoundEngine = false;
-	//}
-	////車がバックしている時
-	//else if (mCarSpeed < 0.0f){
-	//	if (isSoundEngine == false){
-	//		//バックは違う音を鳴らす予定
-	//		SoundEngine.Repeat();
-	//		isSoundEngine = true;
-	//	}
-	//}
-
 	mPosition = CVector(mADMoveX, 0.0f, mWSMoveZ + mCarSpeed) * mMatrixRotate * mMatrixTranslate;
 	CCharacter::Update();
 	//Y方向(重力)は分ける
@@ -295,7 +275,8 @@ void CPlayer::Update(){
 		//座標、回転値を変更する
 		mPosition = mVCheckPositions[mChecks];
 		mRotation = mVCheckRotations[mChecks];
-		isRespawn = true;
+		isSink = false;
+		isRespawn = true;		
 	}
 	CCharacter::Update();
 	
@@ -316,8 +297,8 @@ void CPlayer::Collision(CCollider *mc, CCollider *yc){
 			if (mc->mTag == CCollider::EBODY){				
 				//芝生通過中の処理
 				if (yc->mpParent->mTag == CCharacter::EGRASS){
-					CVector aiueo;//仮のベクトル
-					if (CCollider::CollisionTriangleSphere(yc, mc, &aiueo)){						
+					CVector tmpVec;//仮ベクトル
+					if (CCollider::CollisionTriangleSphere(yc, mc, &tmpVec)){
 						//ブースト効果の方が優先される
 						if (isBoost == false){
 							//一定速度までスピード低下
@@ -332,14 +313,12 @@ void CPlayer::Collision(CCollider *mc, CCollider *yc){
 						}
 					}
 				}
-
-				
-				
+				//中間地点通過時の処理
 				if (yc->mpParent->mTag == CCharacter::ECHECKPOINT){//中間地点1
 					if (mChecks == 0){
 						//各中間地点を通過しないと1周したとみなされない
-						CVector aiu;//数合わせのためだけのベクトル
-						if (CCollider::CollisionTriangleSphere(yc, mc, &aiu)){
+						CVector tmpVec;//数合わせのためだけのベクトル
+						if (CCollider::CollisionTriangleSphere(yc, mc, &tmpVec)){
 							mChecks = 1;
 						}
 					}
@@ -347,8 +326,8 @@ void CPlayer::Collision(CCollider *mc, CCollider *yc){
 				if (yc->mpParent->mTag == CCharacter::ECHECKPOINT2){//中間地点2
 					if (mChecks == 1){
 						//各中間地点を通過しないと1周したとみなされない
-						CVector aiu;//数合わせのためだけのベクトル
-						if (CCollider::CollisionTriangleSphere(yc, mc, &aiu)){
+						CVector tmpVec;//数合わせのためだけのベクトル
+						if (CCollider::CollisionTriangleSphere(yc, mc, &tmpVec)){
 							mChecks = 2;
 						}
 					}
@@ -356,8 +335,8 @@ void CPlayer::Collision(CCollider *mc, CCollider *yc){
 				if (yc->mpParent->mTag == CCharacter::ECHECKPOINT3){//中間地点3
 					if (mChecks == 2){
 						//各中間地点を通過しないと1周したとみなされない
-						CVector aiu;//数合わせのためだけのベクトル
-						if (CCollider::CollisionTriangleSphere(yc, mc, &aiu)){
+						CVector tmpVec;//数合わせのためだけのベクトル
+						if (CCollider::CollisionTriangleSphere(yc, mc, &tmpVec)){
 							mChecks = 3;
 						}
 					}
@@ -365,8 +344,8 @@ void CPlayer::Collision(CCollider *mc, CCollider *yc){
 				if (yc->mpParent->mTag == CCharacter::EGOALPOINT){//中間地点3
 					if (mChecks == 3){
 						//各中間地点を通過しないと1周したとみなされない
-						CVector aiu;//数合わせのためだけのベクトル
-						if (CCollider::CollisionTriangleSphere(yc, mc, &aiu)){
+						CVector tmpVec;//数合わせのためだけのベクトル
+						if (CCollider::CollisionTriangleSphere(yc, mc, &tmpVec)){
 							isTouchGoal = true;
 						}
 					}
@@ -377,11 +356,19 @@ void CPlayer::Collision(CCollider *mc, CCollider *yc){
 					|| yc->mpParent->mTag == CCharacter::EGOALPOINT
 					|| yc->mpParent->mTag == CCharacter::EDASHBOARD
 					|| yc->mpParent->mTag == CCharacter::EWATER){
-					//処理は行われるが、これらのパネルは通過可能
+					//これらのタグが付く物体は通過可能
+					if (yc->mpParent->mTag == CCharacter::EWATER){
+						CVector tmpVec;//値を返すためのベクトル
+						if (CCollider::CollisionTriangleSphere(yc, mc, &tmpVec)){
+							if (isSink == false){
+								SoundSink.Play();
+								isSink = true;
+							}
+						}
+					}
 				}
 				else{
 					if (mJumpPrio < 1){
-
 						CVector adjust;//調整用ベクトル
 						//三角形と球の衝突判定
 						if (CCollider::CollisionTriangleSphere(yc, mc, &adjust)){
@@ -456,37 +443,15 @@ void CPlayer::Collision(CCollider *mc, CCollider *yc){
 										}
 									}
 								}
-								//if (isSoundEngine == false){
-								//	//バックは違う音を鳴らす予定
-								//	SoundEngine.Repeat();
-								//	isSoundEngine = true;
-								//}
 							}
-
-
-							if (yc->mpParent->mTag == CCharacter::EWALL){
-								//衝突したのが壁だった場合は壁には引っかからず落下
-								//壁にぶつかると衝突音がし、車が減速する
-								//速い時に衝突で減速、遅い時の衝突は特に変化なし
-								if (mCarSpeed > 6.5f){
-									mCarSpeed = 2.0f;
-									//mCarSpeed /= 2.0f;
-									SoundCollision.Play();
-									//激突時、エフェクト発生
-									new CEffect(mPosition + CVector(0.0f,35.0f,0.0f), 100.0f, 100.0f, TextureExp, 4, 4, 1, 0);
-								}
-								else if (mCarSpeed > 4.0f){
-									mCarSpeed = 2.0f;
-									SoundCollisionSmall.Play();
-									//軽くぶつけた時もエフェクト発生
-									new CEffect(mPosition + CVector(0.0f, 15.5f, 0.0f), 60.0f, 60.0f, TextureHit, 3, 8,	1, 1);
-								}
-								else{
-									//壁にこすりながらの移動時、速度が遅くなる
-									if (mCarSpeed > 2.0f){
+							if (yc->mpParent->mTag == CCharacter::EWALL){								
+								//壁衝突処理の修正中
+								if (mCarSpeed > 2.0f){
+									mCarSpeed *= 0.95f;
+									if (mCarSpeed < 2.0f){
 										mCarSpeed = 2.0f;
 									}
-								}								
+								}
 							}
 							else if(yc->mpParent->mTag == CCharacter::EJUMPER){//ジャンプ台に接触した時
 								mVelocityJump = JUMPER01_POWER;
@@ -505,10 +470,10 @@ void CPlayer::Collision(CCollider *mc, CCollider *yc){
 			if (mc->mTag == CCollider::ESEARCH){
 				//加速床に乗った時の処理
 				if (yc->mpParent->mTag == CCharacter::EDASHBOARD){
-					CVector aiueo;//値を返すためのベクトル
-					if (CCollider::CollisionTriangleSphere(yc, mc, &aiueo)){
+					CVector tmpVec;//値を返すためのベクトル
+					if (CCollider::CollisionTriangleSphere(yc, mc, &tmpVec)){
 						//mCarSpeed += 10.0f;
-						//mCarSpeed = MAXSPEED+10.0f;						
+						//mCarSpeed = MAXSPEED+10.0f;
 						if (isBoost == false){
 							SoundBoost.Play();
 							new CEffect(mPosition + CVector(0.0f, 15.5f, 0.0f), 60.0f, 60.0f, TextureBoost, 3, 5, 1, 1);

@@ -320,8 +320,8 @@ void CEnemy::Collision(CCollider *mc, CCollider *yc){
 			if (mc->mTag == CCollider::EBODY){
 				//芝生通過中の処理
 				if (yc->mpParent->mTag == CCharacter::EGRASS){
-					CVector aiueo;//仮のベクトル
-					if (CCollider::CollisionTriangleSphere(yc, mc, &aiueo)){
+					CVector tmpVec;//値返し用ベクトル
+					if (CCollider::CollisionTriangleSphere(yc, mc, &tmpVec)){
 						//ブースト効果の方が優先される
 						if (isBoost == false){
 							//一定速度までスピード低下
@@ -338,28 +338,27 @@ void CEnemy::Collision(CCollider *mc, CCollider *yc){
 				}
 				if (yc->mpParent->mTag == CCharacter::ECHECKPOINT){//中間地点1
 					if (mChecks == 0){
-						//各中間地点を通過しないと1周したとみなされない
-						CVector aiu;//値返し用ベクトル
-						if (CCollider::CollisionTriangleSphere(yc, mc, &aiu)){
+						//各中間地点を通過することで1周となる
+						CVector tmpVec;//値返し用ベクトル
+						if (CCollider::CollisionTriangleSphere(yc, mc, &tmpVec)){
 							mChecks = 1;
 						}
 					}
 				}
 				if (yc->mpParent->mTag == CCharacter::ECHECKPOINT2){//中間地点2
 					if (mChecks == 1){
-						//各中間地点を通過しないと1周したとみなされない
-						CVector aiu;//値返し用ベクトル
-						if (CCollider::CollisionTriangleSphere(yc, mc, &aiu)){
+						//各中間地点を通過しなければ1周扱いされない
+						CVector tmpVec;//値返し用ベクトル
+						if (CCollider::CollisionTriangleSphere(yc, mc, &tmpVec)){
 							mChecks = 2;
-							//mChecks = 0;
 						}
 					}
 				}
 				if (yc->mpParent->mTag == CCharacter::ECHECKPOINT3){//中間地点3
 					if (mChecks == 2){
 						//各中間地点を通過しないと1周したとみなされない
-						CVector aiu;//値返し用ベクトル
-						if (CCollider::CollisionTriangleSphere(yc, mc, &aiu)){
+						CVector tmpVec;//値返し用ベクトル
+						if (CCollider::CollisionTriangleSphere(yc, mc, &tmpVec)){
 							mChecks = 3;
 						}
 					}
@@ -367,21 +366,19 @@ void CEnemy::Collision(CCollider *mc, CCollider *yc){
 				if (yc->mpParent->mTag == CCharacter::EGOALPOINT){//ゴール地点
 					if (mChecks == 3){
 						//各中間地点を通過していなければ1周判定がなされない
-						CVector aiu;//値返し用ベクトル
-						if (CCollider::CollisionTriangleSphere(yc, mc, &aiu)){
+						CVector tmpVec;//値返し用ベクトル
+						if (CCollider::CollisionTriangleSphere(yc, mc, &tmpVec)){
 							isTouchGoal = true;
 						}
 					}
 				}
-				if (yc->mpParent->mTag == CCharacter::EWATER){
-					//通過可能、ステージ1の水
-				}
-				else if (yc->mpParent->mTag == CCharacter::ECHECKPOINT
+				if (yc->mpParent->mTag == CCharacter::EWATER
+					||yc->mpParent->mTag == CCharacter::ECHECKPOINT
 					|| yc->mpParent->mTag == CCharacter::ECHECKPOINT2
 					|| yc->mpParent->mTag == CCharacter::ECHECKPOINT3
 					|| yc->mpParent->mTag == CCharacter::EGOALPOINT
 					|| yc->mpParent->mTag == CCharacter::EDASHBOARD){
-					//これらのタグが付いたオブジェクトは通過可能
+					//これらのタグが付くオブジェクトは通過可能
 				}
 				else{
 					CVector adjust;//調整用ベクトル
@@ -391,20 +388,10 @@ void CEnemy::Collision(CCollider *mc, CCollider *yc){
 						//行列の更新
 						CCharacter::Update();
 						if (yc->mpParent->mTag == CCharacter::EWALL){
-							//速い時に衝突で減速、遅い時の衝突は特に変化なし
-							if (mCarSpeed > 6.5f){
-								mCarSpeed = 2.0f;
-								//激突時、エフェクト発生
-								new CEffect(mPosition + CVector(0.0f, 35.0f, 0.0f), 100.0f, 100.0f, TextureExp, 4, 4, 1, 0);
-							}
-							else if (mCarSpeed > 4.0f){
-								mCarSpeed = 2.0f;
-								//軽くぶつけた時もエフェクト発生
-								new CEffect(mPosition + CVector(0.0f, 15.5f, 0.0f), 60.0f, 60.0f, TextureHit, 3, 8, 1, 1);
-							}
-							else{
-								//壁にこすりながらの移動時、速度が遅くなる
-								if (mCarSpeed > 2.0f){
+							//壁衝突処理の修正中
+							if (mCarSpeed > 2.0f){
+								mCarSpeed *= 0.95f;
+								if (mCarSpeed < 2.0f){
 									mCarSpeed = 2.0f;
 								}
 							}
@@ -417,16 +404,14 @@ void CEnemy::Collision(CCollider *mc, CCollider *yc){
 							mRotation = CCollider::CalculateEulerAngle(mc, yc, mMatrixRotate, PI);
 						}
 					}
-					
-
 				}
 			}
 			//自分のコライダが索敵コライダの時
 			if (mc->mTag == CCollider::ESEARCH){
 				//加速床に乗った時の処理
 				if (yc->mpParent->mTag == CCharacter::EDASHBOARD){
-					CVector aiueo;//とりまベクトル
-					if (CCollider::CollisionTriangleSphere(yc, mc, &aiueo)){
+					CVector tmpVec;//ベクトルの戻り値は不使用
+					if (CCollider::CollisionTriangleSphere(yc, mc, &tmpVec)){
 						if (isBoost == false){
 							new CEffect(mPosition + CVector(0.0f, 15.5f, 0.0f), 60.0f, 60.0f, TextureBoost, 3, 5, 1, 1);
 						}
@@ -443,7 +428,7 @@ void CEnemy::Collision(CCollider *mc, CCollider *yc){
 					if (yc->mpParent->mTag == CCharacter::EPLAYER
 						&& yc->mTag == CCollider::EBODY){
 						CVector adjust;//調整用ベクトル
-						////		//球同士の衝突判定
+						//球同士の衝突判定
 						if (CCollider::Collision(mc, yc, &adjust)){
 							//位置の更新
 							mPosition = mPosition - adjust * -1;
@@ -458,7 +443,7 @@ void CEnemy::Collision(CCollider *mc, CCollider *yc){
 							return;
 						}
 						CVector adjust;//調整用ベクトル
-						////		//球同士の衝突判定
+						//球同士の衝突判定
 						if (CCollider::Collision(mc, yc, &adjust)){
 							//位置の更新
 							mPosition = mPosition - adjust * -1;
@@ -472,7 +457,7 @@ void CEnemy::Collision(CCollider *mc, CCollider *yc){
 					//ポインタからポインタに向けて移動する
 					if (yc->mpParent->mTag == CCharacter::EPOINT){
 						CVector adjust;//調整用ベクトル
-						//		//球同士の衝突判定
+						//球同士の衝突判定
 						if (CCollider::Collision(mc, yc, &adjust)){
 							//衝突したポインタと目指しているポインタが同じ時
 							if (yc->mpParent == mpPoint){

@@ -13,6 +13,18 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="ソース ファイル\ObjectFolder">
+      <UniqueIdentifier>{6378c0c2-b30e-45f3-aa2c-eb9d2b82a39c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\SceneFolder">
+      <UniqueIdentifier>{51afa5f9-c23c-4342-9902-c1b10bf08876}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\CameraFolder">
+      <UniqueIdentifier>{a8d6181b-308d-4838-901b-dbb8ae881c3d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\CourceFolder">
+      <UniqueIdentifier>{6c08e76a-7cad-4ba2-829b-0e651839200a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -21,43 +33,7 @@
     <ClCompile Include="CEnemy.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="CObjBoost.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="CObjCheckPoint.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="CObjFloor.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="CObjGrass.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="CObjJumper.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="CObjNonCol.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="CObjWall.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="CPoint.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="CRaceCourceA.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="CRaceCourceB.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="CRaceCourceC.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="CRaceCourceD.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="CRaceCourceE.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="CRectangle.cpp">
@@ -69,28 +45,10 @@
     <ClCompile Include="CRoadManager.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="CSceneEditor.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="CSceneRace.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="CSceneTitle.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="CVector.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="CBillBoard.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="CCamera.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="CCameraPos.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="CCameraRange.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="CCharacter.cpp">
@@ -117,16 +75,7 @@
     <ClCompile Include="CModel.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="CObj.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="CPlayer.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="CScene.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="CSceneManager.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="CSound.cpp">
@@ -146,6 +95,72 @@
     </ClCompile>
     <ClCompile Include="CTriangle.cpp">
       <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="CObj.cpp">
+      <Filter>ソース ファイル\ObjectFolder</Filter>
+    </ClCompile>
+    <ClCompile Include="CObjBoost.cpp">
+      <Filter>ソース ファイル\ObjectFolder</Filter>
+    </ClCompile>
+    <ClCompile Include="CObjCheckPoint.cpp">
+      <Filter>ソース ファイル\ObjectFolder</Filter>
+    </ClCompile>
+    <ClCompile Include="CObjFloor.cpp">
+      <Filter>ソース ファイル\ObjectFolder</Filter>
+    </ClCompile>
+    <ClCompile Include="CObjGrass.cpp">
+      <Filter>ソース ファイル\ObjectFolder</Filter>
+    </ClCompile>
+    <ClCompile Include="CObjJumper.cpp">
+      <Filter>ソース ファイル\ObjectFolder</Filter>
+    </ClCompile>
+    <ClCompile Include="CObjNonCol.cpp">
+      <Filter>ソース ファイル\ObjectFolder</Filter>
+    </ClCompile>
+    <ClCompile Include="CObjWall.cpp">
+      <Filter>ソース ファイル\ObjectFolder</Filter>
+    </ClCompile>
+    <ClCompile Include="CObjWater.cpp">
+      <Filter>ソース ファイル\ObjectFolder</Filter>
+    </ClCompile>
+    <ClCompile Include="CRaceCourceA.cpp">
+      <Filter>ソース ファイル\CourceFolder</Filter>
+    </ClCompile>
+    <ClCompile Include="CRaceCourceB.cpp">
+      <Filter>ソース ファイル\CourceFolder</Filter>
+    </ClCompile>
+    <ClCompile Include="CRaceCourceC.cpp">
+      <Filter>ソース ファイル\CourceFolder</Filter>
+    </ClCompile>
+    <ClCompile Include="CRaceCourceD.cpp">
+      <Filter>ソース ファイル\CourceFolder</Filter>
+    </ClCompile>
+    <ClCompile Include="CRaceCourceE.cpp">
+      <Filter>ソース ファイル\CourceFolder</Filter>
+    </ClCompile>
+    <ClCompile Include="CSceneTitle.cpp">
+      <Filter>ソース ファイル\SceneFolder</Filter>
+    </ClCompile>
+    <ClCompile Include="CSceneRace.cpp">
+      <Filter>ソース ファイル\SceneFolder</Filter>
+    </ClCompile>
+    <ClCompile Include="CSceneManager.cpp">
+      <Filter>ソース ファイル\SceneFolder</Filter>
+    </ClCompile>
+    <ClCompile Include="CSceneEditor.cpp">
+      <Filter>ソース ファイル\SceneFolder</Filter>
+    </ClCompile>
+    <ClCompile Include="CScene.cpp">
+      <Filter>ソース ファイル\SceneFolder</Filter>
+    </ClCompile>
+    <ClCompile Include="CCamera.cpp">
+      <Filter>ソース ファイル\CameraFolder</Filter>
+    </ClCompile>
+    <ClCompile Include="CCameraPos.cpp">
+      <Filter>ソース ファイル\CameraFolder</Filter>
+    </ClCompile>
+    <ClCompile Include="CCameraRange.cpp">
+      <Filter>ソース ファイル\CameraFolder</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -282,6 +297,9 @@
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="CVector.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="CObjWater.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>

@@ -19,7 +19,7 @@ public:
 	//衝突処理
 	void Collision(CCollider *mc, CCollider *yc);		
 	//コライダの更新
-	void TaskCollision();
+	void TaskCollision();	
 };
 
 

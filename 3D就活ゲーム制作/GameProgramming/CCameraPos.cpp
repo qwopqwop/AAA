@@ -89,16 +89,15 @@ void CCameraPos::Update(){
 	else if (mZoom_distance < 0.0f){
 		mZoom_distance += ZOOMSPEED;
 	}	
-
-	//カメラとプレイヤーの距離を一定にする
-	dir = (mPosition - CPlayer::mpPlayer->mPosition).Normalize() * (CAMERA_DISTANCE + mZoom_distance);
-	mPosition = CPlayer::mpPlayer->mPosition + dir;
 	
+	//カメラとプレイヤーの距離を一定にする
+	dir = (mPosition - CPlayer::mpPlayer->mPosition).Normalize() * ((CAMERA_DISTANCE) + mZoom_distance);
+	mPosition = CPlayer::mpPlayer->mPosition + dir;	
 	CCharacter::Update();
 
 	//プレイヤーでリスポーンフラグが建った時の処理
 	if (CPlayer::mpPlayer->isRespawn){
-		mPosition = CVector(0.0f, 17.0f, -35.0f) * CPlayer::mpPlayer->mMatrixScale * CPlayer::mpPlayer->mMatrixRotate * CPlayer::mpPlayer->mMatrixTranslate;
+		mPosition = CVector(0.0f, 15.0f, -35.0f) * CPlayer::mpPlayer->mMatrixScale * CPlayer::mpPlayer->mMatrixRotate * CPlayer::mpPlayer->mMatrixTranslate;
 		CCharacter::Update();
 		CPlayer::mpPlayer->isRespawn = false;//フラグ消去
 	}
