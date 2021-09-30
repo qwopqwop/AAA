@@ -3,7 +3,7 @@
 #include "CEnemy.h"
 #include "CSceneTitle.h"
 
-//CRoadManager(モデルデータのポインタ,位置,回転,拡大縮小,スタート位置,進行方向)
+//CRoadManager(モデルデータのポインタ,位置,回転,拡大縮小,スタート位置,進行方向,各ポイントの半径,ポイント間の最小の間隔)
 CRoadManager::CRoadManager(CModel *model, const CVector& position, const CVector& rotation, const CVector& scale, const CVector& startPos, const CVector& foward, const float radius, const float interval)
 : CObjFloor(model, position, rotation, scale)
 {

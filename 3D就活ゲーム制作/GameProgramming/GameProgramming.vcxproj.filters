@@ -13,294 +13,318 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="ソース ファイル\ObjectFolder">
+    <Filter Include="ヘッダー ファイル\Game">
+      <UniqueIdentifier>{b985dfe7-be7d-4d9e-bcad-78e2dfd54f88}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\System">
+      <UniqueIdentifier>{05482321-1e2f-42f5-8f40-cdb1c314ddad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Game\Cource">
+      <UniqueIdentifier>{16aeec53-4ee5-43fd-9bc0-fce08291f316}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Game">
+      <UniqueIdentifier>{69f785fe-74fc-454b-81a3-4fd21edca0ea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\System">
+      <UniqueIdentifier>{8bb7743c-f65d-4caa-83de-dd88b418e97f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Game\Model">
+      <UniqueIdentifier>{a683f6b5-ae93-49c9-81c0-846b18ed6d8f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Game\Model">
       <UniqueIdentifier>{6378c0c2-b30e-45f3-aa2c-eb9d2b82a39c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\SceneFolder">
-      <UniqueIdentifier>{51afa5f9-c23c-4342-9902-c1b10bf08876}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ソース ファイル\CameraFolder">
-      <UniqueIdentifier>{a8d6181b-308d-4838-901b-dbb8ae881c3d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ソース ファイル\CourceFolder">
+    <Filter Include="ソース ファイル\Game\Cource">
       <UniqueIdentifier>{6c08e76a-7cad-4ba2-829b-0e651839200a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Game\Scene">
+      <UniqueIdentifier>{b2807751-6751-4091-ae23-5d7648eb4dec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Game\Camera">
+      <UniqueIdentifier>{6023066d-b012-4848-b7a6-3fac49b5fa3b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Game\Camera">
+      <UniqueIdentifier>{abcd8c91-12e9-40bc-89aa-f8e33f425ef9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Game\Scene">
+      <UniqueIdentifier>{48c205f4-a1c6-4523-a028-e9bb87cf0ef4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="CEnemy.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="CPoint.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="CRectangle.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="CRenderTexture.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="CRoadManager.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="CVector.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="CBillBoard.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="CCharacter.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="CCollider.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="CCollisionManager.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="CEffect.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="CKey.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="CMaterial.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="CMatrix.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="CModel.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="CPlayer.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="CSound.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="CTaskManager.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="CText.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="CTexture.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="CTransform.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="CTriangle.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="CObj.cpp">
-      <Filter>ソース ファイル\ObjectFolder</Filter>
+      <Filter>ソース ファイル\Game\Model</Filter>
     </ClCompile>
     <ClCompile Include="CObjBoost.cpp">
-      <Filter>ソース ファイル\ObjectFolder</Filter>
+      <Filter>ソース ファイル\Game\Model</Filter>
     </ClCompile>
     <ClCompile Include="CObjCheckPoint.cpp">
-      <Filter>ソース ファイル\ObjectFolder</Filter>
+      <Filter>ソース ファイル\Game\Model</Filter>
     </ClCompile>
     <ClCompile Include="CObjFloor.cpp">
-      <Filter>ソース ファイル\ObjectFolder</Filter>
+      <Filter>ソース ファイル\Game\Model</Filter>
     </ClCompile>
     <ClCompile Include="CObjGrass.cpp">
-      <Filter>ソース ファイル\ObjectFolder</Filter>
+      <Filter>ソース ファイル\Game\Model</Filter>
     </ClCompile>
     <ClCompile Include="CObjJumper.cpp">
-      <Filter>ソース ファイル\ObjectFolder</Filter>
+      <Filter>ソース ファイル\Game\Model</Filter>
     </ClCompile>
     <ClCompile Include="CObjNonCol.cpp">
-      <Filter>ソース ファイル\ObjectFolder</Filter>
+      <Filter>ソース ファイル\Game\Model</Filter>
     </ClCompile>
     <ClCompile Include="CObjWall.cpp">
-      <Filter>ソース ファイル\ObjectFolder</Filter>
+      <Filter>ソース ファイル\Game\Model</Filter>
     </ClCompile>
     <ClCompile Include="CObjWater.cpp">
-      <Filter>ソース ファイル\ObjectFolder</Filter>
+      <Filter>ソース ファイル\Game\Model</Filter>
     </ClCompile>
     <ClCompile Include="CRaceCourceA.cpp">
-      <Filter>ソース ファイル\CourceFolder</Filter>
+      <Filter>ソース ファイル\Game\Cource</Filter>
     </ClCompile>
     <ClCompile Include="CRaceCourceB.cpp">
-      <Filter>ソース ファイル\CourceFolder</Filter>
+      <Filter>ソース ファイル\Game\Cource</Filter>
     </ClCompile>
     <ClCompile Include="CRaceCourceC.cpp">
-      <Filter>ソース ファイル\CourceFolder</Filter>
+      <Filter>ソース ファイル\Game\Cource</Filter>
     </ClCompile>
     <ClCompile Include="CRaceCourceD.cpp">
-      <Filter>ソース ファイル\CourceFolder</Filter>
+      <Filter>ソース ファイル\Game\Cource</Filter>
     </ClCompile>
     <ClCompile Include="CRaceCourceE.cpp">
-      <Filter>ソース ファイル\CourceFolder</Filter>
+      <Filter>ソース ファイル\Game\Cource</Filter>
     </ClCompile>
-    <ClCompile Include="CSceneTitle.cpp">
-      <Filter>ソース ファイル\SceneFolder</Filter>
+    <ClCompile Include="CBillBoard.cpp">
+      <Filter>ソース ファイル\System</Filter>
     </ClCompile>
-    <ClCompile Include="CSceneRace.cpp">
-      <Filter>ソース ファイル\SceneFolder</Filter>
+    <ClCompile Include="CEffect.cpp">
+      <Filter>ソース ファイル\System</Filter>
     </ClCompile>
-    <ClCompile Include="CSceneManager.cpp">
-      <Filter>ソース ファイル\SceneFolder</Filter>
+    <ClCompile Include="CRectangle.cpp">
+      <Filter>ソース ファイル\System</Filter>
     </ClCompile>
-    <ClCompile Include="CSceneEditor.cpp">
-      <Filter>ソース ファイル\SceneFolder</Filter>
+    <ClCompile Include="CRenderTexture.cpp">
+      <Filter>ソース ファイル\System</Filter>
+    </ClCompile>
+    <ClCompile Include="CText.cpp">
+      <Filter>ソース ファイル\System</Filter>
+    </ClCompile>
+    <ClCompile Include="CTexture.cpp">
+      <Filter>ソース ファイル\System</Filter>
+    </ClCompile>
+    <ClCompile Include="CRoadManager.cpp">
+      <Filter>ソース ファイル\Game\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="CEnemy.cpp">
+      <Filter>ソース ファイル\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="CPlayer.cpp">
+      <Filter>ソース ファイル\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="CCharacter.cpp">
+      <Filter>ソース ファイル\System</Filter>
+    </ClCompile>
+    <ClCompile Include="CCollider.cpp">
+      <Filter>ソース ファイル\System</Filter>
+    </ClCompile>
+    <ClCompile Include="CCollisionManager.cpp">
+      <Filter>ソース ファイル\System</Filter>
+    </ClCompile>
+    <ClCompile Include="CKey.cpp">
+      <Filter>ソース ファイル\System</Filter>
+    </ClCompile>
+    <ClCompile Include="CMaterial.cpp">
+      <Filter>ソース ファイル\System</Filter>
+    </ClCompile>
+    <ClCompile Include="CMatrix.cpp">
+      <Filter>ソース ファイル\System</Filter>
+    </ClCompile>
+    <ClCompile Include="CModel.cpp">
+      <Filter>ソース ファイル\System</Filter>
+    </ClCompile>
+    <ClCompile Include="CPoint.cpp">
+      <Filter>ソース ファイル\System</Filter>
     </ClCompile>
     <ClCompile Include="CScene.cpp">
-      <Filter>ソース ファイル\SceneFolder</Filter>
+      <Filter>ソース ファイル\System</Filter>
+    </ClCompile>
+    <ClCompile Include="CSceneManager.cpp">
+      <Filter>ソース ファイル\System</Filter>
+    </ClCompile>
+    <ClCompile Include="CSound.cpp">
+      <Filter>ソース ファイル\System</Filter>
+    </ClCompile>
+    <ClCompile Include="CTaskManager.cpp">
+      <Filter>ソース ファイル\System</Filter>
+    </ClCompile>
+    <ClCompile Include="CTransform.cpp">
+      <Filter>ソース ファイル\System</Filter>
+    </ClCompile>
+    <ClCompile Include="CTriangle.cpp">
+      <Filter>ソース ファイル\System</Filter>
+    </ClCompile>
+    <ClCompile Include="CVector.cpp">
+      <Filter>ソース ファイル\System</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>ソース ファイル\System</Filter>
+    </ClCompile>
+    <ClCompile Include="CSceneTitle.cpp">
+      <Filter>ソース ファイル\Game\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="CSceneEditor.cpp">
+      <Filter>ソース ファイル\Game\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="CSceneRace.cpp">
+      <Filter>ソース ファイル\Game\Scene</Filter>
     </ClCompile>
     <ClCompile Include="CCamera.cpp">
-      <Filter>ソース ファイル\CameraFolder</Filter>
-    </ClCompile>
-    <ClCompile Include="CCameraPos.cpp">
-      <Filter>ソース ファイル\CameraFolder</Filter>
+      <Filter>ソース ファイル\Game\Camera</Filter>
     </ClCompile>
     <ClCompile Include="CCameraRange.cpp">
-      <Filter>ソース ファイル\CameraFolder</Filter>
+      <Filter>ソース ファイル\Game\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="CCameraPos.cpp">
+      <Filter>ソース ファイル\Game\Camera</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="main.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="CSceneTitle.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="CSceneRace.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="CPoint.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="CRoadManager.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="CEnemy.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="CRectangle.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="CRenderTexture.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="CObjWall.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="CObjNonCol.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="CObjJumper.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="CObjGrass.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="CObjFloor.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="CObjCheckPoint.h">
-      <Filter>ヘッダー ファイル</Filter>
+    <ClInclude Include="CRaceCourceE.h">
+      <Filter>ヘッダー ファイル\Game\Cource</Filter>
     </ClInclude>
     <ClInclude Include="CRaceCourceA.h">
-      <Filter>ヘッダー ファイル</Filter>
+      <Filter>ヘッダー ファイル\Game\Cource</Filter>
     </ClInclude>
     <ClInclude Include="CRaceCourceB.h">
-      <Filter>ヘッダー ファイル</Filter>
+      <Filter>ヘッダー ファイル\Game\Cource</Filter>
     </ClInclude>
     <ClInclude Include="CRaceCourceC.h">
-      <Filter>ヘッダー ファイル</Filter>
+      <Filter>ヘッダー ファイル\Game\Cource</Filter>
     </ClInclude>
     <ClInclude Include="CRaceCourceD.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="CRaceCourceE.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="CSceneEditor.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="CObjBoost.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="CBillBoard.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="CCamera.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="CCameraPos.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="CCameraRange.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="CCharacter.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="CCollider.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="CCollisionManager.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="CEffect.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="CKey.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="CMaterial.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="CMatrix.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="CModel.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="CObj.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="CPlayer.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="CScene.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="CSceneManager.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="CSound.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="CTask.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="CTaskManager.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="CText.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="CTexture.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="CTransform.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="CTriangle.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="CVector.h">
-      <Filter>ヘッダー ファイル</Filter>
+      <Filter>ヘッダー ファイル\Game\Cource</Filter>
     </ClInclude>
     <ClInclude Include="CObjWater.h">
-      <Filter>ヘッダー ファイル</Filter>
+      <Filter>ヘッダー ファイル\Game\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="CObj.h">
+      <Filter>ヘッダー ファイル\Game\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="CObjBoost.h">
+      <Filter>ヘッダー ファイル\Game\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="CObjCheckPoint.h">
+      <Filter>ヘッダー ファイル\Game\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="CObjFloor.h">
+      <Filter>ヘッダー ファイル\Game\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="CObjGrass.h">
+      <Filter>ヘッダー ファイル\Game\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="CObjJumper.h">
+      <Filter>ヘッダー ファイル\Game\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="CObjNonCol.h">
+      <Filter>ヘッダー ファイル\Game\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="CObjWall.h">
+      <Filter>ヘッダー ファイル\Game\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="CTransform.h">
+      <Filter>ヘッダー ファイル\System</Filter>
+    </ClInclude>
+    <ClInclude Include="CTriangle.h">
+      <Filter>ヘッダー ファイル\System</Filter>
+    </ClInclude>
+    <ClInclude Include="CVector.h">
+      <Filter>ヘッダー ファイル\System</Filter>
+    </ClInclude>
+    <ClInclude Include="main.h">
+      <Filter>ヘッダー ファイル\System</Filter>
+    </ClInclude>
+    <ClInclude Include="CTaskManager.h">
+      <Filter>ヘッダー ファイル\System</Filter>
+    </ClInclude>
+    <ClInclude Include="CTask.h">
+      <Filter>ヘッダー ファイル\System</Filter>
+    </ClInclude>
+    <ClInclude Include="CCharacter.h">
+      <Filter>ヘッダー ファイル\System</Filter>
+    </ClInclude>
+    <ClInclude Include="CEnemy.h">
+      <Filter>ヘッダー ファイル\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="CPlayer.h">
+      <Filter>ヘッダー ファイル\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="CMatrix.h">
+      <Filter>ヘッダー ファイル\System</Filter>
+    </ClInclude>
+    <ClInclude Include="CModel.h">
+      <Filter>ヘッダー ファイル\System</Filter>
+    </ClInclude>
+    <ClInclude Include="CSound.h">
+      <Filter>ヘッダー ファイル\System</Filter>
+    </ClInclude>
+    <ClInclude Include="CCollider.h">
+      <Filter>ヘッダー ファイル\System</Filter>
+    </ClInclude>
+    <ClInclude Include="CCollisionManager.h">
+      <Filter>ヘッダー ファイル\System</Filter>
+    </ClInclude>
+    <ClInclude Include="CKey.h">
+      <Filter>ヘッダー ファイル\System</Filter>
+    </ClInclude>
+    <ClInclude Include="CMaterial.h">
+      <Filter>ヘッダー ファイル\System</Filter>
+    </ClInclude>
+    <ClInclude Include="CPoint.h">
+      <Filter>ヘッダー ファイル\System</Filter>
+    </ClInclude>
+    <ClInclude Include="CTexture.h">
+      <Filter>ヘッダー ファイル\System</Filter>
+    </ClInclude>
+    <ClInclude Include="CBillBoard.h">
+      <Filter>ヘッダー ファイル\System</Filter>
+    </ClInclude>
+    <ClInclude Include="CEffect.h">
+      <Filter>ヘッダー ファイル\System</Filter>
+    </ClInclude>
+    <ClInclude Include="CRectangle.h">
+      <Filter>ヘッダー ファイル\System</Filter>
+    </ClInclude>
+    <ClInclude Include="CRenderTexture.h">
+      <Filter>ヘッダー ファイル\System</Filter>
+    </ClInclude>
+    <ClInclude Include="CText.h">
+      <Filter>ヘッダー ファイル\System</Filter>
+    </ClInclude>
+    <ClInclude Include="CScene.h">
+      <Filter>ヘッダー ファイル\System</Filter>
+    </ClInclude>
+    <ClInclude Include="CSceneManager.h">
+      <Filter>ヘッダー ファイル\System</Filter>
+    </ClInclude>
+    <ClInclude Include="CRoadManager.h">
+      <Filter>ヘッダー ファイル\Game\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="CCameraRange.h">
+      <Filter>ヘッダー ファイル\Game\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="CCamera.h">
+      <Filter>ヘッダー ファイル\Game\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="CCameraPos.h">
+      <Filter>ヘッダー ファイル\Game\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="CSceneEditor.h">
+      <Filter>ヘッダー ファイル\Game\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="CSceneRace.h">
+      <Filter>ヘッダー ファイル\Game\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="CSceneTitle.h">
+      <Filter>ヘッダー ファイル\Game\Scene</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

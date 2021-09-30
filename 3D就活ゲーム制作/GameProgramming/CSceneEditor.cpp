@@ -56,7 +56,7 @@ void CSceneEditor::Init() {
 	mCarRed.Load("material\\common_mat\\Rover1.obj", "material\\single_color\\red.mtl");//ˆÈ‰º“G‚ÌŽÔ
 	mCarBlue.Load("material\\common_mat\\Rover1.obj", "material\\single_color\\blue.mtl");
 	mCarGreen.Load("material\\common_mat\\Rover1.obj", "material\\single_color\\green.mtl");
-	mCarYellow.Load("material\\common_mat\\Rover1.obj", "material\single_color\\yellow.mtl");
+	mCarYellow.Load("material\\common_mat\\Rover1.obj", "material\\single_color\\yellow.mtl");
 	mCarPink.Load("material\\common_mat\\Rover1.obj", "material\\single_color\\pink.mtl");
 	mCarCyan.Load("material\\common_mat\\Rover1.obj", "material\\single_color\\cyan.mtl");
 	mCarWhite.Load("material\\common_mat\\Rover1.obj", "material\\single_color\\white.mtl");
