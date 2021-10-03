@@ -28,14 +28,31 @@ extern CSound SoundSink;
 CPlayer *CPlayer::mpPlayer = 0;
 
 #define G (9.8f / 90.0f)//重力加速度//60.0f
-#define JUMPV0 (16.0f)//ジャンプ初速//4.0f
 #define MAXSPEED 20.0f //車の最高速度
 #define MAXSPEED_BACK 4.0f//車の後退する最大速度
 #define CAR_POWER 0.1f //*2//1フレーム辺りの車の加速していく量
 #define CAR_BREAK_POWER 0.1f//前進中のブレーキの強さ
-#define DECELERATE 0.1f //車の減速する量
+#define DECELERATE_CARSPEED 0.1f //車の減速する量
+#define DECELERATE_TURNSPEED 0.05f//カーブ量の減衰する量
+#define HANDLEPOWER_NORMAL_LOWERLIMIT 0.5f//カーブのハンドル操作時の速度の下限(曲がりやすくするために)
+#define HANDLEPOWER_NORMAL 0.04f//カーブ量と同じ方向にハンドルを切った時のカーブ量
+#define HANDLEPOWER_REVERSE 0.15f//カーブ量とは逆方向にハンドルを切った時のカーブ量(例：左に曲がっている時に右にハンドル)
+#define MAXTURNSPEED 1.0f
+#define TURNSPEED_CORRECTION_BORDER 4.0f//カーブ量に-補正がかかるボーダーライン
+
+#define BOOST_EFFECT 10.0f//ブースト中で底上げされる最高速度の量
+#define DECELERATE_BOOSTEFFECT 0.2f//ブーストが切れて底上げした最高速度の減衰する量
+#define BOOST_EFFECTTIME 45//ブーストの効果時間
+
+#define FLYING_UPDOWN 1.5f//飛行モード中の上昇、下降速度
+
 #define FIX_ANGLE_VALUE 1.0f //角度が0度に向けて調整される量(主にX・Z用)
-#define JUMPER01_POWER 3.0f;//ジャンプ台1によるジャンプの強さ
+#define JUMPER01_POWER 3.0f//ジャンプ台1によるジャンプの強さ
+
+#define RESPAWNTRIGGER_HEIGHT -700.0f//コースアウト等で落下時、リスポーンが作動する高さ
+
+#define ONGRASS_LOWERLIMIT 5.0f//芝生に乗って低下する速度の下限
+#define ONGRASS_FLICTION_EFFECT 0.8f//芝生に乗った時の減速値
 
 CPlayer::CPlayer()
 :mColBody(this, CVector(0.0f, 4.0f + 1.0f, 0.5f), CVector(0.0f, 0.0f, 0.0f), CVector(1.0f, 1.0f, 1.0f), 10.0f*3)
@@ -46,8 +63,6 @@ CPlayer::CPlayer()
 	mScale = CVector(7.5f, 7.5f, 7.5f);
 
 	mVelocityJump = 0.0f;
-	mJumpV0 = 1.1f;//バネ取得後は2.3fの予定
-	mMoveSpeed = 0.5f;
 	mADMoveX = 0.0f;  mWSMoveZ = 0.0f;
 	mCarSpeed = 0.0f;//車の速度の初期化
 	mTurnSpeed = 0.0f;
@@ -94,10 +109,10 @@ void CPlayer::Update(){
 	//飛行モード
 	if (mFlyingMode){
 		if (CKey::Push('W')){
-			mVelocityJump = mMoveSpeed * 3;
+			mVelocityJump = FLYING_UPDOWN;
 		}
 		else if (CKey::Push('S')){
-			mVelocityJump = -mMoveSpeed * 3;
+			mVelocityJump = -FLYING_UPDOWN;
 		}
 		else{
 			mVelocityJump = 0.0f;
@@ -114,8 +129,7 @@ void CPlayer::Update(){
 	}
 	//ブースト有効時
 	if (isBoost){
-		mBoostMaxSpeed = 10.0f;
-
+		mBoostMaxSpeed = BOOST_EFFECT;
 		if (mCarSpeed < MAXSPEED + mBoostMaxSpeed){
 			//ブースト時のアクセル効果は実質3倍
 			mCarSpeed += CAR_POWER;
@@ -124,10 +138,10 @@ void CPlayer::Update(){
 	}
 	//ブーストが切れている時
 	else{
-		//最高速度が通常まで減速
+		//底上げされた最高速度が徐々に元の最高速度に減衰
 		if (mBoostMaxSpeed > 0.0f){
-			if (mBoostMaxSpeed > 0.2f){
-				mBoostMaxSpeed -= 0.2f;
+			if (mBoostMaxSpeed > DECELERATE_BOOSTEFFECT){
+				mBoostMaxSpeed -= DECELERATE_BOOSTEFFECT;
 			}
 			else{
 				mBoostMaxSpeed = 0.0f;
@@ -158,90 +172,101 @@ void CPlayer::Update(){
 		//前進中
 		if (mCarSpeed > 0.0f){
 			//減速値でマイナスにならないように調整
-			if (mCarSpeed < DECELERATE){
+			if (mCarSpeed < DECELERATE_CARSPEED){
 				mCarSpeed = 0.0f;
 			}
 			else{
-				mCarSpeed -= DECELERATE;
+				mCarSpeed -= DECELERATE_CARSPEED;
 			}
 		}
 		//後退中
 		else if (mCarSpeed < 0.0f){
-			if (mCarSpeed > -DECELERATE){
+			if (mCarSpeed > -DECELERATE_CARSPEED){
 				mCarSpeed = 0.0f;
 			}
 			else{
-				mCarSpeed += DECELERATE;
+				mCarSpeed += DECELERATE_CARSPEED;
 			}
 		}		
 	}
 	
 	if (CKey::Push(VK_LEFT) && CanMove){//ハンドルを左に！
 		/*バック中は逆方向に曲がる*/
-		if (mCarSpeed > 0.0f){
-			if (mTurnSpeed >= 0.0f&&mTurnSpeed<0.5f){
-				mTurnSpeed = 0.5f;
+		if (mCarSpeed > 0.0f){			
+			if (mTurnSpeed >= HANDLEPOWER_NORMAL_LOWERLIMIT){
+				mTurnSpeed += HANDLEPOWER_NORMAL;
 			}
-			if (mTurnSpeed < 0.0f){
-				mTurnSpeed += 0.11f;
+			else if (mTurnSpeed >= 0.0f&&mTurnSpeed < HANDLEPOWER_NORMAL_LOWERLIMIT){
+				mTurnSpeed = HANDLEPOWER_NORMAL_LOWERLIMIT + HANDLEPOWER_NORMAL;
 			}
-			mTurnSpeed += 0.04f;
+			else if (mTurnSpeed < 0.0f){//右に曲がっている状態でハンドルを左に切る
+				mTurnSpeed += HANDLEPOWER_REVERSE;
+			}
 		}
 		else if (mCarSpeed < 0.0f){
-			if (mTurnSpeed >= 0.0f&&mTurnSpeed<0.5f){
-				mTurnSpeed = -0.5f;
+			if (mTurnSpeed >= HANDLEPOWER_NORMAL_LOWERLIMIT){
+				mTurnSpeed += -HANDLEPOWER_NORMAL;
 			}
-			if (mTurnSpeed < 0.0f){
-				mTurnSpeed += -0.11f;
+			else if (mTurnSpeed >= 0.0f&&mTurnSpeed < HANDLEPOWER_NORMAL_LOWERLIMIT){
+				mTurnSpeed = -HANDLEPOWER_NORMAL_LOWERLIMIT + -HANDLEPOWER_NORMAL;
 			}
-			mTurnSpeed += -0.04f;
+			else if (mTurnSpeed < 0.0f){
+				mTurnSpeed += -HANDLEPOWER_REVERSE;
+			}
 		}
 	}
 	else if (CKey::Push(VK_RIGHT) && CanMove){//ハンドルを右に！		
 		/*バック中は逆方向に曲がる*/
-		if (mCarSpeed > 0.0f){
-			if (mTurnSpeed <= 0.0f&&mTurnSpeed>-0.5f){
-				mTurnSpeed = -0.5f;
+		if (mCarSpeed > 0.0f){			
+			if (mTurnSpeed <= -HANDLEPOWER_NORMAL_LOWERLIMIT){
+				mTurnSpeed += -HANDLEPOWER_NORMAL;
 			}
-			if (mTurnSpeed > 0.0f){
-				mTurnSpeed -= 0.11f;
+			else if (mTurnSpeed <= 0.0f&&mTurnSpeed>-HANDLEPOWER_NORMAL_LOWERLIMIT){
+				mTurnSpeed = -HANDLEPOWER_NORMAL_LOWERLIMIT + -HANDLEPOWER_NORMAL;
 			}
-			mTurnSpeed -= 0.04f;
+			else if (mTurnSpeed > 0.0f){
+				mTurnSpeed += -HANDLEPOWER_REVERSE;
+			}
+
 		}
 		else if(mCarSpeed < 0.0f){
-			if (mTurnSpeed <= 0.0f&&mTurnSpeed>-0.5f){
-				mTurnSpeed = 0.5f;
+			if (mTurnSpeed <= -HANDLEPOWER_NORMAL_LOWERLIMIT){
+				mTurnSpeed += HANDLEPOWER_NORMAL;
 			}
-			if (mTurnSpeed > 0.0f){
-				mTurnSpeed -= -0.11f;
+			else if (mTurnSpeed <= 0.0f&&mTurnSpeed > -HANDLEPOWER_NORMAL_LOWERLIMIT){
+				mTurnSpeed = HANDLEPOWER_NORMAL_LOWERLIMIT + HANDLEPOWER_NORMAL;
 			}
-			mTurnSpeed -= -0.04f;
+			else if (mTurnSpeed > 0.0f){
+				mTurnSpeed += HANDLEPOWER_REVERSE;
+			}
 		}
 	}
 	else{
+		//ハンドル操作をしていない時はカーブが弱まる
 		if (mTurnSpeed > 0.0f){
-			mTurnSpeed -= 0.05f;
+			mTurnSpeed -= DECELERATE_TURNSPEED;
 		}
 		else if (mTurnSpeed < 0.0f){
-			mTurnSpeed += 0.05f;
+			mTurnSpeed += DECELERATE_TURNSPEED;
 		}
-		if (mTurnSpeed<0.04f && mTurnSpeed>-0.04f){
+		if (mTurnSpeed<HANDLEPOWER_NORMAL && mTurnSpeed>-HANDLEPOWER_NORMAL){
 			mTurnSpeed = 0.0f;
 		}
 	}
-	if (mTurnSpeed > 1.0f){
-		mTurnSpeed = 1.0f;
+	//カーブの上限
+	if (mTurnSpeed > MAXTURNSPEED){
+		mTurnSpeed = MAXTURNSPEED;
 	}
-	else if (mTurnSpeed < -1.0f){
-		mTurnSpeed = -1.0f;
+	else if (mTurnSpeed < -MAXTURNSPEED){
+		mTurnSpeed = -MAXTURNSPEED;
 	}
 	float turnspd = mTurnSpeed;
-	if (mCarSpeed > -4.0f && mCarSpeed < 4.0f){
+	if (mCarSpeed > -TURNSPEED_CORRECTION_BORDER && mCarSpeed < TURNSPEED_CORRECTION_BORDER){//一定の速度以下だとカーブ量にマイナス補正が働く
 		if (mCarSpeed >= 0.0f){
-			turnspd = mTurnSpeed * mCarSpeed / 4.0f;
+			turnspd = mTurnSpeed * mCarSpeed / TURNSPEED_CORRECTION_BORDER;
 		}
 		else{
-			turnspd = mTurnSpeed * -mCarSpeed / 4.0f;
+			turnspd = mTurnSpeed * -mCarSpeed / TURNSPEED_CORRECTION_BORDER;
 		}		
 	}
 	else{
@@ -259,7 +284,6 @@ void CPlayer::Update(){
 	mPosition = CVector(mADMoveX, 0.0f, mWSMoveZ + mCarSpeed) * mMatrixRotate * mMatrixTranslate;
 	CCharacter::Update();
 	//Y方向(重力)は分ける
-	//mPosition = CVector(0.0f, mVelocityJump, 0.0f) * mMatrix;//できてない
 	mPosition = CVector(0.0f, mVelocityJump*2.0f, 0.0f) * //mMatrixScale * 
 		CMatrix().RotateZ(0) *
 		CMatrix().RotateX(0) *
@@ -267,7 +291,7 @@ void CPlayer::Update(){
 		*mMatrixTranslate;
 
 	//転落してしまった時(Rキーで即リスタート)
-	if (mPosition.mY < -700.0f || CKey::Once('R')){
+	if (mPosition.mY < RESPAWNTRIGGER_HEIGHT || CKey::Once('R')){
 		//落下の勢いを0にする
 		mVelocityJump = 0.0f;
 		//車の速度を0に
@@ -302,12 +326,12 @@ void CPlayer::Collision(CCollider *mc, CCollider *yc){
 						//ブースト効果の方が優先される
 						if (isBoost == false){
 							//一定速度までスピード低下
-							if (mCarSpeed > 3.2f + 1.8f){
-								if (mCarSpeed > 4.0f + 1.8f){
-									mCarSpeed -= 0.8f;
+							if (mCarSpeed > ONGRASS_LOWERLIMIT){
+								if (mCarSpeed > ONGRASS_LOWERLIMIT + ONGRASS_FLICTION_EFFECT){
+									mCarSpeed -= ONGRASS_FLICTION_EFFECT;
 								}
 								else{
-									mCarSpeed = 3.2f +1.8f;
+									mCarSpeed = ONGRASS_LOWERLIMIT;
 								}
 							}
 						}
@@ -479,7 +503,7 @@ void CPlayer::Collision(CCollider *mc, CCollider *yc){
 							new CEffect(mPosition + CVector(0.0f, 15.5f, 0.0f), 60.0f, 60.0f, TextureBoost, 3, 5, 1, 1);
 						}
 						isBoost = true;
-						mBoostTime = 45;
+						mBoostTime = BOOST_EFFECTTIME;
 					}
 				}
 			}

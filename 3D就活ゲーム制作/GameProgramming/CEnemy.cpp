@@ -22,7 +22,6 @@ extern std::shared_ptr<CTexture> TextureBoost;
 CEnemy *CEnemy::mpEnemy = 0;
 
 #define G (9.8f / 90.0f)//重力加速度
-#define JUMPV0 (16.0f)//ジャンプ初速
 
 #define MAXSPEED 20.0f//車の最高速度
 #define MINSPEED 1.0f//車の最低速度
@@ -30,10 +29,24 @@ CEnemy *CEnemy::mpEnemy = 0;
 #define CAR_POWER 0.1f//1フレーム辺りの車の加速していく量
 #define CAR_BREAK_POWER 0.1f//前進中のブレーキの強さ
 
-#define DECELERATE 0.1f //車の減速する量
+#define DECELERATE_CARSPEED 0.1f //車の減速する量
 #define FIX_ANGLE_VALUE 1.0f //角度が0度に向けて調整される量(回転値X,Z用)
 #define JUMPER01_POWER 3.0f //ジャンプ台1でのジャンプ力
 #define RESTART_TIME 15*60 //敵が詰まった時、一定時間経過でリスタートさせる(秒数*60fps)
+#define RESPAWNTRIGGER_HEIGHT -700.0f//コースアウト等で落下時、リスポーンが作動する高さ
+#define ONGRASS_LOWERLIMIT 5.0f//芝生に乗って低下する速度の下限
+#define ONGRASS_FLICTION_EFFECT 0.8f//芝生に乗った時の減速値
+
+#define BOOST_EFFECT 10.0f//ブースト中で底上げされる最高速度の量
+#define DECELERATE_BOOSTEFFECT 0.2f//ブーストが切れて底上げした最高速度の減衰する量
+#define BOOST_EFFECTTIME 45//ブーストの効果時間
+
+#define HANDLEPOWER_NORMAL_LOWERLIMIT 0.5f//カーブのハンドル操作時の速度の下限(曲がりやすくするために)
+#define HANDLEPOWER_NORMAL 0.04f//カーブ量と同じ方向にハンドルを切った時のカーブ量
+#define HANDLEPOWER_REVERSE 0.15f//カーブ量とは逆方向にハンドルを切った時のカーブ量(例：左に曲がっている時に右にハンドル)
+#define MAXTURNSPEED 1.0f
+#define DECELERATE_TURNSPEED 0.05f//カーブ量の減衰する量
+
 
 CEnemy::CEnemy()
 //車体のY座標は0.0fにしたいんだけど・・・
@@ -49,8 +62,6 @@ CEnemy::CEnemy()
 	mScale = CVector(2.5f * 3, 2.5f * 3, 2.5f * 3);
 
 	mVelocityJump = 0.0f;
-	mJumpV0 = 1.1f;//バネ取得後は2.3fの予定
-	mMoveSpeed = 0.5f;
 	mADMoveX = 0.0f;  mWSMoveZ = 0.0f;
 	mCarSpeed = 0.0f;//車の速度の初期化
 	mTurnSpeed = 0.0f;
@@ -139,7 +150,7 @@ void CEnemy::Update(){
 			mMaxSpeed_PtoP = MAXSPEED * corve;
 		}
 		else{
-			mMaxSpeed_PtoP = 20.0f;
+			mMaxSpeed_PtoP = MAXSPEED;
 		}
 	}	
 	//スピードは最低速度を下回らない
@@ -161,8 +172,7 @@ void CEnemy::Update(){
 	}
 	//ブースト有効時
 	if (isBoost){
-		mBoostMaxSpeed = 10.0f;
-
+		mBoostMaxSpeed = BOOST_EFFECT;
 		if (mCarSpeed < MAXSPEED + mBoostMaxSpeed){
 			//ブースト時のアクセル効果は実質3倍
 			mCarSpeed += CAR_POWER;
@@ -173,8 +183,8 @@ void CEnemy::Update(){
 	else{
 		//最高速度が通常まで減速
 		if (mBoostMaxSpeed > 0.0f){
-			if (mBoostMaxSpeed > 0.2f){
-				mBoostMaxSpeed -= 0.2f;
+			if (mBoostMaxSpeed > DECELERATE_BOOSTEFFECT){
+				mBoostMaxSpeed -= DECELERATE_BOOSTEFFECT;
 			}
 			else{
 				mBoostMaxSpeed = 0.0f;
@@ -185,13 +195,9 @@ void CEnemy::Update(){
 			mCarSpeed = MAXSPEED + mBoostMaxSpeed;
 		}
 	}
-
-
+	
 	if (CKey::Push(VK_UP) && CanMove && mCarSpeed < mMaxSpeed_PtoP || mChecks >= 0 && CanMove && mCarSpeed < mMaxSpeed_PtoP){
-		if (mCarSpeed < MAXSPEED + mBoostMaxSpeed){
-			/*if (left.Dot(dir) > -5.0f && left.Dot(dir) < 5.0f){
-				mCarSpeed += CAR_POWER;
-			}*/
+		if (mCarSpeed < MAXSPEED + mBoostMaxSpeed){		
 			mCarSpeed += CAR_POWER;
 		}
 	}
@@ -209,62 +215,66 @@ void CEnemy::Update(){
 		//前進中
 		if (mCarSpeed > 0.0f){
 			//減速値でマイナスにならないように調整
-			if (mCarSpeed < DECELERATE){
+			if (mCarSpeed < DECELERATE_CARSPEED){
 				mCarSpeed = 0.0f;
 			}
 			else{
-				mCarSpeed -= DECELERATE;
+				mCarSpeed -= DECELERATE_CARSPEED;
 			}
 		}
 		//後退中
 		else if (mCarSpeed < 0.0f){
-			if (mCarSpeed > -DECELERATE){
+			if (mCarSpeed > -DECELERATE_CARSPEED){
 				mCarSpeed = 0.0f;
 			}
 			else{
-				mCarSpeed += DECELERATE;
+				mCarSpeed += DECELERATE_CARSPEED;
 			}
 		}
 	}
 
 	//目的地が左側にあり、操作可能な時
 	if (left.Dot(dir) > 0.0f && CanMove){ //ハンドルを左に！
-		//mRotation.mY++;
-		if (mTurnSpeed >= 0.0f&&mTurnSpeed<0.5f){
-			mTurnSpeed = 0.5f;
+		if (mTurnSpeed >= HANDLEPOWER_NORMAL_LOWERLIMIT){
+			mTurnSpeed += HANDLEPOWER_NORMAL;
 		}
-		if (mTurnSpeed < 0.0f){
-			mTurnSpeed += 0.11f;
+		else if (mTurnSpeed >= 0.0f&&mTurnSpeed < HANDLEPOWER_NORMAL_LOWERLIMIT){
+			mTurnSpeed = HANDLEPOWER_NORMAL_LOWERLIMIT + HANDLEPOWER_NORMAL;
 		}
-		mTurnSpeed += 0.04f;
+		else if (mTurnSpeed < 0.0f){//右に曲がっている状態でハンドルを左に切る
+			mTurnSpeed += HANDLEPOWER_REVERSE;
+		}
 	}
 	//あるいは目的地が右方面で、操作可能な時
 	else if (left.Dot(dir) < 0.0f && CanMove){//ハンドルを右に！
-		//mRotation.mY--;
-		if (mTurnSpeed <= 0.0f&&mTurnSpeed>-0.5f){
-			mTurnSpeed = -0.5f;
+		if (mTurnSpeed >= HANDLEPOWER_NORMAL_LOWERLIMIT){
+			mTurnSpeed += -HANDLEPOWER_NORMAL;
 		}
-		if (mTurnSpeed > 0.0f){
-			mTurnSpeed -= 0.11f;
+		else if (mTurnSpeed >= 0.0f&&mTurnSpeed < HANDLEPOWER_NORMAL_LOWERLIMIT){
+			mTurnSpeed = -HANDLEPOWER_NORMAL_LOWERLIMIT + -HANDLEPOWER_NORMAL;
 		}
-		mTurnSpeed -= 0.04f;
+		else if (mTurnSpeed < 0.0f){
+			mTurnSpeed += -HANDLEPOWER_REVERSE;
+		}
 	}
 	else{
 		if (mTurnSpeed > 0.0f){
-			mTurnSpeed -= 0.05f;
+			mTurnSpeed -= DECELERATE_TURNSPEED;
 		}
 		else if (mTurnSpeed < 0.0f){
-			mTurnSpeed += 0.05f;
+			mTurnSpeed += DECELERATE_TURNSPEED;
 		}
-		if (mTurnSpeed<0.04f && mTurnSpeed>-0.04f){
+		if (mTurnSpeed<HANDLEPOWER_NORMAL && mTurnSpeed>-HANDLEPOWER_NORMAL){
 			mTurnSpeed = 0.0f;
 		}
 	}
-	if (mTurnSpeed > 1.0f){
-		mTurnSpeed = 1.0f;
+	
+	//カーブの上限
+	if (mTurnSpeed > MAXTURNSPEED){
+		mTurnSpeed = MAXTURNSPEED;
 	}
-	else if (mTurnSpeed < -1.0f){
-		mTurnSpeed = -1.0f;
+	else if (mTurnSpeed < -MAXTURNSPEED){
+		mTurnSpeed = -MAXTURNSPEED;
 	}
 
 	if (mMaxSpeed_PtoP<2.0f){
@@ -291,7 +301,7 @@ void CEnemy::Update(){
 		*mMatrixTranslate;
 
 	//コースアウトした時、もしくは壁に詰まる等して目標地点が一定時間更新されなかった時
-	if (mPosition.mY < -700.0f || mPointTime > RESTART_TIME){
+	if (mPosition.mY < RESPAWNTRIGGER_HEIGHT || mPointTime > RESTART_TIME){
 		mPointTime = 0;
 		//落下の勢いを0にする
 		mVelocityJump = 0.0f;
@@ -325,12 +335,12 @@ void CEnemy::Collision(CCollider *mc, CCollider *yc){
 						//ブースト効果の方が優先される
 						if (isBoost == false){
 							//一定速度までスピード低下
-							if (mCarSpeed > 3.2f + 1.8f){
-								if (mCarSpeed > 4.0f + 1.8f){
-									mCarSpeed -= 0.8f;
+							if (mCarSpeed > ONGRASS_LOWERLIMIT){
+								if (mCarSpeed > ONGRASS_LOWERLIMIT + ONGRASS_FLICTION_EFFECT){
+									mCarSpeed -= ONGRASS_FLICTION_EFFECT;
 								}
 								else{
-									mCarSpeed = 3.2f + 1.8f;
+									mCarSpeed = ONGRASS_LOWERLIMIT;
 								}
 							}
 						}
@@ -416,7 +426,7 @@ void CEnemy::Collision(CCollider *mc, CCollider *yc){
 							new CEffect(mPosition + CVector(0.0f, 15.5f, 0.0f), 60.0f, 60.0f, TextureBoost, 3, 5, 1, 1);
 						}
 						isBoost = true;
-						mBoostTime = 45;
+						mBoostTime = BOOST_EFFECTTIME;
 					}
 				}
 			}

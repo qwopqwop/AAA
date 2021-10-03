@@ -525,11 +525,9 @@ void CSceneRace::Update() {
 	if (CKey::Once('C')){
 		switch (mCameraAngle){
 		case EANGLE_FRONTCAR:
-			printf("λαΥ‹“_\n");
 			mCameraAngle = EANGLE_THIRDPERSON;
 			break;
 		case EANGLE_THIRDPERSON:
-			printf("‰^“]Θ‹“_\n");
 			mCameraAngle = EANGLE_FRONTCAR;
 			break;
 		default:

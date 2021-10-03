@@ -15,11 +15,8 @@ private:
 
 	//ジャンプ速度の変数
 	float mVelocityJump;
-	//ジャンプ力(ジャンプ初速)の変数
-	float mJumpV0;
 
 	//移動速度
-	float mMoveSpeed;
 	float mADMoveX;
 	float mWSMoveZ;
 	float mCarSpeed;
