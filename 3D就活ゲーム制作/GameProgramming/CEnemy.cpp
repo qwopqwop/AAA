@@ -124,9 +124,14 @@ void CEnemy::Update(){
 			CVector vLeft = CVector(1.0f, 0.0f, 0.0f) * mMatrixRotate;
 			//内積から曲がり具合を求める(0:90°　1.0：真っすぐ）
 			float corve = abs(vLeft.Dot(vNext.Normalize()));
-			/*if (corve > 0.9f){
-			corve = 0.05f;
-			}*/
+			
+			
+			if (corve > 0.5f){
+			corve = 0.25f;
+			}
+			else 
+
+
 			if (corve < 0.5f){
 				corve = 1.0f;
 			}

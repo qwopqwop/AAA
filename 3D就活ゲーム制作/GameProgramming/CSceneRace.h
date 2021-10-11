@@ -157,6 +157,8 @@ protected:
 	CModel mSign_Left;
 	CModel mSign_Right;
 	
+	CModel mGoalGate;
+
 public:
 	//Ÿ‚ÌƒV[ƒ“‚Ìæ“¾
 	EScene GetNextScene();

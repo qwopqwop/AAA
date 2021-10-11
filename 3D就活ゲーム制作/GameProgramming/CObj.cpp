@@ -42,11 +42,13 @@ CObj::CObj(CModel *model, const CVector &position, const CVector &rotation, cons
 
 	//影を持つor持たない物体の処理
 	if (hasshadow){
+		mpGrounds[mObjectNum] = this;
+		mObjectNum++;
 	}
 	else{
+
 	}
-	mpGrounds[mObjectNum] = this;
-	mObjectNum++;
+	
 }
 //デストラクタ
 CObj::~CObj(){

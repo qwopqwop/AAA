@@ -29,7 +29,7 @@ extern CSound SoundPauseOff;
 
 //ここのmBestTimeの値は関係ない(mRecord_ の値を入れるため)
 int CSceneRace::mBestTime = 0;
-int CSceneRace::mRecords[6] = { 0, 10000, 13000, 23000, 595959, 40000};//{ｴﾃﾞｨﾀ,A,B,C,D,E}
+int CSceneRace::mRecords[6] = { 0, 10000, 20000, 23000, 595959, 40000};//{ｴﾃﾞｨﾀ,A,B,C,D,E}
 
 //オプション画面から変更ができる変数
 bool CSceneRace::isEnableShadow = true;//影
@@ -102,6 +102,9 @@ void CSceneRace::Init() {
 	mPlane.Load("material\\common_mat\\plane.obj", "material\\common_mat\\plane.mtl");
 	mSign_Left.Load("material\\racing_mat\\stage5\\Sign_TurnLeft.obj", "material\\racing_mat\\stage5\\Sign_TurnLeft.mtl");//標識:左折
 	mSign_Right.Load("material\\racing_mat\\stage5\\Sign_TurnLeft.obj", "material\\racing_mat\\stage5\\Sign_TurnRight.mtl");//標識:右折
+	
+	mGoalGate.Load("material\\racing_mat\\goalflag.obj", "material\\racing_mat\\goalflag.mtl");//ゴールゲート
+
 	//ミニマップ上でのプレイヤー・敵のカーソル、ゴール地点の読み込み
 	mCarsol.Load("material\\racing_mat\\minicarsol.obj", "material\\racing_mat\\minicarsol.mtl");//プレイヤー
 	mCarsol_Enemy.Load("material\\racing_mat\\minicarsol.obj", "material\\racing_mat\\minicarsol_enemy.mtl");//敵
