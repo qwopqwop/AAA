@@ -16,11 +16,20 @@ void CRaceCourceE::Init(){
 
 	CSceneRace::Init();
 	
+	CVector StartPosVec = CVector(-3831.5f, 13.5f, 16011.5f);//スタート位置の基点
+	CVector StartPosVecs[ENEMYS_AMOUNT + 1];//スタート位置(配列)
+	for (int i = 0; i < LIST_SIZE; i++) {
+		StartPosVecs[i] = StartPosVec + CVector(60.0f*list[i], 0.0f, 80.0f*list[i]);
+		if (list[i] % 2 == 1){
+			StartPosVecs[i].mX += 80.0f;
+		}
+	}
+
 	//プレイヤーの生成
 	mPlayer = new CPlayer();
 	mPlayer->mpModel = &mCarWhite;
 	//プレイヤーのリスポーンするCheckPointの設定
-	mPlayer->SetRespawnPoint(0, CVector(-3755.5f, 13.5f, 16060.5f), CVector(0.0f, -145.0f, 0.0f));
+	mPlayer->SetRespawnPoint(0, StartPosVecs[0], CVector(0.0f, -145.0f, 0.0f));
 	mPlayer->SetRespawnPoint(1, CVector(-16054.4f, 4915.0f, -2180.0f), CVector(0.0f, -174.6f, 0.0f));
 	mPlayer->SetRespawnPoint(2, CVector(4680.0f, 13.5f, -2027.0f), CVector(0.0f, 147.2f, 0.0f));
 	mPlayer->SetRespawnPoint(3, CVector(14809.0f, 13.5f, 4270.0f), CVector(0.0f, -9.5f, 0.0f));
@@ -60,11 +69,9 @@ void CRaceCourceE::Init(){
 		else if (i % 8 == 7){
 			mEnemys[i]->mpModel = &mCarCyan;
 		}
-		mEnemys[i]->mPosition = CVector(-3834.5f - 60.0f*i, 13.5f, 15952.5f - 100.0f*i);
+		//スタート時の座標、回転値の設定
+		mEnemys[i]->mPosition = CVector(StartPosVecs[i + 1]);
 		mEnemys[i]->mRotation.mY = -145.0f;
-		if (i % 2 == 0){
-			mEnemys[i]->mPosition.mZ += 80.0f;
-		}
 		mEnemys[i]->CCharacter::Update();
 	}
 

@@ -13,6 +13,7 @@
 
 #define ENEMYS_AMOUNT 5//0以下には設定できない
 #define COURCE_TOTAL 5//全コース数
+#define LIST_SIZE ENEMYS_AMOUNT+1
 /*
 ゲームのシーン
 */
@@ -66,6 +67,8 @@ private:
 		EANGLE_THIRDPERSON
 	};
 	ECameraAngle mCameraAngle;
+
+	
 protected:
 	CModel mRover;
 	CModel mCarRed;
@@ -159,6 +162,13 @@ protected:
 	
 	CModel mGoalGate;
 
+	enum EStartPos{
+		ESTARTPOS_RANDOM,//順位ランダムでスタート
+		ESTARTPOS_TOP,//1位からのスタート
+	};
+	EStartPos mStartPos;
+
+	int list[LIST_SIZE];//
 public:
 	//次のシーンの取得
 	EScene GetNextScene();
@@ -184,6 +194,6 @@ public:
 	void PutCPUColor();
 	
 	//各コースのベストタイム
-	static int mRecords[COURCE_TOTAL + 1];//0:edit 1～:cource1, 2, ...
+	static int mRecords[COURCE_TOTAL + 1];//0:edit 1～:cource1, 2, ...	
 };
 #endif

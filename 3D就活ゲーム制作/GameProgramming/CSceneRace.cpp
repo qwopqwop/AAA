@@ -232,6 +232,28 @@ void CSceneRace::Init() {
 	mPause_OptionCarsol = 1;
 	mPauseScreen = EPAUSE;
 
+	//プレイヤー、ライバル車のスタート時の配置順を決める
+	mStartPos = ESTARTPOS_RANDOM;
+	//mStartPos = ESTARTPOS_TOP;
+
+	//スタート位置をランダムで決める
+	for (int i = 0; i < LIST_SIZE; i++) {
+		list[i] = i;
+	}
+	//ランダムな順位からのスタート
+	if (mStartPos == ESTARTPOS_RANDOM){
+		for (int i = 0; i < LIST_SIZE; i++) {
+			int j = rand() % LIST_SIZE;
+			int t = list[i];
+			list[i] = list[j];
+			list[j] = t;
+		}
+	}
+	//プレイヤーが一番前の配置でスタート
+	else if (mStartPos == ESTARTPOS_TOP){
+		//list配列内の順番はそのまま0,1,2…
+	}
+
 	isFadeIn = true;
 	isFadeOut = false;
 	isBlackOutTime = 0;

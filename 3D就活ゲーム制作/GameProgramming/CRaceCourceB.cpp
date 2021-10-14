@@ -13,12 +13,21 @@ void CRaceCourceB::Init(){
 	mScene = ERACE2;
 
 	CSceneRace::Init();
+
+	CVector StartPosVec = CVector(2436.0f, -10.0f, -2570.0f);//スタート位置の基点
+	CVector StartPosVecs[ENEMYS_AMOUNT + 1];//スタート位置(配列)
+	for (int i = 0; i < LIST_SIZE; i++) {
+		StartPosVecs[i] = StartPosVec + CVector(0.0f, 0.0f, -80.0f*list[i]);
+		if (list[i] % 2 == 1){
+			StartPosVecs[i].mX -= 80.0f;
+		}
+	}
 	
 	//プレイヤーの生成
 	mPlayer = new CPlayer();
 	mPlayer->mpModel = &mCarWhite;
 	//プレイヤーのリスポーンするCheckPointの設定
-	mPlayer->SetRespawnPoint(0, CVector(2436.0f, -10.0f, -2570.0f), CVector());
+	mPlayer->SetRespawnPoint(0, StartPosVecs[0], CVector());
 	mPlayer->SetRespawnPoint(1, CVector(3175.0f, -10.0f, 2713.0f), CVector(0.0f, -55.0f, 0.0f));
 	mPlayer->SetRespawnPoint(2, CVector(-1120.0f, -10.0f, 5000.0f), CVector(0.0f, -175.0f, 0.0f));
 	mPlayer->SetRespawnPoint(3, CVector(-1400.0f, -10.0f, -492.0f), CVector(0.0f, 120.0f, 0.0f));
@@ -63,6 +72,9 @@ void CRaceCourceB::Init(){
 		if (i % 2 == 0){
 			mEnemys[i]->mPosition.mX -= 80.0f;
 		}
+
+		mEnemys[i]->mPosition = CVector(StartPosVecs[i + 1]);
+
 		mEnemys[i]->CCharacter::Update();
 	}
 
