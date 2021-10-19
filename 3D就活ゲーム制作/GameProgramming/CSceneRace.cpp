@@ -11,6 +11,11 @@
 #include "CRenderTexture.h"
 #include "CRectangle.h"
 
+//乱数を実装するインクルード群
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
 //スマートポインタの生成
 std::shared_ptr<CTexture> TextureExp(new CTexture());
 std::shared_ptr<CTexture> TextureHit(new CTexture());
@@ -30,6 +35,8 @@ extern CSound SoundPauseOff;
 //ここのmBestTimeの値は関係ない(mRecord_ の値を入れるため)
 int CSceneRace::mBestTime = 0;
 int CSceneRace::mRecords[6] = { 0, 10000, 20000, 23000, 595959, 40000};//{ｴﾃﾞｨﾀ,A,B,C,D,E}
+
+//int CSceneRace::mTotalPoint = 0;
 
 //オプション画面から変更ができる変数
 bool CSceneRace::isEnableShadow = true;//影
@@ -235,6 +242,9 @@ void CSceneRace::Init() {
 	//プレイヤー、ライバル車のスタート時の配置順を決める
 	mStartPos = ESTARTPOS_RANDOM;
 	//mStartPos = ESTARTPOS_TOP;
+
+	//乱数の初期化
+	srand(time(NULL));
 
 	//スタート位置をランダムで決める
 	for (int i = 0; i < LIST_SIZE; i++) {
@@ -495,6 +505,27 @@ void CSceneRace::Update() {
 		&& (CPlayer::mpPlayer->mChecks == 3)
 		&& (isStartRace)){
 		if (mLap == mMaxLap){
+			
+			mPlayer->mRank = mRanking;
+			//if (CSceneTitle::mMode == CSceneTitle::EMODE_GRANDPRIX){
+			//	mTotalPoint += (ENEMYS_AMOUNT + 1 - mRanking);
+			//	printf("%dポイント獲得！", ENEMYS_AMOUNT + 1 - mRanking);
+			//}
+			////TIMEATTACK MODEの時のみベストタイムが記録される
+			//else if (CSceneTitle::mMode == CSceneTitle::EMODE_TIMEATTACK){
+			//	//ベストタイム更新時
+			//	if (mTime < mBestTime){
+			//		mBestTime = mTime;
+			//		isNewRecord = true;
+			//		//そのコースの記録を更新する
+			//		for (int i = 1; i <= COURCE_TOTAL; i++){
+			//			if (CSceneTitle::mCource == i){
+			//				mRecords[i] = mBestTime;
+			//			}
+			//		}
+			//	}
+			//}
+			
 			//ベストタイム更新時
 			if (mTime < mBestTime){
 				mBestTime = mTime;
@@ -506,7 +537,7 @@ void CSceneRace::Update() {
 					}
 				}
 			}
-			mPlayer->mRank = mRanking;
+
 			mRanking++;
 			isStartRace = false;
 			isGoal = true;
@@ -711,6 +742,17 @@ void CSceneRace::Render(){
 	char besttime[20];// :も含めた最大文字数の設定
 	sprintf(besttime, "BEST:%02d:%02d:%02d", mBestTime / 10000 % 100, mBestTime / 100 % 100, mBestTime % 100);
 	CText::DrawString(besttime, 20, 580, 10, 12);
+
+
+	/*for (int i = 0; i < ENEMYS_AMOUNT; i++){
+		sprintf(besttime, "CPU%d:%.3f", i,mEnemys[i]->corve);
+		CText::DrawString(besttime, 55, 350 - 12 * i , 10, 12, 2);
+	}*/
+
+	////スコアの表示
+	//char pt[8];// :も含めた最大文字数の設定
+	//sprintf(pt, "%dpt", mTotalPoint);
+	//CText::DrawString(pt, 34, 334, 10, 12, 2);
 
 	//カウントダウンの表示
 	char mcountd[7];

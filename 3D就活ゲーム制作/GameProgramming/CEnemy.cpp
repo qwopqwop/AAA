@@ -47,6 +47,7 @@ CEnemy *CEnemy::mpEnemy = 0;
 #define MAXTURNSPEED 1.0f
 #define DECELERATE_TURNSPEED 0.05f//カーブ量の減衰する量
 
+#define TURN_REFERENCE_VALUE 50.0f//目的地へ向けて方向を修正する際、基準となる偏差値
 
 CEnemy::CEnemy()
 //車体のY座標は0.0fにしたいんだけど・・・
@@ -141,15 +142,23 @@ void CEnemy::Update(){
 		else if (CSceneTitle::mCource == 5){
 			//次のポイントから次の次のポイントへのベクトル
 			CVector vNext = mpPoint->GetNextPoint()->mPosition - mPosition;
+
 			//現在の向き
 			CVector vLeft = CVector(1.0f, 0.0f, 0.0f) * mMatrixRotate;
 			//内積から曲がり具合を求める(0:90°　1.0：真っすぐ）
 			float corve = abs(vLeft.Dot(vNext.Normalize()));
-			if (corve > 0.6f){
+			/*if (corve > 0.6f){
 				corve = 0.05f;
 			}
-			else if (corve < 0.5f){
+			if (corve < 0.5f){
 				corve = 1.0f;
+			}*/
+			
+			if (corve >= 0.01f){
+				corve = 1.0f;
+			}
+			if (corve < 0.1f){
+				corve = 0.5f;
 			}
 			//速度上限の計算
 			mMaxSpeed_PtoP = MAXSPEED * corve;
@@ -239,7 +248,7 @@ void CEnemy::Update(){
 	}
 
 	//目的地が左側にあり、操作可能な時
-	if (left.Dot(dir) > 0.0f && CanMove){ //ハンドルを左に！
+	if (left.Dot(dir) > TURN_REFERENCE_VALUE && CanMove){ //ハンドルを左に！
 		if (mTurnSpeed >= HANDLEPOWER_NORMAL_LOWERLIMIT){
 			mTurnSpeed += HANDLEPOWER_NORMAL;
 		}
@@ -251,7 +260,7 @@ void CEnemy::Update(){
 		}
 	}
 	//あるいは目的地が右方面で、操作可能な時
-	else if (left.Dot(dir) < 0.0f && CanMove){//ハンドルを右に！
+	else if (left.Dot(dir) < -TURN_REFERENCE_VALUE && CanMove){//ハンドルを右に！
 		if (mTurnSpeed >= HANDLEPOWER_NORMAL_LOWERLIMIT){
 			mTurnSpeed += -HANDLEPOWER_NORMAL;
 		}
@@ -283,7 +292,7 @@ void CEnemy::Update(){
 	}
 
 	if (mMaxSpeed_PtoP<2.0f){
-		mTurnSpeed *= 2.0f;//低速時は回転性能アップ※停止すると回転不可
+		mTurnSpeed *= 2.0f;//低速時は回転性能アップ※完全に停車すると回転ができない
 	}
 
 	mRotation.mY += mTurnSpeed;

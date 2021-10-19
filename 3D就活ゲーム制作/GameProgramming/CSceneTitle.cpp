@@ -11,6 +11,8 @@ CSceneTitle::ECPU_Level CSceneTitle::mCPU_Level = CSceneTitle::ENORMAL;//“GAI‚Ì‹
 //int CSceneTitle::mCource_Number;//ƒR[ƒXNo.
 CSceneTitle::ECource CSceneTitle::mCource = CSceneTitle::ECOURCE1;
 
+//CSceneTitle::EMode CSceneTitle::mMode = CSceneTitle::EMODE_GRANDPRIX;
+
 //Ÿ‚ÌƒV[ƒ“‚Ìæ“¾
 CScene::EScene CSceneTitle::GetNextScene(){
 	return mScene;
@@ -47,15 +49,18 @@ void CSceneTitle::Update() {
 		if (mStart == false){
 			SoundDecide.Play();
 		}
-		if (mSelect_Step < 2){
+		if (mSelect_Step == 1){
 			//Ÿ‚É‘I‚Ô€–Ú‚Ö
 			mSelect_Step++;
+
+			
 		}
-		else{
+		else if (mSelect_Step == 2){
 			//‘I‚ÑI‚¦‚½‚çƒQ[ƒ€ŠJn
 			mStart = true;
 		}
 	}
+
 	if (mStart){
 		if (mStartWaitTime < WAITTIME_STARTLOAD){
 			mStartWaitTime++;
@@ -80,6 +85,14 @@ void CSceneTitle::Update() {
 			//Ÿ‚ÌƒV[ƒ“‚ÍƒŒ[ƒX‰æ–Ê
 			printf("‘I‘ğ‚µ‚½ƒR[ƒX”Ô†:No.%d  ", mCource);
 			printf("‘I‘ğ‚µ‚½CPU‚ÌƒŒƒxƒ‹:%d\n", mCPU_Level);
+			
+			/*if (mMode == EMODE_GRANDPRIX)
+				printf("ƒOƒ‰ƒ“ƒvƒŠ\n");
+			if (mMode == EMODE_TIMEATTACK)
+				printf("ƒ^ƒCƒ€ƒAƒ^ƒbƒN\n");
+			if (mMode == EMODE_EDITOR)
+				printf("ƒGƒfƒBƒbƒg\n");*/
+
 			//‘I‘ğ‚µ‚½ƒR[ƒX‚É‘Î‰‚·‚éƒV[ƒ“‚ÖˆÚs			
 			if (mCource == 1){
 				//Ÿ‚ÌƒV[ƒ“‚ÍƒR[ƒX1
@@ -110,6 +123,12 @@ void CSceneTitle::Update() {
 	//‚Ü‚¾‘I‘ğ‚µ‚Ä‚È‚¢
 	if (mStart == false){
 		//–îˆóƒL[‚Å‘I‘ğ
+
+		//‘I‘ğ‰æ–Ê1:ƒOƒ‰ƒ“ƒvƒŠƒ‚[ƒh(GP)orƒ^ƒCƒ€ƒAƒ^ƒbƒNƒ‚[ƒh(TA)‚Ì‘I‘ğ
+
+		//‘I‘ğ‰æ–Ê2:GPƒ‚[ƒh¨“ïˆÕ“x‘I‘ğ    TAƒ‚[ƒh¨ƒR[ƒX‘I‘ğ
+
+
 		//‘I‘ğ‰æ–Ê1:ƒR[ƒX‚Ì‘I‘ğ
 		if (mSelect_Step == 1){
 			//©,¨ƒL[‚ÅƒR[ƒX‘I‘ğ
@@ -119,14 +138,20 @@ void CSceneTitle::Update() {
 					mCarsol_Pos -= 1;
 					SoundMoveCarsol.Play();
 				}
+
+				
 			}
 			if (CKey::Once(VK_RIGHT)){
 				//Ÿ‚ÌƒV[ƒ“‚ÍƒQ[ƒ€
 				if (mCarsol_Pos < 2){
 					mCarsol_Pos += 1;
-					SoundMoveCarsol.Play();
+					SoundMoveCarsol.Play();					
 				}
+				
 			}
+
+
+			
 		}
 		//‘I‘ğ‰æ–Ê2F“GAI‚Ì‹­‚³‚Ìİ’è
 		else if (mSelect_Step == 2){
@@ -164,6 +189,14 @@ void CSceneTitle::Update() {
 	else if (mCarsol_Pos == 2){
 		mCource = ECOURCE5;
 	}
+
+	/*if (mCarsol_Pos == 0){
+		mMode = EMODE_GRANDPRIX;
+	}
+	else if (mCarsol_Pos == 1){
+		mMode = EMODE_TIMEATTACK;
+	}*/
+
 	Render();//ƒeƒLƒXƒg“™‚Ì•`‰æ
 }
 
@@ -171,6 +204,7 @@ void CSceneTitle::Render(){
 	//2D•`‰æŠJn
 	Start2D(0, 800, 0, 600);	
 	float c[] = { 1.0f, 1.0f, 1.0f, 1.0f };//{ R,G,B,ƒ¿ }
+	
 
 	//•¶š—ñ‚Ì•`‰æ
 	CText::DrawString("3D-RACE", 190, 430, 36, 36);
@@ -231,6 +265,13 @@ void CSceneTitle::Render(){
 		else if (i == 2){
 			CText::DrawString("COURCE-3", 580, 280, 12, 14);
 		}
+
+		/*if (i == 0){
+			CText::DrawString("GRAND-PRIX MODE", 200, 310, 14, 17);
+		}
+		else if (i == 1){
+			CText::DrawString("TIMEATTACK MODE", 200, 260, 14, 17);
+		}*/
 	}
 	//CPUƒŒƒxƒ‹‚ÌƒeƒLƒXƒg
 	for (int i = 1; i <= 3; i++){		

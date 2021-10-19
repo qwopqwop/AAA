@@ -49,6 +49,14 @@ public:
 		ECOURCE5,		
 	};
 	static ECource mCource;
+
+	////CPUの強さ
+	//enum EMode{
+	//	EMODE_GRANDPRIX,//グランプリモード
+	//	EMODE_TIMEATTACK,//タイムアタックモード
+	//	EMODE_EDITOR,//コース作成モード
+	//};
+	//static EMode mMode;
 };
 
 #endif

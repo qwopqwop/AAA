@@ -78,6 +78,8 @@ public:
 		EPRO, //“K“x‚ÉŒ¸‘¬‚·‚é
 	};
 	EEnemyAI mEnemyAI;
+
+	//float corve;
 };
 
 

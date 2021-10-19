@@ -12,6 +12,7 @@
 #include <stdlib.h>
 
 #define ENEMYS_AMOUNT 5//0以下には設定できない
+
 #define COURCE_TOTAL 5//全コース数
 #define LIST_SIZE ENEMYS_AMOUNT+1
 /*
@@ -68,7 +69,8 @@ private:
 	};
 	ECameraAngle mCameraAngle;
 
-	
+	//static int mTotalPoint;
+
 protected:
 	CModel mRover;
 	CModel mCarRed;
