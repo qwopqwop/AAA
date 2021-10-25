@@ -80,7 +80,7 @@ CPlayer::CPlayer()
 	mBoostTime = 0;
 
 	mTag = EPLAYER;
-	mJumpPrio = 0;
+	//mJumpPrio = 0;
 	
 	mColBody.mTag = CCollider::EBODY;
 	mColTire.mTag = CCollider::ESEARCH;
@@ -306,9 +306,9 @@ void CPlayer::Update(){
 	
 	//重力の影響を反映する
 	mVelocityJump -= G;
-	if (mJumpPrio > 0){
+	/*if (mJumpPrio > 0){
 		mJumpPrio--;
-	}	
+	}*/	
 }
 
 void CPlayer::Collision(CCollider *mc, CCollider *yc){
@@ -392,99 +392,100 @@ void CPlayer::Collision(CCollider *mc, CCollider *yc){
 					}
 				}
 				else{
-					if (mJumpPrio < 1){
-						CVector adjust;//調整用ベクトル
-						//三角形と球の衝突判定
-						if (CCollider::CollisionTriangleSphere(yc, mc, &adjust)){
-							//位置の更新
-							mPosition = mPosition - adjust * -1;
-							//行列の更新
-							CCharacter::Update();
+					/*if (mJumpPrio < 1){								
+					}*/
 
-							if (yc->mpParent->mTag == CCharacter::EGRASS){
-								mSound_Engine = EONGRASS;
+					CVector adjust;//調整用ベクトル
+					//三角形と球の衝突判定
+					if (CCollider::CollisionTriangleSphere(yc, mc, &adjust)){
+						//位置の更新
+						mPosition = mPosition - adjust * -1;
+						//行列の更新
+						CCharacter::Update();
+
+						if (yc->mpParent->mTag == CCharacter::EGRASS){
+							mSound_Engine = EONGRASS;
+						}
+						else{
+							mSound_Engine = ENOTONGRASS;
+						}
+
+						//エンジン音を鳴らす
+						if (mCarSpeed > 0.0f){
+							if (isSoundEngine == false){
+								mSound_Engine_Prev = mSound_Engine;
+								if (mSound_Engine == EONGRASS){
+									SoundEngine_Turf.Repeat();
+								}
+								else if (mSound_Engine == ENOTONGRASS){
+									SoundEngine.Repeat();
+								}
+								isSoundEngine = true;
 							}
 							else{
-								mSound_Engine = ENOTONGRASS;
-							}							
-							
-							//エンジン音を鳴らす
-							if (mCarSpeed > 0.0f){
-								if (isSoundEngine == false){
+								//芝生、非芝生の切り替わり
+								if (mSound_Engine_Prev != mSound_Engine){
 									mSound_Engine_Prev = mSound_Engine;
-									if (mSound_Engine == EONGRASS){
-										SoundEngine_Turf.Repeat();										
-									}
-									else if (mSound_Engine == ENOTONGRASS){
-										SoundEngine.Repeat();
-									}									
-									isSoundEngine = true;
-								}
-								else{
-									//芝生、非芝生の切り替わり
-									if (mSound_Engine_Prev != mSound_Engine){
-										mSound_Engine_Prev = mSound_Engine;
-										if (mSound_Engine_Prev == EONGRASS){
-											SoundEngine_Turf.Repeat();
-											SoundEngine.Stop();
-										}
-										else if (mSound_Engine_Prev == ENOTONGRASS){
-											SoundEngine.Repeat();
-											SoundEngine_Turf.Stop();
-										}
-									}
-								}
-							}
-							//車が停止している時
-							else if (mCarSpeed == 0.0f){
-								SoundEngine.Stop();
-								SoundEngine_Turf.Stop();
-								isSoundEngine = false;
-							}
-							//車がバックしている時
-							else if (mCarSpeed < 0.0f){
-								if (isSoundEngine == false){
-									mSound_Engine_Prev = mSound_Engine;
-									if (mSound_Engine == EONGRASS){
+									if (mSound_Engine_Prev == EONGRASS){
 										SoundEngine_Turf.Repeat();
+										SoundEngine.Stop();
 									}
-									else if (mSound_Engine == ENOTONGRASS){
+									else if (mSound_Engine_Prev == ENOTONGRASS){
 										SoundEngine.Repeat();
-									}
-									isSoundEngine = true;
-								}
-								else{
-									//芝生、非芝生の切り替わり
-									if (mSound_Engine_Prev != mSound_Engine){
-										mSound_Engine_Prev = mSound_Engine;
-										if (mSound_Engine_Prev == EONGRASS){
-											SoundEngine_Turf.Repeat();
-											SoundEngine.Stop();
-										}
-										else if (mSound_Engine_Prev == ENOTONGRASS){
-											SoundEngine.Repeat();
-											SoundEngine_Turf.Stop();
-										}
+										SoundEngine_Turf.Stop();
 									}
 								}
 							}
-							if (yc->mpParent->mTag == CCharacter::EWALL){								
-								//壁衝突処理の修正中
-								if (mCarSpeed > 2.0f){
-									mCarSpeed *= 0.95f;
-									if (mCarSpeed < 2.0f){
-										mCarSpeed = 2.0f;
-									}
+						}
+						//車が停止している時
+						else if (mCarSpeed == 0.0f){
+							SoundEngine.Stop();
+							SoundEngine_Turf.Stop();
+							isSoundEngine = false;
+						}
+						//車がバックしている時
+						else if (mCarSpeed < 0.0f){
+							if (isSoundEngine == false){
+								mSound_Engine_Prev = mSound_Engine;
+								if (mSound_Engine == EONGRASS){
+									SoundEngine_Turf.Repeat();
 								}
-							}
-							else if(yc->mpParent->mTag == CCharacter::EJUMPER){//ジャンプ台に接触した時
-								mVelocityJump = JUMPER01_POWER;
-								SoundJump.Play();
+								else if (mSound_Engine == ENOTONGRASS){
+									SoundEngine.Repeat();
+								}
+								isSoundEngine = true;
 							}
 							else{
-								mVelocityJump = 0;
-								mRotation = CCollider::CalculateEulerAngle(mc, yc, mMatrixRotate, PI);
+								//芝生、非芝生の切り替わり
+								if (mSound_Engine_Prev != mSound_Engine){
+									mSound_Engine_Prev = mSound_Engine;
+									if (mSound_Engine_Prev == EONGRASS){
+										SoundEngine_Turf.Repeat();
+										SoundEngine.Stop();
+									}
+									else if (mSound_Engine_Prev == ENOTONGRASS){
+										SoundEngine.Repeat();
+										SoundEngine_Turf.Stop();
+									}
+								}
 							}
+						}
+						if (yc->mpParent->mTag == CCharacter::EWALL){
+							//壁衝突処理の修正中
+							if (mCarSpeed > 2.0f){
+								mCarSpeed *= 0.95f;
+								if (mCarSpeed < 2.0f){
+									mCarSpeed = 2.0f;
+								}
+							}
+						}
+						else if (yc->mpParent->mTag == CCharacter::EJUMPER){//ジャンプ台に接触した時
+							mVelocityJump = JUMPER01_POWER;
+							SoundJump.Play();
+						}
+						else{
+							mVelocityJump = 0;
+							mRotation = CCollider::CalculateEulerAngle(mc, yc, mMatrixRotate, PI);
 						}
 					}
 

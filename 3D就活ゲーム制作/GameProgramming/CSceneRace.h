@@ -11,10 +11,11 @@
 
 #include <stdlib.h>
 
-#define ENEMYS_AMOUNT 5//0以下には設定できない
+#define ENEMYS_AMOUNT (5)//0以下には設定できない
 
+#define RACES_PER_1CUP 3//1カップで行うレース数
 #define COURCE_TOTAL 5//全コース数
-#define LIST_SIZE ENEMYS_AMOUNT+1
+#define LIST_SIZE (ENEMYS_AMOUNT+1)
 /*
 ゲームのシーン
 */
@@ -69,8 +70,15 @@ private:
 	};
 	ECameraAngle mCameraAngle;
 
-	//static int mTotalPoint;
+	int mPushEnter_WaitTime;
 
+	bool isResult_FinalRace;
+
+	bool canPushEnter;
+
+	CTexture Trophy_gold;
+	CTexture Trophy_silver;
+	CTexture Trophy_bronze;
 protected:
 	CModel mRover;
 	CModel mCarRed;
@@ -197,5 +205,12 @@ public:
 	
 	//各コースのベストタイム
 	static int mRecords[COURCE_TOTAL + 1];//0:edit 1～:cource1, 2, ...	
+
+	static int mTotalPoint;//獲得した得点の合計
+
+	static int mTotalPoint_Enemys[ENEMYS_AMOUNT];
+	static int mCurrent_RaceNumber;//現在のレース数
+
+
 };
 #endif

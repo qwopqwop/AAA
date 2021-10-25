@@ -19,7 +19,7 @@ void CRaceCourceA::Init(){
 	CVector StartPosVec = CVector(350.0f, -13.538f, -130.0f);//スタート位置の基点
 	CVector StartPosVecs[ENEMYS_AMOUNT + 1];//スタート位置(配列)
 	for (int i = 0; i < LIST_SIZE; i++) {
-		StartPosVecs[i] = StartPosVec + CVector(0.0f, 0.0f, -80.0f*list[i]);
+		StartPosVecs[i] = StartPosVec + CVector(-0.1f*list[i], 0.0f, -80.0f*list[i]);
 		if (list[i] % 2 == 1){
 			StartPosVecs[i].mX -= 80.0f;
 		}
@@ -46,44 +46,44 @@ void CRaceCourceA::Init(){
 	float mtsize = 50.0f;
 	float height = 2.0f;
 	new CRoadManager(&mCource01, CVector(-360.0f, 5.0f - 33.0f, 230.0f), CVector(), CVector(mtsize, height, mtsize), mPlayer->mPosition, CVector(0.0f, 0.0f, 1.0f), 500.0f, 0.0f);
-	//敵車の生成
-	for (int i = 0; i < ENEMYS_AMOUNT; i++){
-		mEnemys[i] = new CEnemy();
-		if (i % 8 == 0){
-			mEnemys[i]->mpModel = &mCarBlue;
+	//GPモード限定で敵生成
+	if (CSceneTitle::mMode == CSceneTitle::EMODE_GRANDPRIX){
+		//敵車の生成
+		for (int i = 0; i < ENEMYS_AMOUNT; i++){
+			mEnemys[i] = new CEnemy();
+			if (i % 8 == 0){
+				mEnemys[i]->mpModel = &mCarBlue;
+			}
+			else if (i % 8 == 1){
+				mEnemys[i]->mpModel = &mCarPink;
+			}
+			else if (i % 8 == 2){
+				mEnemys[i]->mpModel = &mCarRed;
+			}
+			else if (i % 8 == 3){
+				mEnemys[i]->mpModel = &mCarGreen;
+			}
+			else if (i % 8 == 4){
+				mEnemys[i]->mpModel = &mCarYellow;
+			}
+			else if (i % 8 == 5){
+				mEnemys[i]->mpModel = &mCarBlack;
+			}
+			else if (i % 8 == 6){
+				mEnemys[i]->mpModel = &mCarGray;
+			}
+			else if (i % 8 == 7){
+				mEnemys[i]->mpModel = &mCarCyan;
+			}
+			//初期の配置座標を設定する
+			mEnemys[i]->mPosition = CVector(StartPosVecs[i + 1]);
+			mEnemys[i]->CCharacter::Update();
+			if (i == 0){
+				mEnemys[i]->mEnemyAI = CEnemy::ENEWBIE;
+			}
 		}
-		else if (i % 8 == 1){
-			mEnemys[i]->mpModel = &mCarPink;
-		}
-		else if (i % 8 == 2){
-			mEnemys[i]->mpModel = &mCarRed;
-		}
-		else if (i % 8 == 3){
-			mEnemys[i]->mpModel = &mCarGreen;
-		}
-		else if (i % 8 == 4){
-			mEnemys[i]->mpModel = &mCarYellow;
-		}
-		else if (i % 8 == 5){
-			mEnemys[i]->mpModel = &mCarBlack;
-		}
-		else if (i % 8 == 6){
-			mEnemys[i]->mpModel = &mCarGray;
-		}
-		else if (i % 8 == 7){
-			mEnemys[i]->mpModel = &mCarCyan;
-		}
-		//初期の配置座標を設定する
-		//mEnemys[i]->mPosition = CVector(350.0f, -13.538f, -130.0f - 80.0f*i);
-		
-		mEnemys[i]->mPosition = CVector(StartPosVecs[i + 1]);
-
-		mEnemys[i]->CCharacter::Update();
-
-		if (i == 0){
-			mEnemys[i]->mEnemyAI = CEnemy::ENEWBIE;
-		}		
 	}
+	
 	/*透明度の高い物から先に描画する*/
 	//中間地点(1周と判定されるには順番通りに通過する必要がある)
 	new CObjCheckPoint(&mCheckPoint, CVector(50.0f, 15.0f, 2500.0f), CVector(-90.0f, 0.0f, -50.0f), CVector(2000.0f, 31.0f, 255.0f), 1);
@@ -118,11 +118,13 @@ void CRaceCourceA::Init(){
 
 	//優先度変更
 	CTaskManager::Get()->ChangePriority(mPlayer, 15);
-	for (int i = 0; i < ENEMYS_AMOUNT; i++){
-		CTaskManager::Get()->ChangePriority(mEnemys[i], 15);
-	}
-	//敵車のカラー情報の出力
-	PutCPUColor();
+	if (CSceneTitle::mMode == CSceneTitle::EMODE_GRANDPRIX){
+		for (int i = 0; i < ENEMYS_AMOUNT; i++){
+			CTaskManager::Get()->ChangePriority(mEnemys[i], 15);
+		}
+		//敵車のカラー情報の出力
+		PutCPUColor();
+	}	
 }
 void CRaceCourceA::Update(){
 	CSceneRace::Update();

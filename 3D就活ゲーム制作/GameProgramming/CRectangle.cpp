@@ -22,3 +22,11 @@ void CRectangle::DrawRectangle(int x0, int y0, int x1, int y1, int x2, int y2, i
 void CRectangle::Render(int x, int y, int w, int h){
 	DrawRectangle(x + w, y + h, x - w, y + h, x - w, y - h, x + w, y - h);
 }
+
+void CRectangle::RenderTrophy(CTexture &t, int x, int y, int w, int h, int texsize_x, int texsize_y){
+	//t.DrawImage(x - w, x + w, y - h, y + h, x - w, x + w, y - h, y + h);
+
+	t.DrawImage(x - w, x + w, y - h, y + h, 0, texsize_x, texsize_y, 0);
+
+	//t.DrawImage(x + 200 - w, x + 200 + w, y - h, y + h, x + 200 - w, x + 200 + w, y - h, y + h);
+}

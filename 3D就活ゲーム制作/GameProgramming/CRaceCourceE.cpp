@@ -42,38 +42,41 @@ void CRaceCourceE::Init(){
 	float mtsize = 35.0f;
 	float height = 11.0f;
 	new CRoadManager(&mCource05Road, CVector(0.0f, 21.0f, 0.0f), CVector(), CVector(mtsize, height, mtsize), mPlayer->mPosition, CVector(0.0f, 0.0f, -1.0f), 320.0f, 0.0f);//
-	//敵車の生成
-	for (int i = 0; i < ENEMYS_AMOUNT; i++){
-		mEnemys[i] = new CEnemy();
-		if (i % 8 == 0){
-			mEnemys[i]->mpModel = &mCarBlue;
+	//GPモードのみ敵が生成される
+	if (CSceneTitle::mMode == CSceneTitle::EMODE_GRANDPRIX){
+		//敵車の生成
+		for (int i = 0; i < ENEMYS_AMOUNT; i++){
+			mEnemys[i] = new CEnemy();
+			if (i % 8 == 0){
+				mEnemys[i]->mpModel = &mCarBlue;
+			}
+			else if (i % 8 == 1){
+				mEnemys[i]->mpModel = &mCarPink;
+			}
+			else if (i % 8 == 2){
+				mEnemys[i]->mpModel = &mCarRed;
+			}
+			else if (i % 8 == 3){
+				mEnemys[i]->mpModel = &mCarGreen;
+			}
+			else if (i % 8 == 4){
+				mEnemys[i]->mpModel = &mCarYellow;
+			}
+			else if (i % 8 == 5){
+				mEnemys[i]->mpModel = &mCarBlack;
+			}
+			else if (i % 8 == 6){
+				mEnemys[i]->mpModel = &mCarGray;
+			}
+			else if (i % 8 == 7){
+				mEnemys[i]->mpModel = &mCarCyan;
+			}
+			//スタート時の座標、回転値の設定
+			mEnemys[i]->mPosition = CVector(StartPosVecs[i + 1]);
+			mEnemys[i]->mRotation.mY = -145.0f;
+			mEnemys[i]->CCharacter::Update();
 		}
-		else if (i % 8 == 1){
-			mEnemys[i]->mpModel = &mCarPink;
-		}
-		else if (i % 8 == 2){
-			mEnemys[i]->mpModel = &mCarRed;
-		}
-		else if (i % 8 == 3){
-			mEnemys[i]->mpModel = &mCarGreen;
-		}
-		else if (i % 8 == 4){
-			mEnemys[i]->mpModel = &mCarYellow;
-		}
-		else if (i % 8 == 5){
-			mEnemys[i]->mpModel = &mCarBlack;
-		}
-		else if (i % 8 == 6){
-			mEnemys[i]->mpModel = &mCarGray;
-		}
-		else if (i % 8 == 7){
-			mEnemys[i]->mpModel = &mCarCyan;
-		}
-		//スタート時の座標、回転値の設定
-		mEnemys[i]->mPosition = CVector(StartPosVecs[i + 1]);
-		mEnemys[i]->mRotation.mY = -145.0f;
-		mEnemys[i]->CCharacter::Update();
-	}
+	}	
 
 	//中間地点(順に通らないと1周したことにならないし、順番を飛ばしてもいけない)
 	new CObjCheckPoint(&mCheckPoint, CVector(-16054.4f, 4915.0f, -2180.0f), CVector(0.0f, 0.0f, 0.0f), CVector(180.0f, 100.0f, 180.0f), 1);
@@ -94,11 +97,14 @@ void CRaceCourceE::Init(){
 	
 	//優先度変更
 	CTaskManager::Get()->ChangePriority(mPlayer, 15);
-	for (int i = 0; i < ENEMYS_AMOUNT; i++){
-		CTaskManager::Get()->ChangePriority(mEnemys[i], 15);
+	if (CSceneTitle::mMode == CSceneTitle::EMODE_GRANDPRIX){
+		for (int i = 0; i < ENEMYS_AMOUNT; i++){
+			CTaskManager::Get()->ChangePriority(mEnemys[i], 15);
+		}
+		//敵車のカラー情報の出力
+		PutCPUColor();
 	}
-	//敵車のカラー情報の出力
-	PutCPUColor();
+	
 }
 void CRaceCourceE::Update(){
 	CSceneRace::Update();

@@ -13,7 +13,7 @@ private:
 	//ジャンプ速度の変数
 	float mVelocityJump;
 	//ジャンプを当たり判定よりも早く処理させるもの
-	int mJumpPrio;
+	//int mJumpPrio;
 
 	bool isBoost;//ブースト中か(加速床で一定時間有効)
 	float mBoostMaxSpeed;//ブーストで底上げされる最高速度の値

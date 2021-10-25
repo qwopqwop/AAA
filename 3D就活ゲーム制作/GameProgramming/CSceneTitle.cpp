@@ -11,7 +11,9 @@ CSceneTitle::ECPU_Level CSceneTitle::mCPU_Level = CSceneTitle::ENORMAL;//“GAI‚Ì‹
 //int CSceneTitle::mCource_Number;//ƒR[ƒXNo.
 CSceneTitle::ECource CSceneTitle::mCource = CSceneTitle::ECOURCE1;
 
-//CSceneTitle::EMode CSceneTitle::mMode = CSceneTitle::EMODE_GRANDPRIX;
+CSceneTitle::EMode CSceneTitle::mMode = CSceneTitle::EMODE_GRANDPRIX;
+
+int CSceneTitle::RecordHigh_Ranking = ENEMYS_AMOUNT + 1;
 
 //Ÿ‚ÌƒV[ƒ“‚Ìæ“¾
 CScene::EScene CSceneTitle::GetNextScene(){
@@ -28,19 +30,23 @@ void CSceneTitle::Init() {
 	CText::mFont2.SetRowCol(1, 4096 / 64);
 	CText::mFont3.Load("font\\FontDIY.tga");//©ìƒtƒHƒ“ƒg
 	CText::mFont3.SetRowCol(8, 176 / 11);
+
+	Tex.Load("texture\\trophy_gold.tga");
+	Tex2.Load("texture\\trophy_silver.tga");
+	Tex3.Load("texture\\trophy_bronze.tga");
 	
 	//ƒV[ƒ“‚Ìİ’è
 	mScene = ETITLE;
 
 	mLevel = mCPU_Level;
 	mCourceNum = mCource;
-	mSelect_Step = 1;
-	mCarsol_Pos = 0;
+	mSelect_Step = 0;
+	mCarsol_Pos = mCarsol_mode = 0;
 	mStart = false;
 	mStartWaitTime = 0;
 	SoundMoveCarsol.Load("SE\\Carsol2.wav");
 	SoundDecide.Load("SE\\Decision_Small(SF).wav");
-	SoundCancel.Load("SE\\Cancel2.wav");
+	SoundCancel.Load("SE\\Cancel2.wav");	
 }
 //XVˆ—‚ÌƒI[ƒo[ƒ‰ƒCƒh
 void CSceneTitle::Update() {
@@ -49,16 +55,27 @@ void CSceneTitle::Update() {
 		if (mStart == false){
 			SoundDecide.Play();
 		}
-		if (mSelect_Step == 1){
-			//Ÿ‚É‘I‚Ô€–Ú‚Ö
-			mSelect_Step++;
 
-			
+		if (mSelect_Step == 0){
+			//Ÿ‚É‘I‚Ô€–Ú‚Ö
+			if (mCarsol_mode == 0)
+				mSelect_Step = 2;
+			else if (mCarsol_mode == 1)
+				mSelect_Step = 1;
 		}
-		else if (mSelect_Step == 2){
+		else if (mSelect_Step == 1 || mSelect_Step == 2){
 			//‘I‚ÑI‚¦‚½‚çƒQ[ƒ€ŠJn
 			mStart = true;
 		}
+
+		//if (mSelect_Step == 1){
+		//	//Ÿ‚É‘I‚Ô€–Ú‚Ö
+		//	mSelect_Step++;
+		//}
+		//else if (mSelect_Step == 2){
+		//	//‘I‚ÑI‚¦‚½‚çƒQ[ƒ€ŠJn
+		//	mStart = true;
+		//}
 	}
 
 	if (mStart){
@@ -79,44 +96,53 @@ void CSceneTitle::Update() {
 				break;
 			default:
 				printf("•s–¾‚È“ïˆÕ“x‚ª‘I‘ğ‚³‚ê‚Ü‚µ‚½@“ïˆÕ“x‚ğnormal‚Éİ’è‚µ‚Ü‚·\n");
-				mCPU_Level = ENORMAL;//
+				mCPU_Level = ENORMAL;
 				break;
 			}			
 			//Ÿ‚ÌƒV[ƒ“‚ÍƒŒ[ƒX‰æ–Ê
 			printf("‘I‘ğ‚µ‚½ƒR[ƒX”Ô†:No.%d  ", mCource);
 			printf("‘I‘ğ‚µ‚½CPU‚ÌƒŒƒxƒ‹:%d\n", mCPU_Level);
 			
-			/*if (mMode == EMODE_GRANDPRIX)
-				printf("ƒOƒ‰ƒ“ƒvƒŠ\n");
-			if (mMode == EMODE_TIMEATTACK)
-				printf("ƒ^ƒCƒ€ƒAƒ^ƒbƒN\n");
-			if (mMode == EMODE_EDITOR)
-				printf("ƒGƒfƒBƒbƒg\n");*/
+			//Œ»İ‚ÌƒŒ[ƒX”‚Ì‰Šú‰»
+			CSceneRace::mCurrent_RaceNumber = 0;
 
-			//‘I‘ğ‚µ‚½ƒR[ƒX‚É‘Î‰‚·‚éƒV[ƒ“‚ÖˆÚs			
-			if (mCource == 1){
-				//Ÿ‚ÌƒV[ƒ“‚ÍƒR[ƒX1
+			if (mMode == EMODE_GRANDPRIX){
+				printf("ƒOƒ‰ƒ“ƒvƒŠ\n");
+				//ƒR[ƒX1¨ƒR[ƒX2¨ƒR[ƒX5‚Ì‡‚É‰ñ‚é
 				mScene = ERACE1;
+			}				
+			else if (mMode == EMODE_TIMEATTACK){
+				printf("ƒ^ƒCƒ€ƒAƒ^ƒbƒN\n");
+				//‘I‘ğ‚µ‚½ƒR[ƒX‚É‘Î‰‚·‚éƒV[ƒ“‚ÖˆÚs			
+				if (mCource == 1){
+					//Ÿ‚ÌƒV[ƒ“‚ÍƒR[ƒX1
+					mScene = ERACE1;
+				}
+				else if (mCource == 2){
+					//Ÿ‚ÌƒV[ƒ“‚ÍƒR[ƒX2
+					mScene = ERACE2;
+				}
+				else if (mCource == 3){
+					//Ÿ‚ÌƒV[ƒ“‚ÍƒR[ƒX3
+					mScene = ERACE3;
+				}
+				else if (mCource == 4){
+					//Ÿ‚ÌƒV[ƒ“‚ÍƒR[ƒX3
+					mScene = ERACE4;
+				}
+				else if (mCource == 5){
+					//Ÿ‚ÌƒV[ƒ“‚ÍƒR[ƒX3
+					mScene = ERACE5;
+				}
+				else if (mCource == 0){
+					//ƒR[ƒXƒGƒfƒBƒ^‚ÉˆÚs
+					mScene = EEDIT;
+				}
 			}
-			else if (mCource == 2){
-				//Ÿ‚ÌƒV[ƒ“‚ÍƒR[ƒX2
-				mScene = ERACE2;
-			}
-			else if (mCource == 3){
-				//Ÿ‚ÌƒV[ƒ“‚ÍƒR[ƒX3
-				mScene = ERACE3;
-			}
-			else if (mCource == 4){
-				//Ÿ‚ÌƒV[ƒ“‚ÍƒR[ƒX3
-				mScene = ERACE4;
-			}
-			else if (mCource == 5){
-				//Ÿ‚ÌƒV[ƒ“‚ÍƒR[ƒX3
-				mScene = ERACE5;
-			}
-			else if (mCource == 0){
-				//ƒR[ƒXƒGƒfƒBƒ^‚ÉˆÚs
-				mScene = EEDIT;
+			else{
+				printf("ƒV[ƒ“‘JˆÚ‚É¸”s‚µ‚Ü‚µ‚½\n");
+				mStart = false;
+				mStartWaitTime = 0;
 			}
 		}
 	}
@@ -124,22 +150,33 @@ void CSceneTitle::Update() {
 	if (mStart == false){
 		//–îˆóƒL[‚Å‘I‘ğ
 
-		//‘I‘ğ‰æ–Ê1:ƒOƒ‰ƒ“ƒvƒŠƒ‚[ƒh(GP)orƒ^ƒCƒ€ƒAƒ^ƒbƒNƒ‚[ƒh(TA)‚Ì‘I‘ğ
-
-		//‘I‘ğ‰æ–Ê2:GPƒ‚[ƒh¨“ïˆÕ“x‘I‘ğ    TAƒ‚[ƒh¨ƒR[ƒX‘I‘ğ
-
-
+		//‘I‘ğ‰æ–Ê0:ƒOƒ‰ƒ“ƒvƒŠ(GP)ƒ‚[ƒhorƒ^ƒCƒ€ƒAƒ^ƒbƒN(TA)ƒ‚[ƒh‚Ì‘I‘ğ
+		if (mSelect_Step == 0){
+			//©,¨ƒL[‚ÅƒR[ƒX‘I‘ğ
+			if (CKey::Once(VK_UP)){
+				//Ÿ‚ÌƒV[ƒ“‚ÍƒQ[ƒ€
+				if (mCarsol_mode > 0){
+					mCarsol_mode--;
+					SoundMoveCarsol.Play();
+				}
+			}
+			if (CKey::Once(VK_DOWN)){
+				//Ÿ‚ÌƒV[ƒ“‚ÍƒQ[ƒ€
+				if (mCarsol_mode < 1){
+					mCarsol_mode++;
+					SoundMoveCarsol.Play();
+				}
+			}
+		}
 		//‘I‘ğ‰æ–Ê1:ƒR[ƒX‚Ì‘I‘ğ
-		if (mSelect_Step == 1){
+		else if (mSelect_Step == 1){
 			//©,¨ƒL[‚ÅƒR[ƒX‘I‘ğ
 			if (CKey::Once(VK_LEFT)){
 				//Ÿ‚ÌƒV[ƒ“‚ÍƒQ[ƒ€
 				if (mCarsol_Pos > 0){
 					mCarsol_Pos -= 1;
 					SoundMoveCarsol.Play();
-				}
-
-				
+				}				
 			}
 			if (CKey::Once(VK_RIGHT)){
 				//Ÿ‚ÌƒV[ƒ“‚ÍƒQ[ƒ€
@@ -147,11 +184,12 @@ void CSceneTitle::Update() {
 					mCarsol_Pos += 1;
 					SoundMoveCarsol.Play();					
 				}
-				
 			}
-
-
-			
+			//EscƒL[‚©ABackSpaceƒL[‚ÅA‘O‚Ì‘I‘ğ‰æ–Ê‚É–ß‚é
+			if (CKey::Once(VK_BACK) || CKey::Once(VK_ESCAPE)){
+				mSelect_Step = 0;
+				SoundCancel.Play();
+			}
 		}
 		//‘I‘ğ‰æ–Ê2F“GAI‚Ì‹­‚³‚Ìİ’è
 		else if (mSelect_Step == 2){
@@ -175,7 +213,7 @@ void CSceneTitle::Update() {
 			}
 			//EscƒL[‚©ABackSpaceƒL[‚ÅA‘O‚Ì‘I‘ğ‰æ–Ê‚É–ß‚é
 			if (CKey::Once(VK_BACK) || CKey::Once(VK_ESCAPE)){
-				mSelect_Step--;
+				mSelect_Step = 0;
 				SoundCancel.Play();
 			}
 		}
@@ -190,12 +228,10 @@ void CSceneTitle::Update() {
 		mCource = ECOURCE5;
 	}
 
-	/*if (mCarsol_Pos == 0){
+	if (mCarsol_mode == 0)
 		mMode = EMODE_GRANDPRIX;
-	}
-	else if (mCarsol_Pos == 1){
+	else if (mCarsol_mode == 1)
 		mMode = EMODE_TIMEATTACK;
-	}*/
 
 	Render();//ƒeƒLƒXƒg“™‚Ì•`‰æ
 }
@@ -204,14 +240,17 @@ void CSceneTitle::Render(){
 	//2D•`‰æŠJn
 	Start2D(0, 800, 0, 600);	
 	float c[] = { 1.0f, 1.0f, 1.0f, 1.0f };//{ R,G,B,ƒ¿ }
-	
 
 	//•¶š—ñ‚Ì•`‰æ
 	CText::DrawString("3D-RACE", 190, 430, 36, 36);
 	CText::DrawString("Push Enter Key", 200, 177, 16, 16);
+	if (mSelect_Step == 0){//ƒR[ƒX‘I‘ğ‚ÌƒJ[ƒ\ƒ‹
+		CText::DrawString("[", 185, 312 + mCarsol_mode * -50, 20, 30, 2);
+		CText::DrawString("]", 604, 312 + mCarsol_mode * -50, 20, 30, 2);
+	}
 	if (mSelect_Step == 1){//ƒR[ƒX‘I‘ğ‚ÌƒJ[ƒ\ƒ‹
-		CText::DrawString("[", 66 + mCarsol_Pos * 250, 284, 20, 30, 2);
-		CText::DrawString("]", 262 + mCarsol_Pos * 250, 284, 20, 30, 2);
+		CText::DrawString("[", 66 + mCarsol_Pos * 250, 104, 20, 30, 2);
+		CText::DrawString("]", 262 + mCarsol_Pos * 250, 104, 20, 30, 2);
 	}
 	if (mSelect_Step == 2 && mStart == false){
 		if (mLevel == 1){//CPU‚Ì‹­‚³‘I‘ğ‚ÌƒJ[ƒ\ƒ‹
@@ -238,16 +277,17 @@ void CSceneTitle::Render(){
 	glColor4fv(c);
 	//‚±‚±‚©‚çæ‚ª‘I‘ğŠ®—¹‚É“_–Å‚·‚é
 
+	
 	//ƒR[ƒX‘I‘ğŒn‚ÌƒeƒLƒXƒg
-	for (int i = 0; i <= 2; i++){
-		if (mCarsol_Pos == i){
+	for (int i = 0; i <= 1; i++){
+		if (mCarsol_mode == i){
 			c[0] = c[1] = c[2] = 1.0f; c[3] = 1.0f;
 		}
 		else{
 			c[0] = c[1] = c[2] = 0.5f; c[3] = 1.0f;
 		}
 		//‘I‘ğ‚É“_–Å‚·‚é
-		if (mStart && mCarsol_Pos == i){
+		if (mStart && mCarsol_mode == i){
 			if (mStartWaitTime > 20){
 				c[0] = c[1] = c[2] = 1.0f;
 			}
@@ -256,69 +296,126 @@ void CSceneTitle::Render(){
 			}
 		}
 		glColor4fv(c);
-		if (i == 0){
-			CText::DrawString("COURCE-1", 80, 280, 12, 14);
-		}
-		else if (i == 1){
-			CText::DrawString("COURCE-2", 330, 280, 12, 14);
-		}
-		else if (i == 2){
-			CText::DrawString("COURCE-3", 580, 280, 12, 14);
-		}
-
-		/*if (i == 0){
+		
+		if (i == 0)
 			CText::DrawString("GRAND-PRIX MODE", 200, 310, 14, 17);
-		}
-		else if (i == 1){
+		else if (i == 1)
 			CText::DrawString("TIMEATTACK MODE", 200, 260, 14, 17);
-		}*/
 	}
-	//CPUƒŒƒxƒ‹‚ÌƒeƒLƒXƒg
-	for (int i = 1; i <= 3; i++){		
-		if (mLevel == i && mSelect_Step == 2){
-			c[0] = c[1] = c[2] = 1.0f; c[3] = 1.0f;
-		}
-		else{
-			c[0] = c[1] = c[2] = 0.5f; c[3] = 1.0f;
-		}
-		//‘I‘ğ‚É“_–Å‚·‚é
-		if (mStart && mLevel == i){
-			if (mStartWaitTime > 20){
-				c[0] = c[1] = c[2] = 1.0f;
+
+	if (mCarsol_mode == 1){
+		//ƒR[ƒX‘I‘ğŒn‚ÌƒeƒLƒXƒg
+		for (int i = 0; i <= 2; i++){
+			if (mCarsol_Pos == i && mSelect_Step == 1){
+				c[0] = c[1] = c[2] = 1.0f; c[3] = 1.0f;
 			}
-			else if (mStartWaitTime % 8 < 4){
-				c[0] = c[1] = c[2] = 0.5f;
+			else{
+				c[0] = c[1] = c[2] = 0.5f; c[3] = 1.0f;
+			}
+			//‘I‘ğ‚É“_–Å‚·‚é
+			if (mStart && mCarsol_Pos == i){
+				if (mStartWaitTime > 20){
+					c[0] = c[1] = c[2] = 1.0f;
+				}
+				else if (mStartWaitTime % 8 < 4){
+					c[0] = c[1] = c[2] = 0.5f;
+				}
+			}
+			glColor4fv(c);
+			/*if (i == 0){
+			CText::DrawString("COURCE-1", 80, 280, 12, 14);
+			}
+			else if (i == 1){
+			CText::DrawString("COURCE-2", 330, 280, 12, 14);
+			}
+			else if (i == 2){
+			CText::DrawString("COURCE-3", 580, 280, 12, 14);
+			}*/
+			if (i == 0){
+				CText::DrawString("COURCE-1", 80, 100, 12, 14);
+			}
+			else if (i == 1){
+				CText::DrawString("COURCE-2", 330, 100, 12, 14);
+			}
+			else if (i == 2){
+				CText::DrawString("COURCE-3", 580, 100, 12, 14);
 			}
 		}
-		glColor4fv(c);
-		if (i == 1){
-			CText::DrawString("EASY", 200, 100, 12, 12);
+	}
+
+	if (mCarsol_mode == 0){
+		//CPUƒŒƒxƒ‹‚ÌƒeƒLƒXƒg
+		for (int i = 1; i <= 3; i++){
+			if (mLevel == i && mSelect_Step == 2){
+				c[0] = c[1] = c[2] = 1.0f; c[3] = 1.0f;
+			}
+			else{
+				c[0] = c[1] = c[2] = 0.5f; c[3] = 1.0f;
+			}
+			//‘I‘ğ‚É“_–Å‚·‚é
+			if (mStart && mLevel == i){
+				if (mStartWaitTime > 20){
+					c[0] = c[1] = c[2] = 1.0f;
+				}
+				else if (mStartWaitTime % 8 < 4){
+					c[0] = c[1] = c[2] = 0.5f;
+				}
+			}
+			glColor4fv(c);
+			if (i == 1){
+				CText::DrawString("EASY", 200, 100, 12, 12);
+			}
+			else if (i == 2){
+				CText::DrawString("NORMAL", 347, 100, 12, 12);
+			}
+			else if (i == 3){
+				CText::DrawString("HARD", 543, 100, 12, 12);
+			}
 		}
-		else if (i == 2){
-			CText::DrawString("NORMAL", 347, 100, 12, 12);
-		}
-		else if (i == 3){
-			CText::DrawString("HARD", 543, 100, 12, 12);
-		}		
-	}		
+	}	
 	//‘S‚Ä‚Ì’l‚ğ1.0f‚É–ß‚µ‚Ä‚¨‚­
 	c[0] = c[1] = c[2] = c[3] = 1.0f;
 	glColor4fv(c);
 
-	char record[16];
-	if (mCource == 0){
-		sprintf(record, "EDIT");
-		CText::DrawString(record, 20, 580, 10, 12);
-	}
-	else{
-		for (int i = 1; i <= COURCE_TOTAL; i++){
-			if (mCource == i){
-				sprintf(record, "BEST:%02d:%02d:%02d", CSceneRace::mRecords[i] / 10000 % 100, CSceneRace::mRecords[i] / 100 % 100, CSceneRace::mRecords[i] % 100);
-				CText::DrawString(record, 20, 580, 10, 12);
-			}			
+	if (mSelect_Step == 1){
+		//‚»‚ÌƒR[ƒX‚ÌƒxƒXƒg‹L˜^‚ª¶ã‚É•\¦‚³‚ê‚é
+		char record[16];
+		if (mCource == 0){
+			sprintf(record, "EDIT");
+			CText::DrawString(record, 20, 580, 10, 12);
 		}
-	}	
+		else{
+			for (int i = 1; i <= COURCE_TOTAL; i++){
+				if (mCource == i){
+					sprintf(record, "BEST:%02d:%02d:%02d", CSceneRace::mRecords[i] / 10000 % 100, CSceneRace::mRecords[i] / 100 % 100, CSceneRace::mRecords[i] % 100);
+					CText::DrawString(record, 20, 580, 10, 12);
+				}
+			}
+		}
+	}
+	
+	//ƒOƒ‰ƒ“ƒvƒŠ‚Ì‰ß‹Å‚‡ˆÊ‚É‰‚¶‚ÄƒgƒƒtƒB[•\¦
+	switch (RecordHigh_Ranking)
+	{
+	case 1:
+		CRectangle::RenderTrophy(Tex, 700, 444, 99, 99, 555, 555);
+		break;
+	case 2:
+		CRectangle::RenderTrophy(Tex2, 700, 444, 88, 88, 555, 555);
+		break;
+	case 3:
+		CRectangle::RenderTrophy(Tex3, 700, 444, 77, 77, 555, 555);
+		break;
+	default:
+		break;
+	}
 
+	/*CRectangle::RenderTrophy(Tex, 111, 111, 111, 111);
+	CRectangle::RenderTrophy(Tex2, 77, 77, 77, 77);
+	CRectangle::RenderTrophy(Tex3, 400, 300, 111, 111);*/
+
+	CRectangle::Render(1,2,3,4);
+	
 	c[0] = c[1] = c[2] = 1.0f;
 	glColor4fv(c);
 	

@@ -16,6 +16,8 @@ private:
 	int mSelect_Step;//選択画面の何段階目か
 	int mLevel;//敵のレベル
 	int mCourceNum;
+
+	int mCarsol_mode;
 public:
 	//初期化処理
 	void Init();
@@ -50,13 +52,18 @@ public:
 	};
 	static ECource mCource;
 
-	////CPUの強さ
-	//enum EMode{
-	//	EMODE_GRANDPRIX,//グランプリモード
-	//	EMODE_TIMEATTACK,//タイムアタックモード
-	//	EMODE_EDITOR,//コース作成モード
-	//};
-	//static EMode mMode;
+	//CPUの強さ
+	enum EMode{
+		EMODE_GRANDPRIX,//グランプリモード
+		EMODE_TIMEATTACK,//タイムアタックモード
+	};
+	static EMode mMode;
+
+	CTexture Tex;
+	CTexture Tex2;
+	CTexture Tex3;
+	
+	static int RecordHigh_Ranking;
 };
 
 #endif
