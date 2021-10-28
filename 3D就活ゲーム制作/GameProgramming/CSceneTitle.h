@@ -18,6 +18,13 @@ private:
 	int mCourceNum;
 
 	int mCarsol_mode;
+
+	CTexture Texture_GoldTrophy;
+	CTexture Texture_SilverTrophy;
+	CTexture Texture_BronzeTrophy;
+
+	CTexture Texture_DetailGP;
+	CTexture Texture_DetailTA;
 public:
 	//初期化処理
 	void Init();
@@ -58,11 +65,7 @@ public:
 		EMODE_TIMEATTACK,//タイムアタックモード
 	};
 	static EMode mMode;
-
-	CTexture Tex;
-	CTexture Tex2;
-	CTexture Tex3;
-	
+		
 	static int RecordHigh_Ranking;
 };
 

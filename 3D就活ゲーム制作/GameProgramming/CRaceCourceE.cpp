@@ -19,7 +19,7 @@ void CRaceCourceE::Init(){
 	CVector StartPosVec = CVector(-3831.5f, 13.5f, 16011.5f);//スタート位置の基点
 	CVector StartPosVecs[ENEMYS_AMOUNT + 1];//スタート位置(配列)
 	for (int i = 0; i < LIST_SIZE; i++) {
-		StartPosVecs[i] = StartPosVec + CVector(60.0f*list[i], 0.0f, 80.0f*list[i]);
+		StartPosVecs[i] = StartPosVec + CVector(45.0f*list[i], 0.0f, 60.0f*list[i]);
 		if (list[i] % 2 == 1){
 			StartPosVecs[i].mX += 80.0f;
 		}

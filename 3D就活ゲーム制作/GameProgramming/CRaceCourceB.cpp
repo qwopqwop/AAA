@@ -87,7 +87,7 @@ void CRaceCourceB::Init(){
 	new CObjCheckPoint(&mCheckPoint, CVector(-1120.0f, -100.0f, 5000.0f), CVector(0.0f, 0.0f, 0.0f), CVector(240.0f, 200.0f, 240.0f), 2);
 	new CObjCheckPoint(&mCheckPoint, CVector(-1400.0f, -100.0f, -492.0f), CVector(0.0f, 0.0f, 0.0f), CVector(240.0f, 200.0f, 240.0f), 3);
 	//ゴール地点
-	new CObjCheckPoint(&mCheckPoint, CVector(2436.0f, -100.0f, -2530.0f), CVector(), CVector(222.2f, 100.0f, 30.0f), 9);
+	new CObjCheckPoint(&mCheckPoint, CVector(2436.0f, -100.0f, -2530.0f), CVector(), CVector(350.0f, 150.0f, 30.0f), 9);
 
 	//コースの生成	
 	new CObjWall(&mCource02Wall, CVector(0.0f, -220.0f, 0.0f), CVector(0.0f, -139.3f, 0.0f), CVector(mtsize, height, mtsize));

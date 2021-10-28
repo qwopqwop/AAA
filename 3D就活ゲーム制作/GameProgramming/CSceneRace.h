@@ -76,9 +76,9 @@ private:
 
 	bool canPushEnter;
 
-	CTexture Trophy_gold;
-	CTexture Trophy_silver;
-	CTexture Trophy_bronze;
+	CTexture Texture_GoldTrophy;
+	CTexture Texture_SilverTrophy;
+	CTexture Texture_BronzeTrophy;
 protected:
 	CModel mRover;
 	CModel mCarRed;

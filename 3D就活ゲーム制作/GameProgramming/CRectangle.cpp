@@ -23,7 +23,7 @@ void CRectangle::Render(int x, int y, int w, int h){
 	DrawRectangle(x + w, y + h, x - w, y + h, x - w, y - h, x + w, y - h);
 }
 
-void CRectangle::RenderTrophy(CTexture &t, int x, int y, int w, int h, int texsize_x, int texsize_y){
+void CRectangle::RenderImage(CTexture &t, int x, int y, int w, int h, int texsize_x, int texsize_y){
 	//t.DrawImage(x - w, x + w, y - h, y + h, x - w, x + w, y - h, y + h);
 
 	t.DrawImage(x - w, x + w, y - h, y + h, 0, texsize_x, texsize_y, 0);

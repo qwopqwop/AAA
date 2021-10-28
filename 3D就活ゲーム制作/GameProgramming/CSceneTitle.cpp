@@ -31,9 +31,11 @@ void CSceneTitle::Init() {
 	CText::mFont3.Load("font\\FontDIY.tga");//自作フォント
 	CText::mFont3.SetRowCol(8, 176 / 11);
 
-	Tex.Load("texture\\trophy_gold.tga");
-	Tex2.Load("texture\\trophy_silver.tga");
-	Tex3.Load("texture\\trophy_bronze.tga");
+	Texture_GoldTrophy.Load("texture\\trophy_gold.tga");
+	Texture_SilverTrophy.Load("texture\\trophy_silver.tga");
+	Texture_BronzeTrophy.Load("texture\\trophy_bronze.tga");
+	Texture_DetailGP.Load("texture\\detail_GP.tga");
+	Texture_DetailTA.Load("texture\\detail_TA.tga");
 	
 	//シーンの設定
 	mScene = ETITLE;
@@ -67,15 +69,6 @@ void CSceneTitle::Update() {
 			//選び終えたらゲーム開始
 			mStart = true;
 		}
-
-		//if (mSelect_Step == 1){
-		//	//次に選ぶ項目へ
-		//	mSelect_Step++;
-		//}
-		//else if (mSelect_Step == 2){
-		//	//選び終えたらゲーム開始
-		//	mStart = true;
-		//}
 	}
 
 	if (mStart){
@@ -109,7 +102,9 @@ void CSceneTitle::Update() {
 			if (mMode == EMODE_GRANDPRIX){
 				printf("グランプリ\n");
 				//コース1→コース2→コース5の順に回る
+				mCource = ECOURCE1;
 				mScene = ERACE1;
+				//mScene = ERACE;
 			}				
 			else if (mMode == EMODE_TIMEATTACK){
 				printf("タイムアタック\n");
@@ -218,15 +213,18 @@ void CSceneTitle::Update() {
 			}
 		}
 	}
-	if (mCarsol_Pos == 0){
-		mCource = ECOURCE1;
-	}
-	else if (mCarsol_Pos == 1){
-		mCource = ECOURCE2;
-	}
-	else if (mCarsol_Pos == 2){
-		mCource = ECOURCE5;
-	}
+
+	if (mMode == EMODE_TIMEATTACK){
+		if (mCarsol_Pos == 0){
+			mCource = ECOURCE1;
+		}
+		else if (mCarsol_Pos == 1){
+			mCource = ECOURCE2;
+		}
+		else if (mCarsol_Pos == 2){
+			mCource = ECOURCE5;
+		}
+	}	
 
 	if (mCarsol_mode == 0)
 		mMode = EMODE_GRANDPRIX;
@@ -297,11 +295,17 @@ void CSceneTitle::Render(){
 		}
 		glColor4fv(c);
 		
-		if (i == 0)
+		if (i == 0){
 			CText::DrawString("GRAND-PRIX MODE", 200, 310, 14, 17);
-		else if (i == 1)
+			
+		}			
+		else if (i == 1){
 			CText::DrawString("TIMEATTACK MODE", 200, 260, 14, 17);
+			
+		}
+			
 	}
+	
 
 	if (mCarsol_mode == 1){
 		//コース選択系のテキスト
@@ -322,15 +326,6 @@ void CSceneTitle::Render(){
 				}
 			}
 			glColor4fv(c);
-			/*if (i == 0){
-			CText::DrawString("COURCE-1", 80, 280, 12, 14);
-			}
-			else if (i == 1){
-			CText::DrawString("COURCE-2", 330, 280, 12, 14);
-			}
-			else if (i == 2){
-			CText::DrawString("COURCE-3", 580, 280, 12, 14);
-			}*/
 			if (i == 0){
 				CText::DrawString("COURCE-1", 80, 100, 12, 14);
 			}
@@ -377,6 +372,14 @@ void CSceneTitle::Render(){
 	c[0] = c[1] = c[2] = c[3] = 1.0f;
 	glColor4fv(c);
 
+	if (mSelect_Step == 0){
+		if (mCarsol_mode == 0){
+			CRectangle::RenderImage(Texture_DetailGP, 400, 40, 277, 15, 692, 38);
+		}
+		else if (mCarsol_mode == 1){
+			CRectangle::RenderImage(Texture_DetailTA, 400, 40, 258, 15, 645, 38);
+		}
+	}
 	if (mSelect_Step == 1){
 		//そのコースのベスト記録が左上に表示される
 		char record[16];
@@ -398,23 +401,17 @@ void CSceneTitle::Render(){
 	switch (RecordHigh_Ranking)
 	{
 	case 1:
-		CRectangle::RenderTrophy(Tex, 700, 444, 99, 99, 555, 555);
+		CRectangle::RenderImage(Texture_GoldTrophy, 700, 444, 99, 99, 555, 555);
 		break;
 	case 2:
-		CRectangle::RenderTrophy(Tex2, 700, 444, 88, 88, 555, 555);
+		CRectangle::RenderImage(Texture_SilverTrophy, 700, 444, 88, 88, 555, 555);
 		break;
 	case 3:
-		CRectangle::RenderTrophy(Tex3, 700, 444, 77, 77, 555, 555);
+		CRectangle::RenderImage(Texture_BronzeTrophy, 700, 444, 77, 77, 555, 555);
 		break;
 	default:
 		break;
 	}
-
-	/*CRectangle::RenderTrophy(Tex, 111, 111, 111, 111);
-	CRectangle::RenderTrophy(Tex2, 77, 77, 77, 77);
-	CRectangle::RenderTrophy(Tex3, 400, 300, 111, 111);*/
-
-	CRectangle::Render(1,2,3,4);
 	
 	c[0] = c[1] = c[2] = 1.0f;
 	glColor4fv(c);
