@@ -100,10 +100,10 @@ void CRaceCourceE::Init(){
 	if (CSceneTitle::mMode == CSceneTitle::EMODE_GRANDPRIX){
 		for (int i = 0; i < ENEMYS_AMOUNT; i++){
 			CTaskManager::Get()->ChangePriority(mEnemys[i], 15);
-		}
-		//敵車のカラー情報の出力
-		PutCPUColor();
+		}		
 	}
+	//敵車のカラー情報の出力
+	PutCPUColor();
 	
 }
 void CRaceCourceE::Update(){

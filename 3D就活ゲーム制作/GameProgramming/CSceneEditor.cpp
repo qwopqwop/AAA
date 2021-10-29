@@ -14,11 +14,6 @@
 #include "CObjBoost.h"
 #include "CObjNonCol.h"
 
-////スマートポインタの生成
-//std::shared_ptr<CTexture> TextureExp(new CTexture());
-//std::shared_ptr<CTexture> TextureHit(new CTexture());
-//std::shared_ptr<CTexture> TextureBoost(new CTexture());
-
 extern CSound BGM;
 extern CSound SoundCountDown;
 extern CSound SoundStart;
@@ -39,7 +34,6 @@ CSceneEditor::~CSceneEditor() {
 	CTaskManager::Get()->Disabled();
 	CTaskManager::Get()->Delete();
 }
-
 
 void CSceneEditor::Init() {
 	//テキストフォントの読み込みと設定

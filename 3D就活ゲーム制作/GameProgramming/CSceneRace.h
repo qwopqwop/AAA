@@ -71,9 +71,8 @@ private:
 	ECameraAngle mCameraAngle;
 
 	int mPushEnter_WaitTime;
-
-	bool isResult_FinalRace;
-
+	bool isGoaledAll;//全員ゴールしたか
+	bool isResult_FinalRace;//最終結果(グランプリモードのみ)
 	bool canPushEnter;
 
 	CTexture Texture_GoldTrophy;
@@ -205,12 +204,8 @@ public:
 	
 	//各コースのベストタイム
 	static int mRecords[COURCE_TOTAL + 1];//0:edit 1～:cource1, 2, ...	
-
 	static int mTotalPoint;//獲得した得点の合計
-
 	static int mTotalPoint_Enemys[ENEMYS_AMOUNT];
 	static int mCurrent_RaceNumber;//現在のレース数
-
-
 };
 #endif

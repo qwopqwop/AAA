@@ -259,6 +259,11 @@ void CSceneRace::Init() {
 		mStartPos = ESTARTPOS_TOP;
 	}
 
+	isGoaledAll = false;
+	isResult_FinalRace = false;
+	mPushEnter_WaitTime = 0;
+	canPushEnter = false;
+
 	//乱数の初期化
 	srand(time(NULL));
 
@@ -282,14 +287,9 @@ void CSceneRace::Init() {
 
 	isFadeIn = true;
 	isFadeOut = false;
-	isBlackOutTime = 0;
+	isBlackOutTime = 0;	
 
-	isResult_FinalRace = false;
-	mPushEnter_WaitTime = 0;
-
-	canPushEnter = false;
-
-	mCameraAngle = EANGLE_THIRDPERSON;
+	mCameraAngle = EANGLE_THIRDPERSON;//カメラ位置…俯瞰視点
 	
 	mRenderTexture.Init();
 	
@@ -349,8 +349,6 @@ void CSceneRace::Init() {
 
 
 void CSceneRace::Update() {
-	
-
 	//タスクマネージャの更新・描画
 	if (isPause == false){
 		CTaskManager::Get()->Update();
@@ -417,17 +415,12 @@ void CSceneRace::Update() {
 	if (CKey::Once('G')){
 		mPlayer->mCarSpeed = 20.0f;
 	}
-	//最後のチェックポイントを通過した扱いにする
+	//チェックポイントを通過したことにする
 	if (CKey::Once('V')){
 		if (mPlayer->mChecks < 3){
 			mPlayer->mChecks++;
 		}
 	}
-	/*if (CKey::Once('8')){
-		for (int i = 0; i <= 3; i++){
-			printf("%d…x:%f,y:%f,z:%f\n", i, mPlayer->mVCheckPositions[i].mX, mPlayer->mVCheckPositions[i].mY, mPlayer->mVCheckPositions[i].mZ);
-		}
-	}*/
 	if (CKey::Once('8')){
 		printf("オブジェクトの数：%d\n", CObj::mObjectNum);		
 	}
@@ -510,7 +503,7 @@ void CSceneRace::Update() {
 		mPushEnter_WaitTime--;
 	}
 
-	//カウント0で全員が走行可能に
+	//カウント0で全員走行可能
 	if (mCountDown == 0){
 		CPlayer::mpPlayer->CanMove = true;
 
@@ -518,8 +511,7 @@ void CSceneRace::Update() {
 			for (int i = 0; i < ENEMYS_AMOUNT; i++){
 				mEnemys[i]->CanMove = true;
 			}
-		}
-		
+		}		
 	}
 
 	//バックミラーの描画
@@ -543,7 +535,9 @@ void CSceneRace::Update() {
 
 			if (CSceneTitle::mMode == CSceneTitle::EMODE_GRANDPRIX){
 				mTotalPoint += (ENEMYS_AMOUNT + 1 - mRanking);
-				printf("%dポイント獲得！\n", ENEMYS_AMOUNT + 1 - mRanking);
+				if (mRanking >= ENEMYS_AMOUNT + 1){
+					isGoaledAll = true;
+				}
 			}
 			//TIMEATTACK MODEの時のみベストタイムが記録される
 			else if (CSceneTitle::mMode == CSceneTitle::EMODE_TIMEATTACK){
@@ -558,19 +552,7 @@ void CSceneRace::Update() {
 						}
 					}
 				}
-			}
-			
-			////ベストタイム更新時
-			//if (mTime < mBestTime){
-			//	mBestTime = mTime;
-			//	isNewRecord = true;
-			//	//そのコースの記録を更新する
-			//	for (int i = 1; i <= COURCE_TOTAL; i++){
-			//		if (CSceneTitle::mCource == i){
-			//			mRecords[i] = mBestTime;
-			//		}
-			//	}
-			//}
+			}			
 
 			mRanking++;
 			isStartRace = false;
@@ -597,15 +579,15 @@ void CSceneRace::Update() {
 				&& (mEnemys[i]->isEnemyGoaled == false)){
 				//その敵が最終ラップだった場合
 				if (mEnemys[i]->mEnemyLap == mMaxLap){
-
-					mTotalPoint_Enemys[i] += (ENEMYS_AMOUNT + 1 - mRanking);
-					printf("%d選手、%dポイント獲得！\n", i, ENEMYS_AMOUNT + 1 - mRanking);
-
+					mTotalPoint_Enemys[i] += (ENEMYS_AMOUNT + 1 - mRanking);					
 					mEnemys[i]->mRank = mRanking;
+					if (mRanking >= ENEMYS_AMOUNT + 1){
+						isGoaledAll = true;
+					}
 					mRanking++;
 					mEnemys[i]->isTouchGoal = false;
 					mEnemys[i]->isEnemyGoaled = true;
-					mEnemys[i]->mGoalTime = mTime;
+					mEnemys[i]->mGoalTime = mTime;					
 				}
 				//まだ最終ラップでない場合
 				else{
@@ -660,62 +642,51 @@ void CSceneRace::Update() {
 	//ゴール後Enterキー押下→タイトル画面移行
 	if (isGoal){
 		if (CKey::Once(VK_RETURN) && canPushEnter  && mPushEnter_WaitTime <= 0){
-			SoundDecide.Play();
-			
-			if (mCurrent_RaceNumber == RACES_PER_1CUP && isResult_FinalRace == false){
+			SoundDecide.Play();			
+			if (isGoaledAll == false && CSceneTitle::mMode == CSceneTitle::EMODE_GRANDPRIX){
+				//まだ全ライバルがゴールしてない
+			}
+			else if (mCurrent_RaceNumber == RACES_PER_1CUP && isResult_FinalRace == false){
 				mPushEnter_WaitTime = WAITTIME_ENTER;
 				isResult_FinalRace = true;
-			}
+			}			
 			else{
 				isFadeOut = true;
 				isBlackOutTime = 0;
 				canPushEnter = false;
 			}
 
-			//まだゴールしてない敵はランダムに順位が決定される
+			//まだゴールしてない敵の順位をランダムに決める
 			if (CSceneTitle::mMode == CSceneTitle::EMODE_GRANDPRIX){
-				////CPUの車がゴール地点を通過した時の処理
-				//for (int i = 0; i < ENEMYS_AMOUNT; i++){
-				//	if (mEnemys[i]->isEnemyGoaled == false){
-				//		mTotalPoint_Enemys[i] += (ENEMYS_AMOUNT + 1 - mRanking);
-				//		printf("%d選手、%dポイント獲得ゥ！\n", i, ENEMYS_AMOUNT + 1 - mRanking);
-				//		mEnemys[i]->mRank = mRanking;
-				//		mRanking++;
-				//		mEnemys[i]->isTouchGoal = false;
-				//		mEnemys[i]->isEnemyGoaled = true;
-				//		mEnemys[i]->mGoalTime = mTime;
-				//	}					
-				//}
-
-				int ranks[ENEMYS_AMOUNT];
-				//スタート位置をランダムで決める
-				for (int i = 0; i < ENEMYS_AMOUNT; i++) {
-					ranks[i] = i;
-				}
-				//ランダムな順位からのスタート
-				if (mStartPos == ESTARTPOS_RANDOM){
+				//まだ全員ゴールしてない時
+				if (isGoaledAll == false){
+					int ranks[ENEMYS_AMOUNT];
+					//スタート位置をランダムで決める
 					for (int i = 0; i < ENEMYS_AMOUNT; i++) {
-						int j = rand() % ENEMYS_AMOUNT;
-						int t = ranks[i];
-						ranks[i] = ranks[j];
-						ranks[j] = t;
+						ranks[i] = i;
 					}
-				}
-				printf("\n");
-				for (int i = 0; i < ENEMYS_AMOUNT; i++){
-					if (mEnemys[ranks[i]]->isEnemyGoaled == false){
-						mTotalPoint_Enemys[ranks[i]] += (ENEMYS_AMOUNT + 1 - mRanking);
-						printf("CPU%d選手、%dポイント獲得！\n", ranks[i]+1, ENEMYS_AMOUNT + 1 - mRanking);
-						mEnemys[ranks[i]]->mRank = mRanking;
-						mRanking++;
-						mEnemys[ranks[i]]->isTouchGoal = false;
-						mEnemys[ranks[i]]->isEnemyGoaled = true;
-						mEnemys[ranks[i]]->mGoalTime = mTime;
+					//ランダムな順位からのスタート
+					if (mStartPos == ESTARTPOS_RANDOM){
+						for (int i = 0; i < ENEMYS_AMOUNT; i++) {
+							int j = rand() % ENEMYS_AMOUNT;
+							int t = ranks[i];
+							ranks[i] = ranks[j];
+							ranks[j] = t;
+						}
 					}
+					for (int i = 0; i < ENEMYS_AMOUNT; i++){
+						if (mEnemys[ranks[i]]->isEnemyGoaled == false){
+							mTotalPoint_Enemys[ranks[i]] += (ENEMYS_AMOUNT + 1 - mRanking);							
+							mEnemys[ranks[i]]->mRank = mRanking;
+							mRanking++;
+							mEnemys[ranks[i]]->isTouchGoal = false;
+							mEnemys[ranks[i]]->isEnemyGoaled = true;
+							mEnemys[ranks[i]]->mGoalTime = mTime;
+						}
+					}
+					isGoaledAll = true;
 				}
-
-			}
-			
+			}			
 		}
 	}
 	//ポーズ中Escキー押下→タイトル画面移行
@@ -861,19 +832,32 @@ void CSceneRace::Render(){
 		else{
 			mTextBlinkTime = 0;
 		}
-		//Enterキー入力でタイトル画面に戻れることを伝えるテキスト
+		//Enterキー入力でタイトル画面や次のレースへの移行などを伝えるテキスト
 		if (mTextBlinkTime < 30){
 			if (mPushEnter_WaitTime <= 0 && canPushEnter){
-				if (mCurrent_RaceNumber == RACES_PER_1CUP && isResult_FinalRace){
+				//状況に合わせてテキストの表示内容が変化する
+				if (CSceneTitle::mMode == CSceneTitle::EMODE_GRANDPRIX){
+					if (isGoaledAll == false){
+						CText::DrawString("Press Enter to Skip Result", 147, 77, 10, 12, 2);
+					}
+					else if (mCurrent_RaceNumber == RACES_PER_1CUP){
+						if (isResult_FinalRace){
+							CText::DrawString("Press Enter to Title", 222, 77, 10, 12, 2);
+						}
+						else{
+							CText::DrawString("Press Enter to Final Result", 137, 77, 10, 12, 2);
+						}
+					}
+					else{
+						CText::DrawString("Press Enter to Next Race", 159, 77, 10, 12, 2);
+					}
+				}
+				else if (CSceneTitle::mMode == CSceneTitle::EMODE_TIMEATTACK){
 					CText::DrawString("Press Enter to Title", 222, 77, 10, 12, 2);
-				}
-				else{
-					CText::DrawString("Press Enter to Next Race", 159, 77, 10, 12, 2);
-				}
-			}
-			
+				}				
+			}			
 		}
-		//新記録をたたき出した時
+		//記録を更新した時
 		if (isNewRecord){
 			//CText::DrawString("FINISH!", 400 - 20 * 6, 300, 20, 24);
 			if (mTextBlinkTime < 15 || mTextBlinkTime >= 30 && mTextBlinkTime < 45){
@@ -886,57 +870,29 @@ void CSceneRace::Render(){
 	if (isGoal){
 
 		if (isResult_FinalRace){
-
-			int spoints[LIST_SIZE];
-
-			int sabpoints[LIST_SIZE];
-
-			int jun[LIST_SIZE];
-
-			int carnumber[LIST_SIZE];
-
-			int move_jun[LIST_SIZE];
-
+			//並び変えを行う為のリストを作成する
+			int spoints[LIST_SIZE];//得点
+			int jun[LIST_SIZE];//順位
+			int carnumber[LIST_SIZE];//番号
 			for (int i = 0; i < LIST_SIZE; i++){
 				if (i == 0){
 					spoints[i] = mTotalPoint;
-
 				}
 				else{
 					spoints[i] = mTotalPoint_Enemys[i - 1];
 				}
-
-				jun[i] = move_jun [i] = i + 1;
-				sabpoints[i] = spoints[i];
-
-				carnumber[i] = 111 + i*111;
+				jun[i] = carnumber[i] = i + 1;//no.1:プレイヤー 以降ライバル
 			}
 			
-
-			char hohoi[32];
-			for (int i = 0; i < LIST_SIZE; i++){
-				if (i == 0){
-					sprintf(hohoi, "you  %2dpt no.%d", spoints[i], carnumber[i]);
-					
-				}
-				else{
-					sprintf(hohoi, "cpu%d %2dpt no.%d", i, spoints[i], carnumber[i]);
-				}
-				CText::DrawString(hohoi, 20, 432-32*i, 8, 10, 2);
-			}
-
-			//合計スコア降順に並び変え
+			char list_info[32];
+			//合計点の降順に並び変え
 			for (int i = 0; i < LIST_SIZE; i++) {				
 				for (int j = i + 1; j < LIST_SIZE; j++){
-					if (sabpoints[i] < sabpoints[j]) {
+					if (spoints[i] < spoints[j]) {
 						int tmp;
-						tmp = sabpoints[i];
-						sabpoints[i] = sabpoints[j];
-						sabpoints[j] = tmp;
-						
-						tmp = move_jun[i];
-						move_jun[i] = move_jun[j];
-						move_jun[j] = tmp;
+						tmp = spoints[i];
+						spoints[i] = spoints[j];
+						spoints[j] = tmp;
 
 						tmp = carnumber[i];
 						carnumber[i] = carnumber[j];
@@ -944,21 +900,9 @@ void CSceneRace::Render(){
 					}
 				}
 			}
-
-			printf("得点(降順)\n");
-			for (int i = 0; i < LIST_SIZE; i++) {
-				printf("%d点:", sabpoints[i]);
-				printf("%d位:", jun[i]);
-				printf("  %d:  ", sabpoints[jun[i] - 1]);
-				printf("\n");
-			}
-			printf("\n");
-			
 			int rank = 1;
-			for (int i = 0; i < LIST_SIZE; i++){
-				sprintf(hohoi, "%d %2dpt no.%d %02d", jun[i], sabpoints[i], carnumber[i], move_jun[i]);
-				CText::DrawString(hohoi, 432, 432 - 32 * i, 7, 9, 2);
-				if (carnumber[i]==111){
+			for (int i = 0; i < LIST_SIZE; i++){				
+				if (carnumber[i] == 1){
 					rank = jun[i];
 				}
 			}
@@ -966,36 +910,59 @@ void CSceneRace::Render(){
 			char result[8];
 			char trophy_name[32];
 			CText::DrawString("Final Result", 280, 420, 12, 15, 2);
-			if (rank == 1){      //1st
-				sprintf(result, "%dst", rank);
-				CRectangle::RenderImage(Texture_GoldTrophy, 400, 300, 100, 100, 555, 555);
 
-				CText::DrawString("Congratulations!", 175, 195, 14, 17, 2);
-				sprintf(trophy_name, "You won the %s Trophy!", "Gold");
-				CText::DrawString(trophy_name, 70, 160, 14, 17, 2);
+			if (mPushEnter_WaitTime < WAITTIME_ENTER - 60){
+				if (rank == 1){      //1st
+					sprintf(result, "%dst", rank);
+					CRectangle::RenderImage(Texture_GoldTrophy, 400, 300, 100, 100, 555, 555);
+				}
+				else if (rank == 2){ //2nd
+					sprintf(result, "%dnd", rank);
+					CRectangle::RenderImage(Texture_SilverTrophy, 400, 300, 100, 100, 555, 555);
+				}
+				else if (rank == 3){ //3rd
+					sprintf(result, "%drd", rank);
+					CRectangle::RenderImage(Texture_BronzeTrophy, 400, 300, 100, 100, 555, 555);
+				}
+				else{ //4th,5th,...
+					sprintf(result, "%dth", rank);
+				}
+				CText::DrawString(result, 357, 337, 21, 25, 2);
 			}
-			else if (rank == 2){ //2nd
-				sprintf(result, "%dnd", rank);
-				CRectangle::RenderImage(Texture_SilverTrophy, 400, 300, 100, 100, 555, 555);
-
-				CText::DrawString("Congratulations!", 175, 195, 14, 17, 2);
-				sprintf(trophy_name, "You won the %s Trophy!", "Silver");
-				CText::DrawString(trophy_name, 64, 132, 14, 17, 2);
+			if (mPushEnter_WaitTime < WAITTIME_ENTER - 120){
+				//順位に応じて激励の言葉をかける
+				if (rank == 1){      //1st					
+					CText::DrawString("Congratulations!", 175, 195, 14, 17, 2);
+					sprintf(trophy_name, "You won the %s Trophy!", "Gold");
+					CText::DrawString(trophy_name, 70, 160, 14, 17, 2);
+				}
+				else if (rank == 2){ //2nd
+					CText::DrawString("Congratulations!", 175, 195, 14, 17, 2);
+					sprintf(trophy_name, "You won the %s Trophy!", "Silver");
+					CText::DrawString(trophy_name, 64, 132, 14, 17, 2);
+				}
+				else if (rank == 3){ //3rd
+					CText::DrawString("Congratulations!", 175, 195, 14, 17, 2);
+					sprintf(trophy_name, "You won the %s Trophy!", "Bronze");
+					CText::DrawString(trophy_name, 64, 132, 14, 17, 2);
+				}
+				else{ //4th,5th,...
+					CText::DrawString("Nice Try!", 300, 180, 14, 17, 2);
+				}
+				//一位から順に総得点を表示する
+				for (int i = 0; i < LIST_SIZE; i++){
+					char name[6];
+					if (carnumber[i] == 1){
+						sprintf(name, "YOU");
+					}
+					else{
+						sprintf(name, "CPU%d", carnumber[i] - 1);
+					}
+					sprintf(list_info, "%d %-4s %2dpt", jun[i], name, spoints[i]);
+					CText::DrawString(list_info, 530, 375 - 26 * i, 8, 10, 2);
+				}
 			}
-			else if (rank == 3){ //3rd
-				sprintf(result, "%drd", rank);
-				CRectangle::RenderImage(Texture_BronzeTrophy, 400, 300, 100, 100, 555, 555);
-
-				CText::DrawString("Congratulations!", 175, 195, 14, 17, 2);
-				sprintf(trophy_name, "You won the %s Trophy!", "Bronze");
-				CText::DrawString(trophy_name, 64, 132, 14, 17, 2);
-			}
-			else{ //4th,5th,...
-				sprintf(result, "%dth", rank);
-				CText::DrawString("Nice Try!", 300, 180, 14, 17, 2);
-			}
-			CText::DrawString(result, 357, 337, 21, 25, 2);
-
+			//過去最高となる順位の更新
 			if (CSceneTitle::RecordHigh_Ranking > rank)
 				CSceneTitle::RecordHigh_Ranking = rank;
 
@@ -1739,35 +1706,39 @@ CScene::EScene CSceneRace::GetNextScene(){
 	return mScene;
 }
 
+//敵の車カラーを出力する
 void CSceneRace::PutCPUColor(){
-	for (int i = 0; i < ENEMYS_AMOUNT; i++){
-		int cpu_number = i + 1;
-		if (mEnemys[i]->mpModel == &mCarRed){
-			printf("CPU%d RED\n", cpu_number);
+	if (CSceneTitle::mMode == CSceneTitle::EMODE_GRANDPRIX
+		&& mCurrent_RaceNumber == 1){
+		for (int i = 0; i < ENEMYS_AMOUNT; i++){
+			int cpu_number = i + 1;
+			if (mEnemys[i]->mpModel == &mCarRed){
+				printf("CPU%d RED\n", cpu_number);
+			}
+			else if (mEnemys[i]->mpModel == &mCarBlue){
+				printf("CPU%d BLUE\n", cpu_number);
+			}
+			else if (mEnemys[i]->mpModel == &mCarBlack){
+				printf("CPU%d BLACK\n", cpu_number);
+			}
+			else if (mEnemys[i]->mpModel == &mCarCyan){
+				printf("CPU%d CYAN\n", cpu_number);
+			}
+			else if (mEnemys[i]->mpModel == &mCarGreen){
+				printf("CPU%d GREEN\n", cpu_number);
+			}
+			else if (mEnemys[i]->mpModel == &mCarGray){
+				printf("CPU%d GRAY\n", cpu_number);
+			}
+			else if (mEnemys[i]->mpModel == &mCarPink){
+				printf("CPU%d PINK\n", cpu_number);
+			}
+			else if (mEnemys[i]->mpModel == &mCarWhite){
+				printf("CPU%d WHITE\n", cpu_number);
+			}
+			else if (mEnemys[i]->mpModel == &mCarYellow){
+				printf("CPU%d YELLOW\n", cpu_number);
+			}
 		}
-		else if (mEnemys[i]->mpModel == &mCarBlue){
-			printf("CPU%d BLUE\n", cpu_number);
-		}
-		else if (mEnemys[i]->mpModel == &mCarBlack){
-			printf("CPU%d BLACK\n", cpu_number);
-		}
-		else if (mEnemys[i]->mpModel == &mCarCyan){
-			printf("CPU%d CYAN\n", cpu_number);
-		}
-		else if (mEnemys[i]->mpModel == &mCarGreen){
-			printf("CPU%d GREEN\n", cpu_number);
-		}
-		else if (mEnemys[i]->mpModel == &mCarGray){
-			printf("CPU%d GRAY\n", cpu_number);
-		}
-		else if (mEnemys[i]->mpModel == &mCarPink){
-			printf("CPU%d PINK\n", cpu_number);
-		}
-		else if (mEnemys[i]->mpModel == &mCarWhite){
-			printf("CPU%d WHITE\n", cpu_number);
-		}
-		else if (mEnemys[i]->mpModel == &mCarYellow){
-			printf("CPU%d YELLOW\n", cpu_number);
-		}
-	}
+	}	
 }

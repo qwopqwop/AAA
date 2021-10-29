@@ -22,7 +22,6 @@ private:
 	CTexture Texture_GoldTrophy;
 	CTexture Texture_SilverTrophy;
 	CTexture Texture_BronzeTrophy;
-
 	CTexture Texture_DetailGP;
 	CTexture Texture_DetailTA;
 public:

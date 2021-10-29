@@ -30,7 +30,7 @@ void CSceneTitle::Init() {
 	CText::mFont2.SetRowCol(1, 4096 / 64);
 	CText::mFont3.Load("font\\FontDIY.tga");//自作フォント
 	CText::mFont3.SetRowCol(8, 176 / 11);
-
+	//画像の読み込み
 	Texture_GoldTrophy.Load("texture\\trophy_gold.tga");
 	Texture_SilverTrophy.Load("texture\\trophy_silver.tga");
 	Texture_BronzeTrophy.Load("texture\\trophy_bronze.tga");
@@ -88,26 +88,23 @@ void CSceneTitle::Update() {
 				mCPU_Level = EHARD;
 				break;
 			default:
-				printf("不明な難易度が選択されました　難易度をnormalに設定します\n");
+				printf("不明な難易度を検出しました　難易度をnormalに設定します\n");
 				mCPU_Level = ENORMAL;
 				break;
-			}			
-			//次のシーンはレース画面
-			printf("選択したコース番号:No.%d  ", mCource);
-			printf("選択したCPUのレベル:%d\n", mCPU_Level);
+			}
 			
 			//現在のレース数の初期化
 			CSceneRace::mCurrent_RaceNumber = 0;
 
 			if (mMode == EMODE_GRANDPRIX){
-				printf("グランプリ\n");
+				printf("グランプリモード　CPUレベル:%d\n", mCPU_Level);
 				//コース1→コース2→コース5の順に回る
 				mCource = ECOURCE1;
 				mScene = ERACE1;
 				//mScene = ERACE;
 			}				
 			else if (mMode == EMODE_TIMEATTACK){
-				printf("タイムアタック\n");
+				printf("タイムアタックモード　コースNo.%d\n", mCource);
 				//選択したコースに対応するシーンへ移行			
 				if (mCource == 1){
 					//次のシーンはコース1
@@ -302,11 +299,9 @@ void CSceneTitle::Render(){
 		else if (i == 1){
 			CText::DrawString("TIMEATTACK MODE", 200, 260, 14, 17);
 			
-		}
-			
+		}			
 	}
 	
-
 	if (mCarsol_mode == 1){
 		//コース選択系のテキスト
 		for (int i = 0; i <= 2; i++){
