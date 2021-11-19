@@ -116,6 +116,10 @@ void CRaceCourceA::Init(){
 	//ジャンプ台
 	new CObjJumper(&mJumper01, CVector(240.0f, -13.1f + 3.0f, 1110.0f), CVector(-30.0f, 0.0f, 0.0f), CVector(77.0f, 5.0f, 50.0f));
 
+	//ゲートの柱部分
+	new CObjWall(&mPole, CVector(70.0f + 20.0f * -1 + 5.0f + 5.0f, -13.1f + 110.0f, -660.0f), CVector(0.0f, 0.0f, 0.0f), CVector(77.0f, 77.0f, 77.0f));
+	new CObjWall(&mPole, CVector(270.0f + 20.0f * 40 + 5.0f - 5.0f, -13.1f + 110.0f, -660.0f), CVector(0.0f, 0.0f, 0.0f), CVector(77.0f, 77.0f, 77.0f));
+
 	//優先度変更
 	CTaskManager::Get()->ChangePriority(mPlayer, 15);
 	if (CSceneTitle::mMode == CSceneTitle::EMODE_GRANDPRIX){

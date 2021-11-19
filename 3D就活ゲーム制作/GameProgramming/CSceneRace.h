@@ -27,6 +27,7 @@ private:
 	static bool isEnableSpeedometer;//速度計のON・OFF
 
 	GLuint mDepthTextureID;
+	GLuint mFb;
 
 	float mCamY;//プレイヤーの周りを回転(水平方向に)	
 
@@ -195,6 +196,8 @@ public:
 	void RenderBackMirror();
 	//影の描画
 	void RenderShadow();
+	//影の描画
+	void RenderShadowBM();
 	//フェードインをしてゲーム画面に入る
 	void FadeIn();
 	//他シーンに行く際の演出・処理
