@@ -1481,9 +1481,9 @@ void CSceneRace::RenderBackMirror()
 void CSceneRace::RenderShadow(){
 	//Shadow Map ************************************
 
-	GLint	viewport[4]; //ビューポートの保存用
-	CMatrix	modelview; //モデルビュー変換行列の保存用
-	CMatrix	projection; //透視変換行列の保存用
+	//GLint	viewport[4]; //ビューポートの保存用
+	//CMatrix	modelview; //モデルビュー変換行列の保存用
+	//CMatrix	projection; //透視変換行列の保存用
 
 	/*
 	** 第１ステップ：デプステクスチャの作成
@@ -1766,113 +1766,19 @@ void CSceneRace::PutCPUColor(){
 
 //影の描画
 void CSceneRace::RenderShadowBM(){
-	////Shadow Map ************************************
-
-	GLint	viewport[4]; //ビューポートの保存用
-	CMatrix	modelview; //モデルビュー変換行列の保存用
-	CMatrix	projection; //透視変換行列の保存用
-
-	/*
-	** 第１ステップ：デプステクスチャの作成
-	*/
-	////* フレームバッファオブジェクトへのレンダリング開始
-	//glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, mFb);
-
-	///* デプスバッファをクリアする */
-	//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-	/* 現在のビューポートを保存しておく */
-	glGetIntegerv(GL_VIEWPORT, viewport);
-
-	/* ビューポートをテクスチャのサイズに設定する */
-	glViewport(0, 0, TEXWIDTH, TEXHEIGHT);
-
-	/* 透視変換行列を設定する */
-	glMatrixMode(GL_PROJECTION); //透視変換行列に切り替え
-	glPushMatrix(); //現在の設定はスタックに保存
-	glLoadIdentity(); //行列の初期化
-
-	/* Depthテクスチャの透視変換行列を保存しておく */
-	gluPerspective(75.0, (GLdouble)TEXWIDTH / (GLdouble)TEXHEIGHT, 1.0, 100000.0);
-	glGetFloatv(GL_PROJECTION_MATRIX, projection.mM[0]); //透視変換行列の保存
-
-	GLfloat lightpos[] = { 0.0f, 200.0f, 200.0f, 0.0f }; //ライトの位置データ
-	lightpos[2] = 0.0f; //ライトの位置データ
-	if (CSceneTitle::mCource == 1){
-		lightpos[1] = 2000.0f * 2; //ライトの位置データ
-	}
-	else if (CSceneTitle::mCource == 2){
-		lightpos[1] = 10000.0f; //ライトの位置データ
-	}
-	else if (CSceneTitle::mCource == 5){
-		lightpos[1] = 24000.0f; //ライトの位置データ
-	}
-	else{
-		//光源が遠いほど影の画質が粗くなってしまう
-	}
-
-	lightpos[0] = mPlayer->mPosition.mX; //ライトの位置データ
-	lightpos[1] = mPlayer->mPosition.mY + 1400.0f * 5; //ライトの位置データ
-	lightpos[2] = mPlayer->mPosition.mZ; //ライトの位置データ
-
-	/* 光源位置を視点としシーンが視野に収まるようモデルビュー変換行列を設定する */
-	glMatrixMode(GL_MODELVIEW); //モデルビュー行列に切り替え
-	glPushMatrix(); //現在の設定はスタックに保存
-	glLoadIdentity(); //行列の初期化
-	//ライト位置から見るように行列を設定する
-	gluLookAt(lightpos[0], lightpos[1], lightpos[2], lightpos[0] - 1, 0, lightpos[2] - 1, 0.0, 1.0, 0.0);
-	/* 設定したモデルビュー変換行列を保存しておく */
-	glGetFloatv(GL_MODELVIEW_MATRIX, modelview.mM[0]);
-
-	/* デプスバッファの内容だけを取得するのでフレームバッファには書き込まない */
-	glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
-
-	/* したがって陰影付けも不要なのでライティングをオフにする */
-	glDisable(GL_LIGHTING);
-
-	/* デプスバッファには背面のポリゴンの奥行きを記録するようにする */
-	glCullFace(GL_FRONT);
-	//************************************ Shadow Map
-
-	//Depthテクスチャを作成する描画
-	CTaskManager::Get()->Render();
-
-	////Shadow Map ************************************
-	///* フレームバッファオブジェクトへのレンダリング終了 */
-	//glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
+	/*全体の描画*/
 
 	/* テクスチャユニット１に切り替える */
 	glActiveTexture(GL_TEXTURE1);
 	glBindTexture(GL_TEXTURE_2D, mDepthTextureID);
-	///* デプスバッファの内容をテクスチャメモリに転送する */
-	//glCopyTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, 0, 0, TEXWIDTH, TEXHEIGHT);
-
-	/* 通常の描画の設定に戻す */
-	glViewport(viewport[0], viewport[1], viewport[2], viewport[3]);
-
-	glMatrixMode(GL_PROJECTION); //透視変換行列に切り替え
-	glPopMatrix(); //設定をスタックから戻す
-
-	glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
-	glEnable(GL_LIGHTING);
-	glCullFace(GL_BACK);
-
-	/*
-	** 第２ステップ：全体の描画
-	*/
-
 	/* フレームバッファとデプスバッファをクリアする */
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-	/* モデルビュー変換行列の設定 */
-	glMatrixMode(GL_MODELVIEW); //モデルビュー行列に切り替え
-	glPopMatrix(); //スタックから元に戻す
+	///* モデルビュー変換行列の設定 */
+	//glMatrixMode(GL_MODELVIEW); //モデルビュー行列に切り替え
+	//glPopMatrix(); //スタックから元に戻す
 	/* モデルビュー変換行列を保存しておく */
 	CMatrix modelviewCamera;
 	glGetFloatv(GL_MODELVIEW_MATRIX, modelviewCamera.mM[0]);
-
-	/* 光源の位置を設定する */
-	//glLightfv(GL_LIGHT0, GL_POSITION, lightpos);
 
 	/* テクスチャ変換行列を設定する */
 	glMatrixMode(GL_TEXTURE);
@@ -1918,7 +1824,6 @@ void CSceneRace::RenderShadowBM(){
 			}
 		}
 	}
-
 
 	//Shadow Map ************************************
 	/* テクスチャマッピングとテクスチャ座標の自動生成を無効にする */

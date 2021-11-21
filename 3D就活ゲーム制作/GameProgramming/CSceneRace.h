@@ -29,6 +29,10 @@ private:
 	GLuint mDepthTextureID;
 	GLuint mFb;
 
+	GLint	viewport[4]; //ビューポートの保存用
+	CMatrix	modelview; //モデルビュー変換行列の保存用
+	CMatrix	projection; //透視変換行列の保存用
+
 	float mCamY;//プレイヤーの周りを回転(水平方向に)	
 
 	//スタート前のカウントダウン
