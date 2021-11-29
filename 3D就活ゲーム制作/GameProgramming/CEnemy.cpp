@@ -86,7 +86,21 @@ CEnemy::CEnemy()
 	mVPoint = mpPoint->mPosition;//一番最初は分散無し
 	mVPoint_prev = mVPoint;
 
-	mMaxSpeed_PtoP = 20.0f;
+	if (CSceneTitle::mCPU_Level == 1){
+		mMaxSpeed = 18.0f;
+	}
+	else if (CSceneTitle::mCPU_Level == 2){
+		mMaxSpeed = 19.0f;
+	}
+	else if (CSceneTitle::mCPU_Level == 3){
+		mMaxSpeed = 20.0f;
+	}
+	else{
+		printf("不明な難易度が設定されました");
+		mMaxSpeed = 99.9f;
+	}
+	mMaxSpeed = 20.0f;//ここ以外で数値は変わらない
+	mMaxSpeed_PtoP = 20.0f;//ポイント間で変動する
 
 	mEnemyLap = 1;//敵のラップ数を１周目に設定する
 	isTouchGoal = false;
@@ -116,7 +130,7 @@ void CEnemy::Update(){
 				corve = 1.0f;
 			}
 			//速度上限の計算
-			mMaxSpeed_PtoP = MAXSPEED * corve;
+			mMaxSpeed_PtoP = mMaxSpeed * corve;
 		}
 		else if (CSceneTitle::mCource == 2){
 			//次のポイントから次の次のポイントへのベクトル
@@ -137,7 +151,7 @@ void CEnemy::Update(){
 				corve = 1.0f;
 			}
 			//速度上限の計算
-			mMaxSpeed_PtoP = MAXSPEED * corve;
+			mMaxSpeed_PtoP = mMaxSpeed * corve;
 		}
 		else if (CSceneTitle::mCource == 5){
 			//次のポイントから次の次のポイントへのベクトル
@@ -161,10 +175,10 @@ void CEnemy::Update(){
 				corve = 0.5f;
 			}
 			//速度上限の計算
-			mMaxSpeed_PtoP = MAXSPEED * corve;
+			mMaxSpeed_PtoP = mMaxSpeed * corve;
 		}
 		else{
-			mMaxSpeed_PtoP = MAXSPEED;
+			mMaxSpeed_PtoP = mMaxSpeed;
 		}
 	}	
 	//スピードは最低速度を下回らない
@@ -187,7 +201,7 @@ void CEnemy::Update(){
 	//ブースト有効時
 	if (isBoost){
 		mBoostMaxSpeed = BOOST_EFFECT;
-		if (mCarSpeed < MAXSPEED + mBoostMaxSpeed){
+		if (mCarSpeed < mMaxSpeed + mBoostMaxSpeed){
 			//ブースト時のアクセル効果は実質3倍
 			mCarSpeed += CAR_POWER;
 			mCarSpeed += CAR_POWER;
@@ -205,13 +219,13 @@ void CEnemy::Update(){
 			}
 		}
 		//ブーストが終了して現在の速度が最高速度を超過していた場合、最高速度に合わせて減速されていく
-		if (mCarSpeed > MAXSPEED + mBoostMaxSpeed){
-			mCarSpeed = MAXSPEED + mBoostMaxSpeed;
+		if (mCarSpeed > mMaxSpeed + mBoostMaxSpeed){
+			mCarSpeed = mMaxSpeed + mBoostMaxSpeed;
 		}
 	}
 	
 	if (CKey::Push(VK_UP) && CanMove && mCarSpeed < mMaxSpeed_PtoP || mChecks >= 0 && CanMove && mCarSpeed < mMaxSpeed_PtoP){
-		if (mCarSpeed < MAXSPEED + mBoostMaxSpeed){		
+		if (mCarSpeed < mMaxSpeed + mBoostMaxSpeed){
 			mCarSpeed += CAR_POWER;
 		}
 	}
@@ -488,21 +502,22 @@ void CEnemy::Collision(CCollider *mc, CCollider *yc){
 								//ポイント経過時間のリセット
 								mPointTime = 0;
 								//とりあえず先にintで宣言
-								int r = (mc->mRadius + yc->mRadius) * 0.8f;
+								int r = (mc->mRadius + yc->mRadius) * 0.2f;
 								int gap = (rand() % (r * 2) - r);
-								//敵AIのLvにより分散値も変化
-								if (CSceneTitle::mCPU_Level == CSceneTitle::EEASY){
-									r = (mc->mRadius + yc->mRadius) * 0.5f;
-									gap = (rand() % (r * 2) - r);
-								}
-								else if (CSceneTitle::mCPU_Level == CSceneTitle::ENORMAL){
-									r = (mc->mRadius + yc->mRadius) * 0.4f;
-									gap = (rand() % (r * 2) - r);
-								}								
-								else if (CSceneTitle::mCPU_Level == CSceneTitle::EHARD){
-									r = (mc->mRadius + yc->mRadius) * 0.2f;
-									gap = (rand() % (r * 2) - r);
-								}
+								////敵AIのLvにより分散値も変化
+								//if (CSceneTitle::mCPU_Level == CSceneTitle::EEASY){
+								//	r = (mc->mRadius + yc->mRadius) * 0.5f;
+								//	gap = (rand() % (r * 2) - r);
+								//}
+								//else if (CSceneTitle::mCPU_Level == CSceneTitle::ENORMAL){
+								//	r = (mc->mRadius + yc->mRadius) * 0.4f;
+								//	gap = (rand() % (r * 2) - r);
+								//}								
+								//else if (CSceneTitle::mCPU_Level == CSceneTitle::EHARD){
+								//	r = (mc->mRadius + yc->mRadius) * 0.2f;
+								//	gap = (rand() % (r * 2) - r);
+								//}
+
 								//次のポイントを設定する
 								SetNextPoint(mpPoint, gap, false);								
 							}

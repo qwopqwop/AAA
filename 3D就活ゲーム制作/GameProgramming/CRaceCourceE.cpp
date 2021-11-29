@@ -14,10 +14,19 @@ void CRaceCourceE::Init(){
 	//シーンの設定
 	mScene = ERACE5;
 
+	//コース05の読み込み
+	mCource05Wall.Load("material\\racing_mat\\stage5\\cource05wall.obj", "material\\racing_mat\\stage5\\cource05wall.mtl");
+	mCource05Mountain.Load("material\\racing_mat\\stage5\\cource05mountain.obj", "material\\racing_mat\\stage5\\cource05mountain.mtl");//全ての山共通
+	mCource05Road.Load("material\\racing_mat\\stage5\\cource05road2.obj", "material\\racing_mat\\stage5\\cource05road2.mtl");
+	mCource05Lake.Load("material\\racing_mat\\stage5\\cource05_lake.obj", "material\\racing_mat\\stage5\\cource05_lake.mtl");
+	mCource05Grass_Floor.Load("material\\racing_mat\\stage5\\cource05grassF03.obj", "material\\racing_mat\\stage5\\cource05grassF03.mtl");
+	mCource05Grass_Wall.Load("material\\racing_mat\\stage5\\cource05grass_wall.obj", "material\\racing_mat\\stage5\\cource05grass_wall.mtl");
+	mCource05GoalTile.Load("material\\racing_mat\\stage5\\Checker_Tile.obj", "material\\racing_mat\\stage5\\Checker_Tile.mtl");
+
 	CSceneRace::Init();
 	
-	CVector StartPosVec = CVector(-3831.5f, 13.5f, 16011.5f);//スタート位置の基点
-	CVector StartPosVecs[ENEMYS_AMOUNT + 1];//スタート位置(配列)
+	StartPosVec = CVector(-3831.5f, 13.5f, 16011.5f);//スタート位置の基点
+	//CVector StartPosVecs[ENEMYS_AMOUNT + 1];//スタート位置(配列)
 	for (int i = 0; i < LIST_SIZE; i++) {
 		StartPosVecs[i] = StartPosVec + CVector(45.0f*list[i], 0.0f, 60.0f*list[i]);
 		if (list[i] % 2 == 1){
@@ -42,41 +51,54 @@ void CRaceCourceE::Init(){
 	float mtsize = 35.0f;
 	float height = 11.0f;
 	new CRoadManager(&mCource05Road, CVector(0.0f, 21.0f, 0.0f), CVector(), CVector(mtsize, height, mtsize), mPlayer->mPosition, CVector(0.0f, 0.0f, -1.0f), 320.0f, 0.0f);//
-	//GPモードのみ敵が生成される
-	if (CSceneTitle::mMode == CSceneTitle::EMODE_GRANDPRIX){
-		//敵車の生成
-		for (int i = 0; i < ENEMYS_AMOUNT; i++){
-			mEnemys[i] = new CEnemy();
-			if (i % 8 == 0){
-				mEnemys[i]->mpModel = &mCarBlue;
-			}
-			else if (i % 8 == 1){
-				mEnemys[i]->mpModel = &mCarPink;
-			}
-			else if (i % 8 == 2){
-				mEnemys[i]->mpModel = &mCarRed;
-			}
-			else if (i % 8 == 3){
-				mEnemys[i]->mpModel = &mCarGreen;
-			}
-			else if (i % 8 == 4){
-				mEnemys[i]->mpModel = &mCarYellow;
-			}
-			else if (i % 8 == 5){
-				mEnemys[i]->mpModel = &mCarBlack;
-			}
-			else if (i % 8 == 6){
-				mEnemys[i]->mpModel = &mCarGray;
-			}
-			else if (i % 8 == 7){
-				mEnemys[i]->mpModel = &mCarCyan;
-			}
-			//スタート時の座標、回転値の設定
-			mEnemys[i]->mPosition = CVector(StartPosVecs[i + 1]);
-			mEnemys[i]->mRotation.mY = -145.0f;
-			mEnemys[i]->CCharacter::Update();
-		}
-	}	
+	
+	////GPモードのみ敵が生成される
+	//if (CSceneTitle::mMode == CSceneTitle::EMODE_GRANDPRIX){
+	//	//敵車の生成
+	//	for (int i = 0; i < ENEMYS_AMOUNT; i++){
+	//		mEnemys[i] = new CEnemy();
+	//		if (i % 8 == 0){
+	//			mEnemys[i]->mpModel = &mCarBlue;
+	//		}
+	//		else if (i % 8 == 1){
+	//			mEnemys[i]->mpModel = &mCarPink;
+	//		}
+	//		else if (i % 8 == 2){
+	//			mEnemys[i]->mpModel = &mCarRed;
+	//		}
+	//		else if (i % 8 == 3){
+	//			mEnemys[i]->mpModel = &mCarGreen;
+	//		}
+	//		else if (i % 8 == 4){
+	//			mEnemys[i]->mpModel = &mCarYellow;
+	//		}
+	//		else if (i % 8 == 5){
+	//			mEnemys[i]->mpModel = &mCarBlack;
+	//		}
+	//		else if (i % 8 == 6){
+	//			mEnemys[i]->mpModel = &mCarGray;
+	//		}
+	//		else if (i % 8 == 7){
+	//			mEnemys[i]->mpModel = &mCarCyan;
+	//		}
+	//		//初期の配置座標を設定する
+	//		
+	//		mEnemys[i]->mPosition = CVector(StartPosVecs[i + 1]);
+	//		mEnemys[i]->mRotation = CVector(0, -145, 0);
+	//		mEnemys[i]->CCharacter::Update();
+	//	}
+	//}
+	////優先度変更
+	//CTaskManager::Get()->ChangePriority(mPlayer, 15);
+	//if (CSceneTitle::mMode == CSceneTitle::EMODE_GRANDPRIX){
+	//	for (int i = 0; i < ENEMYS_AMOUNT; i++){
+	//		CTaskManager::Get()->ChangePriority(mEnemys[i], 15);
+	//	}
+	//}
+	////敵車のカラー情報の出力
+	//PutCPUColor();
+
+	CSceneRace::InstantiateEnemy(CVector(0, -145, 0));
 
 	//中間地点(順に通らないと1周したことにならないし、順番を飛ばしてもいけない)
 	new CObjCheckPoint(&mCheckPoint, CVector(-16054.4f, 4915.0f, -2180.0f), CVector(0.0f, 0.0f, 0.0f), CVector(180.0f, 100.0f, 180.0f), 1);
@@ -93,18 +115,7 @@ void CRaceCourceE::Init(){
 	new CObjWater(&mCource05Lake, CVector(0.0f, 221.0f, 0.0f), CVector(), CVector(mtsize, 30.0f, mtsize));
 
 	new CObjNonCol(&mSign_Left, CVector(2440.0f, 321.0f, 1432.0f), CVector(0.0f, 33.0f, 0.0f), CVector(4.0f, 4.0f, 4.0f));//標識：左折
-	new CObjNonCol(&mSign_Right, CVector(13277.0f, 12.0f, -6939.0f), CVector(0.0f, 82.3f, 0.0f), CVector(4.0f, 4.0f, 4.0f));//標識：右折
-	
-	//優先度変更
-	CTaskManager::Get()->ChangePriority(mPlayer, 15);
-	if (CSceneTitle::mMode == CSceneTitle::EMODE_GRANDPRIX){
-		for (int i = 0; i < ENEMYS_AMOUNT; i++){
-			CTaskManager::Get()->ChangePriority(mEnemys[i], 15);
-		}		
-	}
-	//敵車のカラー情報の出力
-	PutCPUColor();
-	
+	new CObjNonCol(&mSign_Right, CVector(13277.0f, 12.0f, -6939.0f), CVector(0.0f, 82.3f, 0.0f), CVector(4.0f, 4.0f, 4.0f));//標識：右	
 }
 void CRaceCourceE::Update(){
 	CSceneRace::Update();

@@ -124,7 +124,9 @@ protected:
 	CSound SoundDecide;
 	CSound SoundPauseOn;
 	CSound SoundPauseOff;
-
+	CSound SoundFinalResult_GetTrophy;
+	CSound SoundFinalResult_NotGetTrophy;
+	CSound SoundApplause;
 
 	//コース2,3のモデル
 	CModel mCource02Road;
@@ -182,6 +184,9 @@ protected:
 	};
 	EStartPos mStartPos;
 
+	CVector StartPosVec = CVector(350.0f, -13.538f, -130.0f);//スタート位置の基点
+	CVector StartPosVecs[ENEMYS_AMOUNT + 1];//スタート位置(配列)
+
 	int list[LIST_SIZE];//
 public:
 	//次のシーンの取得
@@ -200,6 +205,7 @@ public:
 	void RenderBackMirror();
 	//影の描画
 	void RenderShadow();
+
 	//影の描画
 	void RenderShadowBM();
 	//フェードインをしてゲーム画面に入る
@@ -208,6 +214,8 @@ public:
 	void SceneChange();
 	//CPU車の色の出力
 	void PutCPUColor();
+
+	void InstantiateEnemy(CVector rot = CVector(0, 0, 0));
 	
 	//各コースのベストタイム
 	static int mRecords[COURCE_TOTAL + 1];//0:edit 1～:cource1, 2, ...	

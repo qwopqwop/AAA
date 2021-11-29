@@ -11,6 +11,8 @@
 #include "CRenderTexture.h"
 #include "CRectangle.h"
 
+#include "glut.h"
+
 //乱数を実装するインクルード群
 #include <stdio.h>
 #include <stdlib.h>
@@ -30,6 +32,9 @@ extern CSound SoundMoveCarsol;
 extern CSound SoundDecide;
 extern CSound SoundPauseOn;
 extern CSound SoundPauseOff;
+extern CSound SoundFinalResult_GetTrophy;
+extern CSound SoundFinalResult_NotGetTrophy;
+extern CSound SoundApplause;
 
 int CSceneRace::mBestTime = 0;//ここのmBestTimeの値は関係ない
 int CSceneRace::mRecords[6] = { 0, 10000, 20000, 23000, 595959, 40000};//{ｴﾃﾞｨﾀ,A,B,C,D,E}
@@ -58,6 +63,9 @@ bool CSceneRace::isEnableSpeedometer = false;//速度計
 
 #define OPENINGTIME 5*60
 #define WAITTIME_ENTER 4*60
+
+//アルファテスト
+#define USEALPHA 1
 
 CRenderTexture mRenderTexture;
 
@@ -99,7 +107,7 @@ void CSceneRace::Init() {
 	}
 	mCurrent_RaceNumber++;
 	
-	/*全コース共通のマテリアル*/
+	/*コース共通のマテリアルはCSceneRaceで読み込む*/
 	//車の読み込み
 	mRover.Load("material\\common_mat\\Rover1.obj", "material\\single_color\\white.mtl");//プレイヤー
 	mCarRed.Load("material\\common_mat\\Rover1.obj", "material\\single_color\\red.mtl");//以下敵の車
@@ -127,62 +135,7 @@ void CSceneRace::Init() {
 	mPole.Load("material\\common_mat\\cube.obj", "material\\common_mat\\soil.mtl");//ポール(木製)
 	mDashBoard.Load("material\\racing_mat\\dashboard.obj", "material\\racing_mat\\dashboard.mtl");//加速床
 	mJumper01.Load("material\\common_mat\\cube.obj", "material\\common_mat\\on.mtl");//ジャンプ台
-	/*コースによって読み込むマテリアルが変化*/
-	if (CSceneTitle::mCource == 1){
-		mCource01.Load("material\\racing_mat\\CourceNew01.obj", "material\\racing_mat\\CourceNew01.mtl");//路面
-		mGrass01.Load("material\\racing_mat\\GrassNew01.obj", "material\\racing_mat\\GrassNew01.mtl");//芝生
-		mFenceTop.Load("material\\racing_mat\\FenceTopNew.obj", "material\\racing_mat\\FenceTopNew.mtl");//柵(上面)
-		mFenceSide.Load("material\\racing_mat\\FenceSideNew.obj", "material\\racing_mat\\FenceSideNew.mtl");//柵(壁)
-		mCurb01.Load("material\\racing_mat\\Curb01.obj", "material\\racing_mat\\Curb01.mtl");//紅白タイル
-		mGoalTile01.Load("material\\racing_mat\\cource01_goaltile.obj", "material\\racing_mat\\cource01_goaltile.mtl");//＝白黒タイル
-	}
-	else if (CSceneTitle::mCource == 2){
-		mCource02Road.Load("material\\racing_mat\\cource2nd\\cource02road.obj", "material\\racing_mat\\cource2nd\\cource02road.mtl");
-		mCource02Wall.Load("material\\racing_mat\\cource2nd\\cource02wall.obj", "material\\racing_mat\\cource2nd\\cource02wall.mtl");
-		mCource02Jump.Load("material\\racing_mat\\cource2nd\\cource02jumper.obj", "material\\racing_mat\\cource2nd\\cource02jumper.mtl");
-	}
-	else if (CSceneTitle::mCource == 3){
-		mCource03Road.Load("material\\racing_mat\\stage3\\cource03road.obj", "material\\racing_mat\\stage3\\cource03road.mtl");
-		mCource03Wall.Load("material\\racing_mat\\stage3\\cource03wall.obj", "material\\racing_mat\\stage3\\cource03wall.mtl");
-		mCource03Fence.Load("material\\racing_mat\\stage3\\cource03fence.obj", "material\\racing_mat\\stage3\\cource03fence.mtl");
-	}
-	else if (CSceneTitle::mCource == 4){
-		//コースエディターのタイルの読み込み
-		mTile_Curve01_Floor.Load("material\\racing_mat\\stage_edit\\Curve01_floor.obj", "material\\racing_mat\\stage_edit\\Curve01_floor.mtl");
-		mTile_Curve01_Wall.Load("material\\racing_mat\\stage_edit\\Curve01_wall.obj", "material\\racing_mat\\stage_edit\\Curve01_wall.mtl");
-		mTile_Curve02_Floor.Load("material\\racing_mat\\stage_edit\\Curve02_floor.obj", "material\\racing_mat\\stage_edit\\Curve02_floor.mtl");
-		mTile_Curve02_Wall.Load("material\\racing_mat\\stage_edit\\Curve02_wall.obj", "material\\racing_mat\\stage_edit\\Curve02_wall.mtl");
-		mTile_Curve03_Floor.Load("material\\racing_mat\\stage_edit\\Curve03_floor.obj", "material\\racing_mat\\stage_edit\\Curve03_floor.mtl");
-		mTile_Curve03_Wall.Load("material\\racing_mat\\stage_edit\\Curve03_wall.obj", "material\\racing_mat\\stage_edit\\Curve03_wall.mtl");
-		mTile_Curve04_Floor.Load("material\\racing_mat\\stage_edit\\Curve04_floor.obj", "material\\racing_mat\\stage_edit\\Curve04_floor.mtl");
-		mTile_Curve04_Wall.Load("material\\racing_mat\\stage_edit\\Curve04_wall.obj", "material\\racing_mat\\stage_edit\\Curve04_wall.mtl");
-		mTile_Straight01_Floor.Load("material\\racing_mat\\stage_edit\\Straight01_floor.obj", "material\\racing_mat\\stage_edit\\Straight01_floor.mtl");
-		mTile_Straight01_Wall.Load("material\\racing_mat\\stage_edit\\Straight01_wall.obj", "material\\racing_mat\\stage_edit\\Straight01_wall.mtl");
-		mTile_Straight02_Floor.Load("material\\racing_mat\\stage_edit\\Straight02_floor.obj", "material\\racing_mat\\stage_edit\\Straight02_floor.mtl");
-		mTile_Straight02_Wall.Load("material\\racing_mat\\stage_edit\\Straight02_wall.obj", "material\\racing_mat\\stage_edit\\Straight02_wall.mtl");
-		mTile_Slope01_Floor.Load("material\\racing_mat\\stage_edit\\Slope01_floor.obj", "material\\racing_mat\\stage_edit\\Slope01_floor.mtl");
-		mTile_Slope01_Wall.Load("material\\racing_mat\\stage_edit\\Slope01_wall.obj", "material\\racing_mat\\stage_edit\\Slope01_wall.mtl");
-		mTile_Slope02_Floor.Load("material\\racing_mat\\stage_edit\\Slope02_floor.obj", "material\\racing_mat\\stage_edit\\Slope02_floor.mtl");
-		mTile_Slope02_Wall.Load("material\\racing_mat\\stage_edit\\Slope02_wall.obj", "material\\racing_mat\\stage_edit\\Slope02_wall.mtl");
-		mTile_Slope03_Floor.Load("material\\racing_mat\\stage_edit\\Slope03_floor.obj", "material\\racing_mat\\stage_edit\\Slope03_floor.mtl");
-		mTile_Slope03_Wall.Load("material\\racing_mat\\stage_edit\\Slope03_wall.obj", "material\\racing_mat\\stage_edit\\Slope03_wall.mtl");
-		mTile_Slope04_Floor.Load("material\\racing_mat\\stage_edit\\Slope04_floor.obj", "material\\racing_mat\\stage_edit\\Slope04_floor.mtl");
-		mTile_Slope04_Wall.Load("material\\racing_mat\\stage_edit\\Slope04_wall.obj", "material\\racing_mat\\stage_edit\\Slope04_wall.mtl");
-		mTile_Wide_Floor.Load("material\\racing_mat\\stage_edit\\Tile_WideF.obj", "material\\racing_mat\\stage_edit\\Tile_WideF.mtl");
-		mTile_Wide_Wall.Load("material\\racing_mat\\stage_edit\\Tile_WideW.obj", "material\\racing_mat\\stage_edit\\Tile_WideW.mtl");
-		mBlock_Floor.Load("material\\racing_mat\\stage_edit\\BlockF.obj", "material\\racing_mat\\stage_edit\\BlockF.mtl");
-		mBlock_Wall.Load("material\\racing_mat\\stage_edit\\BlockW.obj", "material\\racing_mat\\stage_edit\\BlockW.mtl");
-	}
-	else if (CSceneTitle::mCource == 5){
-		//コース05の読み込み
-		mCource05Wall.Load("material\\racing_mat\\stage5\\cource05wall.obj", "material\\racing_mat\\stage5\\cource05wall.mtl");
-		mCource05Mountain.Load("material\\racing_mat\\stage5\\cource05mountain.obj", "material\\racing_mat\\stage5\\cource05mountain.mtl");//全ての山共通
-		mCource05Road.Load("material\\racing_mat\\stage5\\cource05road2.obj", "material\\racing_mat\\stage5\\cource05road2.mtl");
-		mCource05Lake.Load("material\\racing_mat\\stage5\\cource05_lake.obj", "material\\racing_mat\\stage5\\cource05_lake.mtl");
-		mCource05Grass_Floor.Load("material\\racing_mat\\stage5\\cource05grassF03.obj", "material\\racing_mat\\stage5\\cource05grassF03.mtl");
-		mCource05Grass_Wall.Load("material\\racing_mat\\stage5\\cource05grass_wall.obj", "material\\racing_mat\\stage5\\cource05grass_wall.mtl");
-		mCource05GoalTile.Load("material\\racing_mat\\stage5\\Checker_Tile.obj", "material\\racing_mat\\stage5\\Checker_Tile.mtl");
-	}
+	
 	for (int i = 1; i <= COURCE_TOTAL; i++){
 		if (CSceneTitle::mCource == i){
 			//ベストタイムの読み込み
@@ -206,6 +159,9 @@ void CSceneRace::Init() {
 	SoundDecide.Load("SE\\Decision_Small(SF).wav");
 	SoundPauseOn.Load("SE\\button79.wav");
 	SoundPauseOff.Load("SE\\button80.wav");
+	SoundFinalResult_GetTrophy.Load("SE\\Onmtp-Flash06-1.wav");
+	SoundFinalResult_NotGetTrophy.Load("SE\\Cyber21-1.wav");
+	SoundApplause.Load("SE\\Cheers.wav");
 	
 	Texture_GoldTrophy.Load("texture\\trophy_gold.tga");
 	Texture_SilverTrophy.Load("texture\\trophy_silver.tga");
@@ -319,8 +275,15 @@ void CSceneRace::Init() {
 	/* もしＲの値がテクスチャの値以下なら真（つまり日向） */
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_FUNC, GL_LEQUAL);
 
-	/* 比較の結果を輝度値として得る */
+#if USEALPHA
+	/*比較の結果をアルファ値として得る*/
+	glTexParameteri(GL_TEXTURE_2D, GL_DEPTH_TEXTURE_MODE, GL_ALPHA);
+	/* アルファテストの比較関数（しきい値） */
+	glAlphaFunc(GL_GEQUAL, 0.5f);
+#else
+	/*比較の結果を輝度値として得る*/
 	glTexParameteri(GL_TEXTURE_2D, GL_DEPTH_TEXTURE_MODE, GL_LUMINANCE);
+#endif
 
 	/* テクスチャ座標に視点座標系における物体の座標値を用いる */
 	glTexGeni(GL_S, GL_TEXTURE_GEN_MODE, GL_EYE_LINEAR);
@@ -390,8 +353,20 @@ void CSceneRace::Update() {
 	Camera.mEye = e;
 
 	RenderShadow();//先に影を描画
+	const GLfloat lightcol[] = { 1.0f, 1.0f, 1.0f, 1.0f };
+	const GLfloat lightdim[] = { 0.2f, 0.2f, 0.2f, 0.2f };
+	const GLfloat lightblk[] = { 0.0f, 0.0f, 0.0f, 0.0f };
+	/* 光源の明るさを影の部分での明るさに設定 */
+	glLightfv(GL_LIGHT0, GL_DIFFUSE, lightdim);
+	glLightfv(GL_LIGHT0, GL_SPECULAR, lightblk);
+
 	//描画処理
 	CTaskManager::Get()->Render();//タスク	
+
+	/* 光源の明るさを影の部分での明るさに設定 */
+	glLightfv(GL_LIGHT0, GL_DIFFUSE, lightcol);
+	glLightfv(GL_LIGHT0, GL_SPECULAR, lightcol);
+
 	//衝突処理
 	CTaskManager::Get()->TaskCollision();
 	//削除処理
@@ -928,6 +903,14 @@ void CSceneRace::Render(){
 			char trophy_name[32];
 			CText::DrawString("Final Result", 280, 420, 12, 15, 2);
 
+			if (mPushEnter_WaitTime == WAITTIME_ENTER - 60){
+				if (rank <= 3){
+					SoundFinalResult_GetTrophy.Play();
+				}
+				else{
+					SoundFinalResult_NotGetTrophy.Play();
+				}
+			}
 			if (mPushEnter_WaitTime < WAITTIME_ENTER - 60){
 				if (rank == 1){      //1st
 					sprintf(result, "%dst", rank);
@@ -945,6 +928,9 @@ void CSceneRace::Render(){
 					sprintf(result, "%dth", rank);
 				}
 				CText::DrawString(result, 357, 337, 21, 25, 2);
+			}
+			if (mPushEnter_WaitTime == WAITTIME_ENTER - 120){
+				if (rank <= 3)SoundApplause.Play();//3位以内入賞で拍手
 			}
 			if (mPushEnter_WaitTime < WAITTIME_ENTER - 120){
 				//順位に応じて激励の言葉をかける
@@ -1611,13 +1597,20 @@ void CSceneRace::RenderShadow(){
 	glEnable(GL_TEXTURE_GEN_R);
 	glEnable(GL_TEXTURE_GEN_Q);
 
+#if USEALPHA
+	/* アルファテストを有効にして影の部分だけを描画する */
+	glEnable(GL_ALPHA_TEST);
+	///* 日向の部分がもとの図形に重ねて描かれるように奥行きの比較関数を変更する */
+	glDepthFunc(GL_LEQUAL);
+#endif
+	
 	const GLfloat lightcol[] = { 1.0f, 1.0f, 1.0f, 1.0f };
+	const GLfloat lightdim[] = { 0.2f, 0.2f, 0.2f, 0.2f };
+	const GLfloat lightblk[] = { 0.0f, 0.0f, 0.0f, 0.0f };
 	/* 光源の明るさを日向の部分での明るさに設定 */
 	glLightfv(GL_LIGHT0, GL_DIFFUSE, lightcol);
 	glLightfv(GL_LIGHT0, GL_SPECULAR, lightcol);
-	//************************************ Shadow Map
 
-	
 	//影の描画
 	if (isEnableShadow){
 		//コースの影の描画
@@ -1626,12 +1619,20 @@ void CSceneRace::RenderShadow(){
 				//テクスチャユニット0に切り替える
 				glActiveTexture(GL_TEXTURE0);
 				CObj::mpGrounds[i]->Render();
+				////CTaskManagerのRenderで描画すると処理がかなり重くなる
+				//CTaskManager::Get()->Render();
 				//テクスチャユニット1に切り替える
 				glActiveTexture(GL_TEXTURE1);
 			}
 		}		
 	}
-	
+
+#if USEALPHA
+	/* 奥行きの比較関数を元に戻す */
+	glDepthFunc(GL_LESS);
+	/* アルファテストを無効にする */
+	glDisable(GL_ALPHA_TEST);
+#endif	
 
 	//Shadow Map ************************************
 	/* テクスチャマッピングとテクスチャ座標の自動生成を無効にする */
@@ -1640,6 +1641,7 @@ void CSceneRace::RenderShadow(){
 	glDisable(GL_TEXTURE_GEN_R);
 	glDisable(GL_TEXTURE_GEN_Q);
 	glDisable(GL_TEXTURE_2D);
+
 	//テクスチャを解除する
 	glBindTexture(GL_TEXTURE_2D, 0);
 	/* テクスチャ変換行列を設定する */
@@ -1804,11 +1806,19 @@ void CSceneRace::RenderShadowBM(){
 	glEnable(GL_TEXTURE_GEN_R);
 	glEnable(GL_TEXTURE_GEN_Q);
 
+	
+#if USEALPHA
+	/* アルファテストを有効にして影の部分だけを描画する */
+	glEnable(GL_ALPHA_TEST);
+
+	/* 日向の部分がもとの図形に重ねて描かれるように奥行きの比較関数を変更する */
+	glDepthFunc(GL_LEQUAL);
+#endif
+
 	const GLfloat lightcol[] = { 1.0f, 1.0f, 1.0f, 1.0f };
 	/* 光源の明るさを日向の部分での明るさに設定 */
 	glLightfv(GL_LIGHT0, GL_DIFFUSE, lightcol);
 	glLightfv(GL_LIGHT0, GL_SPECULAR, lightcol);
-	//************************************ Shadow Map
 
 
 	//影の描画
@@ -1820,10 +1830,18 @@ void CSceneRace::RenderShadowBM(){
 				glActiveTexture(GL_TEXTURE0);
 				CObj::mpGrounds[i]->Render();
 				//テクスチャユニット1に切り替える
-				glActiveTexture(GL_TEXTURE1);
+				glActiveTexture(GL_TEXTURE1);				
 			}
 		}
 	}
+
+#if USEALPHA
+	/* 奥行きの比較関数を元に戻す */
+	glDepthFunc(GL_LESS);
+
+	/* アルファテストを無効にする */
+	glDisable(GL_ALPHA_TEST);
+#endif
 
 	//Shadow Map ************************************
 	/* テクスチャマッピングとテクスチャ座標の自動生成を無効にする */
@@ -1842,4 +1860,58 @@ void CSceneRace::RenderShadowBM(){
 
 	glActiveTexture(GL_TEXTURE0);
 	////************************************ Shadow Map
+}
+
+void CSceneRace::InstantiateEnemy(CVector rot){
+	
+	//GPモード限定で敵生成
+	if (CSceneTitle::mMode == CSceneTitle::EMODE_GRANDPRIX){
+		//敵車の生成
+		for (int i = 0; i < ENEMYS_AMOUNT; i++){
+			mEnemys[i] = new CEnemy();
+			if (i % 8 == 0){
+				mEnemys[i]->mpModel = &mCarBlue;
+			}
+			else if (i % 8 == 1){
+				mEnemys[i]->mpModel = &mCarPink;
+			}
+			else if (i % 8 == 2){
+				mEnemys[i]->mpModel = &mCarRed;
+			}
+			else if (i % 8 == 3){
+				mEnemys[i]->mpModel = &mCarGreen;
+			}
+			else if (i % 8 == 4){
+				mEnemys[i]->mpModel = &mCarYellow;
+			}
+			else if (i % 8 == 5){
+				mEnemys[i]->mpModel = &mCarBlack;
+			}
+			else if (i % 8 == 6){
+				mEnemys[i]->mpModel = &mCarGray;
+			}
+			else if (i % 8 == 7){
+				mEnemys[i]->mpModel = &mCarCyan;
+			}
+			//初期の配置座標を設定する
+			mEnemys[i]->mPosition = CVector(StartPosVecs[i + 1]);
+			mEnemys[i]->mRotation = rot;
+			mEnemys[i]->CCharacter::Update();
+			if (i == 0){
+				mEnemys[i]->mEnemyAI = CEnemy::ENEWBIE;
+			}
+		}
+	}
+
+
+	//優先度変更
+	CTaskManager::Get()->ChangePriority(mPlayer, 15);
+	if (CSceneTitle::mMode == CSceneTitle::EMODE_GRANDPRIX){
+		for (int i = 0; i < ENEMYS_AMOUNT; i++){
+			CTaskManager::Get()->ChangePriority(mEnemys[i], 15);
+		}
+	}
+	//敵車のカラー情報の出力
+	PutCPUColor();
+
 }

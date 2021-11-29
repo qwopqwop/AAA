@@ -12,10 +12,14 @@ void CRaceCourceB::Init(){
 	//シーンの設定
 	mScene = ERACE2;
 
+	mCource02Road.Load("material\\racing_mat\\cource2nd\\cource02road.obj", "material\\racing_mat\\cource2nd\\cource02road.mtl");
+	mCource02Wall.Load("material\\racing_mat\\cource2nd\\cource02wall.obj", "material\\racing_mat\\cource2nd\\cource02wall.mtl");
+	mCource02Jump.Load("material\\racing_mat\\cource2nd\\cource02jumper.obj", "material\\racing_mat\\cource2nd\\cource02jumper.mtl");
+
 	CSceneRace::Init();
 
-	CVector StartPosVec = CVector(2436.0f, -10.0f, -2570.0f);//スタート位置の基点
-	CVector StartPosVecs[ENEMYS_AMOUNT + 1];//スタート位置(配列)
+	StartPosVec = CVector(2436.0f, -10.0f, -2570.0f);//スタート位置の基点
+	//CVector StartPosVecs[ENEMYS_AMOUNT + 1];//スタート位置(配列)
 	for (int i = 0; i < LIST_SIZE; i++) {
 		StartPosVecs[i] = StartPosVec + CVector(-0.1f*list[i], 0.0f, -80.0f*list[i]);
 		if (list[i] % 2 == 1){
@@ -41,44 +45,55 @@ void CRaceCourceB::Init(){
 	float height = 13.5f;
 	new CRoadManager(&mCource02Road, CVector(0.0f, -220.0f, 0.0f), CVector(0.0f, -139.3f, 0.0f), CVector(mtsize, height, mtsize), mPlayer->mPosition, CVector(0.0f, 0.0f, 1.0f), 120.0f, 0.0f);
 	
-	//GPモードのみ敵が生成される
-	if (CSceneTitle::mMode == CSceneTitle::EMODE_GRANDPRIX){
-		//敵車の生成
-		for (int i = 0; i < ENEMYS_AMOUNT; i++){
-			mEnemys[i] = new CEnemy();
-			if (i % 8 == 0){
-				mEnemys[i]->mpModel = &mCarBlue;
-			}
-			else if (i % 8 == 1){
-				mEnemys[i]->mpModel = &mCarPink;
-			}
-			else if (i % 8 == 2){
-				mEnemys[i]->mpModel = &mCarRed;
-			}
-			else if (i % 8 == 3){
-				mEnemys[i]->mpModel = &mCarGreen;
-			}
-			else if (i % 8 == 4){
-				mEnemys[i]->mpModel = &mCarYellow;
-			}
-			else if (i % 8 == 5){
-				mEnemys[i]->mpModel = &mCarBlack;
-			}
-			else if (i % 8 == 6){
-				mEnemys[i]->mpModel = &mCarGray;
-			}
-			else if (i % 8 == 7){
-				mEnemys[i]->mpModel = &mCarCyan;
-			}
-			//初期の配置座標を設定する
-			mEnemys[i]->mPosition = CVector(2444.0f, -13.538f, -2650.0f - 80.0f*i);
-			if (i % 2 == 0){
-				mEnemys[i]->mPosition.mX -= 80.0f;
-			}
-			mEnemys[i]->mPosition = CVector(StartPosVecs[i + 1]);
-			mEnemys[i]->CCharacter::Update();
-		}
-	}
+	////GPモードのみ敵が生成される
+	//if (CSceneTitle::mMode == CSceneTitle::EMODE_GRANDPRIX){
+	//	//敵車の生成
+	//	for (int i = 0; i < ENEMYS_AMOUNT; i++){
+	//		mEnemys[i] = new CEnemy();
+	//		if (i % 8 == 0){
+	//			mEnemys[i]->mpModel = &mCarBlue;
+	//		}
+	//		else if (i % 8 == 1){
+	//			mEnemys[i]->mpModel = &mCarPink;
+	//		}
+	//		else if (i % 8 == 2){
+	//			mEnemys[i]->mpModel = &mCarRed;
+	//		}
+	//		else if (i % 8 == 3){
+	//			mEnemys[i]->mpModel = &mCarGreen;
+	//		}
+	//		else if (i % 8 == 4){
+	//			mEnemys[i]->mpModel = &mCarYellow;
+	//		}
+	//		else if (i % 8 == 5){
+	//			mEnemys[i]->mpModel = &mCarBlack;
+	//		}
+	//		else if (i % 8 == 6){
+	//			mEnemys[i]->mpModel = &mCarGray;
+	//		}
+	//		else if (i % 8 == 7){
+	//			mEnemys[i]->mpModel = &mCarCyan;
+	//		}
+	//		//初期の配置座標を設定する
+	//		mEnemys[i]->mPosition = CVector(2444.0f, -13.538f, -2650.0f - 80.0f*i);
+	//		if (i % 2 == 0){
+	//			mEnemys[i]->mPosition.mX -= 80.0f;
+	//		}
+	//		mEnemys[i]->mPosition = CVector(StartPosVecs[i + 1]);
+	//		mEnemys[i]->CCharacter::Update();
+	//	}
+	//}
+	////優先度変更
+	//CTaskManager::Get()->ChangePriority(mPlayer, 15);
+	//if (CSceneTitle::mMode == CSceneTitle::EMODE_GRANDPRIX){
+	//	for (int i = 0; i < ENEMYS_AMOUNT; i++){
+	//		CTaskManager::Get()->ChangePriority(mEnemys[i], 15);
+	//	}
+	//}
+	////敵車のカラー情報の出力
+	//PutCPUColor();
+
+	CSceneRace::InstantiateEnemy();
 	
 
 	/* ※透明度の高い物から先に描画する */
@@ -96,15 +111,7 @@ void CRaceCourceB::Init(){
 	new CObjNonCol(&mMiniGoal, CVector(2546.5f, -1.0f, -2530.0f), CVector(0.0f, 0.0f, 0.0f), CVector(4.6f, 10.0f, 4.6f));
 	new CObjNonCol(&mMiniGoal, CVector(2317.7f, -1.0f - 0.05f, -2530.0f), CVector(0.0f, 180.0f, 0.0f), CVector(4.6f, 10.0f, 4.6f));
 
-	//優先度変更
-	CTaskManager::Get()->ChangePriority(mPlayer, 15);
-	if (CSceneTitle::mMode == CSceneTitle::EMODE_GRANDPRIX){
-		for (int i = 0; i < ENEMYS_AMOUNT; i++){
-			CTaskManager::Get()->ChangePriority(mEnemys[i], 15);
-		}
-	}	
-	//敵車のカラー情報の出力
-	PutCPUColor();
+	
 	
 }
 void CRaceCourceB::Update(){

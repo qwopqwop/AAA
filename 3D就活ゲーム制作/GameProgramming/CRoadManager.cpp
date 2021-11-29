@@ -19,6 +19,29 @@ void CRoadManager::Init(CModel* pmodel, const CVector& pos, const CVector& rot, 
 	float rad = radius;
 	CCharacter::Update();	
 
+
+	//作成中
+	//三角形ポリゴンの重心座標を求めて配列にする
+	int tsize = pmodel->mTriangles.size();
+	CVector *Parray;
+	Parray = new CVector[tsize];
+	for (int i = 0; i < tsize; i++){
+		CVector v[3], sv;
+		v[0] = pmodel->mTriangles[i].mV[0] * mMatrix;
+		v[1] = pmodel->mTriangles[i].mV[1] * mMatrix;
+		v[2] = pmodel->mTriangles[i].mV[2] * mMatrix;
+
+		printf("0: x%8.1f, y%8.1f, z%8.1f\n", v[0].mX, v[0].mY, v[0].mZ);
+		printf("1: x%8.1f, y%8.1f, z%8.1f\n", v[1].mX, v[1].mY, v[1].mZ);
+		printf("2: x%8.1f, y%8.1f, z%8.1f\n", v[2].mX, v[2].mY, v[2].mZ);
+		sv = CVector((v[0].mX + v[1].mX + v[2].mX) / 3.0f, (v[0].mY + v[1].mY + v[2].mY) / 3.0f, (v[0].mZ + v[1].mZ + v[2].mZ) / 3.0f);
+		//配列のベクトルの値に、三角形ポリゴンの重心座標を代入していく
+		Parray[i] = sv;
+		printf("?: x%8.1f, y%8.1f, z%8.1f\n\n", Parray[i].mX, Parray[i].mY, Parray[i].mZ);
+	}
+
+
+
 	//コースAのポイントはここで作成
 	if (CSceneTitle::mCource == 1){
 		CPoint *next, *first;
@@ -75,6 +98,7 @@ void CRoadManager::Init(CModel* pmodel, const CVector& pos, const CVector& rot, 
 
 	//三角形ポリゴンの重心座標を求めて配列にする
 	int triangle_size = pmodel->mTriangles.size();	
+	
 	//ポリゴンの数分ベクトルの配列を作成する
 	CVector *polygonarray;
 	polygonarray = new CVector[triangle_size];

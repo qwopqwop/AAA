@@ -32,7 +32,7 @@ private:
 
 	//次のポイントまでに出す最高速度
 	float mMaxSpeed_PtoP;
-	
+	float mMaxSpeed;
 	//コライダ
 	CCollider mSearch;
 
