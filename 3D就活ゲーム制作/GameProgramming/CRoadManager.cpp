@@ -25,20 +25,42 @@ void CRoadManager::Init(CModel* pmodel, const CVector& pos, const CVector& rot, 
 	int tsize = pmodel->mTriangles.size();
 	CVector *Parray;
 	Parray = new CVector[tsize];
+
+	CVector *Pararira;
+	Pararira = new CVector[tsize*3];
+
 	for (int i = 0; i < tsize; i++){
-		CVector v[3], sv;
+		CVector v[4], sv;
 		v[0] = pmodel->mTriangles[i].mV[0] * mMatrix;
 		v[1] = pmodel->mTriangles[i].mV[1] * mMatrix;
 		v[2] = pmodel->mTriangles[i].mV[2] * mMatrix;
 
+		printf("%d枚目\n", i);
 		printf("0: x%8.1f, y%8.1f, z%8.1f\n", v[0].mX, v[0].mY, v[0].mZ);
 		printf("1: x%8.1f, y%8.1f, z%8.1f\n", v[1].mX, v[1].mY, v[1].mZ);
 		printf("2: x%8.1f, y%8.1f, z%8.1f\n", v[2].mX, v[2].mY, v[2].mZ);
-		sv = CVector((v[0].mX + v[1].mX + v[2].mX) / 3.0f, (v[0].mY + v[1].mY + v[2].mY) / 3.0f, (v[0].mZ + v[1].mZ + v[2].mZ) / 3.0f);
-		//配列のベクトルの値に、三角形ポリゴンの重心座標を代入していく
-		Parray[i] = sv;
-		printf("?: x%8.1f, y%8.1f, z%8.1f\n\n", Parray[i].mX, Parray[i].mY, Parray[i].mZ);
+		//sv = CVector((v[0].mX + v[1].mX + v[2].mX) / 3.0f, (v[0].mY + v[1].mY + v[2].mY) / 3.0f, (v[0].mZ + v[1].mZ + v[2].mZ) / 3.0f);
+		////配列のベクトルの値に、三角形ポリゴンの重心座標を代入していく
+		//Parray[i] = sv;
+		//printf("?: x%8.1f, y%8.1f, z%8.1f\n\n", Parray[i].mX, Parray[i].mY, Parray[i].mZ);
+
+
+
+		for (int j = i + 1; j < tsize; j++){
+			if (v[i].mX == v[j].mX
+				&& v[i].mY == v[j].mY
+				&& v[i].mZ == v[j].mZ){
+				printf("---!!!---");
+			}
+		}
+		
+		
+		/*printf("%d枚目\n", i);
+		printf("0: x%8.1f, y%8.1f, z%8.1f\n", v[0].mX, v[0].mY, v[0].mZ);
+		printf("1: x%8.1f, y%8.1f, z%8.1f\n", v[1].mX, v[1].mY, v[1].mZ);
+		printf("2: x%8.1f, y%8.1f, z%8.1f\n", v[2].mX, v[2].mY, v[2].mZ);*/
 	}
+
 
 
 
@@ -63,6 +85,7 @@ void CRoadManager::Init(CModel* pmodel, const CVector& pos, const CVector& rot, 
 		CEnemy::mPoint = next->GetNextPoint();
 		return;
 	}
+	//コースBのポイントもここで作成
 	else if (CSceneTitle::mCource == 2){
 		CPoint *next, *first;
 		first = next = new CPoint(CVector(2128.0f*1.1f, 30.0f, -3026.0f*1.1f), rad, nullptr);

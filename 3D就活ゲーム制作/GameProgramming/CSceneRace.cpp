@@ -353,13 +353,14 @@ void CSceneRace::Update() {
 	Camera.mEye = e;
 
 	RenderShadow();//先に影を描画
+
 	const GLfloat lightcol[] = { 1.0f, 1.0f, 1.0f, 1.0f };
 	const GLfloat lightdim[] = { 0.2f, 0.2f, 0.2f, 0.2f };
 	const GLfloat lightblk[] = { 0.0f, 0.0f, 0.0f, 0.0f };
 	/* 光源の明るさを影の部分での明るさに設定 */
 	glLightfv(GL_LIGHT0, GL_DIFFUSE, lightdim);
 	glLightfv(GL_LIGHT0, GL_SPECULAR, lightblk);
-
+//
 	//描画処理
 	CTaskManager::Get()->Render();//タスク	
 
@@ -1618,9 +1619,9 @@ void CSceneRace::RenderShadow(){
 			if (CObj::mpGrounds[i] != NULL){
 				//テクスチャユニット0に切り替える
 				glActiveTexture(GL_TEXTURE0);
-				CObj::mpGrounds[i]->Render();
-				////CTaskManagerのRenderで描画すると処理がかなり重くなる
-				//CTaskManager::Get()->Render();
+				//CObj::mpGrounds[i]->Render();
+				//CTaskManagerのRenderで描画すると処理がかなり重くなる
+				CTaskManager::Get()->Render();
 				//テクスチャユニット1に切り替える
 				glActiveTexture(GL_TEXTURE1);
 			}
