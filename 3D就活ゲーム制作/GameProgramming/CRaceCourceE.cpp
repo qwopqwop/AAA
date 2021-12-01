@@ -34,6 +34,7 @@ void CRaceCourceE::Init(){
 		}
 	}
 
+
 	//プレイヤーの生成
 	mPlayer = new CPlayer();
 	mPlayer->mpModel = &mCarWhite;
@@ -46,12 +47,43 @@ void CRaceCourceE::Init(){
 	//カメラの生成
 	mCamRange = new CCameraRange();
 	mCam = new CCameraPos();
-
 	//コース全体のサイズ感を設定
 	float mtsize = 35.0f;
 	float height = 11.0f;
 	new CRoadManager(&mCource05Road, CVector(0.0f, 21.0f, 0.0f), CVector(), CVector(mtsize, height, mtsize), mPlayer->mPosition, CVector(0.0f, 0.0f, -1.0f), 320.0f, 0.0f);//
 	
+	/*CSceneRace::InstantiatePlayer(CVector(0, -145, 0));
+	CSceneRace::SetRespawnPoint(1);*/
+
+	//for (int i = 0; i < LIST_SIZE; i++) {
+	//	StartPosVecs[i] = StartPosVec + CVector(-0.1f*list[i], 0.0f, -80.0f*list[i]);
+	//	if (list[i] % 2 == 1){
+	//		StartPosVecs[i].mX -= 80.0f;
+	//	}
+	//	printf("%d, ", list[i]);
+	//}
+	//printf("\n");
+	////プレイヤーの生成
+	//mPlayer = new CPlayer();
+	//mPlayer->mpModel = &mCarWhite;
+	////プレイヤーのリスポーンするCheckPointの設定
+	//mPlayer->SetRespawnPoint(0, StartPosVecs[0], CVector(0.0f, 0.0f, 0.0f));
+	////mPlayer->SetRespawnPoint(0, CVector(350.0f, -13.538f, -130.0f), CVector(0.0f, 0.0f, 0.0f));
+	//mPlayer->SetRespawnPoint(1, CVector(-80.0f, -13.538f, 2175.0f), CVector(0.0f, -55.0f, 0.0f));
+	//mPlayer->SetRespawnPoint(2, CVector(-1620.0f, -13.538f, 450.0f), CVector(0.0f, -175.0f, 0.0f));
+	//mPlayer->SetRespawnPoint(3, CVector(-1212.0f, -13.538f, -1616.0f), CVector(0.0f, 120.0f, 0.0f));
+	//mPlayer->GetReady();
+	////カメラの生成
+	//mCamRange = new CCameraRange();
+	//mCam = new CCameraPos();
+	////コースの生成//床と壁で分割して処理を区別する
+	////コース全体のサイズ感を設定
+	//float mtsize = 50.0f;
+	//float height = 2.0f;
+	//new CRoadManager(&mCource01, CVector(-360.0f, 5.0f - 33.0f, 230.0f), CVector(), CVector(mtsize, height, mtsize), mPlayer->mPosition, CVector(0.0f, 0.0f, 1.0f), 500.0f, 0.0f);
+
+
+
 	////GPモードのみ敵が生成される
 	//if (CSceneTitle::mMode == CSceneTitle::EMODE_GRANDPRIX){
 	//	//敵車の生成

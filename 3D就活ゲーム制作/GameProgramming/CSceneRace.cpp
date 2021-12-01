@@ -98,17 +98,19 @@ void CSceneRace::Init() {
 	CText::mFont3.Load("font\\FontDIY.tga");
 	CText::mFont3.SetRowCol(8, 176 / 11);
 
-	//現在コース数が初期化されていた場合はプレイヤー、ライバルのポイントを初期化
+	//現在のコース数が初期化されていた場合はプレイヤー、ライバルのポイントを初期化
 	if (mCurrent_RaceNumber == 0){
 		mTotalPoint = 0;
 		for (int i = 0; i < ENEMYS_AMOUNT; i++){
 			mTotalPoint_Enemys[i] = 0;
 		}		
 	}
-	mCurrent_RaceNumber++;
+	mCurrent_RaceNumber++;//現コース数+1
 	
 	/*コース共通のマテリアルはCSceneRaceで読み込む*/
 	//車の読み込み
+	mCar.Load("material\\Car2.obj", "material\\single_color\\white.mtl");//プレイヤー
+
 	mRover.Load("material\\common_mat\\Rover1.obj", "material\\single_color\\white.mtl");//プレイヤー
 	mCarRed.Load("material\\common_mat\\Rover1.obj", "material\\single_color\\red.mtl");//以下敵の車
 	mCarBlue.Load("material\\common_mat\\Rover1.obj", "material\\single_color\\blue.mtl");
@@ -148,7 +150,7 @@ void CSceneRace::Init() {
 			if (i == 5)BGM.Load("BGM\\revolumed_Go_on_the_mountain_road.wav");
 		}		
 	}
-
+	//ジングル(短BGM)の読み込み
 	JingleOpening.Load("SE\\jingle19.wav");
 	//効果音の読み込み//主にレース中
 	SoundCountDown.Load("SE\\Countdown01-5.wav");
@@ -355,7 +357,7 @@ void CSceneRace::Update() {
 	RenderShadow();//先に影を描画
 
 	const GLfloat lightcol[] = { 1.0f, 1.0f, 1.0f, 1.0f };
-	const GLfloat lightdim[] = { 0.2f, 0.2f, 0.2f, 0.2f };
+	const GLfloat lightdim[] = { 0.4f, 0.4f, 0.4f, 0.2f };
 	const GLfloat lightblk[] = { 0.0f, 0.0f, 0.0f, 0.0f };
 	/* 光源の明るさを影の部分での明るさに設定 */
 	glLightfv(GL_LIGHT0, GL_DIFFUSE, lightdim);
@@ -1373,12 +1375,21 @@ void CSceneRace::RenderBackMirror()
 	//レンダーテクスチャ開始
 	mRenderTexture.Start();
 
+	const GLfloat lightcol[] = { 1.0f, 1.0f, 1.0f, 1.0f };
+	const GLfloat lightdim[] = { 0.4f, 0.4f, 0.4f, 0.2f };
+	const GLfloat lightblk[] = { 0.0f, 0.0f, 0.0f, 0.0f };
 	//バックミラーの描画
 	if (isEnableShadow){
 		RenderShadowBM();
 	}
 	//オブジェクトの描画
+	/* 光源の明るさを影の部分での明るさに設定 */
+	glLightfv(GL_LIGHT0, GL_DIFFUSE, lightdim);
+	glLightfv(GL_LIGHT0, GL_SPECULAR, lightblk);
 	CTaskManager::Get()->Render();
+	/* 光源の明るさを影の部分での明るさに設定 */
+	glLightfv(GL_LIGHT0, GL_DIFFUSE, lightcol);
+	glLightfv(GL_LIGHT0, GL_SPECULAR, lightcol);
 	//レンダーテクスチャ終了
 	mRenderTexture.End();
 
@@ -1574,6 +1585,14 @@ void CSceneRace::RenderShadow(){
 	/* 光源の位置を設定する */
 	//glLightfv(GL_LIGHT0, GL_POSITION, lightpos);
 
+	for (int i = 0; i < ENEMYS_AMOUNT; i++)
+	{
+		if (CSceneTitle::mMode == CSceneTitle::EMODE_GRANDPRIX){
+			mEnemys[i]->Render();
+		}		
+	}
+	mPlayer->Render();
+
 	/* テクスチャ変換行列を設定する */
 	glMatrixMode(GL_TEXTURE);
 	glLoadIdentity();
@@ -1614,18 +1633,22 @@ void CSceneRace::RenderShadow(){
 
 	//影の描画
 	if (isEnableShadow){
-		//コースの影の描画
-		for (int i = 0; i < CObj::mObject_Limit; i++){
-			if (CObj::mpGrounds[i] != NULL){
-				//テクスチャユニット0に切り替える
-				glActiveTexture(GL_TEXTURE0);
-				//CObj::mpGrounds[i]->Render();
-				//CTaskManagerのRenderで描画すると処理がかなり重くなる
-				CTaskManager::Get()->Render();
-				//テクスチャユニット1に切り替える
-				glActiveTexture(GL_TEXTURE1);
-			}
-		}		
+		////コースの影の描画
+		//for (int i = 0; i < CObj::mObject_Limit; i++){
+		//	if (CObj::mpGrounds[i] != NULL){
+		//		//テクスチャユニット0に切り替える
+		//		glActiveTexture(GL_TEXTURE0);
+		//		CObj::mpGrounds[i]->Render();				
+		//		//テクスチャユニット1に切り替える
+		//		glActiveTexture(GL_TEXTURE1);
+		//	}
+		//}
+
+		//テクスチャユニット0に切り替える
+		glActiveTexture(GL_TEXTURE0);
+		CTaskManager::Get()->Render();
+		//テクスチャユニット1に切り替える
+		glActiveTexture(GL_TEXTURE1);
 	}
 
 #if USEALPHA
@@ -1783,6 +1806,14 @@ void CSceneRace::RenderShadowBM(){
 	CMatrix modelviewCamera;
 	glGetFloatv(GL_MODELVIEW_MATRIX, modelviewCamera.mM[0]);
 
+	for (int i = 0; i < ENEMYS_AMOUNT; i++)
+	{
+		if (CSceneTitle::mMode == CSceneTitle::EMODE_GRANDPRIX){
+			mEnemys[i]->Render();
+		}
+	}
+	mPlayer->Render();
+
 	/* テクスチャ変換行列を設定する */
 	glMatrixMode(GL_TEXTURE);
 	glLoadIdentity();
@@ -1797,8 +1828,12 @@ void CSceneRace::RenderShadowBM(){
 	/* 現在のモデルビュー変換の逆変換をかけておく */
 	glMultMatrixf(modelviewCamera.GetInverse().mM[0]);
 
+	
+
 	/* モデルビュー変換行列に戻す */
 	glMatrixMode(GL_MODELVIEW);
+
+	
 
 	/* テクスチャマッピングとテクスチャ座標の自動生成を有効にする */
 	glEnable(GL_TEXTURE_2D);
@@ -1824,16 +1859,22 @@ void CSceneRace::RenderShadowBM(){
 
 	//影の描画
 	if (isEnableShadow){
-		//コースの影の描画
-		for (int i = 0; i < CObj::mObject_Limit; i++){
-			if (CObj::mpGrounds[i] != NULL){
-				//テクスチャユニット0に切り替える
-				glActiveTexture(GL_TEXTURE0);
-				CObj::mpGrounds[i]->Render();
-				//テクスチャユニット1に切り替える
-				glActiveTexture(GL_TEXTURE1);				
-			}
-		}
+		////コースの影の描画
+		//for (int i = 0; i < CObj::mObject_Limit; i++){
+		//	if (CObj::mpGrounds[i] != NULL){
+		//		//テクスチャユニット0に切り替える
+		//		glActiveTexture(GL_TEXTURE0);
+		//		CObj::mpGrounds[i]->Render();
+		//		//テクスチャユニット1に切り替える
+		//		glActiveTexture(GL_TEXTURE1);				
+		//	}
+		//}
+
+		//テクスチャユニット0に切り替える
+		glActiveTexture(GL_TEXTURE0);
+		CTaskManager::Get()->Render();
+		//テクスチャユニット1に切り替える
+		glActiveTexture(GL_TEXTURE1);
 	}
 
 #if USEALPHA
@@ -1863,8 +1904,7 @@ void CSceneRace::RenderShadowBM(){
 	////************************************ Shadow Map
 }
 
-void CSceneRace::InstantiateEnemy(CVector rot){
-	
+void CSceneRace::InstantiateEnemy(CVector rot){	
 	//GPモード限定で敵生成
 	if (CSceneTitle::mMode == CSceneTitle::EMODE_GRANDPRIX){
 		//敵車の生成
@@ -1903,8 +1943,6 @@ void CSceneRace::InstantiateEnemy(CVector rot){
 			}
 		}
 	}
-
-
 	//優先度変更
 	CTaskManager::Get()->ChangePriority(mPlayer, 15);
 	if (CSceneTitle::mMode == CSceneTitle::EMODE_GRANDPRIX){
@@ -1914,5 +1952,4 @@ void CSceneRace::InstantiateEnemy(CVector rot){
 	}
 	//敵車のカラー情報の出力
 	PutCPUColor();
-
 }

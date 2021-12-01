@@ -84,6 +84,7 @@ private:
 	CTexture Texture_SilverTrophy;
 	CTexture Texture_BronzeTrophy;
 protected:
+	CModel mCar;
 	CModel mRover;
 	CModel mCarRed;
 	CModel mCarBlue;

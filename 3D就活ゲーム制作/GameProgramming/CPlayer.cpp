@@ -57,10 +57,13 @@ CPlayer *CPlayer::mpPlayer = 0;
 CPlayer::CPlayer()
 :mColBody(this, CVector(0.0f, 4.0f + 1.0f, 0.5f), CVector(0.0f, 0.0f, 0.0f), CVector(1.0f, 1.0f, 1.0f), 10.0f*3)
 , mColTire(this, CVector(0.0f, -16.0f + 15.0f + 1.0f, 0.5f), CVector(0.0f, 0.0f, 0.0f), CVector(1.0f, 1.0f, 1.0f), 10.0f * 3)
+//: mColBody(this, CVector(0.0f, 0.0f+1.0f, 0.0f), CVector(0.0f, 0.0f, 0.0f), CVector(1.0f, 1.0f, 1.0f), 10.0f * 3)
+//, mColTire(this, CVector(0.0f, -5.0f+1.0f, 0.0f), CVector(0.0f, 0.0f, 0.0f), CVector(1.0f, 1.0f, 1.0f), 10.0f * 3)
 {
 	mpPlayer = this;
 
 	mScale = CVector(7.5f, 7.5f, 7.5f);
+	//mScale = CVector(32.5f, 32.5f, 32.5f);
 
 	mVelocityJump = 0.0f;
 	mADMoveX = 0.0f;  mWSMoveZ = 0.0f;

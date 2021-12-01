@@ -22,8 +22,10 @@ void CRaceCourceA::Init(){
 	mCurb01.Load("material\\racing_mat\\Curb01.obj", "material\\racing_mat\\Curb01.mtl");//紅白タイル
 	mGoalTile01.Load("material\\racing_mat\\cource01_goaltile.obj", "material\\racing_mat\\cource01_goaltile.mtl");//＝白黒タイル
 
+
+
 	CSceneRace::Init();
-		
+
 	for (int i = 0; i < LIST_SIZE; i++) {
 		StartPosVecs[i] = StartPosVec + CVector(-0.1f*list[i], 0.0f, -80.0f*list[i]);
 		if (list[i] % 2 == 1){
@@ -36,6 +38,7 @@ void CRaceCourceA::Init(){
 	//プレイヤーの生成
 	mPlayer = new CPlayer();
 	mPlayer->mpModel = &mCarWhite;
+	//mPlayer->mpModel = &mCar;
 
 	//プレイヤーのリスポーンするCheckPointの設定
 	mPlayer->SetRespawnPoint(0, StartPosVecs[0], CVector(0.0f, 0.0f, 0.0f));
