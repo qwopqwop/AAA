@@ -65,7 +65,7 @@ bool CSceneRace::isEnableSpeedometer = false;//速度計
 #define WAITTIME_ENTER 4*60
 
 //アルファテスト
-#define USEALPHA 1
+#define USEALPHA 0
 
 CRenderTexture mRenderTexture;
 
@@ -356,19 +356,26 @@ void CSceneRace::Update() {
 
 	RenderShadow();//先に影を描画
 
+#if USEALPHA
 	const GLfloat lightcol[] = { 1.0f, 1.0f, 1.0f, 1.0f };
 	const GLfloat lightdim[] = { 0.4f, 0.4f, 0.4f, 0.2f };
 	const GLfloat lightblk[] = { 0.0f, 0.0f, 0.0f, 0.0f };
 	/* 光源の明るさを影の部分での明るさに設定 */
 	glLightfv(GL_LIGHT0, GL_DIFFUSE, lightdim);
 	glLightfv(GL_LIGHT0, GL_SPECULAR, lightblk);
-//
+	
 	//描画処理
 	CTaskManager::Get()->Render();//タスク	
 
 	/* 光源の明るさを影の部分での明るさに設定 */
 	glLightfv(GL_LIGHT0, GL_DIFFUSE, lightcol);
 	glLightfv(GL_LIGHT0, GL_SPECULAR, lightcol);
+#else
+	//描画処理
+	CTaskManager::Get()->Render();//タスク	
+#endif
+
+	
 
 	//衝突処理
 	CTaskManager::Get()->TaskCollision();
@@ -1382,6 +1389,7 @@ void CSceneRace::RenderBackMirror()
 	if (isEnableShadow){
 		RenderShadowBM();
 	}
+#if USEALPHA
 	//オブジェクトの描画
 	/* 光源の明るさを影の部分での明るさに設定 */
 	glLightfv(GL_LIGHT0, GL_DIFFUSE, lightdim);
@@ -1390,6 +1398,8 @@ void CSceneRace::RenderBackMirror()
 	/* 光源の明るさを影の部分での明るさに設定 */
 	glLightfv(GL_LIGHT0, GL_DIFFUSE, lightcol);
 	glLightfv(GL_LIGHT0, GL_SPECULAR, lightcol);
+#endif
+	
 	//レンダーテクスチャ終了
 	mRenderTexture.End();
 
@@ -1585,13 +1595,17 @@ void CSceneRace::RenderShadow(){
 	/* 光源の位置を設定する */
 	//glLightfv(GL_LIGHT0, GL_POSITION, lightpos);
 
+#if USEALPHA
+	//プレイヤー、ライバルを先に描画
 	for (int i = 0; i < ENEMYS_AMOUNT; i++)
 	{
 		if (CSceneTitle::mMode == CSceneTitle::EMODE_GRANDPRIX){
 			mEnemys[i]->Render();
-		}		
+		}
 	}
 	mPlayer->Render();
+#endif
+	
 
 	/* テクスチャ変換行列を設定する */
 	glMatrixMode(GL_TEXTURE);
@@ -1624,13 +1638,13 @@ void CSceneRace::RenderShadow(){
 	glDepthFunc(GL_LEQUAL);
 #endif
 	
+#if USEALPHA
 	const GLfloat lightcol[] = { 1.0f, 1.0f, 1.0f, 1.0f };
 	const GLfloat lightdim[] = { 0.2f, 0.2f, 0.2f, 0.2f };
 	const GLfloat lightblk[] = { 0.0f, 0.0f, 0.0f, 0.0f };
 	/* 光源の明るさを日向の部分での明るさに設定 */
 	glLightfv(GL_LIGHT0, GL_DIFFUSE, lightcol);
 	glLightfv(GL_LIGHT0, GL_SPECULAR, lightcol);
-
 	//影の描画
 	if (isEnableShadow){
 		////コースの影の描画
@@ -1643,13 +1657,40 @@ void CSceneRace::RenderShadow(){
 		//		glActiveTexture(GL_TEXTURE1);
 		//	}
 		//}
-
 		//テクスチャユニット0に切り替える
 		glActiveTexture(GL_TEXTURE0);
 		CTaskManager::Get()->Render();
 		//テクスチャユニット1に切り替える
 		glActiveTexture(GL_TEXTURE1);
 	}
+#else
+	//const GLfloat lightcol[] = { 1.0f, 1.0f, 1.0f, 1.0f };
+	//const GLfloat lightdim[] = { 0.2f, 0.2f, 0.2f, 0.2f };
+	//const GLfloat lightblk[] = { 0.0f, 0.0f, 0.0f, 0.0f };
+	///* 光源の明るさを日向の部分での明るさに設定 */
+	//glLightfv(GL_LIGHT0, GL_DIFFUSE, lightcol);
+	//glLightfv(GL_LIGHT0, GL_SPECULAR, lightcol);
+	//影の描画
+	if (isEnableShadow){
+		//コースの影の描画
+		for (int i = 0; i < CObj::mObject_Limit; i++){
+			if (CObj::mpGrounds[i] != NULL){
+				//テクスチャユニット0に切り替える
+				glActiveTexture(GL_TEXTURE0);
+				CObj::mpGrounds[i]->Render();				
+				//テクスチャユニット1に切り替える
+				glActiveTexture(GL_TEXTURE1);
+			}
+		}
+		/*テクスチャユニット0に切り替える
+		glActiveTexture(GL_TEXTURE0);
+		CTaskManager::Get()->Render();
+		テクスチャユニット1に切り替える
+		glActiveTexture(GL_TEXTURE1);*/
+	}
+#endif
+
+	
 
 #if USEALPHA
 	/* 奥行きの比較関数を元に戻す */
@@ -1806,6 +1847,8 @@ void CSceneRace::RenderShadowBM(){
 	CMatrix modelviewCamera;
 	glGetFloatv(GL_MODELVIEW_MATRIX, modelviewCamera.mM[0]);
 
+
+#if USEALPHA
 	for (int i = 0; i < ENEMYS_AMOUNT; i++)
 	{
 		if (CSceneTitle::mMode == CSceneTitle::EMODE_GRANDPRIX){
@@ -1813,6 +1856,8 @@ void CSceneRace::RenderShadowBM(){
 		}
 	}
 	mPlayer->Render();
+#endif
+	
 
 	/* テクスチャ変換行列を設定する */
 	glMatrixMode(GL_TEXTURE);
@@ -1851,6 +1896,9 @@ void CSceneRace::RenderShadowBM(){
 	glDepthFunc(GL_LEQUAL);
 #endif
 
+
+
+#if USEALPHA
 	const GLfloat lightcol[] = { 1.0f, 1.0f, 1.0f, 1.0f };
 	/* 光源の明るさを日向の部分での明るさに設定 */
 	glLightfv(GL_LIGHT0, GL_DIFFUSE, lightcol);
@@ -1876,6 +1924,23 @@ void CSceneRace::RenderShadowBM(){
 		//テクスチャユニット1に切り替える
 		glActiveTexture(GL_TEXTURE1);
 	}
+#else
+	//影の描画
+	if (isEnableShadow){
+		//コースの影の描画
+		for (int i = 0; i < CObj::mObject_Limit; i++){
+			if (CObj::mpGrounds[i] != NULL){
+				//テクスチャユニット0に切り替える
+				glActiveTexture(GL_TEXTURE0);
+				CObj::mpGrounds[i]->Render();
+				//テクスチャユニット1に切り替える
+				glActiveTexture(GL_TEXTURE1);				
+			}
+		}
+	}
+#endif
+
+	
 
 #if USEALPHA
 	/* 奥行きの比較関数を元に戻す */
