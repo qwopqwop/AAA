@@ -3,7 +3,7 @@
 
 #define WAITTIME_STARTLOAD 150 //選択決定後、次のシーン移行までの時間
 #define WAITTIME_NOWLOADING  110 //「NOW LOADING」が表示されるまでの時間
-#define WAITTIME_STARTFADEOUT  WAITTIME_STARTLOAD - 90 //「NOW LOADING」がフェードアウトが始まるまでの時間
+#define WAITTIME_STARTFADEOUT  (WAITTIME_STARTLOAD - 90) //「NOW LOADING」がフェードアウトが始まるまでの時間
 
 //int CSceneTitle::mCource_Number = 1; //コースやLap数の初期設定
 CSceneTitle::ECPU_Level CSceneTitle::mCPU_Level = CSceneTitle::ENORMAL;//敵AIの強さの初期設定
@@ -73,7 +73,7 @@ void CSceneTitle::Update() {
 
 	if (mStart){
 		if (mStartWaitTime < WAITTIME_STARTLOAD){
-			mStartWaitTime++;
+			mStartWaitTime++;			
 		}
 		else{
 			switch (mLevel)
@@ -411,16 +411,29 @@ void CSceneTitle::Render(){
 	c[0] = c[1] = c[2] = 1.0f;
 	glColor4fv(c);
 	
-	//フェードアウトの表現
-	if (mStartWaitTime >= WAITTIME_STARTFADEOUT){
-		c[0] = c[1] = c[2] = 0.0f;
-		c[3] = 0.025f * (mStartWaitTime - (WAITTIME_STARTFADEOUT));
-		glColor4fv(c);
-		CRectangle::Render(400, 300, 400, 300);
-	}
-	//全ての値を1.0fに戻しておく
-	c[0] = c[1] = c[2] = c[3] = 1.0f;
-	glColor4fv(c);
+	////フェードアウトの表現
+	//if (mStartWaitTime >= WAITTIME_STARTFADEOUT){
+	//	c[0] = c[1] = c[2] = 0.0f;
+	//	c[3] = 0.025f * (mStartWaitTime - (WAITTIME_STARTFADEOUT));
+	//	glColor4fv(c);
+	//	CRectangle::Render(400, 300, 400, 300);
+	//}
+
+	////フェードアウトの表現
+	//if (mStartWaitTime >= WAITTIME_STARTFADEOUT){
+	//	c[0] = c[1] = c[2] = 0.0f;
+	//	c[3] = 0.025f * (mStartWaitTime - (WAITTIME_STARTFADEOUT));
+	//	//c[3] = 1.0f;
+	//	glColor4fv(c);
+	//	//CRectangle::Render(400, 300, 400, 300);
+	//	for (int i = 0; i < 16; i++){
+	//	c[3] = 0.025f * (mStartWaitTime - (WAITTIME_STARTFADEOUT));
+	//	CRectangle::Render(100 + 200 * (i%4), 550 - 150 * (i/4 % 4), 800/8-1, 600/6-1);
+	//	}
+	//}
+
+	FadeOut();
+	
 	
 	//シーンが移行する直前で表示
 	if (mStartWaitTime > WAITTIME_NOWLOADING){
@@ -428,4 +441,60 @@ void CSceneTitle::Render(){
 	}
 	//2D描画終了
 	End2D();
+}
+
+void CSceneTitle::FadeOut(){
+	float c[] = { 1.0f, 1.0f, 1.0f, 1.0f };//{ R,G,B,α }
+	c[0] = c[1] = c[2] = 0.0f;
+
+	if (mStartWaitTime >= WAITTIME_STARTFADEOUT){
+		int x_tiles = 20;
+		int y_tiles = 15;
+		int tile_width = 400 / x_tiles;
+		int tile_height = 300 / y_tiles;
+		for (int i = 0; i < (x_tiles * y_tiles); i++){
+			////c[3] = (0.025f - 0.0025f*(i / x_tiles)) * (mStartWaitTime - (WAITTIME_STARTFADEOUT));
+			//c[3] = -0.05f + -0.005f * i + 0.05f * (mStartWaitTime - WAITTIME_STARTFADEOUT);
+			//glColor4fv(c);
+			//int wid = mStartWaitTime - i;
+			//if (wid > tile_width){
+			//	wid = tile_width;
+			//}
+			//int hei = mStartWaitTime - i;
+			//if (hei > tile_height){
+			//	hei = tile_height;
+			//}
+			//wid = tile_width;
+			//hei = tile_height;
+			////hei = tile_height;
+			//CRectangle::Render(0 + tile_width +  tile_width * 2 * (i / x_tiles % x_tiles),
+			//	0 + tile_height + tile_height * 2 * (i % y_tiles), wid, hei);
+
+			//c[3] = (0.025f - 0.0025f*(i / x_tiles)) * (mStartWaitTime - (WAITTIME_STARTFADEOUT));
+			c[3] = -0.01f + -0.01f * i + 0.05f * (mStartWaitTime - WAITTIME_STARTFADEOUT);
+			/*if (c[3] > 0.3f){
+				c[3] = 0.3f;
+			}*/
+			glColor4fv(c);
+			
+			int wid = tile_width - i + (mStartWaitTime - WAITTIME_STARTFADEOUT);
+			int hei = tile_height;
+			//hei = tile_height;
+			if (wid > tile_width){
+				wid = tile_width;
+			}
+			if (hei > tile_height){
+				hei = tile_height;
+			}
+			wid = tile_width;
+			hei = tile_height;
+
+			CRectangle::Render(0 + tile_width +  tile_width * 2 * (i / y_tiles),
+				0 + tile_height + tile_height * 2 * (i % y_tiles), wid, hei);
+		}
+	}
+
+	//全ての値を1.0fに戻しておく
+	c[0] = c[1] = c[2] = c[3] = 1.0f;
+	glColor4fv(c);
 }

@@ -31,6 +31,8 @@ public:
 	void Update();
 	//描画処理
 	void Render();
+	//フェードアウト処理
+	void FadeOut();
 
 	//次のシーンの取得
 	EScene GetNextScene();

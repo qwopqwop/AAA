@@ -86,6 +86,9 @@ CEnemy::CEnemy()
 	mVPoint = mpPoint->mPosition;//一番最初は分散無し
 	mVPoint_prev = mVPoint;
 
+	
+	mMaxSpeed = 20.0f;//ここ以外で数値は変わらない
+	mMaxSpeed_PtoP = 20.0f;//ポイント間で変動する
 	if (CSceneTitle::mCPU_Level == 1){
 		mMaxSpeed = 18.0f;
 	}
@@ -99,9 +102,7 @@ CEnemy::CEnemy()
 		printf("不明な難易度が設定されました");
 		mMaxSpeed = 99.9f;
 	}
-	mMaxSpeed = 20.0f;//ここ以外で数値は変わらない
-	mMaxSpeed_PtoP = 20.0f;//ポイント間で変動する
-
+	
 	mEnemyLap = 1;//敵のラップ数を１周目に設定する
 	isTouchGoal = false;
 	isEnemyGoaled = false;//まだゴールしてない状態にする
