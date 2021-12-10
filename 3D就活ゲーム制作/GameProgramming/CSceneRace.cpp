@@ -47,7 +47,7 @@ int CSceneRace::mCurrent_RaceNumber = 0;
 bool CSceneRace::isEnableShadow = true;//影
 bool CSceneRace::isEnableMiniMap = true;//ミニマップ
 bool CSceneRace::isEnableBackMirror = true;//バックミラー
-bool CSceneRace::isEnableSpeedometer = false;//速度計
+bool CSceneRace::isEnableSpeedometer = true;//速度計
 
 //画面サイズは800x600を想定
 #define SCREENSIZE_X 800
@@ -790,6 +790,27 @@ void CSceneRace::Render(){
 		CText::DrawString(race_status, 20, 20, 10, 12, 2);
 	}
 
+	//Playerがブースト中、集中線が描画される
+	if (mPlayer->GetisBoost()){
+		//座標(0,0)を左下から画面中央に変更する
+		glTranslated(SCREENSIZE_X / 2, SCREENSIZE_Y / 2, 0.0f);
+		color[0] = color[1] = color[2] = 0.0f;
+		color[3] = 0.3f;
+		glColor4fv(color);
+		//ランダムに各線の角度、長さを決める
+		for (int i = 0; i < 60; i++){
+			int degree = rand() % 360;
+			glRotated(degree, 0.0f, 0.0f, 1.0f);
+			CRectangle::Render(0, 400, 1, 100 + rand() % 50);
+			glRotated(-degree, 0.0f, 0.0f, 1.0f);
+		}
+		//ずらした座標分とカラーを元に戻す
+		color[0] = color[1] = color[2] = color[3] = 1.0f;
+		glColor4fv(color);
+		glTranslated(-SCREENSIZE_X / 2, -SCREENSIZE_Y / 2, 0.0f);
+	}
+		
+	
 	
 	char besttime[20];//ベストタイム
 	sprintf(besttime, "BEST:%02d:%02d:%02d", mBestTime / 10000 % 100, mBestTime / 100 % 100, mBestTime % 100);
@@ -1398,6 +1419,8 @@ void CSceneRace::RenderBackMirror()
 	/* 光源の明るさを影の部分での明るさに設定 */
 	glLightfv(GL_LIGHT0, GL_DIFFUSE, lightcol);
 	glLightfv(GL_LIGHT0, GL_SPECULAR, lightcol);
+#else
+	CTaskManager::Get()->Render();
 #endif
 	
 	//レンダーテクスチャ終了

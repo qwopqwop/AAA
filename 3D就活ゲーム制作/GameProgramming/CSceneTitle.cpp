@@ -453,31 +453,34 @@ void CSceneTitle::FadeOut(){
 		int tile_width = 400 / x_tiles;
 		int tile_height = 300 / y_tiles;
 		for (int i = 0; i < (x_tiles * y_tiles); i++){
-			////c[3] = (0.025f - 0.0025f*(i / x_tiles)) * (mStartWaitTime - (WAITTIME_STARTFADEOUT));
-			//c[3] = -0.05f + -0.005f * i + 0.05f * (mStartWaitTime - WAITTIME_STARTFADEOUT);
+			
+			//c[3] = -0.01f + -0.01f * i + 0.05f * (mStartWaitTime - WAITTIME_STARTFADEOUT);
 			//glColor4fv(c);
-			//int wid = mStartWaitTime - i;
+			//
+			//int wid = tile_width - i + (mStartWaitTime - WAITTIME_STARTFADEOUT);
+			//int hei = tile_height;
+			////hei = tile_height;
 			//if (wid > tile_width){
 			//	wid = tile_width;
 			//}
-			//int hei = mStartWaitTime - i;
 			//if (hei > tile_height){
 			//	hei = tile_height;
 			//}
 			//wid = tile_width;
 			//hei = tile_height;
-			////hei = tile_height;
-			//CRectangle::Render(0 + tile_width +  tile_width * 2 * (i / x_tiles % x_tiles),
+			//CRectangle::Render(0 + tile_width +  tile_width * 2 * (i / y_tiles),
 			//	0 + tile_height + tile_height * 2 * (i % y_tiles), wid, hei);
+			//c[3] = -0.01f + -0.01f * i + 0.05f * (mStartWaitTime - WAITTIME_STARTFADEOUT);
+			//glColor4fv(c);
 
-			//c[3] = (0.025f - 0.0025f*(i / x_tiles)) * (mStartWaitTime - (WAITTIME_STARTFADEOUT));
-			c[3] = -0.01f + -0.01f * i + 0.05f * (mStartWaitTime - WAITTIME_STARTFADEOUT);
-			/*if (c[3] > 0.3f){
-				c[3] = 0.3f;
-			}*/
+
+
+			c[3] = 0.0125f * (mStartWaitTime - WAITTIME_STARTFADEOUT);
 			glColor4fv(c);
-			
-			int wid = tile_width - i + (mStartWaitTime - WAITTIME_STARTFADEOUT);
+			int delay = 0;
+			delay = (i % 2) * 16;
+
+			int wid = tile_width - i + 4 * (mStartWaitTime - WAITTIME_STARTFADEOUT) - delay;
 			int hei = tile_height;
 			//hei = tile_height;
 			if (wid > tile_width){
@@ -486,11 +489,24 @@ void CSceneTitle::FadeOut(){
 			if (hei > tile_height){
 				hei = tile_height;
 			}
-			wid = tile_width;
-			hei = tile_height;
-
-			CRectangle::Render(0 + tile_width +  tile_width * 2 * (i / y_tiles),
-				0 + tile_height + tile_height * 2 * (i % y_tiles), wid, hei);
+			CRectangle::Render(0 + tile_width + tile_width * 2 * (i / y_tiles), 0 + tile_height + tile_height * 2 * (i % y_tiles), wid, hei);
+			//c[3] = -0.01f + -0.01f * i + 0.05f * (mStartWaitTime - WAITTIME_STARTFADEOUT);
+			//glColor4fv(c);
+			//int wid = tile_width - i + (mStartWaitTime - WAITTIME_STARTFADEOUT);
+			//int hei = tile_height;
+			////hei = tile_height;
+			//if (wid > tile_width){
+			//	wid = tile_width;
+			//}
+			//if (hei > tile_height){
+			//	hei = tile_height;
+			//}
+			//wid = tile_width;
+			//hei = tile_height;
+			//CRectangle::Render(0 + tile_width + tile_width * 2 * (i / y_tiles),
+			//	0 + tile_height + tile_height * 2 * (i % y_tiles), wid, hei);
+			//c[3] = -0.01f + -0.01f * i + 0.05f * (mStartWaitTime - WAITTIME_STARTFADEOUT);
+			//glColor4fv(c);
 		}
 	}
 

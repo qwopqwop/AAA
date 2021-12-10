@@ -81,6 +81,8 @@ public:
 		ENOTONGRASS,//Å¶‚Ìã‚Å‚È‚¢
 	};
 	Sound_Engine mSound_Engine, mSound_Engine_Prev;//ÚGó‹µ,1f‘O‚ÌV	
+
+	bool GetisBoost();
 };
 
 #endif

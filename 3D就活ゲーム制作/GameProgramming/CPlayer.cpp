@@ -555,3 +555,7 @@ void CPlayer::TaskCollision()
 	CollisionManager.Collision(&mColBody);
 	CollisionManager.Collision(&mColTire);
 }
+
+bool CPlayer::GetisBoost(){
+	return isBoost;
+}
