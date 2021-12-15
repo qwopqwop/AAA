@@ -42,7 +42,7 @@ CPlayer *CPlayer::mpPlayer = 0;
 
 #define BOOST_EFFECT 10.0f//ブースト中で底上げされる最高速度の量
 #define DECELERATE_BOOSTEFFECT 0.2f//ブーストが切れて底上げした最高速度の減衰する量
-#define BOOST_EFFECTTIME 45//ブーストの効果時間
+#define BOOST_EFFECTTIME 60//ブーストの効果時間
 
 #define FLYING_UPDOWN 1.5f//飛行モード中の上昇、下降速度
 

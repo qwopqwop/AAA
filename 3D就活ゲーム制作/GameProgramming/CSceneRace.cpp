@@ -790,25 +790,26 @@ void CSceneRace::Render(){
 		CText::DrawString(race_status, 20, 20, 10, 12, 2);
 	}
 
-	//Playerがブースト中、集中線が描画される
-	if (mPlayer->GetisBoost()){
-		//座標(0,0)を左下から画面中央に変更する
-		glTranslated(SCREENSIZE_X / 2, SCREENSIZE_Y / 2, 0.0f);
-		color[0] = color[1] = color[2] = 0.0f;
+	//集中線の描画
+	//2D座標の原点(0,0)を画面中央へ移動
+	glTranslated(SCREENSIZE_X / 2, SCREENSIZE_Y / 2, 0.0f);
+	color[0] = color[1] = color[2] = 1.0f;
+	color[3] = (mPlayer->mCarSpeed - 20.0f) * 0.1f;//プレイヤーの非ブースト時の最高速度
+	if (color[3] > 0.3f){
 		color[3] = 0.3f;
-		glColor4fv(color);
-		//ランダムに各線の角度、長さを決める
-		for (int i = 0; i < 60; i++){
-			int degree = rand() % 360;
-			glRotated(degree, 0.0f, 0.0f, 1.0f);
-			CRectangle::Render(0, 400, 1, 100 + rand() % 50);
-			glRotated(-degree, 0.0f, 0.0f, 1.0f);
-		}
-		//ずらした座標分とカラーを元に戻す
-		color[0] = color[1] = color[2] = color[3] = 1.0f;
-		glColor4fv(color);
-		glTranslated(-SCREENSIZE_X / 2, -SCREENSIZE_Y / 2, 0.0f);
 	}
+	glColor4fv(color);
+	//ランダムに各線の角度、長さを決める
+	for (int i = 0; i < 90; i++){
+		int degree = rand() % 360;
+		glRotated(degree, 0.0f, 0.0f, 1.0f);
+		CRectangle::Render(0, 400, 1, 100 + rand() % 50);
+		glRotated(-degree, 0.0f, 0.0f, 1.0f);
+	}
+	//ずらした座標分とカラーを元に戻す
+	color[0] = color[1] = color[2] = color[3] = 1.0f;
+	glColor4fv(color);
+	glTranslated(-SCREENSIZE_X / 2, -SCREENSIZE_Y / 2, 0.0f);
 		
 	
 	
@@ -984,6 +985,12 @@ void CSceneRace::Render(){
 					CText::DrawString("Nice Try!", 300, 180, 14, 17, 2);
 				}
 				//一位から順に総得点を表示する
+				color[0] = color[1] = color[2] = 0.0f;
+				glColor4fv(color);
+				CRectangle::Render(610, 310, 108, 86);
+				color[0] = color[1] = color[2] = 1.0f;
+				glColor4fv(color);
+				CRectangle::Render(610, 310, 107, 85);
 				for (int i = 0; i < LIST_SIZE; i++){
 					char name[6];
 					if (carnumber[i] == 1){

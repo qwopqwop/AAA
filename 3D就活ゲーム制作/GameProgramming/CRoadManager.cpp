@@ -93,10 +93,11 @@ void CRoadManager::Init(CModel* pmodel, const CVector& pos, const CVector& rot, 
 		next = new CPoint(CVector(529.0f*1.1f, 30.0f, -3565.0f*1.1f), rad, next);
 		next = new CPoint(CVector(-721.0f*1.1f, 30.0f, -1926.0f*1.1f), rad, next);
 		next = new CPoint(CVector(-1500.0f*1.1f, 30.0f, -80.0f*1.1f), rad, next);
-		next = new CPoint(CVector(-2652.0f*1.1f, 30.0f, 113.0f*1.1f), rad, next);
+		next = new CPoint(CVector(-2652.0f*1.1f, 30.0f, 113.0f*1.1f), rad, next);		
 		next = new CPoint(CVector(-3355.0f*1.1f, 30.0f, 809.0f*1.1f), rad, next);
 		next = new CPoint(CVector(-3127.0f*1.1f, 30.0f, 1432.0f*1.1f), rad, next);
 		next = new CPoint(CVector(-2528.0f*1.1f, 30.0f, 1832.0f*1.1f), rad, next);
+		next = new CPoint(CVector(-2272.0f*1.1f, 30.0f, 2250.0f*1.1f), rad, next);
 		next = new CPoint(CVector(-1645.0f*1.1f, 30.0f, 3612.0f)*1.1f, rad, next);
 		next = new CPoint(CVector(-700.0f*1.1f, 30.0f, 4935.0f*1.1f), rad, next);
 		next = new CPoint(CVector(463.0f*1.1f, 30.0f, 5010.0f*1.1f), rad, next);
@@ -106,11 +107,8 @@ void CRoadManager::Init(CModel* pmodel, const CVector& pos, const CVector& rot, 
 		next = new CPoint(CVector(3737.0f*1.1f, 30.0f, 1280.0f*1.1f), rad, next);
 		next = new CPoint(CVector(3763.0f*1.1f, 30.0f, 510.0f*1.1f), rad, next);
 		next = new CPoint(CVector(3068.0f*1.1f, 30.0f, -355.0f*1.1f), rad, next);
-		
-
 		next = new CPoint(CVector(2568.0f*1.1f, 30.0f, -575.0f*1.1f), rad, next);
 		next = new CPoint(CVector(2352.0f*1.1f, 30.0f, -925.0f*1.1f), rad, next);
-
 		next = new CPoint(CVector(2285.0f*1.1f, 30.0f, -2140.0f*1.1f), rad, next);
 		////最初に生成したポインタの次ポインタの設定
 		first->Set(first->mPosition, rad, next);

@@ -39,7 +39,7 @@ CEnemy *CEnemy::mpEnemy = 0;
 
 #define BOOST_EFFECT 10.0f//ブースト中で底上げされる最高速度の量
 #define DECELERATE_BOOSTEFFECT 0.2f//ブーストが切れて底上げした最高速度の減衰する量
-#define BOOST_EFFECTTIME 45//ブーストの効果時間
+#define BOOST_EFFECTTIME 60//ブーストの効果時間
 
 #define HANDLEPOWER_NORMAL_LOWERLIMIT 0.5f//カーブのハンドル操作時の速度の下限(曲がりやすくするために)
 #define HANDLEPOWER_NORMAL 0.04f//カーブ量と同じ方向にハンドルを切った時のカーブ量
@@ -338,6 +338,10 @@ void CEnemy::Update(){
 		mCarSpeed = 0.0f;
 		//1つ前の目標地点に戻される
 		mPosition = mVPoint_prev;
+		//目標地点の方向に車を回転させる
+		CVector sa2 = mVPoint - mVPoint_prev;
+		float rotY2 = atan2(sa2.mX, sa2.mZ) * 180 / 3.14;
+		mRotation.mY = rotY2;
 	}
 	CCharacter::Update();
 
