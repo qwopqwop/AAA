@@ -113,7 +113,7 @@ void CEnemy::Update(){
 	//mEnemyAI‚Å“®‚«•û‚ªŒˆ‚Ü‚é
 	if (mEnemyAI == ENEWBIE){
 		//í‚É‘S‘¬—Í‚Å‘–s‚µ‚æ‚¤‚Æ‚·‚é
-		mMaxSpeed_PtoP = 20.0f;
+		mMaxSpeed_PtoP = mMaxSpeed;
 	}
 	else if (mEnemyAI == EPRO){
 		//‘¬“x’²®

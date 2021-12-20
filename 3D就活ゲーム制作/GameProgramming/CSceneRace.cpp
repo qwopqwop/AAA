@@ -2094,6 +2094,7 @@ void CSceneRace::RenderShadowBM(){
 	////************************************ Shadow Map
 }
 
+//ìGé‘ÇÃê∂ê¨
 void CSceneRace::InstantiateEnemy(CVector rot){	
 	//GPÉÇÅ[Éhå¿íËÇ≈ìGê∂ê¨
 	if (CSceneTitle::mMode == CSceneTitle::EMODE_GRANDPRIX){
