@@ -15,8 +15,8 @@ public:
 	//文字の描画
 	static void DrawChar(char ch, int x, int y, int w, int h, int fontnum = 1);
 	//文字列の描画
-	//DrawString(文字列, 画面X座標, 画面Y座標, 文字幅, 文字高さ, フォント番号(mFontやmFont2など))
-	static void DrawString(char *s, int x, int y, int w, int h, int fontnum = 1);
+	//DrawString(文字列, 画面X座標, 画面Y座標, 文字幅, 文字高さ, フォント番号(mFontやmFont2など), 文字の間隔)
+	static void DrawString(char *s, int x, int y, int w, int h, int fontnum = 1, int space = 0);
 };
 
 #endif

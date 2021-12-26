@@ -811,7 +811,164 @@ void CSceneRace::Render(){
 	glColor4fv(color);
 	glTranslated(-SCREENSIZE_X / 2, -SCREENSIZE_Y / 2, 0.0f);
 		
+
+	//スピードメーターの描画
+	//原点(0,0)をずらす
+	glTranslated(715, 520, 0.0f);
+	//複数の描画に分けてメーターを表現
+	for (int ii = 0; ii < 4; ii++){
+		color[3] = 1.0f;//プレイヤーの非ブースト時の最高速度	
+		if (ii % 2 == 1){
+			color[0] = color[1] = color[2] = 0.0f;
+		}
+		else{
+			color[0] = color[1] = color[2] = 1.0f;			
+		}
+		glColor4fv(color);
+
+		int circle_size = 0;
+		if (ii == 0){
+			circle_size = 32;
+		}
+		else if (ii == 1){
+			circle_size = 30;
+		}
+		else if (ii == 2){
+			circle_size = 16;
+		}
+		else if (ii == 3){
+			circle_size = 15;
+		}
+
+		for (int i = 0; i < 90; i++){
+			int degree = i * 4;
+			glRotated(degree, 0.0f, 0.0f, 1.0f);
+			CRectangle::Render(0, circle_size, 5, circle_size);
+			glRotated(-degree, 0.0f, 0.0f, 1.0f);
+		}
+
+		if(ii == 1){
+			color[0] = color[1] = color[2] = 1.0f;
+			glColor4fv(color);
+			int degree = 200;
+			glRotated(degree, 0.0f, 0.0f, 1.0f);
+			CRectangle::Render(0, 58, 2, 6);
+		//	CText::DrawString("0", 0, 48, 7, 9, 2);
+			glRotated(-degree, 0.0f, 0.0f, 1.0f);
+
+			degree = 0;
+			glRotated(degree, 0.0f, 0.0f, 1.0f);
+			CRectangle::Render(0, 58, 2, 6);
+		//	CText::DrawString("20", 0, 48, 7, 9, 2, -3);
+			glRotated(-degree, 0.0f, 0.0f, 1.0f);
+
+			degree = 100;
+			glRotated(degree, 0.0f, 0.0f, 1.0f);
+			CRectangle::Render(0, 58, 2, 6);
+		//	CText::DrawString("10", 0, 48, 7, 9, 2, -3);
+			glRotated(-degree, 0.0f, 0.0f, 1.0f);
+
+			//degree = -90;
+			//glRotated(degree, 0.0f, 0.0f, 1.0f);
+			//CRectangle::Render(0, 46, 2, 14);
+			////CText::DrawString("10", 0, 48, 7, 9, 2);
+			//glRotated(-degree, 0.0f, 0.0f, 1.0f);
+			for (int i = 0; i < 30; i++){
+				degree = -90-i;
+				glRotated(degree, 0.0f, 0.0f, 1.0f);
+				CRectangle::Render(0, 46, 1, 15);
+				//CText::DrawString("10", 0, 48, 7, 9, 2);
+				glRotated(-degree, 0.0f, 0.0f, 1.0f);
+			}
+
+			for (int i = 0; i < 90; i++){
+				degree = 0 - i;
+				color[0] = 0.0f + i*0.01f;
+				color[1] = color[2] = 0.0f;
+				glColor4fv(color);
+				glRotated(degree, 0.0f, 0.0f, 1.0f);
+				CRectangle::Render(0, 46, 1, 15);
+				//CText::DrawString("10", 0, 48, 7, 9, 2);
+				glRotated(-degree, 0.0f, 0.0f, 1.0f);
+			}
+
+			for (int i = 0; i < 4; i++){
+				color[0] = color[1] = color[2] = 0.7f;
+				glColor4fv(color);
+				degree = i*20+20;
+				glRotated(degree, 0.0f, 0.0f, 1.0f);
+				CRectangle::Render(0, 57, 1, 3);
+				//CText::DrawString("10", 0, 48, 7, 9, 2);
+				glRotated(-degree, 0.0f, 0.0f, 1.0f);
+			}
+			for (int i = 0; i < 4; i++){
+				color[0] = color[1] = color[2] = 0.7f;
+				glColor4fv(color);
+				degree = i * 20 + 20 + 100;
+				glRotated(degree, 0.0f, 0.0f, 1.0f);
+				CRectangle::Render(0, 57, 1, 3);
+				//CText::DrawString("10", 0, 48, 7, 9, 2);
+				glRotated(-degree, 0.0f, 0.0f, 1.0f);
+			}
+			for (int i = 0; i < 4; i++){
+				color[0] = color[1] = color[2] = 0.7f;
+				glColor4fv(color);
+				degree = i * 20 + 20 - 100;
+				glRotated(degree, 0.0f, 0.0f, 1.0f);
+				CRectangle::Render(0, 57, 1, 3);
+				//CText::DrawString("10", 0, 48, 7, 9, 2);
+				glRotated(-degree, 0.0f, 0.0f, 1.0f);
+			}
+			for (int i = 0; i < 1; i++){
+				color[0] = color[1] = color[2] = 0.7f;
+				glColor4fv(color);
+				degree = i * 20 + 20 + 200;
+				glRotated(degree, 0.0f, 0.0f, 1.0f);
+				CRectangle::Render(0, 57, 1, 3);
+				//CText::DrawString("10", 0, 48, 7, 9, 2);
+				glRotated(-degree, 0.0f, 0.0f, 1.0f);
+			}
+		}
+
+	}
+	color[0] = 1.0f;
+	color[1] = color[2] = 0.0f;
+	glColor4fv(color);
+	//メーターの線
+	float degree = mPlayer->mCarSpeed * 10.0f - 200;
+	//メーターの線の可動域を決める
+	if (degree > 90.0f){
+		degree = 90.0f;
+	}
+	if (degree < -240.0f){
+		degree = -240.0f;
+	}
+	glRotated(-degree, 0.0f, 0.0f, 1.0f);
+	//CRectangle::Render(0, 30, 1, 30);
+	CRectangle::Render(0, 46, 1, 14);
+	glRotated(degree, 0.0f, 0.0f, 1.0f);
+	//ずらした座標分とカラーを元に戻す
+	color[0] = color[1] = color[2] = color[3] = 1.0f;
+	glColor4fv(color);
+	glTranslated(-715, -520, 0.0f);
 	
+	//プレイヤーの車の速度表示
+	char carspeed[8];
+	sprintf(carspeed, "%4.1f", CPlayer::mpPlayer->mCarSpeed);
+	if (isEnableSpeedometer){
+		//CText::DrawString(carspeed, 20 + 580, 20, 10, 12);
+		CText::DrawString(carspeed, 697, 520, 7, 9,2,-1);
+
+		CText::DrawString("0", 715+17, 528-50-3, 7, 9, 2, -3);
+		CText::DrawString("10", 715-50, 528-16, 7, 9, 2, -3);
+		CText::DrawString("20", 715-5, 528+50-10, 7, 9, 2, -3);
+	}
+	////プレイヤーの車の速度表示
+	//char carspeed[33];
+	//sprintf(carspeed, "SPEED:%4.1f", CPlayer::mpPlayer->mCarSpeed);
+	//if (isEnableSpeedometer){
+	//	//CText::DrawString(carspeed, 20 + 580, 20, 10, 12);
+	//}
 	
 	char besttime[20];//ベストタイム
 	sprintf(besttime, "BEST:%02d:%02d:%02d", mBestTime / 10000 % 100, mBestTime / 100 % 100, mBestTime % 100);
@@ -840,12 +997,7 @@ void CSceneRace::Render(){
 		CText::DrawString("GO!", 400 - 40, 300, 25, 30);
 	}
 	
-	//プレイヤーの車の速度表示
-	char carspeed[33];
-	sprintf(carspeed, "SPEED:%4.1f", CPlayer::mpPlayer->mCarSpeed);
-	if (isEnableSpeedometer){
-		CText::DrawString(carspeed, 20 + 580, 20, 10, 12);
-	}
+	
 	
 	//ゴール後、継続して実行する処理
 	if (mLap == mMaxLap && isStartRace == false && isGoal){

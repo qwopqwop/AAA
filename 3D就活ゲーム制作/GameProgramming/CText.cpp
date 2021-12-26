@@ -29,12 +29,12 @@ void CText::DrawChar(char ch, int x, int y, int w, int h, int fontnumber) {
 	
 }
 // s:文字列データ x:先頭文字のX座標 y:先頭文字のY座標
-void CText::DrawString(char *s, int x, int y, int w, int h, int font_number) {
+void CText::DrawString(char *s, int x, int y, int w, int h, int font_number, int space) {
 	//1文字ずつ描画します
 	for (int i = 0; s[i] != '\0'; i++) {
 		//文字を描画する
 		DrawChar(s[i], x, y, w, h, font_number);
 		//右へ移動
-		x += w * 2;
+		x += w * 2 + space;
 	}
 }
