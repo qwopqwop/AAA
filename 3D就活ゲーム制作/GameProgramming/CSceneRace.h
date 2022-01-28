@@ -41,9 +41,7 @@ private:
 	//コースタイム、ラップ関連
 	bool isStartRace, isGoal;
 	int mTime, mTime_Output;
-
-
-	static int mBestTime;
+		
 	int mLap, mMaxLap;
 	bool isNewRecord;
 	int mTextBlinkTime;//テキストの点滅に関わる変数
@@ -189,6 +187,11 @@ protected:
 	CVector StartPosVecs[ENEMYS_AMOUNT + 1];//スタート位置(配列)
 
 	int list[LIST_SIZE];//
+
+	static int mBestTime;//ベストタイムを格納する変数
+
+	float mMinimap_size;
+	bool isScrollMinimap;
 public:
 	//次のシーンの取得
 	EScene GetNextScene();

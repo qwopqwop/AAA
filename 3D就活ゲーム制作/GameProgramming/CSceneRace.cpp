@@ -138,18 +138,19 @@ void CSceneRace::Init() {
 	mDashBoard.Load("material\\racing_mat\\dashboard.obj", "material\\racing_mat\\dashboard.mtl");//加速床
 	mJumper01.Load("material\\common_mat\\cube.obj", "material\\common_mat\\on.mtl");//ジャンプ台
 	
-	for (int i = 1; i <= COURCE_TOTAL; i++){
-		if (CSceneTitle::mCource == i){
-			//ベストタイムの読み込み
-			mBestTime = mRecords[i];
-			//BGMの読み込み
-			if (i == 1)BGM.Load("BGM\\revolumed_PopsGuitar_No.01.wav");
-			if (i == 2)BGM.Load("BGM\\revolumed_game_maoudamashii_1_battle34.wav");
-			if (i == 3)BGM.Load("BGM\\revolumed_bgm_maoudamashii_neorock33.wav");
-			if (i == 4)BGM.Load("BGM\\revolumed_Spring_Breeze.wav");
-			if (i == 5)BGM.Load("BGM\\revolumed_Go_on_the_mountain_road.wav");
-		}		
-	}
+	//for (int i = 1; i <= COURCE_TOTAL; i++){
+	//	if (CSceneTitle::mCource == i){
+	//		//ベストタイムの読み込み
+	//		mBestTime = mRecords[i];
+	//		//BGMの読み込み
+	//		/*if (i == 1)BGM.Load("BGM\\revolumed_PopsGuitar_No.01.wav");
+	//		if (i == 2)BGM.Load("BGM\\revolumed_game_maoudamashii_1_battle34.wav");
+	//		if (i == 3)BGM.Load("BGM\\revolumed_bgm_maoudamashii_neorock33.wav");
+	//		if (i == 4)BGM.Load("BGM\\revolumed_Spring_Breeze.wav");
+	//		if (i == 5)BGM.Load("BGM\\revolumed_Go_on_the_mountain_road.wav");*/
+	//	}		
+	//}
+
 	//ジングル(短BGM)の読み込み
 	JingleOpening.Load("SE\\jingle19.wav");
 	//効果音の読み込み//主にレース中
@@ -960,7 +961,7 @@ void CSceneRace::Render(){
 		CText::DrawString(carspeed, 697, 520, 7, 9,2,-1);
 
 		CText::DrawString("0", 715+17, 528-50-3, 7, 9, 2, -3);
-		CText::DrawString("10", 715-50, 528-16, 7, 9, 2, -3);
+		CText::DrawString("10", 715-49, 528-16, 7, 9, 2, -3);
 		CText::DrawString("20", 715-5, 528+50-10, 7, 9, 2, -3);
 	}
 	////プレイヤーの車の速度表示

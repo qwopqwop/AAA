@@ -24,7 +24,13 @@ void CRaceCourceE::Init(){
 	mCource05GoalTile.Load("material\\racing_mat\\stage5\\Checker_Tile.obj", "material\\racing_mat\\stage5\\Checker_Tile.mtl");
 
 	CSceneRace::Init();
+	mBestTime = mRecords[5];
+	mMinimap_size = 5500.0f;
+	isScrollMinimap = true;
 	
+	//BGMの読み込み
+	BGM.Load("BGM\\revolumed_Go_on_the_mountain_road.wav");
+
 	StartPosVec = CVector(-3831.5f, 13.5f, 16011.5f);//スタート位置の基点
 	//CVector StartPosVecs[ENEMYS_AMOUNT + 1];//スタート位置(配列)
 	for (int i = 0; i < LIST_SIZE; i++) {

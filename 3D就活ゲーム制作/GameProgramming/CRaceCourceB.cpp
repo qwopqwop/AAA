@@ -17,6 +17,12 @@ void CRaceCourceB::Init(){
 	mCource02Jump.Load("material\\racing_mat\\cource2nd\\cource02jumper.obj", "material\\racing_mat\\cource2nd\\cource02jumper.mtl");
 
 	CSceneRace::Init();
+	mBestTime = mRecords[2];
+	mMinimap_size = 5600.0f;
+	isScrollMinimap = false;
+
+	//BGMの読み込み
+	BGM.Load("BGM\\revolumed_game_maoudamashii_1_battle34.wav");
 
 	StartPosVec = CVector(2436.0f, -10.0f, -2570.0f);//スタート位置の基点
 	//CVector StartPosVecs[ENEMYS_AMOUNT + 1];//スタート位置(配列)

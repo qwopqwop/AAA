@@ -22,9 +22,13 @@ void CRaceCourceA::Init(){
 	mCurb01.Load("material\\racing_mat\\Curb01.obj", "material\\racing_mat\\Curb01.mtl");//紅白タイル
 	mGoalTile01.Load("material\\racing_mat\\cource01_goaltile.obj", "material\\racing_mat\\cource01_goaltile.mtl");//＝白黒タイル
 
+	CSceneRace::Init(); 
+	mBestTime = mRecords[1];
+	mMinimap_size = 3600.0f;
+	isScrollMinimap = false;
 
-
-	CSceneRace::Init();
+	//BGMの読み込み
+	BGM.Load("BGM\\revolumed_PopsGuitar_No.01.wav");
 
 	for (int i = 0; i < LIST_SIZE; i++) {
 		StartPosVecs[i] = StartPosVec + CVector(-0.1f*list[i], 0.0f, -80.0f*list[i]);
